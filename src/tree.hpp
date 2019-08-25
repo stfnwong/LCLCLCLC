@@ -5,7 +5,11 @@
  * Stefan Wong 2019
  */
 
+#ifndef __LC_TREE_HPP
+#define __LC_TREE_HPP
+
 #include <string>
+#include <vector>
 
 struct TreeNode
 {
@@ -19,9 +23,13 @@ struct TreeNode
 
 // NOTE: see https://support.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation- for details about how this representation works.
 
-// Convert a string like [1, 2, 3] into a Tree
-std::string tree_to_repr(const TreeNode* root);
+TreeNode* build_tree(const std::vector<std::string>& token_repr);
 
+// Convert a string like [1, 2, 3] into a Tree
+std::string tree_to_repr(TreeNode* root);
 
 // Convert a tree into a string like [1, 2,3]
 TreeNode* repr_to_tree(const std::string& repr);
+
+
+#endif /*__LC_TREE_HPP*/

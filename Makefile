@@ -24,6 +24,7 @@ ASM_STYLE=intel
 # Object targets
 INCS=-I$(SRC_DIR)
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
+HEADERS = $(wildcard $(SRC_DIR)/*.hpp)
 # Unit tests 
 TEST_SOURCES  = $(wildcard $(TEST_DIR)/*.cpp)
 # Tools (program entry points)
@@ -31,13 +32,10 @@ TOOL_SOURCES = $(wildcard $(TOOL_DIR)/*.cpp)
 
 .PHONY: clean
 
-# Objects 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(DEPS)
-	$(CXX) -c $< -o $@ $(CXXFLAGS)
-
+# Objects
 OBJECTS := $(SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-$(OBJECTS): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(OBJECTS): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp  $(HEADERS)
+	$(CXX) $(CXXFLAGS) -c $< -o $@ 
 
 # Objects, but output as assembly
 $(ASSEM_OBJECTS): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
@@ -46,11 +44,11 @@ $(ASSEM_OBJECTS): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 
 # Unit tests 
 TEST_OBJECTS  := $(TEST_SOURCES:$(TEST_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-$(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp 
+$(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@ 
 
 # ==== TEST TARGETS ==== #
-TESTS=test_tree test_tree_traversal
+TESTS=test_tree 
 $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(OBJECTS) $(OBJ_DIR)/$@.o\
 		-o $(TEST_BIN_DIR)/$@ $(LIBS) $(TEST_LIBS)
@@ -59,7 +57,7 @@ $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 # Main targets 
 all : test 
 
-test : $(TESTS)
+test : $(OBJECTS) $(TESTS)
 
 tools : $(TOOLS)
 
