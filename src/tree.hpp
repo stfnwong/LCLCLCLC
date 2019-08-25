@@ -21,6 +21,12 @@ struct TreeNode
         TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
+/*
+ * tree_size()
+ * Count the number of nodes in a tree
+ */
+int tree_size(const TreeNode* root);
+
 // NOTE: see https://support.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation- for details about how this representation works.
 
 TreeNode* build_tree(const std::vector<std::string>& token_repr);

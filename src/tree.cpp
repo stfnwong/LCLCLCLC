@@ -17,6 +17,21 @@
 #include "tree.hpp"
 
 
+int tree_size(const TreeNode* root)
+{
+    int size = 0;
+
+    if(root == nullptr)
+        return 0;
+    if(root->left != nullptr)
+        size = size + tree_size(root->left);
+    if(root->right != nullptr)
+        size = size + tree_size(root->right);
+
+    return size;
+}
+
+
 /*
  * build_tree()
  */
@@ -44,30 +59,30 @@ TreeNode* build_tree(const std::vector<std::string>& token_vec)
     // walk the rest of the token vector
     for(unsigned int n = 1; n < token_vec.size(); ++n)
     {
+        // debug 
+        std::cout << "[" << __func__ << "] checking token " << n << " [" << token_vec[n] << "]" << std::endl;
+
         TreeNode* node = nullptr;
         if(token_vec[n] != "null")
         {
-            if(n == token_vec.size() - 1)
-                node_val = std::stoi(token_vec[n].substr(0,1) , nullptr, 10);
-            else
-                node_val = std::stoi(token_vec[n]);
+            node_val = std::stoi(token_vec[n]);
             node = new TreeNode(node_val);
             node_q.push(node);
-        }
 
-        // assign the left node 
-        if(check_left)
-        {
-            cur_node = node_q.front();
-            node_q.pop();
-            cur_node->left = node;
-            check_left = false;
-        }
-        // assign the right node 
-        else
-        {
-            cur_node->right = node;
-            check_left = true;
+            // assign the left node 
+            if(check_left)
+            {
+                cur_node = node_q.front();
+                node_q.pop();
+                cur_node->left = node;
+                check_left = false;
+            }
+            // assign the right node 
+            else
+            {
+                cur_node->right = node;
+                check_left = true;
+            }
         }
     }
 
@@ -84,9 +99,13 @@ std::string tree_to_repr(TreeNode* root)
     std::queue <TreeNode*> node_q;
     TreeNode* cur_node = nullptr;
 
-    // insert the outer brackets
+    // insert the leading bracket
     oss << "[";
 
+    // Because this is a level order representation we need to keep track of what 
+    // level we are on. This is important for the output string since we need to insert
+    // the null value if there is a middle layer somewhere where the tree is not 'full'
+    int cur_level = 0;
     if(root != nullptr)
     {
         node_q.push(root);
@@ -95,30 +114,22 @@ std::string tree_to_repr(TreeNode* root)
             cur_node = node_q.front();
             node_q.pop();
             oss << unsigned(cur_node->val);
+            cur_level++;
             
             // check subtrees
             if(cur_node->left != nullptr)
-            {
                 node_q.push(cur_node->left);
-            }
-            //else
-            //    oss << ",null";
             if(cur_node->right != nullptr)
-            {
                 node_q.push(cur_node->right);
-            }
+
             // Only add a comma if there is at least one 
             // non-null node on this level
-            //if((cur_node->left != nullptr) && (cur_node->right != nullptr))
-            //    oss << ",";
             if(!node_q.empty())
                 oss << ",";
-
-            //else
-            //    oss << ",null";
         }
     }
 
+    // insert the trailing bracket
     oss << "]";
 
     return oss.str();
@@ -160,11 +171,20 @@ TreeNode* repr_to_tree(const std::string& repr)
     {
         std::string substr;
         std::getline(ss, substr, ',');
+        // remove leading spaces 
+        if(substr[0] == ' ')
+            substr = substr.substr(1, substr.length()-1);
+        // strip the '[' or ']' chars 
+        if(substr[0] == '[')
+           substr = substr.substr(1, substr.length()-1); 
+        if(substr[substr.length()-1] == ']')
+            substr = substr.substr(0, substr.length()-1);
+        
         token_vec.push_back(substr);
     }
 
-    //for(unsigned int i = 0; i < token_vec.size(); ++i)
-    //    std::cout << i << ": " << token_vec[i] << std::endl;
+    for(unsigned int i = 0; i < token_vec.size(); ++i)
+        std::cout << i << ": " << token_vec[i] << std::endl;
 
     // Since we know this is binary tree, and we also know that the repr is given in level order,
     // we can therefore deduce that each level in the tree should have twice as many entries as 
