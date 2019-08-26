@@ -17,7 +17,7 @@ class TestTree : public ::testing::Test
 };
 
 
-TEST_F(TestTree, test_string_to_repr)
+TEST_F(TestTree, test_repr_to_tree)
 {
     TreeNode* repr1_tree;
     TreeNode* repr2_tree;
@@ -28,31 +28,37 @@ TEST_F(TestTree, test_string_to_repr)
     std::string empty_repr = "[]";
 
     repr1_tree = repr_to_tree(repr1);
-    repr2_tree = repr_to_tree(repr2);
-    empty_tree = repr_to_tree(empty_repr);
-
-
-    ASSERT_EQ(nullptr, empty_tree);
     ASSERT_NE(nullptr, repr1_tree);
+    repr2_tree = repr_to_tree(repr2);
     ASSERT_NE(nullptr, repr2_tree);
+    empty_tree = repr_to_tree(empty_repr);
+    ASSERT_EQ(nullptr, empty_tree);
     
     // How to test the actual content of the trees...?
 }
 
 
-TEST_F(TestTree, test_repr_to_string)
+TEST_F(TestTree, test_tree_to_repr)
 {
+    // tree structurs
+    TreeNode* empty_repr_tree;
     TreeNode* repr1_tree;
     TreeNode* repr2_tree;
-    TreeNode* empty_repr_tree;
 
+    // input reprs 
+    std::string empty_repr = "[]";
     std::string repr1 = "[1,2,3]";
     std::string repr2 = "[1,null,2,3,null,4,null]";
-    std::string empty_repr = "[]";
 
+    // output reprs
+    std::string tree_to_empty_repr;
     std::string tree_to_repr1;
     std::string tree_to_repr2;
-    std::string tree_to_empty_repr;
+
+    // Test the empty tree
+    empty_repr_tree = repr_to_tree(empty_repr);
+    tree_to_empty_repr = tree_to_repr(empty_repr_tree);
+    ASSERT_EQ(empty_repr, tree_to_empty_repr);
 
     // Test the basic [1,2,3] tree
     repr1_tree = repr_to_tree(repr1);
@@ -64,10 +70,6 @@ TEST_F(TestTree, test_repr_to_string)
     tree_to_repr2 = tree_to_repr(repr2_tree);
     ASSERT_EQ(repr2, tree_to_repr2);
 
-    // Test the empty tree
-    empty_repr_tree = repr_to_tree(empty_repr);
-    tree_to_empty_repr = tree_to_repr(empty_repr_tree);
-    ASSERT_EQ(empty_repr, tree_to_empty_repr);
 }
 
 
