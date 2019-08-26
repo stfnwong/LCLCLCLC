@@ -54,6 +54,9 @@ TreeNode* build_tree(const std::vector<std::string>& token_vec)
     node_q.push(root);
     bool check_left = true;
 
+    // FIXME debug 
+    std::cout << "[" << __func__ << "] root node " << root->val << std::endl;
+
     // walk the rest of the token vector
     for(unsigned int n = 1; n < token_vec.size(); ++n)
     {
@@ -98,20 +101,12 @@ std::string tree_to_repr(TreeNode* root)
     std::vector<std::string> tree_str_vec;
     TreeNode* cur_node = nullptr;
 
-    // insert the leading bracket
-    //oss << "[";
-    tree_str_vec.push_back("[");
-
     // Because this is a level order representation we need to keep track of what 
     // level we are on. This is important for the output string since we need to insert
     // the null value if there is a middle layer somewhere where the tree is not 'full'
-    int cur_level = 0;
-    int str_ptr   = 0;
-    int num_nodes = 0;
     if(root != nullptr)
     {
         node_q.push(root);
-        cur_level = 1;
         while(!node_q.empty())
         {
             cur_node = node_q.front();
@@ -120,70 +115,46 @@ std::string tree_to_repr(TreeNode* root)
             tree_str_vec.push_back(std::to_string(unsigned(cur_node->val)));
             
             // check subtrees
-            str_ptr = 0;
-            num_nodes = (cur_level > 0) ? (2 * cur_level) : 1;
-
             if(cur_node->left != nullptr)
                 node_q.push(cur_node->left);
-            else
-                tree_str_vec.push_back("null");
-
-            //else
-            //    layer_str[str_ptr] = "null"
-            //str_ptr++;
             
             if(cur_node->right != nullptr)
                 node_q.push(cur_node->right);
-            else
-                tree_str_vec.push_back("null");
-
-            //else
-            //    layer_str[str_ptr] = "null";
-            //str_ptr++;
 
             // work out how many strings we need to make for this level
+            if(cur_node->left == nullptr && (cur_node->right != nullptr))
+                tree_str_vec.push_back("null");
 
             // debug - remove
-            std::cout << "[" << __func__ << "] on level " << cur_level << ", should be " 
-                << num_nodes << " on this level" << std::endl;
+            std::cout << "[" << __func__ << "]";
             if(cur_node->left != nullptr)
                 std::cout << "left has node" << std::endl;
             else
                 std::cout << "left is null" << std::endl;
+            std::cout << "[" << __func__ << "]";
             if(cur_node->right != nullptr)
                 std::cout << "right has node" << std::endl;
             else
                 std::cout << "right is null" << std::endl;
 
-            
-
-            // Brute method for inserting nulls
-            //if(cur_node->left == nullptr && cur_node->right != nullptr)
-            //    oss << ",null";
-
             // Only add a comma if there is at least one 
             // non-null node on this level
-            //if(!node_q.empty())
-            //    oss << ",";
-            if(node_q.size() == 1)
-            {
-                cur_level++;
-
-                // update the string stream
-            }
         }
     }
 
-    // insert the trailing bracket
-    tree_str_vec.push_back("]");
+    // FIXME : debug (remove)
+    for(unsigned int n = 0; n < tree_str_vec.size(); ++n)
+        std::cout << "[" << __func__ << "] " << tree_str_vec[n] << std::endl;
 
-    std::string tree_output;
+
+    std::string tree_output = "[";
     for(unsigned int n = 0; n < tree_str_vec.size(); ++n)
     {
         tree_output += tree_str_vec[n];
-        if((n > 0) && (n != tree_str_vec.size()-1))
+        if(n != tree_str_vec.size()-1)
             tree_output += ",";
     }
+    tree_output += "]";
 
     return tree_output;
 }

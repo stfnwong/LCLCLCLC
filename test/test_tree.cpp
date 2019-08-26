@@ -58,16 +58,22 @@ TEST_F(TestTree, test_tree_to_repr)
     // Test the empty tree
     empty_repr_tree = repr_to_tree(empty_repr);
     tree_to_empty_repr = tree_to_repr(empty_repr_tree);
+    std::cout << "Input repr was  : " << empty_repr << std::endl;
+    std::cout << "Output repr was : " << tree_to_empty_repr << std::endl; 
     ASSERT_EQ(empty_repr, tree_to_empty_repr);
 
     // Test the basic [1,2,3] tree
     repr1_tree = repr_to_tree(repr1);
     tree_to_repr1 = tree_to_repr(repr1_tree);
+    std::cout << "Input repr was  : " << repr1 << std::endl;
+    std::cout << "Output repr was : " << tree_to_repr1 << std::endl; 
     ASSERT_EQ(repr1, tree_to_repr1);
 
     // Test the tree with a null in the repr
     repr2_tree = repr_to_tree(repr2);
     tree_to_repr2 = tree_to_repr(repr2_tree);
+    std::cout << "Input repr was  : " << repr2 << std::endl;
+    std::cout << "Output repr was : " << tree_to_repr2 << std::endl; 
     ASSERT_EQ(repr2, tree_to_repr2);
 
 }
