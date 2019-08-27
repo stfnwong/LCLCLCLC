@@ -19,7 +19,6 @@
 #include "tree_traverse.hpp"
 
 
-
 int main(int argc, char *argv[])
 {
     TreeNode* tree = nullptr;

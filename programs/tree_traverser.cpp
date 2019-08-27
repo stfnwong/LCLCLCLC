@@ -18,15 +18,14 @@
 #include "tree_traverse.hpp"
 
 
-
 int main(int argc, char *argv[])
 {
     // TODO : accept a tree from the command line?
     //AsmOpts opts;
-    const char* const short_opts = "v";
-    const option long_opts[] = {};
-    int argn = 0;
-    int status;
+    //const char* const short_opts = "v";
+    //const option long_opts[] = {};
+    //int argn = 0;
+    //int status;
 
     //init_opts(opts);
 

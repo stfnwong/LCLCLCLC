@@ -18,7 +18,10 @@ void tree_outorder(const TreeNode* root, std::vector<int>& traversal);
 void tree_postorder(const TreeNode* root, std::vector<int>& traversal);
 
 // Iterative methods
-
+void tree_preorder_iter(TreeNode* root, std::vector<int>& traversal);
+void tree_inorder_iter(TreeNode* root, std::vector<int>& traversal);
+void tree_outorder_iter(TreeNode* root, std::vector<int>& traversal);
+void tree_postorder_iter(TreeNode* root, std::vector<int>& traversal);
 
 
 // ====== LC Style methods ===== /

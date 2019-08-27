@@ -5,35 +5,10 @@
  * Stefan Wong 2019
  */
 
+#include <stack>
 #include "tree_traverse.hpp"
 
-
-// Apparently, this requires 10.9MB (!!!) of memory
-//class Solution {
-//    public:
-//        std::vector<int> preorderTraversal(TreeNode* root) {
-//
-//            std::vector<int> values;
-//            std::vector<int> out_values;
-//            
-//            if(root == NULL)
-//                return values;
-//            
-//            values.push_back(root->val);
-//            if(root->left != NULL)
-//            {
-//                out_values = preorderTraversal(root->left);
-//                values.insert(values.end(), out_values.begin(), out_values.end());
-//            }
-//            if(root->right != NULL)
-//            {
-//                out_values = preorderTraversal(root->right);
-//                values.insert(values.end(), out_values.begin(), out_values.end());
-//            }
-//            return values;
-//        }
-//};
-
+// -------- Recursive variants -------- //
 
 /*
  * tree_preorder()
@@ -98,11 +73,56 @@ void tree_postorder(const TreeNode* root, std::vector<int>& traversal)
 
 
 // ---- iterative versions ---- //
+void tree_preorder_iter(const TreeNode* root, std::vector<int>& traversal)
+{
+    std::stack <TreeNode*> tree_stack;
+    // tree is empty
+    if(root == nullptr)
+        return;
 
+    
 
+}
 
+// TODO : I need to remove the const here, but actually the value 
+// will never change. Is there a way to tell the compiler this?
+void tree_inorder_iter(TreeNode* tree, std::vector<int>& traversal)
+{
+    std::stack<TreeNode*> tree_stack;
 
+    if(tree != nullptr)
+    {
+        do
+        {
+            // store left nodes in the stack
+            while(tree != nullptr)
+            {
+                tree_stack.push(tree);
+                tree = tree->left;
+            }
 
+            // vist right side
+            if(!tree_stack.empty())
+            {
+                tree = tree_stack.top();
+                tree_stack.pop();
+                traversal.push_back(tree->val);
+                tree = tree->right;
+            }
+
+        }while(!tree_stack.empty() || (tree != nullptr));
+    }
+}
+
+void tree_outorder_iter(const TreeNode* root, std::vector<int>& traversal)
+{
+
+}
+
+void tree_postorder_iter(const TreeNode* root, std::vector<int>& traversal)
+{
+
+}
 
 
 
@@ -143,6 +163,19 @@ std::vector<int> LCTraverser::inorder(const TreeNode* root)
     return this->traversal;
 }
 
+std::vector<int> LCTraverser::outorder(const TreeNode* root)
+{
+    if(root != nullptr)
+    {
+        if(root->right != nullptr)
+            this->outorder(root->right);
+        this->traversal.push_back(root->val);
+        if(root->left != nullptr)
+            this->outorder(root->left);
+    }
+
+    return this->traversal;
+}
 
 std::vector<int> LCTraverser::postorder(const TreeNode* root)
 {
