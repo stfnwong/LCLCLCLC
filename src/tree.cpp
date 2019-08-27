@@ -42,9 +42,7 @@ TreeNode* build_tree(const std::vector<std::string>& token_vec)
 {
     TreeNode* root = nullptr;
 
-    // For root node, skip the leading '[' and get the digit 
     int node_val;
-    std::string root_str = token_vec[0];
     // maintain a queue of nodes
     std::queue <TreeNode*> node_q;
     TreeNode* cur_node = nullptr;
@@ -54,15 +52,9 @@ TreeNode* build_tree(const std::vector<std::string>& token_vec)
     node_q.push(root);
     bool check_left = true;
 
-    // FIXME debug 
-    std::cout << "[" << __func__ << "] root node " << root->val << std::endl;
-
     // walk the rest of the token vector
     for(unsigned int n = 1; n < token_vec.size(); ++n)
     {
-        // FIXME debug 
-        std::cout << "[" << __func__ << "] checking token " << n << " [" << token_vec[n] << "]" << std::endl;
-
         TreeNode* node = nullptr;
         if(token_vec[n] != "null")
         {

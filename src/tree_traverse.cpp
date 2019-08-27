@@ -73,55 +73,127 @@ void tree_postorder(const TreeNode* root, std::vector<int>& traversal)
 
 
 // ---- iterative versions ---- //
-void tree_preorder_iter(const TreeNode* root, std::vector<int>& traversal)
+
+/*
+ * tree_preorder_iter()
+ */
+void tree_preorder_iter(TreeNode* root, std::vector<int>& traversal)
 {
     std::stack <TreeNode*> tree_stack;
-    // tree is empty
-    if(root == nullptr)
-        return;
 
-    
+    if(root != nullptr)
+    {
+        do
+        {
+            // visit the left side
+            while(root != nullptr)
+            {
+                tree_stack.push(root);
+                traversal.push_back(root->val);
+                root = root->left;
+            }
 
+            // visit the right side
+            if(!tree_stack.empty())
+            {
+                root = tree_stack.top();
+                tree_stack.pop();
+                root = root->right;
+            }
+        }while(!tree_stack.empty() || (root != nullptr));
+    }
 }
 
-// TODO : I need to remove the const here, but actually the value 
-// will never change. Is there a way to tell the compiler this?
-void tree_inorder_iter(TreeNode* tree, std::vector<int>& traversal)
+/*
+ * tree_inorder_iter()
+ */
+void tree_inorder_iter(TreeNode* root, std::vector<int>& traversal)
 {
     std::stack<TreeNode*> tree_stack;
 
-    if(tree != nullptr)
+    if(root != nullptr)
     {
         do
         {
             // store left nodes in the stack
-            while(tree != nullptr)
+            while(root != nullptr)
             {
-                tree_stack.push(tree);
-                tree = tree->left;
+                tree_stack.push(root);
+                root = root->left;
             }
 
-            // vist right side
+            // unwind stack, visiting right side of each unwound node
             if(!tree_stack.empty())
             {
-                tree = tree_stack.top();
+                root = tree_stack.top();
                 tree_stack.pop();
-                traversal.push_back(tree->val);
-                tree = tree->right;
+                traversal.push_back(root->val);
+                root = root->right;
             }
 
-        }while(!tree_stack.empty() || (tree != nullptr));
+        }while(!tree_stack.empty() || (root != nullptr));
     }
 }
 
-void tree_outorder_iter(const TreeNode* root, std::vector<int>& traversal)
+/*
+ * tree_outorder_iter()
+ */
+void tree_outorder_iter(TreeNode* root, std::vector<int>& traversal)
 {
+    std::stack <TreeNode*> tree_stack;
+
+    if(root != nullptr)
+    {
+        do
+        {
+            // Stack up all the right-side nodes
+            while(root != nullptr)
+            {
+                tree_stack.push(root);
+                root = root->right;
+            }
+
+            // unwind stack, visiting left side of each unwound node 
+            if(!tree_stack.empty())
+            {
+                root = tree_stack.top();
+                tree_stack.pop();
+                traversal.push_back(root->val);
+                root = root->left;
+            }
+        }while(!tree_stack.empty() || (root != nullptr));
+    }
 
 }
 
-void tree_postorder_iter(const TreeNode* root, std::vector<int>& traversal)
+/*
+ * tree_postorder_iter()
+ */
+void tree_postorder_iter(TreeNode* root, std::vector<int>& traversal)
 {
+    std::stack <TreeNode*> tree_stack;
 
+    if(root != nullptr)
+    {
+        do
+        {
+            // stack up left sides of tree
+            while(root != nullptr)
+            {
+                tree_stack.push(root);
+                root = root->left;
+            }
+
+            // stack up right sides of tree, then add current node value
+            if(!tree_stack.empty())
+            {
+                root = tree_stack.top();
+                tree_stack.pop();
+                root = root->right;
+            }
+
+        }while(!tree_stack.empty() || (root != nullptr));
+    }
 }
 
 
