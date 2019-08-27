@@ -7,7 +7,7 @@ OBJ_DIR=obj
 SRC_DIR=src
 TEST_DIR=test
 TEST_BIN_DIR=$(BIN_DIR)/test
-TOOL_DIR=tools
+PROGRAM_DIR=programs
 
 # Tool options
 CXX=g++
@@ -28,7 +28,7 @@ HEADERS = $(wildcard $(SRC_DIR)/*.hpp)
 # Unit tests 
 TEST_SOURCES  = $(wildcard $(TEST_DIR)/*.cpp)
 # Tools (program entry points)
-TOOL_SOURCES = $(wildcard $(TOOL_DIR)/*.cpp)
+PROGRAM_SOURCES = $(wildcard $(PROGRAM_DIR)/*.cpp)
 
 .PHONY: clean
 
@@ -54,12 +54,23 @@ $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 		-o $(TEST_BIN_DIR)/$@ $(LIBS) $(TEST_LIBS)
 
 
+# ==== PROGRAM TARGETS ==== #
+PROGRAMS = tree_traverser
+PROGRAM_OBJECTS := $(PROGRAM_SOURCES:$(PROGRAM_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+
+$(PROGRAM_OBJECTS): $(OBJ_DIR)/%.o : $(PROGRAM_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@
+
+$(PROGRAMS): $(OBJECTS) $(PROGRAM_OBJECTS)
+	$(CXX) $(LDFLAGS) $(OBJECTS) $(OBJ_DIR)/$@.o \
+		$(INCS) -o $(BIN_DIR)/$@ $(LIBS)
+
 # Main targets 
-all : test 
+all : test programs
 
 test : $(OBJECTS) $(TESTS)
 
-tools : $(TOOLS)
+programs : $(PROGRAMS)
 
 assem : $(ASSEM_OBJECTS)
 
