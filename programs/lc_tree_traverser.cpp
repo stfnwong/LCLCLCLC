@@ -34,7 +34,10 @@ int main(int argc, char *argv[])
     }
 
     std::cout << "Performing LC style in-order traversal" << std::endl;
-    lc_tree_inorder(tree, traversal);
+
+    LCTraverser traverser;
+
+    traversal = traverser.inorder(tree);
     std::cout << "traversal contains " << traversal.size() << " nodes" << std::endl;
     std::cout << "[";
     for(unsigned int i = 0; i < traversal.size(); ++i)

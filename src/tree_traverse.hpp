@@ -12,19 +12,34 @@
 
 
 // Recursive methods
-void tree_preorder(const treenode* root, std::vector<int>& traversal);
-void tree_inorder(const treenode* root, std::vector<int>& traversal);
-void tree_outorder(const treenode* root, std::vector<int>& traversal);
+void tree_preorder(const TreeNode* root, std::vector<int>& traversal);
+void tree_inorder(const TreeNode* root, std::vector<int>& traversal);
+void tree_outorder(const TreeNode* root, std::vector<int>& traversal);
 void tree_postorder(const TreeNode* root, std::vector<int>& traversal);
 
-// Recursive methods (LC style) - these do all sorts of vector shenanigans
-/*
-std::vector<int> lc_tree_preorder(const treenode* root);  
-std::vector<int> lc_tree_inorder(const treenode* root); 
-std::vector<int> lc_tree_outorder(const treenode* root);
-std::vector<int> lc_tree_postorder(const TreeNode* root);
-*/
-
 // Iterative methods
+
+
+
+// ====== LC Style methods ===== /
+struct LCTraverser
+{
+    std::vector<int> traversal;
+
+    private:
+        // disable fancy constructors
+        LCTraverser(const LCTraverser& that) = delete;
+        LCTraverser(const LCTraverser&& that) = delete;
+
+    public:
+        LCTraverser();
+        void init(void);
+        // traversals
+        std::vector<int> preorder(const TreeNode* root);
+        std::vector<int> inorder(const TreeNode* root);
+        std::vector<int> outorder(const TreeNode* root);
+        std::vector<int> postorder(const TreeNode* root);
+};
+
 
 #endif /*__LC_TREE_TRAVERSE*/

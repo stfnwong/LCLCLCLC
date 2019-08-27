@@ -97,67 +97,66 @@ void tree_postorder(const TreeNode* root, std::vector<int>& traversal)
 }
 
 
+// ---- iterative versions ---- //
 
-// LC style traversal - this is where each node creates and/or concatenates
-// a vector of ints to create the traversal
 
-/*
- * lc_tree_preorder()
- */
-//std::vector<int> lc_tree_preorder(const TreeNode* root)
-//{
-//    if(root == nullptr)
-//        return;
-//
-//    traversal.push_back(root->val);
-//    if(root->left != nullptr)
-//        tree_preorder(root->left, traversal);
-//    if(root->right != nullptr)
-//        tree_preorder(root->right, traversal);
-//}
-//
-//
-///*
-// * lc_tree_inorder()
-// */
-//std::vector<int> lc_tree_inorder(const TreeNode* root)
-//{
-//    if(root == nullptr)
-//        return;
-//
-//    if(root->left != nullptr)
-//        tree_inorder(root->left, traversal);
-//    traversal.push_back(root->val);
-//    if(root->right != nullptr)
-//        tree_inorder(root->right, traversal);
-//}
-//
-///*
-// * lc_tree_outorder()
-// */
-//std::vector<int> lc_tree_outorder(const TreeNode* root)
-//{
-//    if(root == nullptr)
-//        return;
-//
-//    if(root->right != nullptr)
-//        tree_outorder(root->right, traversal);
-//    traversal.push_back(root->val);
-//    if(root->left != nullptr)
-//        tree_outorder(root->left, traversal);
-//}
-//
-///*
-// * lc_tree_postorder()
-// */
-//std::vector<int> lc_tree_postorder(const TreeNode* root)
-//{
-//    if(root == nullptr)
-//        return;
-//    
-//    if(root->left != nullptr)
-//        tree_postorder(root->left, traversal);
-//    if(root->right != nullptr)
-//        tree_postorder(root->right, traversal);
-//    traversal.push_back(root->val);
-//}
+
+
+
+
+
+
+// ---- LC-Style version---- //
+LCTraverser::LCTraverser() {} 
+
+
+void LCTraverser::init(void)
+{
+    this->traversal.clear();
+}
+
+std::vector<int> LCTraverser::preorder(const TreeNode* root)
+{
+    if(root != nullptr)
+    {
+        this->traversal.push_back(root->val);
+        if(root->left != nullptr)
+            this->preorder(root->left);
+        if(root->right != nullptr)
+            this->preorder(root->right);
+    }
+
+    return this->traversal;
+}
+
+std::vector<int> LCTraverser::inorder(const TreeNode* root)
+{
+    if(root != nullptr)
+    {
+        if(root->left != nullptr)
+            this->inorder(root->left);
+        this->traversal.push_back(root->val);
+        if(root->right != nullptr)
+            this->inorder(root->right);
+    }
+
+    return this->traversal;
+}
+
+
+std::vector<int> LCTraverser::postorder(const TreeNode* root)
+{
+    if(root != nullptr)
+    {
+        if(root->left != nullptr)
+            this->postorder(root->left);
+        if(root->right != nullptr)
+            this->postorder(root->right);
+        this->traversal.push_back(root->val);
+    }
+
+    return this->traversal;
+}
+
+
+

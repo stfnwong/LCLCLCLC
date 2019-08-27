@@ -55,7 +55,7 @@ $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 
 
 # ==== PROGRAM TARGETS ==== #
-PROGRAMS = tree_traverser
+PROGRAMS = tree_traverser lc_tree_traverser
 PROGRAM_OBJECTS := $(PROGRAM_SOURCES:$(PROGRAM_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 $(PROGRAM_OBJECTS): $(OBJ_DIR)/%.o : $(PROGRAM_DIR)/%.cpp
