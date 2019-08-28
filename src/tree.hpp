@@ -11,6 +11,9 @@
 #include <string>
 #include <vector>
 
+/*
+ * TreeNode structure
+ */
 struct TreeNode
 {
     int val;

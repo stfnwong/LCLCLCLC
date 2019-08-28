@@ -76,6 +76,11 @@ void tree_postorder(const TreeNode* root, std::vector<int>& traversal)
 
 /*
  * tree_preorder_iter()
+ * A more general way to state the algorithm here would be to say 
+ * - Get a stack. This stack will hold nodes to be processed
+ * - To process a node, visit the node, push its right child onto the stack,
+ *   then process the left child.
+ * - If there is no left child, get another node from the stack
  */
 void tree_preorder_iter(TreeNode* root, std::vector<int>& traversal)
 {
@@ -106,6 +111,10 @@ void tree_preorder_iter(TreeNode* root, std::vector<int>& traversal)
 
 /*
  * tree_inorder_iter()
+ * - Get a stack. This stack holds nodes to be visited.
+ * - Each time we pop a node from the stack, visit it and then 
+ *   process the right child.
+ * - When a node is processed, put it on the stack and then process its left child
  */
 void tree_inorder_iter(TreeNode* root, std::vector<int>& traversal)
 {
@@ -171,6 +180,7 @@ void tree_outorder_iter(TreeNode* root, std::vector<int>& traversal)
  */
 void tree_postorder_iter(TreeNode* root, std::vector<int>& traversal)
 {
+    // start with inferior two stack implementation 
     std::stack <TreeNode*> tree_stack;
 
     if(root != nullptr)
