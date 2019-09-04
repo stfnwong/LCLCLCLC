@@ -177,6 +177,13 @@ void tree_outorder_iter(TreeNode* root, std::vector<int>& traversal)
 
 /*
  * tree_postorder_iter()
+ * This case is the hardest. In the previous cases the stack just stores either nodes that
+ * need to be visited, or nodes that need to be processed. In this case the visiting order 
+ * and the processing order are not linked by such a simple pattern, and so the stack needs 
+ * to store both the nodes to visit and the nodes to process (because in DFS, we need to 
+ * process all child nodes before processing the current node).
+ *
+ *
  */
 void tree_postorder_iter(TreeNode* root, std::vector<int>& traversal)
 {

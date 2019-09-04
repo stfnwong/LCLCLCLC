@@ -12,7 +12,7 @@ PROGRAM_DIR=programs
 # Tool options
 CXX=g++
 OPT=-O0
-CXXFLAGS=-Wall -g2 -std=c++14 -D_REENTRANT $(OPT)
+CXXFLAGS=-Wall -g2 -std=c++14 -D_REENTRANT -DLC_DEBUG $(OPT)
 TESTFLAGS=-lgtest -lgtest_main
 LDFLAGS=
 LIBS = 

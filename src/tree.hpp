@@ -22,6 +22,7 @@ struct TreeNode
     
     public:
         TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        // TODO: implement proper dtor (post-order traverse + delete):w
 };
 
 /*

@@ -56,26 +56,33 @@ TreeNode* build_tree(const std::vector<std::string>& token_vec)
     for(unsigned int n = 1; n < token_vec.size(); ++n)
     {
         TreeNode* node = nullptr;
+        // TODO : this might not be handling null left-pointers correctly...
+        // A better implementation would be to check how many tokens there are, 
+        // and perhaps even pad the string automatically (so that omitted trailing
+        // tokens are explicitly turned into <null>)
         if(token_vec[n] != "null")
         {
             node_val = std::stoi(token_vec[n]);
             node = new TreeNode(node_val);
             node_q.push(node);
+            std::cout << "[" << __func__ << "] added node (" << node->val << ")" << std::endl;
+        }
 
-            // assign the left node 
-            if(check_left)
-            {
-                cur_node = node_q.front();
-                node_q.pop();
-                cur_node->left = node;
-                check_left = false;
-            }
-            // assign the right node 
-            else
-            {
-                cur_node->right = node;
-                check_left = true;
-            }
+        // assign the left node 
+        if(check_left)
+        {
+            cur_node = node_q.front();
+            std::cout << "[" << __func__ << "] assigning left node (" << cur_node->val << ")" << std::endl;
+            node_q.pop();
+            cur_node->left = node;
+            check_left = false;
+        }
+        // assign the right node 
+        else
+        {
+            std::cout << "[" << __func__ << "] assigning right node (" << cur_node->val << ")" << std::endl;
+            cur_node->right = node;
+            check_left = true;
         }
     }
 

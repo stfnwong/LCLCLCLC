@@ -37,6 +37,9 @@ void print_traversal(const std::vector<int>& traversal)
 
 // ======== RECURSIVE SOLUTIONS ======== //
 
+/*
+ * PRE-ORDER
+ */
 TEST_F(TestTraverseTree, test_preorder_traversal)
 {
     // Tree 1
@@ -67,9 +70,26 @@ TEST_F(TestTraverseTree, test_preorder_traversal)
     ASSERT_EQ(expected_traversal2.size(), traversal2.size());
     for(unsigned int i = 0; i < traversal2.size(); ++i)
         ASSERT_EQ(expected_traversal2[i], traversal2[i]);
+
+    // Tree 3
+    std::vector<int> traversal3;
+    std::vector<int> expected_traversal3 = {1,2,4,5,3};
+    TreeNode* tree3 = nullptr;
+
+    tree3 = repr_to_tree(this->repr3);
+    ASSERT_NE(nullptr, tree3);
+    tree_preorder(tree3, traversal3);
+    print_traversal(traversal3);
+
+    ASSERT_EQ(expected_traversal3.size(), traversal3.size());
+    for(unsigned int i = 0; i < traversal3.size(); ++i)
+        ASSERT_EQ(expected_traversal3[i], traversal3[i]);
 }
 
 
+/*
+ * IN-ORDER
+ */
 TEST_F(TestTraverseTree, test_inorder_traversal)
 {
     // Tree 1
@@ -100,9 +120,26 @@ TEST_F(TestTraverseTree, test_inorder_traversal)
     ASSERT_EQ(expected_traversal2.size(), traversal2.size());
     for(unsigned int i = 0; i < traversal2.size(); ++i)
         ASSERT_EQ(expected_traversal2[i], traversal2[i]);
+
+    // Tree 3
+    std::vector<int> traversal3;
+    std::vector<int> expected_traversal3 = {2,1,4,3,5};
+    TreeNode* tree3 = nullptr;
+
+    tree3 = repr_to_tree(this->repr3);
+    ASSERT_NE(nullptr, tree3);
+    tree_inorder(tree3, traversal3);
+    print_traversal(traversal3);
+
+    ASSERT_EQ(expected_traversal3.size(), traversal3.size());
+    for(unsigned int i = 0; i < traversal3.size(); ++i)
+        ASSERT_EQ(expected_traversal3[i], traversal3[i]);
 }
 
 
+/*
+ * OUT-ORDER
+ */
 TEST_F(TestTraverseTree, test_outorder_traversal)
 {
     // Tree 1
@@ -133,9 +170,26 @@ TEST_F(TestTraverseTree, test_outorder_traversal)
     ASSERT_EQ(expected_traversal2.size(), traversal2.size());
     for(unsigned int i = 0; i < traversal2.size(); ++i)
         ASSERT_EQ(expected_traversal2[i], traversal2[i]);
+
+    // Tree 3
+    std::vector<int> traversal3;
+    std::vector<int> expected_traversal3 = {5,3,4,1,2};
+    TreeNode* tree3 = nullptr;
+
+    tree3 = repr_to_tree(this->repr3);
+    ASSERT_NE(nullptr, tree3);
+    tree_outorder(tree3, traversal3);
+    print_traversal(traversal3);
+
+    ASSERT_EQ(expected_traversal3.size(), traversal3.size());
+    for(unsigned int i = 0; i < traversal3.size(); ++i)
+        ASSERT_EQ(expected_traversal3[i], traversal3[i]);
 }
 
 
+/*
+ * POST-ORDER
+ */
 TEST_F(TestTraverseTree, test_postorder_traversal)
 {
     // Tree 1
@@ -166,6 +220,20 @@ TEST_F(TestTraverseTree, test_postorder_traversal)
     ASSERT_EQ(expected_traversal2.size(), traversal2.size());
     for(unsigned int i = 0; i < traversal2.size(); ++i)
         ASSERT_EQ(expected_traversal2[i], traversal2[i]);
+
+    // Tree 3
+    std::vector<int> traversal3;
+    std::vector<int> expected_traversal3 = {2,4,5,3,1};
+    TreeNode* tree3 = nullptr;
+
+    tree3 = repr_to_tree(this->repr3);
+    ASSERT_NE(nullptr, tree3);
+    tree_postorder(tree3, traversal3);
+    print_traversal(traversal3);
+
+    ASSERT_EQ(expected_traversal3.size(), traversal3.size());
+    for(unsigned int i = 0; i < traversal3.size(); ++i)
+        ASSERT_EQ(expected_traversal3[i], traversal3[i]);
 }
 
 // ======== ITERATIVE SOLUTIONS ======== //
