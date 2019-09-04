@@ -5,8 +5,6 @@
  * Stefan Wong 2019
  */
 
-#ifndef __TREE_HPP
-#define __TREE_HPP
 
 #include <iostream>
 #include <sstream>
@@ -16,7 +14,7 @@
 #include <vector>
 
 #include "tree.hpp"
-
+#include "log.hpp"
 
 
 /*
@@ -67,14 +65,14 @@ TreeNode* create_tree(const std::vector<std::string>& token_vec)
             node_val = std::stoi(token_vec[n]);
             node = new TreeNode(node_val);
             node_q.push(node);
-            std::cout << "[" << __func__ << "] added node (" << node->val << ")" << std::endl;
+            lc_log("Added Node (" + std::to_string(node->val) + ")");
         }
 
         // assign the left node 
         if(check_left)
         {
             cur_node = node_q.front();
-            std::cout << "[" << __func__ << "] assigning left node (" << cur_node->val << ")" << std::endl;
+            lc_log("Assigning left node (" + std::to_string(cur_node->val) + ")");
             node_q.pop();
             cur_node->left = node;
             check_left = false;
@@ -82,7 +80,7 @@ TreeNode* create_tree(const std::vector<std::string>& token_vec)
         // assign the right node 
         else
         {
-            std::cout << "[" << __func__ << "] assigning right node (" << cur_node->val << ")" << std::endl;
+            lc_log("Assigning right node (" + std::to_string(cur_node->val) + ")");
             cur_node->right = node;
             check_left = true;
         }
@@ -141,26 +139,21 @@ std::string tree_to_repr(TreeNode* root)
                 tree_str_vec.push_back("null");
 
             // debug - remove
-            std::cout << "[" << __func__ << "]";
-            if(cur_node->left != nullptr)
-                std::cout << "left has node" << std::endl;
-            else
-                std::cout << "left is null" << std::endl;
-            std::cout << "[" << __func__ << "]";
-            if(cur_node->right != nullptr)
-                std::cout << "right has node" << std::endl;
-            else
-                std::cout << "right is null" << std::endl;
+            //std::cout << "[" << __func__ << "]";
+            //if(cur_node->left != nullptr)
+            //    std::cout << "left has node" << std::endl;
+            //else
+            //    std::cout << "left is null" << std::endl;
+            //std::cout << "[" << __func__ << "]";
+            //if(cur_node->right != nullptr)
+            //    std::cout << "right has node" << std::endl;
+            //else
+            //    std::cout << "right is null" << std::endl;
 
             // Only add a comma if there is at least one 
             // non-null node on this level
         }
     }
-
-    // FIXME : debug (remove)
-    for(unsigned int n = 0; n < tree_str_vec.size(); ++n)
-        std::cout << "[" << __func__ << "] " << tree_str_vec[n] << std::endl;
-
 
     std::string tree_output = "[";
     for(unsigned int n = 0; n < tree_str_vec.size(); ++n)
@@ -185,8 +178,7 @@ TreeNode* repr_to_tree(const std::string& repr)
     std::stringstream ss(repr);
     std::vector<std::string> token_vec;
 
-    // DEBUG ONLY
-    std::cout << "[" << __func__ << "] repr : " << repr << std::endl;
+    lc_log(repr);
     
     // first char should be a '['
     if(repr[0] != '[')
@@ -524,4 +516,3 @@ std::vector<int> ObjTraverser::postorder(const TreeNode* root)
 
 
 
-#endif /*__TREE_HPP*/

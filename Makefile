@@ -6,6 +6,7 @@ BIN_DIR=bin
 OBJ_DIR=obj
 SRC_DIR=src
 TEST_DIR=test
+ASM_DIR=asm
 TEST_BIN_DIR=$(BIN_DIR)/test
 PROGRAM_DIR=programs
 
@@ -30,7 +31,6 @@ TEST_SOURCES  = $(wildcard $(TEST_DIR)/*.cpp)
 # Tools (program entry points)
 PROGRAM_SOURCES = $(wildcard $(PROGRAM_DIR)/*.cpp)
 
-.PHONY: clean
 
 # Objects
 OBJECTS := $(SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
@@ -39,7 +39,7 @@ $(OBJECTS): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp  $(HEADERS)
 
 # Objects, but output as assembly
 $(ASSEM_OBJECTS): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -S $< -o $(OBJ_DIR)/$@.asm -masm=$(ASM_STYLE)
+	$(CC) $(CFLAGS) -S $< -o $(ASM_DIR)/$@.asm -masm=$(ASM_STYLE)
 
 
 # Unit tests 
@@ -66,6 +66,10 @@ $(PROGRAMS): $(OBJECTS) $(PROGRAM_OBJECTS)
 		$(INCS) -o $(BIN_DIR)/$@ $(LIBS)
 
 # Main targets 
+#
+.PHONY: clean
+
+
 all : test programs
 
 test : $(OBJECTS) $(TESTS)

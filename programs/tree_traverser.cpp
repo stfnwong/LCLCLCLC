@@ -15,7 +15,6 @@
 #include <getopt.h>
 // Modules
 #include "tree.hpp"
-#include "tree_traverse.hpp"
 
 
 int main(int argc, char *argv[])
@@ -89,6 +88,8 @@ int main(int argc, char *argv[])
     for(unsigned int i = 0; i < traversal.size(); ++i)
         std::cout << traversal[i] << " ";
     std::cout << "]" << std::endl << std::endl;
+
+    destroy_tree(tree);
 
     return 0;
 }

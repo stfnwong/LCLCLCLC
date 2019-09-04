@@ -83,6 +83,10 @@ TEST_F(TestTraverseTree, test_preorder_traversal)
     ASSERT_EQ(expected_traversal3.size(), traversal3.size());
     for(unsigned int i = 0; i < traversal3.size(); ++i)
         ASSERT_EQ(expected_traversal3[i], traversal3[i]);
+
+    destroy_tree(tree1);
+    destroy_tree(tree2);
+    destroy_tree(tree3);
 }
 
 
@@ -183,6 +187,10 @@ TEST_F(TestTraverseTree, test_outorder_traversal)
     ASSERT_EQ(expected_traversal3.size(), traversal3.size());
     for(unsigned int i = 0; i < traversal3.size(); ++i)
         ASSERT_EQ(expected_traversal3[i], traversal3[i]);
+
+    destroy_tree(tree1);
+    destroy_tree(tree2);
+    destroy_tree(tree3);
 }
 
 
@@ -233,6 +241,10 @@ TEST_F(TestTraverseTree, test_postorder_traversal)
     ASSERT_EQ(expected_traversal3.size(), traversal3.size());
     for(unsigned int i = 0; i < traversal3.size(); ++i)
         ASSERT_EQ(expected_traversal3[i], traversal3[i]);
+
+    destroy_tree(tree1);
+    destroy_tree(tree2);
+    destroy_tree(tree3);
 }
 
 // ======== ITERATIVE SOLUTIONS ======== //
@@ -266,6 +278,10 @@ TEST_F(TestTraverseTree, test_preorder_traversal_iter)
     ASSERT_EQ(expected_traversal2.size(), traversal2.size());
     for(unsigned int i = 0; i < traversal2.size(); ++i)
         ASSERT_EQ(expected_traversal2[i], traversal2[i]);
+
+    destroy_tree(tree1);
+    destroy_tree(tree2);
+    //destroy_tree(tree3);
 }
 
 TEST_F(TestTraverseTree, test_inorder_traversal_iter)
@@ -298,6 +314,10 @@ TEST_F(TestTraverseTree, test_inorder_traversal_iter)
     ASSERT_EQ(expected_traversal2.size(), traversal2.size());
     for(unsigned int i = 0; i < traversal2.size(); ++i)
         ASSERT_EQ(expected_traversal2[i], traversal2[i]);
+
+    destroy_tree(tree1);
+    destroy_tree(tree2);
+    //destroy_tree(tree3);
 }
 
 

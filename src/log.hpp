@@ -10,7 +10,7 @@
 #ifdef LC_DEBUG 
 
 #define lc_log(x) do { \
-    {std::cerr << "[" << __func__ << "] : " << __LINE__ << " " << x << std::endl; }\
+    {std::cerr << "[" << __func__ << ":" << __LINE__ << "] " << x << std::endl; }\
 } while (0)
 
 #else
