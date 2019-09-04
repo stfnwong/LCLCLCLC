@@ -1,9 +1,9 @@
 /* 
- * LC_TREE_TRAVERSER
+ * OBJ_TREE_TRAVERSER
  * Program that traverses a simple tree. 
  * This program does the traversal in the style used by the leetcode
  * question (where each node produces a vector of ints that needs to 
- * be concatenated together)
+ * be concatenated together) - Now renamed ObjTraverser.
  *
  * Stefan Wong 2019
  */
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
     std::cout << "Performing LC style in-order traversal" << std::endl;
 
-    LCTraverser traverser;
+    ObjTraverser traverser;
 
     traversal = traverser.inorder(tree);
     std::cout << "traversal contains " << traversal.size() << " nodes" << std::endl;

@@ -42,4 +42,42 @@ std::string tree_to_repr(TreeNode* root);
 TreeNode* repr_to_tree(const std::string& repr);
 
 
+
+// ======== TRAVERSAL METHODS ======== //
+// Recursive methods
+void tree_preorder(const TreeNode* root, std::vector<int>& traversal);
+void tree_inorder(const TreeNode* root, std::vector<int>& traversal);
+void tree_outorder(const TreeNode* root, std::vector<int>& traversal);
+void tree_postorder(const TreeNode* root, std::vector<int>& traversal);
+
+// Iterative methods
+void tree_preorder_iter(TreeNode* root, std::vector<int>& traversal);
+void tree_inorder_iter(TreeNode* root, std::vector<int>& traversal);
+void tree_outorder_iter(TreeNode* root, std::vector<int>& traversal);
+void tree_postorder_iter(TreeNode* root, std::vector<int>& traversal);
+
+
+/*
+ * Traversal object
+ */
+struct ObjTraverser
+{
+    std::vector<int> traversal;
+
+    private:
+        // disable fancy constructors
+        ObjTraverser(const ObjTraverser& that) = delete;
+        ObjTraverser(const ObjTraverser&& that) = delete;
+
+    public:
+        ObjTraverser();
+        void init(void);
+        // traversals
+        std::vector<int> preorder(const TreeNode* root);
+        std::vector<int> inorder(const TreeNode* root);
+        std::vector<int> outorder(const TreeNode* root);
+        std::vector<int> postorder(const TreeNode* root);
+};
+
+
 #endif /*__LC_TREE_HPP*/

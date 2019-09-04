@@ -17,9 +17,9 @@ class TestTree : public ::testing::Test
 
     public:
         std::string empty_repr = "[]";
-        std::string repr1 = "[1,2,3]";
-        std::string repr2 = "[1,null,2,3]";
-        std::string repr3 = "[1,null,2,3,null,4,null]";
+        std::string repr1      = "[1,2,3]";
+        std::string repr2      = "[1,null,2,3]";
+        std::string repr3      = "[1,null,2,3,null,4,null]";
 
         int tree1_size = 3;
         int tree2_size = 3;

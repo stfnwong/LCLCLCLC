@@ -9,7 +9,6 @@
 #include <gtest/gtest.h>
 // NOTE: maybe put these together?
 #include "tree.hpp"
-#include "tree_traverse.hpp"
 
 class TestTraverseTree : public ::testing::Test
 {
