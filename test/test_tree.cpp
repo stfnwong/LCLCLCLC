@@ -31,16 +31,25 @@ TEST_F(TestTree, test_repr_to_tree)
 {
     TreeNode* repr1_tree;
     TreeNode* repr2_tree;
+    TreeNode* repr3_tree;
     TreeNode* empty_tree;
 
     repr1_tree = repr_to_tree(this->repr1);
     ASSERT_NE(nullptr, repr1_tree);
     repr2_tree = repr_to_tree(this->repr2);
     ASSERT_NE(nullptr, repr2_tree);
+    repr3_tree = repr_to_tree(this->repr3);
+    ASSERT_NE(nullptr, repr3_tree);
     empty_tree = repr_to_tree(this->empty_repr);
     ASSERT_EQ(nullptr, empty_tree);
     
     // How to test the actual content of the trees...?
+
+    // clean up
+    destroy_tree(repr1_tree);
+    destroy_tree(repr2_tree);
+    destroy_tree(repr3_tree);
+    destroy_tree(empty_tree);
 }
 
 
@@ -85,6 +94,11 @@ TEST_F(TestTree, test_tree_to_repr)
     std::cout << "Input repr was  : " << this->repr3 << std::endl;
     std::cout << "Output repr was : " << tree_to_repr3 << std::endl; 
     ASSERT_EQ(this->repr2, tree_to_repr2);
+
+    destroy_tree(repr1_tree);
+    destroy_tree(repr2_tree);
+    destroy_tree(repr3_tree);
+    destroy_tree(empty_repr_tree);
 }
 
 
@@ -114,6 +128,11 @@ TEST_F(TestTree, test_tree_size)
 
     empty_tree = repr_to_tree(this->empty_repr);
     ASSERT_EQ(0, tree_size(empty_tree));
+
+    destroy_tree(tree1);
+    destroy_tree(tree2);
+    destroy_tree(tree3);
+    destroy_tree(empty_tree);
 }
 
 

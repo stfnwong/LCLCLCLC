@@ -17,6 +17,7 @@
 #include "tree.hpp"
 
 
+
 /*
  * tree_size()
  */
@@ -36,9 +37,9 @@ int tree_size(const TreeNode* root)
 
 
 /*
- * build_tree()
+ * create_tree()
  */
-TreeNode* build_tree(const std::vector<std::string>& token_vec)
+TreeNode* create_tree(const std::vector<std::string>& token_vec)
 {
     TreeNode* root = nullptr;
 
@@ -87,6 +88,20 @@ TreeNode* build_tree(const std::vector<std::string>& token_vec)
     }
 
     return root;
+}
+
+/*
+ * destroy_tree()
+ */
+void destroy_tree(TreeNode* tree)
+{
+    if(tree == nullptr)
+        return;
+    if(tree->left != nullptr)
+        destroy_tree(tree->left);
+    if(tree->right != nullptr)
+        destroy_tree(tree->right);
+    delete tree;
 }
 
 
@@ -159,7 +174,7 @@ std::string tree_to_repr(TreeNode* root)
 }
 
 
-// Effectively this is a build_tree() sort of function
+// Effectively this is a create_tree() sort of function
 /*
  * repr_to_tree()
  */
@@ -222,8 +237,8 @@ TreeNode* repr_to_tree(const std::string& repr)
     // [-1, null, 9]
     //
 
-    //return build_tree(token_vec);
-    tree = build_tree(token_vec);
+    //return create_tree(token_vec);
+    tree = create_tree(token_vec);
     return tree;
 }
 

@@ -19,10 +19,9 @@ struct TreeNode
     int val;
     TreeNode* left;
     TreeNode* right;
-    
+
     public:
         TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-        // TODO: implement proper dtor (post-order traverse + delete):w
 };
 
 /*
@@ -33,7 +32,8 @@ int tree_size(const TreeNode* root);
 
 // NOTE: see https://support.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation- for details about how this representation works.
 
-TreeNode* build_tree(const std::vector<std::string>& token_repr);
+TreeNode* create_tree(const std::vector<std::string>& token_repr);
+void      destroy_tree(TreeNode* tree);
 
 // Convert a string like [1, 2, 3] into a Tree
 std::string tree_to_repr(TreeNode* root);
