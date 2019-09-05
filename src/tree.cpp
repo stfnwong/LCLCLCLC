@@ -124,7 +124,6 @@ std::string tree_to_repr(TreeNode* root)
         {
             cur_node = node_q.front();
             node_q.pop();
-            //oss << unsigned(cur_node->val);
             tree_str_vec.push_back(std::to_string(unsigned(cur_node->val)));
             
             // check subtrees
@@ -134,24 +133,9 @@ std::string tree_to_repr(TreeNode* root)
             if(cur_node->right != nullptr)
                 node_q.push(cur_node->right);
 
-            // work out how many strings we need to make for this level
+            // NOTE: the logic here is not quite correct...
             if(cur_node->left == nullptr && (cur_node->right != nullptr))
                 tree_str_vec.push_back("null");
-
-            // debug - remove
-            //std::cout << "[" << __func__ << "]";
-            //if(cur_node->left != nullptr)
-            //    std::cout << "left has node" << std::endl;
-            //else
-            //    std::cout << "left is null" << std::endl;
-            //std::cout << "[" << __func__ << "]";
-            //if(cur_node->right != nullptr)
-            //    std::cout << "right has node" << std::endl;
-            //else
-            //    std::cout << "right is null" << std::endl;
-
-            // Only add a comma if there is at least one 
-            // non-null node on this level
         }
     }
 
@@ -299,6 +283,29 @@ void tree_postorder(const TreeNode* root, std::vector<int>& traversal)
     if(root->right != nullptr)
         tree_postorder(root->right, traversal);
     traversal.push_back(root->val);
+}
+
+
+/*
+ * tree_levelorder()
+ * This is a crap implementation
+ */
+void tree_levelorder(const TreeNode* root, std::vector<int>& traversal)
+{
+    std::queue <const TreeNode*> tree_queue;
+
+    tree_queue.push(root);
+
+    while(!tree_queue.empty())
+    {
+        const TreeNode* cur_node = tree_queue.front();
+        tree_queue.pop();
+        traversal.push_back(cur_node->val);
+        if(cur_node->left != nullptr)
+            tree_queue.push(cur_node->left);
+        if(cur_node->right != nullptr)
+            tree_queue.push(cur_node->right);
+    }
 }
 
 
