@@ -198,9 +198,6 @@ TreeNode* repr_to_tree(const std::string& repr)
         token_vec.push_back(substr);
     }
 
-    for(unsigned int i = 0; i < token_vec.size(); ++i)
-        std::cout << i << ": " << token_vec[i] << std::endl;
-
     // Since we know this is binary tree, and we also know that the repr is given in level order,
     // we can therefore deduce that each level in the tree should have twice as many entries as 
     // the previous level (unless there was null, eg in the case of 
@@ -214,7 +211,6 @@ TreeNode* repr_to_tree(const std::string& repr)
     // [-1, null, 9]
     //
 
-    //return create_tree(token_vec);
     tree = create_tree(token_vec);
     return tree;
 }
@@ -284,7 +280,6 @@ void tree_postorder(const TreeNode* root, std::vector<int>& traversal)
         tree_postorder(root->right, traversal);
     traversal.push_back(root->val);
 }
-
 
 /*
  * tree_levelorder()
