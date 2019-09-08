@@ -151,25 +151,17 @@ std::string tree_to_repr(TreeNode* root)
     return tree_output;
 }
 
-
-// Effectively this is a create_tree() sort of function
-/*
- * repr_to_tree()
- */
-TreeNode* repr_to_tree(const std::string& repr)
+std::vector<std::string> repr_to_token_vec(const std::string& repr)
 {
-    TreeNode* tree = nullptr;
     std::stringstream ss(repr);
     std::vector<std::string> token_vec;
 
-    lc_log(repr);
-    
     // first char should be a '['
     if(repr[0] != '[')
     {
         std::cerr << "[" << __func__ << "] repr must be in the form [a,...,n] (missing '[')"
             << std::endl;
-        return tree;
+        return token_vec;
     }
 
     // Check here for [], which is a valid empty tree
@@ -178,7 +170,7 @@ TreeNode* repr_to_tree(const std::string& repr)
         if((repr[0] != '[') && (repr[1] != ']'))
             std::cerr << "[" << __func__ << "] invalid tree repr (" << repr << ")" << std::endl;
 
-        return tree;
+        return token_vec;
     }
 
     // Tokenize whatever else we have 
@@ -198,6 +190,22 @@ TreeNode* repr_to_tree(const std::string& repr)
         token_vec.push_back(substr);
     }
 
+	return token_vec;
+}
+
+
+// Effectively this is a create_tree() sort of function
+/*
+ * repr_to_tree()
+ */
+TreeNode* repr_to_tree(const std::string& repr)
+{
+    TreeNode* tree = nullptr;
+    std::stringstream ss(repr);
+    std::vector<std::string> token_vec;
+
+    lc_log(repr);
+    
     // Since we know this is binary tree, and we also know that the repr is given in level order,
     // we can therefore deduce that each level in the tree should have twice as many entries as 
     // the previous level (unless there was null, eg in the case of 
@@ -210,9 +218,14 @@ TreeNode* repr_to_tree(const std::string& repr)
     // [3, null, 2, null]
     // [-1, null, 9]
     //
-
-    tree = create_tree(token_vec);
-    return tree;
+	token_vec = repr_to_token_vec(repr);
+	if(token_vec.size() > 0)
+	{
+	    tree = create_tree(token_vec);
+	    return tree;
+	}
+	else
+	    return nullptr;
 }
 
 
