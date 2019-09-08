@@ -379,9 +379,9 @@ void tree_inorder_iter(TreeNode* root, std::vector<int>& traversal)
 /*
  * tree_outorder_iter()
  */
-void tree_outorder_iter(TreeNode* root, std::vector<int>& traversal)
+void tree_outorder_iter(const TreeNode* root, std::vector<int>& traversal)
 {
-    std::stack <TreeNode*> tree_stack;
+    std::stack <const TreeNode*> tree_stack;
 
     if(root != nullptr)
     {
@@ -417,10 +417,10 @@ void tree_outorder_iter(TreeNode* root, std::vector<int>& traversal)
  *
  *
  */
-void tree_postorder_iter(TreeNode* root, std::vector<int>& traversal)
+void tree_postorder_iter(const TreeNode* root, std::vector<int>& traversal)
 {
     // start with inferior two stack implementation 
-    std::stack <TreeNode*> tree_stack;
+    std::stack <const TreeNode*> tree_stack;
 
     if(root != nullptr)
     {
