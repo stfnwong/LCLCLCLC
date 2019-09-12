@@ -1,7 +1,7 @@
 # LCLCLCLC
 Leetcode. 
 
-![A photo of me as I contribute to this repository](docs/images/lclclclc.jpg)
+![A photo of me as I contribute to this repository](docs/images/lclclclc.jpeg)
 
 ## About
 Leetcode. Its a veritable way of life. The measure by which a man's worth is judged. What is lifes purpose, if not to excel at Leetcode?
