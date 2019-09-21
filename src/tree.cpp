@@ -317,6 +317,33 @@ void tree_levelorder(const TreeNode* root, std::vector<int>& traversal)
 }
 
 
+// ---- Recursive solutions with stacks ---- //
+void tree_preorder_stack(const TreeNode* root, std::vector<int>& traversal)
+{
+    std::stack <const TreeNode*> tree_stack;
+
+    tree_stack.push(root);
+
+    while(!tree_stack.empty())
+    {
+        const TreeNode* current;
+        current = tree_stack.top();
+        tree_stack.pop();
+        
+        if(current != nullptr)
+        {
+            // Push unvisited nodes to stack. We push right then left here
+            // to ensure that the traversal is symmetric.
+            tree_stack.push(current->right);
+            tree_stack.push(current->left);
+
+            traversal.push_back(current->val);
+        }
+    }
+}
+
+
+
 // ---- iterative versions ---- //
 
 /*
