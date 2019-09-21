@@ -23,7 +23,7 @@ struct CacheNode
 	CacheNode* prev;
 
 	public:
-		CacheNode(int k, int v) : key(k), val(v), next(nullptr), prev(nullptr) {} 
+		CacheNode(int k, int v) : key(k), value(v), next(nullptr), prev(nullptr) {} 
 		std::string toString(void) const;
 };
 

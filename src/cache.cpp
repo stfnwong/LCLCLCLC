@@ -5,7 +5,7 @@
  * Stefan Wong 2019
  */
 
-#include <sstring>
+#include <sstream>
 #include "cache.hpp"
 
 
@@ -13,7 +13,7 @@ std::string CacheNode::toString(void) const
 {
 	std::ostringstream oss;
 
-	oss << "[" << this->key << "] : " << this->val << std::endl;
+	oss << "[" << this->key << "] : " << this->value << std::endl;
 	return oss.str();
 }
 
@@ -44,7 +44,7 @@ CacheNode* LRUCache::get(int key)
 {
 	auto search = this->hashmap.find(key);
 	if(search == this->hashmap.end())
-		return -1;
+        return nullptr;         // TODO : double check this...
 
 	CacheNode* node = search->second;
 }
