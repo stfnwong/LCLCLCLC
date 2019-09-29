@@ -151,6 +151,10 @@ std::string tree_to_repr(TreeNode* root)
     return tree_output;
 }
 
+
+/*
+ * repr_to_token_vec()
+ */
 std::vector<std::string> repr_to_token_vec(const std::string& repr)
 {
     std::stringstream ss(repr);
