@@ -13,6 +13,17 @@
 #include "tree.hpp"
 
 
+//template <typename T> struct TTreeNode
+//{
+//    T val
+//    TTreeNode* left;
+//    TTreeNode* right;
+//
+//    public:
+//        TTreeNode(T x) : val(x), left(nullptr), right(nullptr) {} 
+//};
+
+
 
 /*
  * create_threaded_tree()
@@ -20,6 +31,10 @@
  */
 TreeNode* create_threaded_tree(const std::vector<std::string>& token_vec);
 
+/*
+ * repr_to_threaded_tree()
+ * Transform a repr string into a Threaded Tree
+ */
 TreeNode* repr_to_threaded_tree(const std::string& repr);
 
 
