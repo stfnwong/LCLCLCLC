@@ -19,6 +19,8 @@ class TestGraph(unittest.TestCase):
 
         # Make an adjacency list
         adj_list = [[1,2], [0,2], [2,0]]
+        g = graph.Graph(adj_list)
+        self.assertEqual(3, len(g))
 
 
 if __name__ == '__main__':
