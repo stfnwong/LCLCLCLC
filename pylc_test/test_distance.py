@@ -51,6 +51,7 @@ class TestOccurenceDistance(unittest.TestCase):
         self.verbose = True
 
     def test_int_occurence_dist_brute(self):
+        print('Testing double-array implementation')
         dist_1, idx_1 = distance.int_occurence_dist_brute(self.test_array, 1, verbose=self.verbose)
         dist_2, idx_2 = distance.int_occurence_dist_brute(self.test_array, 2, verbose=self.verbose)
         dist_4, idx_4 = distance.int_occurence_dist_brute(self.test_array, 4, verbose=self.verbose)
@@ -63,6 +64,23 @@ class TestOccurenceDistance(unittest.TestCase):
         self.assertEqual(self.expected_dist_2, dist_2)
         self.assertEqual(self.expected_dist_4, dist_4)
 
+        print('OK')
+
+    def test_int_occurence_dist_hash(self):
+        print('Testing hash implementation')
+        dist_1, idx_1 = distance.int_occurence_dist_hash(self.test_array, 1, verbose=self.verbose)
+        dist_2, idx_2 = distance.int_occurence_dist_hash(self.test_array, 2, verbose=self.verbose)
+        dist_4, idx_4 = distance.int_occurence_dist_hash(self.test_array, 4, verbose=self.verbose)
+
+        print('Found max_dist for value 1 as :', dist_1, ' at indicies ', idx_1)
+        print('Found max_dist for value 2 as :', dist_2, ' at indicies ', idx_2)
+        print('Found max_dist for value 4 as :', dist_4, ' at indicies ', idx_4)
+
+        self.assertEqual(self.expected_dist_1, dist_1)
+        self.assertEqual(self.expected_dist_2, dist_2)
+        self.assertEqual(self.expected_dist_4, dist_4)
+
+        print('OK')
 
 if __name__ == '__main__':
     unittest.main()

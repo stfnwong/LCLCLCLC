@@ -7,6 +7,9 @@ Stefan Wong 2019
 
 from typing import List
 
+# debug
+#from pudb import set_trace; set_trace()
+
 # =============================================================
 # PAIR DISTANCE
 # =============================================================
@@ -81,4 +84,31 @@ def int_occurence_dist_brute(array:List[int], target_elem:int, verbose:bool=Fals
                     max_dist = dist
                     dist_idx = (i, j)
 
+                    if verbose:
+                        print('Found new max distance for value %d at %s' % (target_elem, dist_idx))
+
     return (max_dist, dist_idx)
+
+
+def int_occurence_dist_hash(array:List[int], target_elem:int, verbose:bool=False) -> tuple:
+    max_dist = 0
+    dist_map = dict()
+    dist_idx = None
+
+    for n, elem in enumerate(array):
+        if elem == target_elem:
+            if target_elem not in dist_map:
+                dist_map[target_elem] = n
+            else:
+                dist = n - dist_map[target_elem]
+                if dist > max_dist:
+                    max_dist = dist
+                    dist_idx = (dist_map[target_elem], n)
+
+                    if verbose:
+                        print('Found new max distance for value %d at %s' % (target_elem, dist_idx))
+
+    return (max_dist, dist_idx)
+
+
+
