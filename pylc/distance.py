@@ -15,13 +15,16 @@ def int_min_pair_brute(array:List[int], verbose:bool=False) -> tuple:
 
     for i, ei in enumerate(array):
         for j, ej in enumerate(array):
-            diff = ej - ei
+            # NOTE: in the original question we are subject to the constraint
+            # that A[i] <= A[j]
+            diff = j - i
             if (diff > cur_max) and (ei <= ej):
                 cur_max = diff
                 idx = (i, j)
                 pair = (ei, ej)
 
     return (cur_max, idx, pair)
+
 
 # Furthest distance in list of integers
 def int_array_dist(array:List[int], verbose:bool=False) -> list:
