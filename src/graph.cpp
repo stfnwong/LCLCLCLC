@@ -24,7 +24,7 @@ Node::Node(int val, std::vector<Node*> nbors)
  */
 Node* repr_to_graph(const std::string& repr)
 {
-    Node* graph root;
+    Node* graph_root;
 
     return graph_root;
 }
@@ -34,7 +34,7 @@ Node* repr_to_graph(const std::string& repr)
  */
 Node* createGraph(const std::string& repr)
 {
-    Node* graph root;
+    Node* graph_root;
 
     // do the various basic sanity checks 
     if(repr.length() < 1)
