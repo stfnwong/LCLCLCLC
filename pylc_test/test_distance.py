@@ -39,8 +39,6 @@ class TestPairDistance(unittest.TestCase):
     #    self.assertEqual(self.expected_pair, pair)
 
 
-
-
 class TestOccurenceDistance(unittest.TestCase):
 
     def setUp(self):
@@ -50,11 +48,14 @@ class TestOccurenceDistance(unittest.TestCase):
         self.expected_dist_4 = 5
         self.verbose = True
 
-    def test_int_occurence_dist_brute(self):
+    def test_timing_compare(self):
+        pass
+
+    def test_int_occurrence_dist_brute(self):
         print('Testing double-array implementation')
-        dist_1, idx_1 = distance.int_occurence_dist_brute(self.test_array, 1, verbose=self.verbose)
-        dist_2, idx_2 = distance.int_occurence_dist_brute(self.test_array, 2, verbose=self.verbose)
-        dist_4, idx_4 = distance.int_occurence_dist_brute(self.test_array, 4, verbose=self.verbose)
+        dist_1, idx_1 = distance.int_occurrence_dist_brute(self.test_array, 1, verbose=self.verbose)
+        dist_2, idx_2 = distance.int_occurrence_dist_brute(self.test_array, 2, verbose=self.verbose)
+        dist_4, idx_4 = distance.int_occurrence_dist_brute(self.test_array, 4, verbose=self.verbose)
 
         print('Found max_dist for value 1 as :', dist_1, ' at indicies ', idx_1)
         print('Found max_dist for value 2 as :', dist_2, ' at indicies ', idx_2)
@@ -66,11 +67,11 @@ class TestOccurenceDistance(unittest.TestCase):
 
         print('OK')
 
-    def test_int_occurence_dist_hash(self):
+    def test_int_occurrence_dist_hash(self):
         print('Testing hash implementation')
-        dist_1, idx_1 = distance.int_occurence_dist_hash(self.test_array, 1, verbose=self.verbose)
-        dist_2, idx_2 = distance.int_occurence_dist_hash(self.test_array, 2, verbose=self.verbose)
-        dist_4, idx_4 = distance.int_occurence_dist_hash(self.test_array, 4, verbose=self.verbose)
+        dist_1, idx_1 = distance.int_occurrence_dist_hash(self.test_array, 1, verbose=self.verbose)
+        dist_2, idx_2 = distance.int_occurrence_dist_hash(self.test_array, 2, verbose=self.verbose)
+        dist_4, idx_4 = distance.int_occurrence_dist_hash(self.test_array, 4, verbose=self.verbose)
 
         print('Found max_dist for value 1 as :', dist_1, ' at indicies ', idx_1)
         print('Found max_dist for value 2 as :', dist_2, ' at indicies ', idx_2)

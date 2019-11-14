@@ -72,7 +72,7 @@ def int_array_dist(array:List[int], verbose:bool=False) -> list:
 # OCCURENCE DISTANCE
 # =============================================================
 
-def int_occurence_dist_brute(array:List[int], target_elem:int, verbose:bool=False) -> tuple:
+def int_occurrence_dist_brute(array:List[int], target_elem:int, verbose:bool=False) -> tuple:
     max_dist = 0
     dist_idx = None
 
@@ -90,7 +90,7 @@ def int_occurence_dist_brute(array:List[int], target_elem:int, verbose:bool=Fals
     return (max_dist, dist_idx)
 
 
-def int_occurence_dist_hash(array:List[int], target_elem:int, verbose:bool=False) -> tuple:
+def int_occurrence_dist_hash(array:List[int], target_elem:int, verbose:bool=False) -> tuple:
     max_dist = 0
     dist_map = dict()
     dist_idx = None
