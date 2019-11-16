@@ -20,9 +20,6 @@ class TestGraph : public ::testing::Test
         std::string repr2      = "[1,null,2,3]";
         std::string repr3      = "[1,null,2,3,null,4,null]";
 
-        int tree1_size = 3;
-        int tree2_size = 3;
-        int tree3_size = 4;
 };
 
 
@@ -34,6 +31,33 @@ TEST_F(TestGraph, test_clone)
 
     // Need to make a src_graph to test with.
 }
+
+
+class TestAdj : public ::testing::Test
+{
+    virtual void SetUp() {}
+    virtual void TearDown() {}
+
+    public:
+        unsigned int test_v = 8;
+
+};
+
+TEST_F(TestAdj, test_adj_matrix_init)
+{
+    AdjMatrix test_matrix(this->test_v);
+    
+    ASSERT_EQ(this->test_v, test_matrix.get_dim());     // TODO: come up with a real test
+
+}
+
+
+// Test that we can make a new AdjList object
+TEST_F(TestAdj, test_adj_list_init)
+{
+    AdjList test_list;
+}
+
 
 
 int main(int argc, char *argv[])
