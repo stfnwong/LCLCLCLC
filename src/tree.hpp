@@ -32,7 +32,7 @@ int tree_size(const TreeNode* root);
 
 // NOTE: see https://support.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation- for details about how this representation works.
 
-std::vector<std::string> repr_to_token_vec(const std::string& repr);
+std::vector<std::string> tree_repr_to_token_vec(const std::string& repr);
 TreeNode* create_tree(const std::vector<std::string>& token_repr);
 void      destroy_tree(TreeNode* tree);
 

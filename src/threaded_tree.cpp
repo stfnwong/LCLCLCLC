@@ -74,7 +74,7 @@ TreeNode* repr_to_threaded_tree(const std::string& repr)
     std::stringstream ss(repr);
     std::vector<std::string> token_vec;
 
-	token_vec = repr_to_token_vec(repr);
+	token_vec = tree_repr_to_token_vec(repr);
 	if(token_vec.size() > 0)
 	{
 	    tree = create_threaded_tree(token_vec);

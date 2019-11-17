@@ -15,22 +15,30 @@ class TestGraph : public ::testing::Test
     virtual void TearDown() {}
 
     public:
-        std::string empty_repr = "[]";
-        std::string repr1      = "[1,2,3]";
-        std::string repr2      = "[1,null,2,3]";
-        std::string repr3      = "[1,null,2,3,null,4,null]";
-
+        std::string empty_repr = "{}";
+        std::string repr1 = "{0,1,2#1,2#2,2}";
 };
 
-
-TEST_F(TestGraph, test_clone)
+// Test that we can turn a repr string into a graph
+TEST_F(TestGraph, test_graph_repr)
 {
-    Node* src_graph;
-    Node* dst_graph;
+    GraphNode* empty_graph;
+    GraphNode* graph1;
+
+    empty_graph = createGraph(this->empty_repr);    
 
 
-    // Need to make a src_graph to test with.
+    graph1 = createGraph(this->repr1);
 }
+
+//TEST_F(TestGraph, test_clone)
+//{
+//    GraphNode* src_graph;
+//    GraphNode* dst_graph;
+//
+//
+//    // Need to make a src_graph to test with.
+//}
 
 
 class TestAdj : public ::testing::Test
@@ -40,14 +48,27 @@ class TestAdj : public ::testing::Test
 
     public:
         unsigned int test_v = 8;
-
+        std::string repr1 = "{0,1,2#1,2#2,2}";
 };
 
 TEST_F(TestAdj, test_adj_matrix_init)
 {
     AdjMatrix test_matrix(this->test_v);
     
-    ASSERT_EQ(this->test_v, test_matrix.get_dim());     // TODO: come up with a real test
+    ASSERT_EQ(this->test_v, test_matrix.getDim());     // TODO: come up with a real test
+    // Start adding some edges 
+    // TODO : make a repr here that we can parse. The most natural way to do this would be a similar adjacency 
+    // list format, maybe something like [k1, k2, #] for an edge that connectes to nodes k1, k2 (values are omitted).
+
+    std::vector<GraphEdge> edge1 = {GraphEdge(2, 0)};
+    std::vector<GraphEdge> edge2 = {GraphEdge(8, 1), GraphEdge(5, 1), GraphEdge(4, 1), GraphEdge(1, 0)};
+    std::vector<GraphEdge> edge3 = {GraphEdge(4, 0)};
+    std::vector<GraphEdge> edge4 = {GraphEdge(2, 0), GraphEdge(3, 0)};
+    std::vector<GraphEdge> edge5 = {GraphEdge(2, 0), GraphEdge(7, 0), GraphEdge(6, 0), GraphEdge(9, 0)};
+    std::vector<GraphEdge> edge6 = {GraphEdge(5, 0)};
+    std::vector<GraphEdge> edge7 = {GraphEdge(5, 0)};
+    std::vector<GraphEdge> edge8 = {GraphEdge(2, 0)};
+    std::vector<GraphEdge> edge9 = {GraphEdge(5, 0)};
 
 }
 
@@ -55,7 +76,9 @@ TEST_F(TestAdj, test_adj_matrix_init)
 // Test that we can make a new AdjList object
 TEST_F(TestAdj, test_adj_list_init)
 {
-    AdjList test_list;
+    AdjList test_list(this->repr1);
+
+    std::cout << test_list.toString() << std::endl;
 }
 
 

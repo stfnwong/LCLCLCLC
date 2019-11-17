@@ -153,9 +153,9 @@ std::string tree_to_repr(TreeNode* root)
 
 
 /*
- * repr_to_token_vec()
+ * tree_repr_to_token_vec()
  */
-std::vector<std::string> repr_to_token_vec(const std::string& repr)
+std::vector<std::string> tree_repr_to_token_vec(const std::string& repr)
 {
     std::stringstream ss(repr);
     std::vector<std::string> token_vec;
@@ -222,7 +222,7 @@ TreeNode* repr_to_tree(const std::string& repr)
     // [3, null, 2, null]
     // [-1, null, 9]
     //
-	token_vec = repr_to_token_vec(repr);
+	token_vec = tree_repr_to_token_vec(repr);
 	if(token_vec.size() > 0)
 	{
 	    tree = create_tree(token_vec);

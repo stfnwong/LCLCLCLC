@@ -16,26 +16,37 @@
 
 
 // Graph node 
-class Node
+class GraphNode
 {
     public:
         int val;
-        std::vector <Node*> neighbours;
+        std::vector <GraphNode*> neighbours;
 
     public:
-        Node();
-        Node(int val, std::vector<Node*> nbors); 
+        GraphNode();
+        GraphNode(int val, std::vector<GraphNode*> nbors); 
+
+        std::string toString(void) const;
+        // operators 
+        bool operator==(const GraphNode& that) const;
+        bool operator!=(const GraphNode& that) const;
 };
 
 // Create graphs from repr strings
 // NOTE: repr format looks like
 //
+// {a,b,#,b,c#}     
+// where 
+//  - a, b, c are the names (or keys) for various nodes
+//  - # seperates an adjacency list edge for a particular node
 //
-Node* repr_to_graph(const std::string& repr);
-Node* createGraph(const std::string& repr);
+std::vector<std::string> graph_repr_to_token_vec(const std::string& repr);
+GraphNode* repr_to_graph(const std::string& repr);
+std::string graph_to_repr(const GraphNode* graph);
+GraphNode* createGraph(const std::string& repr);
 
 // Methods that work on graph nodes
-Node* cloneGraph(Node* node);
+GraphNode* cloneGraph(GraphNode* node);
 
 
 
@@ -53,7 +64,7 @@ class AdjMatrix
         AdjMatrix(unsigned int v);
         void init(void);
 
-        unsigned int get_dim(void) const;
+        unsigned int getDim(void) const;
         //void add_node(const std::vector<int>& link);
 
         // Operators 
@@ -68,7 +79,22 @@ class AdjMatrix
  * of the nodes in the graph must always be positive. Clearly this isn't going to scale for very large 
  * graphs.
  */
-typedef std::pair<int, int> GraphEdge;
+//typedef std::pair<int, int> GraphEdge;
+struct GraphEdge
+{
+    std::pair<int, int> edge;
+
+    public:
+        GraphEdge();
+        GraphEdge(int key, int val);
+
+        void init(void);
+
+        bool operator==(const GraphEdge& that) const;
+        bool operator!=(const GraphEdge& that) const;
+};
+
+
 
 // Adjacency List 
 // TODO: eventually this would become a template class
@@ -78,11 +104,15 @@ class AdjList
         //std::unordered_map<int, std::vector<GraphEdge>> adj_list;
         std::vector<std::vector<GraphEdge>> adj_list;
 
+
     public:
         AdjList();
+        AdjList(const std::string& repr);
         // TODO: implement later
         //AdjList(const std::vector<GraphEdge>& edges);
-
+        
+        void addEdge(const std::vector<GraphEdge>& edges);
+        std::string toString(void) const;
 };
 
 
