@@ -30,10 +30,10 @@ class TestThreadedTree : public ::testing::Test
 
 TEST_F(TestThreadedTree, test_repr_to_threaded_tree)
 {
-    ThreadedTreeNode* repr1_tree;
-    ThreadedTreeNode* repr2_tree;
-    ThreadedTreeNode* repr3_tree;
-    ThreadedTreeNode* empty_tree;
+    TreeNode* repr1_tree;
+    TreeNode* repr2_tree;
+    TreeNode* repr3_tree;
+    TreeNode* empty_tree;
 
     repr1_tree = repr_to_threaded_tree(this->repr1);
     ASSERT_NE(nullptr, repr1_tree);
@@ -47,10 +47,10 @@ TEST_F(TestThreadedTree, test_repr_to_threaded_tree)
     // How to test the actual content of the trees...?
 
     // clean up
-    destroy_threaded_tree(repr1_tree);
-    destroy_threaded_tree(repr2_tree);
-    destroy_threaded_tree(repr3_tree);
-    destroy_threaded_tree(empty_tree);
+    destroy_tree(repr1_tree);
+    destroy_tree(repr2_tree);
+    destroy_tree(repr3_tree);
+    destroy_tree(empty_tree);
 }
 
 
