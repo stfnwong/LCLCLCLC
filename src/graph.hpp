@@ -20,16 +20,20 @@ class GraphNode
 {
     public:
         int val;
+        int key;
         std::vector <GraphNode*> neighbours;
 
     public:
         GraphNode();
-        GraphNode(int val, std::vector<GraphNode*> nbors); 
+        GraphNode(int val, int key);
+        GraphNode(int val, int key, std::vector<GraphNode*> nbors); 
+
+        void addNeighbour(GraphNode* n);
+        void init(void);
+
+        void setVal(int v);
 
         std::string toString(void) const;
-        // operators 
-        bool operator==(const GraphNode& that) const;
-        bool operator!=(const GraphNode& that) const;
 };
 
 // Create graphs from repr strings
@@ -41,13 +45,14 @@ class GraphNode
 //  - # seperates an adjacency list edge for a particular node
 //
 std::vector<std::string> graph_repr_to_token_vec(const std::string& repr);
-GraphNode* repr_to_graph(const std::string& repr);
 std::string graph_to_repr(const GraphNode* graph);
+GraphNode* repr_to_graph(const std::string& repr);
 GraphNode* createGraph(const std::string& repr);
 
 // Methods that work on graph nodes
 GraphNode* cloneGraph(GraphNode* node);
 
+// ==== Traversals ==== //
 
 
 
@@ -97,7 +102,7 @@ struct GraphEdge
 
 
 // Adjacency List 
-// TODO: eventually this would become a template class
+// NOTE: eventually this would become a template class
 class AdjList
 {
     private:

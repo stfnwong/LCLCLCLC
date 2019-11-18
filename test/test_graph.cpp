@@ -25,10 +25,15 @@ TEST_F(TestGraph, test_graph_repr)
     GraphNode* empty_graph;
     GraphNode* graph1;
 
+    // The empty graph contains nothing
     empty_graph = createGraph(this->empty_repr);    
-
+    ASSERT_EQ(nullptr, empty_graph);
 
     graph1 = createGraph(this->repr1);
+    ASSERT_NE(nullptr, graph1);
+    std::cout << "graph1->key : " << graph1->key << std::endl;
+    std::cout << "graph1->val : " << graph1->val << std::endl;
+    std::cout << "Graph1: " << std::endl  << graph1->toString() << std::endl;
 }
 
 //TEST_F(TestGraph, test_clone)

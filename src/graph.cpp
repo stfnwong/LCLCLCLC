@@ -12,42 +12,50 @@
 
 
 // GraphNode implementation
-GraphNode::GraphNode() {} 
+GraphNode::GraphNode() : val(0), key(0) {}
 
-GraphNode::GraphNode(int val, std::vector<GraphNode*> nbors)
+GraphNode::GraphNode(int val, int key) : val(val), key(key) {} 
+
+GraphNode::GraphNode(int val, int key, std::vector<GraphNode*> nbors)
 {
     this->val = val;
+    this->key = key;
     this->neighbours = nbors;
+}
+
+void GraphNode::addNeighbour(GraphNode* n)
+{
+    this->neighbours.push_back(n);
+}
+
+void GraphNode::init(void)
+{
+    this->key = 0;
+    this->val = 0;
+    this->neighbours.clear();
+}
+
+void GraphNode::setVal(int v)
+{
+    this->val = v;      // obviated somewhat by public access
 }
 
 std::string GraphNode::toString(void) const
 {
     std::ostringstream oss;
 
-
-    return oss.str();
-}
-
-bool GraphNode::operator==(const GraphNode& that) const
-{
-    if(this->val != that.val)
-        return false;
-    if(this->neighbours.size() != that.neighbours.size())
-        return false;
-
-    // NOTE: this could take quite a long time to run...
-    for(unsigned int i = 0; i < this->neighbours.size(); ++i)
+    oss << "GraphNode " << this->key << "[" << this->val 
+        << "]" << std::endl;
+    if(this->neighbours.size() > 0)
     {
-        if(this->neighbours[i] != that.neighbours[i])
-            return false;
+        for(unsigned int n = 0; n < this->neighbours.size(); ++n)
+        {
+            oss << "    -> " << this->neighbours[n]->key 
+                << "[" << this->neighbours[n]->val << "]" << std::endl;
+        }
     }
 
-    return true;
-}
-
-bool GraphNode::operator!=(const GraphNode& that) const
-{
-    return !(*this == that);
+    return oss.str();
 }
 
 
@@ -99,7 +107,7 @@ std::vector<std::string> graph_repr_to_token_vec(const std::string& repr)
  */
 GraphNode* repr_to_graph(const std::string& repr)
 {
-    GraphNode* graph_root;
+    //GraphNode* graph_root;
     std::vector<std::string> token_vec;
    
     token_vec = graph_repr_to_token_vec(repr);
@@ -119,7 +127,52 @@ GraphNode* repr_to_graph(const std::string& repr)
     // to be able to set all the neighbours correctly somehow in order to
     // make the graph....
 
-    return graph_root;
+    // TODO : debug - remove
+    for(unsigned int t = 0; t < token_vec.size(); ++t)
+    {
+        std::cout << "[" << __func__ << "] token_vec[" << t << "] : "
+            << token_vec[t] << std::endl;
+    }
+
+    // This is likely not the most efficient way, but I will do two 
+    // passes here. The first constructs the correct number of nodes and 
+    // places them into a vector. The second pass correctly assigns the 
+    // neighbours, starting from the root node.
+    std::vector<GraphNode*> nodes;   
+
+    // first pass - create enough nodes
+    for(unsigned int v = 0; v < token_vec.size(); ++v)
+    {
+        std::stringstream ss(token_vec[v]);
+        std::string tok_substr;
+        std::getline(ss, tok_substr, ',');
+
+        // default values are 0, keys are whatever was in the repr
+        GraphNode* node = new GraphNode(std::stoi(tok_substr), 0);
+        nodes.push_back(node);
+    }
+
+    // Second pass - assign pointers for neighbours
+    for(unsigned int v = 0; v < token_vec.size(); ++v)
+    {
+        std::stringstream ss(token_vec[v]);
+        int tokn = 0;
+        while(ss.good())
+        {
+            std::string tok_substr;
+            std::getline(ss, tok_substr, ',');
+            // For 'real' use we should try to catch exceptions here...
+            if(tokn > 0)
+            {
+                int node_idx = std::stoi(tok_substr);   // Exception...
+                nodes[v]->addNeighbour(nodes[node_idx]);
+            }
+            tokn++;
+        }
+    }
+
+    //return graph_root;
+    return nodes[0];
 }
 
 std::string graph_to_repr(const GraphNode* graph)
@@ -127,6 +180,7 @@ std::string graph_to_repr(const GraphNode* graph)
     // Iterate over the vector
     std::ostringstream oss;
 
+    // NOTE: We need some traversal methods for this to work...
 
     
     return oss.str();
@@ -258,7 +312,7 @@ bool GraphEdge::operator!=(const GraphEdge& that) const
 
 AdjList::AdjList() 
 {
-    // TODO : what should the init for the adj_list be?
+    // TODO : what should the default init for the adj_list be?
 }
 
 AdjList::AdjList(const std::string& repr)
@@ -272,15 +326,12 @@ AdjList::AdjList(const std::string& repr)
     {
         std::vector<GraphEdge> edges;
         std::stringstream ss(token_vec[v]);
-            std::cout << "[" << __func__ << "] token_vec[" << v << "] " 
-                << "(" << token_vec[v] << ")" << std::endl;
         while(ss.good())
         {
             std::string tok_substr;
             std::getline(ss, tok_substr, ',');
-
-            std::cout << "[" << __func__ << "] " << tok_substr << std::endl;
             edges.push_back(GraphEdge(std::stoi(tok_substr), 0));
+            // For 'real' use we should try to catch exceptions here...
         }
         this->adj_list.push_back(edges);
     }
