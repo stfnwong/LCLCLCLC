@@ -5,6 +5,8 @@
  * Stefan Wong 2019
  */
 
+
+#include <iostream>
 #include "heap.hpp"
 
 
@@ -45,9 +47,16 @@ bool HeapNode::operator!=(const HeapNode& that) const
 
 
 // ============== HEAP ================ //
-Heap::Heap() : nodes(std::array<HeapNode, 100>), size(100) {} 
+Heap::Heap()
+{
+    this->size = 100;
+}
 
-Heap::Heap(const unsigned int max) : nodes(std::array<HeapNode, max>), size(max) {} 
+Heap::Heap(const unsigned int max) 
+{
+    this->size = max;
+}
+    
 
 // ======== Internal balancing functions ======== //
 void Heap::heapify_up(void) 
@@ -62,10 +71,18 @@ void Heap::heapify_down(void)
 
 void Heap::addNode(const HeapNode& node)
 {
-
+    if(this->nodes.size() < this->size)
+    {
+        std::cout << "[" << __func__ << "] this is where nodes are added" << std::endl;
+    }
 }
 
 unsigned int Heap::getSize(void) const
 {
 	return this->nodes.size();
+}
+
+unsigned int Heap::getMax(void) const
+{
+    return this->size;
 }

@@ -6,6 +6,7 @@
 
 
 #include <vector>
+#include <gtest/gtest.h>
 #include "heap.hpp"
 
 class TestHeap : public ::testing::Test
@@ -19,12 +20,11 @@ class TestHeap : public ::testing::Test
 TEST_F(TestHeap, test_heap_init)
 {
 	Heap test_heap_100;
-	ASSERT_EQ(100, test_heap_100.getSize());
+	ASSERT_EQ(100, test_heap_100.getMax());
 
 	Heap test_heap_8(8);
-	ASSERT_EQ(8, test_heap_8.getSize());
+	ASSERT_EQ(8, test_heap_8.getMax());
 }
-
 
 
 

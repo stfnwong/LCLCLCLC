@@ -32,8 +32,7 @@ struct HeapNode
 class Heap
 {
 	private:
-		//std::vector<HeapNode> nodes;
-		std::array <HeapNode, 100> nodes;
+		std::vector<HeapNode> nodes;
 		unsigned int size;
 
 	private:
@@ -48,6 +47,7 @@ class Heap
 
 		// getters 
 		unsigned int getSize(void) const;
+        unsigned int getMax(void) const;
 };
 
 
