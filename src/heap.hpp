@@ -22,27 +22,27 @@ struct HeapNode
 
 		void init(void);
 		bool operator==(const HeapNode& that) const;
-		bool operator!=(const HaapNode& that) const;
+		bool operator!=(const HeapNode& that) const;
 };
 
 
 // Heap implemented with an array
 // Because the internals are an array this heap has a fixed size
+// TODO: a version that is more flexible?
 class Heap
 {
 	private:
 		//std::vector<HeapNode> nodes;
-		std::array <100, HeapNode> nodes;
+		std::array <HeapNode, 100> nodes;
 		unsigned int size;
 
-
 	private:
-		heapify_up();
-		heapify_down();
+		void heapify_up(void);
+		void heapify_down(void);
 
 	public:
 		Heap();
-		Heap(unsigned int max);
+		Heap(const unsigned int max);
 
 		void addNode(const HeapNode& node);
 

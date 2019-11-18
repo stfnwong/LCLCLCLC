@@ -45,10 +45,25 @@ bool HeapNode::operator!=(const HeapNode& that) const
 
 
 // ============== HEAP ================ //
-Heap::Heap() : nodes(std::array<100, HeapNode>), size(100) {} 
+Heap::Heap() : nodes(std::array<HeapNode, 100>), size(100) {} 
 
-Heap::Heap(unsigned int max) : nodes(std::array<max, HeapNode>), size(max) {} 
+Heap::Heap(const unsigned int max) : nodes(std::array<HeapNode, max>), size(max) {} 
 
+// ======== Internal balancing functions ======== //
+void Heap::heapify_up(void) 
+{
+
+}
+
+void Heap::heapify_down(void)
+{
+
+}
+
+void Heap::addNode(const HeapNode& node)
+{
+
+}
 
 unsigned int Heap::getSize(void) const
 {
