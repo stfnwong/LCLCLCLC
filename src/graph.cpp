@@ -6,20 +6,22 @@
  */
 
 #include <iostream>
+#include <queue>
 #include <sstream>
 #include <vector>
 #include "graph.hpp"
 
 
 // GraphNode implementation
-GraphNode::GraphNode() : val(0), key(0) {}
+GraphNode::GraphNode() : key(0), val(0), visited(false) {}
 
-GraphNode::GraphNode(int val, int key) : val(val), key(key) {} 
+GraphNode::GraphNode(int key, int val) : key(key), val(val), visited(false) {} 
 
-GraphNode::GraphNode(int val, int key, std::vector<GraphNode*> nbors)
+GraphNode::GraphNode(int key, int val, std::vector<GraphNode*> nbors)
 {
     this->val = val;
     this->key = key;
+    this->visited = false;
     this->neighbours = nbors;
 }
 
@@ -40,11 +42,21 @@ void GraphNode::setVal(int v)
     this->val = v;      // obviated somewhat by public access
 }
 
+void GraphNode::mark(void)
+{
+    this->visited = true;
+}
+
+void GraphNode::unmark(void)
+{
+    this->visited = false;
+}
+
 std::string GraphNode::toString(void) const
 {
     std::ostringstream oss;
 
-    oss << "GraphNode " << this->key << "[" << this->val 
+    oss << "GraphNode <" << this->key << "> [" << this->val 
         << "]" << std::endl;
     if(this->neighbours.size() > 0)
     {
@@ -107,32 +119,14 @@ std::vector<std::string> graph_repr_to_token_vec(const std::string& repr)
  */
 GraphNode* repr_to_graph(const std::string& repr)
 {
-    //GraphNode* graph_root;
-    std::vector<std::string> token_vec;
-   
-    token_vec = graph_repr_to_token_vec(repr);
-
-    // what is going on in the vector?
-    std::cout << "[" << __func__ << "] token_vec contains " 
-        << token_vec.size() << " tokens" << std::endl;
-    for(unsigned int i = 0; i < token_vec.size(); ++i)
-    {
-        std::cout << "[" << __func__ << "] : " << token_vec[i] << std::endl;
-    }
-    
     // The repr is a string representation of an adjacency list. We 
     // iterate over the list here and create each node in turn. The
     // thing about this is.... how to do it? We have a GraphNode object
     // which contains pointers to its neighbours, and therefore we need
     // to be able to set all the neighbours correctly somehow in order to
     // make the graph....
-
-    // TODO : debug - remove
-    for(unsigned int t = 0; t < token_vec.size(); ++t)
-    {
-        std::cout << "[" << __func__ << "] token_vec[" << t << "] : "
-            << token_vec[t] << std::endl;
-    }
+    std::vector<std::string> token_vec;
+    token_vec = graph_repr_to_token_vec(repr);
 
     // This is likely not the most efficient way, but I will do two 
     // passes here. The first constructs the correct number of nodes and 
@@ -225,14 +219,96 @@ GraphNode* cloneGraph(GraphNode* node)
 }
 
 
+/*
+ * KEY VALUE STRUCT
+ * This is just for printing and whatnot, its really just two ints (and 
+ * could otherwise be implemented as std::pair<int, int>)
+ */
+void GraphKV::init(void)
+{
+    this->key = 0;
+    this->val = 0;
+}
+
+std::string GraphKV::toString(void) const
+{
+    std::ostringstream oss;
+
+    oss << "GraphKV : ";    // put something else...
+    oss << "[" << this->key << "] :" << this->val;
+
+    return oss.str();
+}
+
+bool GraphKV::operator==(const GraphKV& that) const
+{
+    if(this->key != that.key)
+        return false;
+    if(this->val != that.val)
+        return false;
+
+    return true;
+}
+
+bool GraphKV::operator!=(const GraphKV& that) const
+{
+    return !(*this == that);
+}
+
+
+// ======== TRAVERSALS ======== //
+// BFS
+// NoTE: was const, but that doesn't make sense since I am modifying visited inside each object
+void graph_bfs(GraphNode* root, std::vector<GraphKV>& traversal)
+{
+    std::queue<GraphNode*> node_q;
+
+    node_q.push(root);
+
+    // TODO: remove debug printing
+    int num_visited = 0;
+    while(!node_q.empty())
+    {
+        GraphNode* cur_node = node_q.front();
+        cur_node->visited = true;
+        node_q.pop();           // dequeue the node
+        if(node_q.empty())
+            std::cout << "[" << __func__ << "] q is empty" << std::endl;
+        std::cout << "[" << __func__ << "] checking node" << std::endl;
+        std::cout << cur_node->toString() << std::endl;
+
+        // TODO: we need some structure to keep track of which nodes have 
+        // been visited. A simple queue or stack is awkward since we would need to be able to search
+        // in the queue for nodes (eg: has this node been visited? Lets iterated over the queue and see
+        // what's there, and if its there then we have O(N)).
+        for(unsigned int n = 0; n < cur_node->neighbours.size(); ++n)
+        {
+            if(!cur_node->neighbours[n]->visited)
+            {
+                // TODO: debug only, remove 
+                std::cout << "[" << __func__ << "] adding node ["
+                    << n+1 << "/" << cur_node->neighbours.size() 
+                    << "]" << std::endl;
+                node_q.push(cur_node->neighbours[n]);
+            }
+        }
+        num_visited++;
+        traversal.push_back(GraphKV(cur_node->key, cur_node->val));
+        
+        // DEBUG: remove 
+        std::cout << "[" << __func__ << "] num_visited " << num_visited << std::endl;
+    }
+}
+
+// DFS
+void graph_dfs(const GraphNode* root, std::vector<GraphKV>& traversal)
+{
+    std::cout << "[" << __func__ << "] AH HA HA HA HA! No DFS in this commit!" << std::endl;
+}
 
 
 // ======== ADJACENCY MATRIX ======== ///
-AdjMatrix::AdjMatrix(unsigned int v) : dim(v), adj_matrix(v+1, std::vector<int>(v+1, 0))
-{
-    //this->dim = v;
-    //this->adj_matrix = std::vector<std::vector<int>>(this->dim, this->dim);
-}
+AdjMatrix::AdjMatrix(unsigned int v) : dim(v), adj_matrix(v+1, std::vector<int>(v+1, 0)) {} 
 
 void AdjMatrix::init(void)
 {
@@ -342,13 +418,21 @@ AdjList::AdjList(const std::string& repr)
 //    // TODO :
 //}
 
+/*
+ * addEdge()
+ */
 void AdjList::addEdge(const std::vector<GraphEdge>& edges)
 {
     // TODO: we don't check here for any conflict with existing edges..
+    // That would require us to actually traverse the graph though, so 
+    // leave it for now.
     this->adj_list.push_back(edges);
 }
 
 
+/*
+ * toString()
+ */
 std::string AdjList::toString(void) const
 {
     std::ostringstream oss;
@@ -366,3 +450,10 @@ std::string AdjList::toString(void) const
 
     return oss.str();
 }
+
+
+unsigned int AdjList::numVerticies(void) const
+{
+    return this->adj_list.size();
+}
+// TODO : num edges for directed and undirected graphs

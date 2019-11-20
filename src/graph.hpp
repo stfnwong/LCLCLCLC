@@ -19,8 +19,9 @@
 class GraphNode
 {
     public:
-        int val;
         int key;
+        int val;
+        bool visited;
         std::vector <GraphNode*> neighbours;
 
     public:
@@ -32,6 +33,8 @@ class GraphNode
         void init(void);
 
         void setVal(int v);
+        void mark(void);
+        void unmark(void);
 
         std::string toString(void) const;
 };
@@ -52,7 +55,30 @@ GraphNode* createGraph(const std::string& repr);
 // Methods that work on graph nodes
 GraphNode* cloneGraph(GraphNode* node);
 
+
+// Aggregates key/value pairs with printing and whatnot
+// NOTE: another way to do this would be using GraphKV = std::pair<int, int> 
+// or something like that.
+struct GraphKV
+{
+    int key;
+    int val;
+
+    public:
+        GraphKV() : key(0), val(0) {} 
+        GraphKV(int k, int v) : key(k), val(v) {} 
+        
+        // Methods
+        void init(void);
+        std::string toString(void) const;
+        bool operator==(const GraphKV& that) const;
+        bool operator!=(const GraphKV& that) const;
+};
+
+
 // ==== Traversals ==== //
+void graph_bfs(GraphNode* root, std::vector<GraphKV>& traversal);
+void graph_dfs(GraphNode* root, std::vector<GraphKV>& traversal);
 
 
 
@@ -118,6 +144,9 @@ class AdjList
         
         void addEdge(const std::vector<GraphEdge>& edges);
         std::string toString(void) const;
+
+        // getters 
+        unsigned int numVerticies(void) const;
 };
 
 
