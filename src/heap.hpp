@@ -11,6 +11,7 @@
 #include <array>
 #include <vector>
 
+// Single node in a heap
 struct HeapNode
 {
 	int key;
@@ -18,11 +19,18 @@ struct HeapNode
 
 	public:
 		HeapNode();
+        HeapNode(int key);
 		HeapNode(int key, int val);
+        // copy ctor
+        HeapNode(const HeapNode& that);
+        // move ctor
 
 		void init(void);
 		bool operator==(const HeapNode& that) const;
 		bool operator!=(const HeapNode& that) const;
+
+        // Copy assignment?
+        std::string toString(void) const;
 };
 
 
@@ -36,18 +44,23 @@ class Heap
 		unsigned int size;
 
 	private:
-		void heapify_up(void);
-		void heapify_down(void);
+        unsigned int parent(unsigned int n);
+		void heapify_up(unsigned int n);
+		void heapify_down(unsigned int n);
 
 	public:
 		Heap();
 		Heap(const unsigned int max);
 
-		void addNode(const HeapNode& node);
+		void     insertNode(const HeapNode& node);
+        void     deleteNode(unsigned int idx);
+        HeapNode remove(unsigned int idx);
 
 		// getters 
 		unsigned int getSize(void) const;
-        unsigned int getMax(void) const;
+        unsigned int getMaxSize(void) const;
+        // More for debugging than anything...
+        std::vector<HeapNode> getVector(void) const;
 };
 
 
