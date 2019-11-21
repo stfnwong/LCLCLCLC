@@ -43,6 +43,11 @@ TEST_F(TestHeap, test_heap_build)
 
     std::vector<int> node_keys = {16, 8, 15, 9, 20, 17, 15, 11, 7, 3, 10, 5, 2, 1};
     
+    std::cout << "Input vector is {" << node_keys[0];
+    for(unsigned int i = 1; i < node_keys.size(); ++i)
+        std::cout << ", " << node_keys[i];
+    std::cout << "}" << std::endl;
+
     for(unsigned int k = 0; k < node_keys.size(); ++k)
     {
         HeapNode node(node_keys[k], k);
@@ -54,7 +59,7 @@ TEST_F(TestHeap, test_heap_build)
     std::vector<HeapNode> out_nodes = test_heap.getVector();
     std::cout << "==== Iterating over output vector " << std::endl;
     std::cout << "{";
-    for(unsigned int n = 0; n < out_nodes.size(); ++n)
+    for(unsigned int n = 0; n < test_heap.getNumElem(); ++n)
     {
         std::cout << out_nodes[n].toString() << " ";
     }

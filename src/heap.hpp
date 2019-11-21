@@ -41,7 +41,8 @@ class Heap
 {
 	private:
 		std::vector<HeapNode> nodes;
-		unsigned int size;
+		unsigned int max_size;
+        unsigned int num_elem;
 
 	private:
         unsigned int parent(unsigned int n);
@@ -57,7 +58,7 @@ class Heap
         HeapNode remove(unsigned int idx);
 
 		// getters 
-		unsigned int getSize(void) const;
+		unsigned int getNumElem(void) const;
         unsigned int getMaxSize(void) const;
         // More for debugging than anything...
         std::vector<HeapNode> getVector(void) const;

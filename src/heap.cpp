@@ -75,9 +75,9 @@ std::string HeapNode::toString(void) const
 
 
 // ============== HEAP ================ //
-Heap::Heap() : nodes(std::vector<HeapNode>(100)), size(100) {}
+Heap::Heap() : nodes(std::vector<HeapNode>(100)), max_size(100), num_elem(0) {}
 
-Heap::Heap(const unsigned int max) : nodes(std::vector<HeapNode>(max)), size(max) {} 
+Heap::Heap(const unsigned int max) : nodes(std::vector<HeapNode>(max)), max_size(max), num_elem(0) {} 
     
 
 // ======== Internal balancing functions ======== //
@@ -102,7 +102,8 @@ void Heap::heapify_up(unsigned int n)
         unsigned int j = this->parent(n);
         if(this->nodes[n].key < this->nodes[j].key)
         {
-            // TODO : check this...
+            // TODO : This swap is causing an element with a zero key
+            // to appear in the output vector
             std::swap(this->nodes[n], this->nodes[j]);
             this->heapify_up(j);
         }
@@ -115,12 +116,12 @@ void Heap::heapify_up(unsigned int n)
 void Heap::heapify_down(unsigned int n)
 {
     unsigned int j;
-    if((2*n) > this->size)
+    if((2*n) > this->max_size)
     {
         // do nothing
         return;
     }
-    else if((2*n) < this->size)
+    else if((2*n) < this->max_size)
     {
         int left  = 2 * n;
         int right = 2 *n + 1;
@@ -149,14 +150,13 @@ void Heap::heapify_down(unsigned int n)
  */
 void Heap::insertNode(const HeapNode& node)
 {
-    this->nodes[this->size-1] = node;
-    this->heapify_up(this->size-1);
-
-    //if(this->nodes.size() < this->getSize())
-    //{
-    //    this->nodes[this->size-1] = node;
-    //    this->heapify_up(this->size-1);
-    //}
+    if(this->num_elem < this->max_size)
+    {
+        int next_pos = this->num_elem + 1;
+        this->nodes[next_pos] = node;
+        this->heapify_up(next_pos);
+        this->num_elem++;
+    }
 }
 
 /*
@@ -172,15 +172,17 @@ void Heap::deleteNode(unsigned int idx)
  */
 HeapNode Heap::remove(unsigned int idx)
 {
-    return this->nodes[idx];
+    this->num_elem--;
+    return this->nodes[this->num_elem+1];
 }
 
 /*
- * getSize()
+ * getNumElem()
  */
-unsigned int Heap::getSize(void) const
+unsigned int Heap::getNumElem(void) const
 {
-	return this->nodes.size();
+	//return this->nodes.size();
+    return this->num_elem;
 }
 
 /*
@@ -188,7 +190,7 @@ unsigned int Heap::getSize(void) const
  */
 unsigned int Heap::getMaxSize(void) const
 {
-    return this->size;
+    return this->max_size;
 }
 
 
