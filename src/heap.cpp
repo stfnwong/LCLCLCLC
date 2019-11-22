@@ -64,11 +64,31 @@ bool HeapNode::operator!=(const HeapNode& that) const
 	return !(*this == that);
 }
 
+bool HeapNode::operator<(const HeapNode& that) const
+{
+    return (this->key < that.key) ? true : false;
+}
+
+bool HeapNode::operator<=(const HeapNode& that) const
+{
+    return (this->key <= that.key) ? true : false;
+}
+
+bool HeapNode::operator>(const HeapNode& that) const
+{
+    return (this->key > that.key) ? true : false;
+}
+
+bool HeapNode::operator>=(const HeapNode& that) const
+{
+    return (this->key >= that.key) ? true : false;
+}
+
 std::string HeapNode::toString(void) const
 {
     std::ostringstream oss;
 
-    oss << "[" << this->key << "] : " << this->val;
+    oss << "[" << this->key << "]->" << this->val;
 
     return oss.str();
 }
@@ -83,35 +103,38 @@ Heap::Heap(const unsigned int max) : nodes(std::vector<HeapNode>(max)), max_size
 // ======== Internal balancing functions ======== //
 
 /*
- * parent()
- * Find the parent of node n. In this case, the parent is just the 
- * node that is in the other half of the array
- */
-unsigned int Heap::parent(unsigned int n)
-{
-    return (n >> 1);
-}
-
-/*
  * heapify_up()
  */
-void Heap::heapify_up(unsigned int n) 
+void Heap::heapify_up(unsigned int node_idx)
 {
-    if(n > 1)
+    unsigned int p_idx; 
+
+    p_idx = this->parent(node_idx);
+    std::cout << "[" << __func__ << "] parent for node[" 
+        << node_idx << "] is [" << p_idx << "]" << std::endl;
+
+    if(p_idx == 0)
+        return;
+
+    if(this->nodes[node_idx] > this->nodes[p_idx])
     {
-        unsigned int j = this->parent(n);
-        if(this->nodes[n].key < this->nodes[j].key)
-        {
-            // TODO : This swap is causing an element with a zero key
-            // to appear in the output vector
-            std::swap(this->nodes[n], this->nodes[j]);
-            this->heapify_up(j);
-        }
+        //std::cout << "[" << __func__ << "] node[" << 
+        //    node_idx << "] has parent node[" << p_idx <<
+        //    "]" << std::endl;
+
+        //std::cout << "[" << __func__ << "] : " 
+        //    << this->nodes[node_idx].toString() << " is child of " 
+        //    << this->nodes[p_idx].toString() << std::endl;
+
+        std::swap(this->nodes[node_idx], this->nodes[p_idx]);
+        this->heapify_up(p_idx);
     }
 }
 
 /*
  * heapify_down()
+ * TODO: this style sucks, and also I'm pretty sure this implementation
+ * is not correct.
  */
 void Heap::heapify_down(unsigned int n)
 {
@@ -123,8 +146,12 @@ void Heap::heapify_down(unsigned int n)
     }
     else if((2*n) < this->max_size)
     {
-        int left  = 2 * n;
-        int right = 2 *n + 1;
+        unsigned int left  = this->left_child(n);
+        unsigned int right = this->right_child(n);
+
+        std::cout << "[" << __func__ << "] node " << n 
+            << " left child is at " << left << ", right child is at " 
+            << right << std::endl;
 
         if(this->nodes[left].key < this->nodes[right].key)
             j = left;
@@ -148,7 +175,7 @@ void Heap::heapify_down(unsigned int n)
  */
 unsigned int Heap::left_child(unsigned int n)
 {
-    return (2 * n) * 2 - 1;
+    return 2 * (n + 1) - 1;
 }
 
 /*
@@ -156,9 +183,26 @@ unsigned int Heap::left_child(unsigned int n)
  */
 unsigned int Heap::right_child(unsigned int n)
 {
-    return (2 * n) * 2;
+    return 2 * (n + 1);
+    //return (2 * n) + 1;
 }
 
+/*
+ * parent()
+ * Find the parent of node n. In this case, the parent is just the 
+ * node that is in the other half of the array
+ */
+unsigned int Heap::parent(unsigned int n)
+{
+    if(n <= 1)
+        return 0;
+
+    return (unsigned int) (n-1) >> 1;
+    //if((n >> 1) > 1)
+    //    return (n >> 1) - 1;
+
+    //return 0;
+}
 
 /*
  * insertNode()
@@ -168,9 +212,8 @@ void Heap::insertNode(const HeapNode& node)
 {
     if(this->num_elem < this->max_size)
     {
-        int next_pos = this->num_elem + 1;
-        this->nodes[next_pos] = node;
-        this->heapify_up(next_pos);
+        this->nodes[this->num_elem] = node;
+        this->heapify_up(num_elem);
         this->num_elem++;
     }
 }
@@ -185,6 +228,7 @@ void Heap::deleteNode(unsigned int idx)
 
 /*
  * remove()
+ * Should be O(2 * log n)
  */
 HeapNode Heap::remove(unsigned int idx)
 {

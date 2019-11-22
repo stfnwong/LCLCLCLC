@@ -23,11 +23,15 @@ struct HeapNode
 		HeapNode(int key, int val);
         // copy ctor
         HeapNode(const HeapNode& that);
-        // move ctor
+        // move ctor?
 
 		void init(void);
 		bool operator==(const HeapNode& that) const;
 		bool operator!=(const HeapNode& that) const;
+        bool operator<(const HeapNode& that) const;
+        bool operator<=(const HeapNode& that) const;
+        bool operator>(const HeapNode& that) const;
+        bool operator>=(const HeapNode& that) const;
 
         // Copy assignment?
         std::string toString(void) const;
@@ -45,12 +49,12 @@ class Heap
         unsigned int num_elem;
 
 	private:
-        unsigned int parent(unsigned int n);
 		void heapify_up(unsigned int n);
 		void heapify_down(unsigned int n);
-        // find children by index
+        // find associations by index
         unsigned int left_child(unsigned int n);
         unsigned int right_child(unsigned int n);
+        unsigned int parent(unsigned int n);
 
 	public:
 		Heap();

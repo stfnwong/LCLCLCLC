@@ -36,43 +36,53 @@ TEST_F(TestHeap, test_heap_init)
 // Test construction of a new heap
 TEST_F(TestHeap, test_heap_build)
 {
-    Heap test_heap(16);
-
-    ASSERT_EQ(16, test_heap.getMaxSize());
-    ASSERT_EQ(0, test_heap.getNumElem());
 
     // Create a vector that looks how we expect the heap to be after insertion
     std::vector<int> expected_keys = {9, 8, 6, 7, 4, 5, 2, 0, 3, 1};
     // Shuffle the keys and make a new vector to provide to the heap
     std::vector<int> input_keys = {9, 8, 6, 7, 4, 5, 2, 0, 3, 1};
-    auto rng = std::default_random_engine {};
-    std::shuffle(std::begin(input_keys), std::end(input_keys),rng);
+    //auto rng = std::default_random_engine {};
+    //std::shuffle(std::begin(input_keys), std::end(input_keys), rng);
 
-    std::cout << "Shuffled Input keys (length " << input_keys.size() << ") are :" << std::endl;
-    std::cout << "{" << input_keys[0];
-    for(unsigned int k = 1; k < input_keys.size(); ++k)
-    {
-        std::cout << ", " << input_keys[k];
-    }
-    std::cout << "}" << std::endl;
+    //std::cout << "Shuffled Input keys (length " << input_keys.size() << ") are :" << std::endl;
+    //std::cout << "{" << input_keys[0];
+    //for(unsigned int k = 1; k < input_keys.size(); ++k)
+    //{
+    //    std::cout << ", " << input_keys[k];
+    //}
+    //std::cout << "}" << std::endl;
+
+    // Get a new heap
+    Heap test_heap(int(input_keys.size()));
+
+    ASSERT_EQ(input_keys.size(), test_heap.getMaxSize());
+    ASSERT_EQ(0, test_heap.getNumElem());
 
     // Place the keys in the heap
+    HeapNode node;
     for(unsigned int k = 0; k < input_keys.size(); ++k)
     {
-        HeapNode node(input_keys[k], k);
+        node.key = input_keys[k];
+        node.val = k;
+        std::cout << "Inserting node " << node.toString() << std::endl;
         test_heap.insertNode(node);
     }
 
     std::vector<HeapNode> out_nodes = test_heap.getVector();
     // Show the output vector
     ASSERT_EQ(input_keys.size(), test_heap.getNumElem());
-    std::cout << "Internal heap vector : ";
-    std::cout << "{" << out_nodes[0].key;
+    std::cout << "Internal heap vector : " << std::endl;
     for(unsigned int n = 0; n < out_nodes.size(); ++n)
     {
-        std::cout << ", " << out_nodes[n].key;
+        std::cout << out_nodes[n].toString() << " ";
     }
     std::cout << "}" << std::endl;
+
+    // Ensure that the output is in the expected order 
+    for(unsigned int k = 0; k < out_nodes.size(); ++k)
+    {
+        ASSERT_EQ(input_keys[k], out_nodes[k].key);
+    }
 }
 
 
