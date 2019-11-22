@@ -143,6 +143,22 @@ void Heap::heapify_down(unsigned int n)
     }
 }
 
+/*
+ * left_child()
+ */
+unsigned int Heap::left_child(unsigned int n)
+{
+    return (2 * n) * 2 - 1;
+}
+
+/*
+ * right_child()
+ */
+unsigned int Heap::right_child(unsigned int n)
+{
+    return (2 * n) * 2;
+}
+
 
 /*
  * insertNode()
