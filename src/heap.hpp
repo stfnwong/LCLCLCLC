@@ -49,8 +49,8 @@ class Heap
         unsigned int num_elem;
 
 	private:
-		void heapify_up(unsigned int n);
-		void heapify_down(unsigned int n);
+		void         heapify_up(unsigned int n);
+		void         heapify_down(unsigned int n);
         // find associations by index
         unsigned int left_child(unsigned int n);
         unsigned int right_child(unsigned int n);

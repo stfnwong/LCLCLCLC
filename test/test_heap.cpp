@@ -25,8 +25,23 @@ TEST_F(TestHeap, test_heap_init)
 	Heap test_heap_100;
 	ASSERT_EQ(100, test_heap_100.getMaxSize());
 
+    std::vector<HeapNode> out_nodes = test_heap_100.getVector();
+    for(unsigned int n = 0; n < out_nodes.size(); ++n)
+    {
+        ASSERT_EQ(0, out_nodes[n].key);
+        ASSERT_EQ(0, out_nodes[n].val);
+    }
+
 	Heap test_heap_8(8);
 	ASSERT_EQ(8, test_heap_8.getMaxSize());
+    out_nodes = test_heap_8.getVector();
+
+    for(unsigned int n = 0; n < out_nodes.size(); ++n)
+    {
+        ASSERT_EQ(0, out_nodes[n].key);
+        ASSERT_EQ(0, out_nodes[n].val);
+    }
+
     // Obviously this should work for all positive values 
 	Heap test_heap_512(512);
 	ASSERT_EQ(512, test_heap_512.getMaxSize());
@@ -36,21 +51,20 @@ TEST_F(TestHeap, test_heap_init)
 // Test construction of a new heap
 TEST_F(TestHeap, test_heap_build)
 {
-
     // Create a vector that looks how we expect the heap to be after insertion
     std::vector<int> expected_keys = {9, 8, 6, 7, 4, 5, 2, 0, 3, 1};
     // Shuffle the keys and make a new vector to provide to the heap
     std::vector<int> input_keys = {9, 8, 6, 7, 4, 5, 2, 0, 3, 1};
-    //auto rng = std::default_random_engine {};
-    //std::shuffle(std::begin(input_keys), std::end(input_keys), rng);
+    auto rng = std::default_random_engine {};
+    std::shuffle(std::begin(input_keys), std::end(input_keys), rng);
 
-    //std::cout << "Shuffled Input keys (length " << input_keys.size() << ") are :" << std::endl;
-    //std::cout << "{" << input_keys[0];
-    //for(unsigned int k = 1; k < input_keys.size(); ++k)
-    //{
-    //    std::cout << ", " << input_keys[k];
-    //}
-    //std::cout << "}" << std::endl;
+    std::cout << "Shuffled Input keys (length " << input_keys.size() << ") are :" << std::endl;
+    std::cout << "{" << input_keys[0];
+    for(unsigned int k = 1; k < input_keys.size(); ++k)
+    {
+        std::cout << ", " << input_keys[k];
+    }
+    std::cout << "}" << std::endl;
 
     // Get a new heap
     Heap test_heap(int(input_keys.size()));
