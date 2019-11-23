@@ -36,11 +36,11 @@ class HeapNode(object):
 
 
 class Heap(object):
-    def __init__(self, max_size:int=10) -> None:
+    def __init__(self, max_size:int=32) -> None:
         self.max_size:int = max_size
         self.cur_idx:int  = 0
         # Trying a version with a 'pre-allocated' array
-        self.nodes:list   = [0 for x in range(self.max_size)]
+        self.nodes:list   = [HeapNode(0, 0) for _ in range(self.max_size)]
 
     def __repr__(self) -> str:
         return 'Heap'
