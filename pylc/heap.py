@@ -7,7 +7,23 @@ Stefan Wong 2019
 
 from copy import copy
 
+# TODO : a function that checks if an array has the heap property
+def has_heap_property(array:list) -> bool:
+    pass
+
+def heap_left_child(idx:int) -> int:
+    return 2 * (idx + 1) - 1
+
+def heap_right_child(idx:int) -> int:
+    return 2 * (idx + 1)
+
+
+
 class HeapNode(object):
+    """
+    HeapNode
+    A node in a heap
+    """
     def __init__(self, key:int=0, val:int=0) -> None:
         self.key = key
         self.val = val
@@ -71,15 +87,12 @@ class Heap(object):
     # NOTE: for now this is a max heap
     def _bubble_up(self, idx:int) -> None:
         parent_idx = self._parent(idx)
-        if parent_idx == 0:
-            return
+        #if parent_idx == 0:
+        #    return
 
         if self.nodes[parent_idx] < self.nodes[idx]:
             self.nodes[idx], self.nodes[parent_idx] = self.nodes[parent_idx], self.nodes[idx]
             self._bubble_up(parent_idx)
-
-
-
 
 
     def _bubble_down(self, idx:int) -> None:
@@ -92,3 +105,37 @@ class Heap(object):
             self._bubble_up(self.cur_idx)
             self.cur_idx += 1
 
+    def get_array(self) -> list:
+        return self.nodes[0 : self.cur_idx]
+
+
+
+class MaxHeap(Heap):
+    def __init__(self, max_size:int=32) -> None:
+        super(MaxHeap, self).__init__(max_size=max_size)
+
+    def __repr__(self) -> str:
+        return 'MaxHeap'
+
+    # Parents must be greater than children
+    def _bubble_up(self, idx:int) -> None:
+        parent_idx = self._parent(idx)
+        # MaxHeap - parent should be greater
+        if self.nodes[parent_idx] < self.nodes[idx]:
+            self.nodes[idx], self.nodes[parent_idx] = self.nodes[parent_idx], self.nodes[idx]
+            self._bubble_up(parent_idx)
+
+
+class MinHeap(Heap):
+    def __init__(self, max_size:int=32) -> None:
+        super(MinHeap, self).__init__(max_size=max_size)
+
+    def __repr__(self) -> str:
+        return 'MinHeap'
+
+    def _bubble_up(self, idx:int) -> None:
+        parent_idx = self._parent(idx)
+        # Min heap - parent should be lesser
+        if self.nodes[parent_idx] > self.nodes[idx]:
+            self.nodes[idx], self.nodes[parent_idx] = self.nodes[parent_idx], self.nodes[idx]
+            self._bubble_up(parent_idx)

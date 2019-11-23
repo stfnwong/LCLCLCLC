@@ -52,7 +52,7 @@ TEST_F(TestHeap, test_heap_init)
 TEST_F(TestHeap, test_heap_build)
 {
     // Create a vector that looks how we expect the heap to be after insertion
-    std::vector<int> expected_keys = {9, 8, 6, 7, 4, 5, 2, 0, 3, 1};
+    std::vector<int> expected_keys = {10, 8, 6, 7, 4, 5, 2, 0, 3, 1};
     // Shuffle the keys and make a new vector to provide to the heap
     std::vector<int> input_keys = {9, 8, 6, 7, 4, 5, 2, 0, 3, 1};
     auto rng = std::default_random_engine {};
