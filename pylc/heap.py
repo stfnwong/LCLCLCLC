@@ -7,7 +7,7 @@ Stefan Wong 2019
 
 from copy import copy
 # debug
-from pudb import set_trace; set_trace()
+#from pudb import set_trace; set_trace()
 
 
 # Check min heap property
@@ -34,7 +34,6 @@ def has_max_heap_property(array:list, idx:int=0) -> bool:
 
     lval = heap_left_child(idx)
     rval = heap_right_child(idx)
-
     # bounds check on children
     if (lval >= len(array)) or (rval >= len(array)):
         return True
@@ -100,7 +99,6 @@ class HeapNode(object):
             return self.key >= that
 
 
-
 class Heap(object):
     def __init__(self, max_size:int=32) -> None:
         self.max_size:int = max_size
@@ -141,11 +139,9 @@ class Heap(object):
         parent_idx = self._parent(idx)
         #if parent_idx == 0:
         #    return
-
         if self.nodes[parent_idx] < self.nodes[idx]:
             self.nodes[idx], self.nodes[parent_idx] = self.nodes[parent_idx], self.nodes[idx]
             self._bubble_up(parent_idx)
-
 
     def _bubble_down(self, idx:int) -> None:
         pass
@@ -159,7 +155,6 @@ class Heap(object):
 
     def get_array(self) -> list:
         return self.nodes[0 : self.cur_idx]
-
 
 
 class MaxHeap(Heap):

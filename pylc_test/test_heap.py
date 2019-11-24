@@ -13,7 +13,15 @@ import pylc.heap as pylc_heap
 
 #from pudb import set_trace; set_trace()
 
+def print_heap_array(heap_array:list) -> None:
+    print('[', end=' ')
+    for node in heap_array:
+        print('%d,' % (node.key), end=' ')
+    print(']')
 
+
+# Test the functions which determine if an array meets the
+# heap property
 class TestHeapProperty(unittest.TestCase):
     def setUp(self) -> None:
         self.input_keys        = [9, 8, 6, 7, 4, 5, 2, 0, 3, 1]
@@ -26,6 +34,20 @@ class TestHeapProperty(unittest.TestCase):
         print('Input keys are a min heap? : %s' % str(is_heap))
         self.assertEqual(True, is_heap)
 
+        # Now put the keys in an actual heap and ensure that
+        # the result heap also has the expected heap properties
+        test_heap = pylc_heap.MinHeap()
+
+        for n, k in enumerate(self.input_keys):
+            node = pylc_heap.HeapNode(k, n)
+            test_heap.insertNode(node)
+
+        print('Heap internal array : ')
+        heap_array = test_heap.get_array()
+        print_heap_array(heap_array)
+
+        self.assertEqual(True, pylc_heap.has_max_heap_property(heap_array))
+        self.assertEqual(False, pylc_heap.has_min_heap_property(heap_array))
 
     def test_max_heap_property(self) -> None:
         # This of course means that the input keys should not have the max heap
@@ -34,6 +56,23 @@ class TestHeapProperty(unittest.TestCase):
         print('Input keys are a max heap? : %s' % str(is_heap))
         self.assertEqual(False, is_heap)
 
+        # Now put the keys in an actual heap and ensure that
+        # the result heap also has the expected heap properties
+        test_heap = pylc_heap.MaxHeap()
+
+        for n, k in enumerate(self.input_keys):
+            node = pylc_heap.HeapNode(k, n)
+            test_heap.insertNode(node)
+
+        print('Heap internal array : ')
+        heap_array = test_heap.get_array()
+        print_heap_array(heap_array)
+
+        self.assertEqual(True, pylc_heap.has_min_heap_property(heap_array))
+        self.assertEqual(False, pylc_heap.has_max_heap_property(heap_array))
+
+
+# Test the base Heap class
 class TestHeap(unittest.TestCase):
 
     def setUp(self) -> None:
@@ -50,7 +89,6 @@ class TestHeap(unittest.TestCase):
 
         for n in test_heap.nodes:
             self.assertEqual(pylc_heap.HeapNode(0, 0), n)
-
 
 
 # All node keys are less than their children
@@ -72,10 +110,7 @@ class TestMinHeap(unittest.TestCase):
 
         print('Heap internal array : ')
         heap_array = test_heap.get_array()
-        print('[', end=' ')
-        for node in heap_array:
-            print('%d,' % (node.key), end=' ')
-        print(']')
+        print_heap_array(heap_array)
 
         self.assertEqual(len(self.expected_keys), test_heap.cur_idx)
         # Check that this satisfies the heap property
@@ -100,10 +135,7 @@ class TestMinHeap(unittest.TestCase):
 
         print('Heap internal array : ')
         heap_array = test_heap.get_array()
-        print('[', end=' ')
-        for node in heap_array:
-            print('%d,' % (node.key), end=' ')
-        print(']')
+        print_heap_array(heap_array)
 
         self.assertEqual(len(self.expected_keys), test_heap.cur_idx)
         self.assertEqual(True, pylc_heap.has_min_heap_property(test_heap.nodes))
@@ -141,10 +173,7 @@ class TestMinHeap(unittest.TestCase):
 
         print('Heap internal array : ')
         heap_array = test_heap.get_array()
-        print('[', end=' ')
-        for node in heap_array:
-            print('%d,' % (node.key), end=' ')
-        print(']')
+        print_heap_array(heap_array)
 
         self.assertEqual(True, pylc_heap.has_min_heap_property(test_heap.nodes))
         # Test the actual key values
@@ -174,10 +203,7 @@ class TestMaxHeap(unittest.TestCase):
 
         print('Heap internal array : ')
         heap_array = test_heap.get_array()
-        print('[', end=' ')
-        for node in heap_array:
-            print('%d,' % (node.key), end=' ')
-        print(']')
+        print_heap_array(heap_array)
 
         self.assertEqual(len(self.expected_keys), test_heap.cur_idx)
         self.assertEqual(False, pylc_heap.has_min_heap_property(test_heap.get_array()))
@@ -214,10 +240,7 @@ class TestMaxHeap(unittest.TestCase):
 
         print('Heap internal array : ')
         heap_array = test_heap.get_array()
-        print('[', end=' ')
-        for node in heap_array:
-            print('%d,' % (node.key), end=' ')
-        print(']')
+        print_heap_array(heap_array)
 
         # Now do the check
         for n, node in enumerate(test_heap.nodes):
@@ -252,11 +275,10 @@ class TestMaxHeap(unittest.TestCase):
 
         print('Heap internal array : ')
         heap_array = test_heap.get_array()
-        print('[', end=' ')
-        for node in heap_array:
-            print('%d,' % (node.key), end=' ')
-        print(']')
+        print_heap_array(heap_array)
 
+        self.assertEqual(False, pylc_heap.has_min_heap_property(test_heap.get_array()))
+        self.assertEqual(True,  pylc_heap.has_max_heap_property(test_heap.get_array()))
 
 
 if __name__ == '__main__':

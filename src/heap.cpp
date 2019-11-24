@@ -103,106 +103,43 @@ Heap::Heap(const unsigned int max) : nodes(std::vector<HeapNode>(max)), max_size
 // ======== Internal balancing functions ======== //
 
 /*
- * heapify_up()
- */
-void Heap::heapify_up(unsigned int node_idx)
-{
-    unsigned int p_idx; 
-
-    p_idx = this->parent(node_idx);
-    std::cout << "[" << __func__ << "] parent for node[" 
-        << node_idx << "] is [" << p_idx << "]" << std::endl;
-
-    if(p_idx == 0)
-        return;
-
-    if(this->nodes[node_idx] > this->nodes[p_idx])
-    {
-        //std::cout << "[" << __func__ << "] node[" << 
-        //    node_idx << "] has parent node[" << p_idx <<
-        //    "]" << std::endl;
-
-        //std::cout << "[" << __func__ << "] : " 
-        //    << this->nodes[node_idx].toString() << " is child of " 
-        //    << this->nodes[p_idx].toString() << std::endl;
-
-        std::swap(this->nodes[node_idx], this->nodes[p_idx]);
-        this->heapify_up(p_idx);
-    }
-}
-
-/*
  * heapify_down()
  * TODO: this style sucks, and also I'm pretty sure this implementation
  * is not correct.
  */
-void Heap::heapify_down(unsigned int n)
-{
-    unsigned int j;
-    if((2*n) > this->max_size)
-    {
-        // do nothing
-        return;
-    }
-    else if((2*n) < this->max_size)
-    {
-        unsigned int left  = this->left_child(n);
-        unsigned int right = this->right_child(n);
-
-        std::cout << "[" << __func__ << "] node " << n 
-            << " left child is at " << left << ", right child is at " 
-            << right << std::endl;
-
-        if(this->nodes[left].key < this->nodes[right].key)
-            j = left;
-        else
-            j = right;
-    }
-    else        // 2*n == this->size
-    {
-        j = 2 * n;
-    }
-
-    if(this->nodes[j].key < this->nodes[n].key)
-    {
-        std::swap(this->nodes[j], this->nodes[n]);
-        this->heapify_down(j);
-    }
-}
-
-/*
- * left_child()
- */
-unsigned int Heap::left_child(unsigned int n)
-{
-    return 2 * (n + 1) - 1;
-}
-
-/*
- * right_child()
- */
-unsigned int Heap::right_child(unsigned int n)
-{
-    return 2 * (n + 1);
-    //return (2 * n) + 1;
-}
-
-/*
- * parent()
- * Find the parent of node n. In this case, the parent is just the 
- * node that is in the other half of the array
- */
-unsigned int Heap::parent(unsigned int n)
-{
-    if(n <= 1)
-        return 0;
-
-    return (unsigned int) (n-1) >> 1;
-    //if((n >> 1) > 1)
-    //    return (n >> 1) - 1;
-
-    //return 0;
-}
+//void Heap::heapify_down(unsigned int n)
+//{
+//    unsigned int j;
+//    if((2*n) > this->max_size)
+//    {
+//        // do nothing
+//        return;
+//    }
+//    else if((2*n) < this->max_size)
+//    {
+//        unsigned int left  = this->left_child(n);
+//        unsigned int right = this->right_child(n);
+//
+//        std::cout << "[" << __func__ << "] node " << n 
+//            << " left child is at " << left << ", right child is at " 
+//            << right << std::endl;
+//
+//        if(this->nodes[left].key < this->nodes[right].key)
+//            j = left;
+//        else
+//            j = right;
+//    }
+//    else        // 2*n == this->size
+//    {
+//        j = 2 * n;
+//    }
+//
+//    if(this->nodes[j].key < this->nodes[n].key)
+//    {
+//        std::swap(this->nodes[j], this->nodes[n]);
+//        this->heapify_down(j);
+//    }
+//}
 
 /*
  * insertNode()
@@ -253,7 +190,6 @@ unsigned int Heap::getMaxSize(void) const
     return this->max_size;
 }
 
-
 /*
  * getVector()
  */
@@ -261,3 +197,138 @@ std::vector<HeapNode> Heap::getVector(void) const
 {
     return this->nodes;
 }
+
+
+
+// ======== Specializations 
+
+// ==== MinHeap
+MinHeap::MinHeap() : Heap() {} 
+
+MinHeap::MinHeap(const unsigned int max) :  Heap(max) {} 
+
+void MinHeap::heapify_up(unsigned int idx)
+{
+    unsigned int p_idx; 
+
+    p_idx = heap_parent(idx);
+    std::cout << "[" << __func__ << "] parent for node[" 
+        << idx << "] is [" << p_idx << "]" << std::endl;
+
+    if(this->nodes[idx] < this->nodes[p_idx])
+    {
+        std::swap(this->nodes[idx], this->nodes[p_idx]);
+        this->heapify_up(p_idx);
+    }
+}
+
+void MinHeap::heapify_down(unsigned int idx) {} 
+
+
+// ==== MinHeap
+MaxHeap::MaxHeap() : Heap() {} 
+
+MaxHeap::MaxHeap(const unsigned int max) : Heap(max) {} 
+
+void MaxHeap::heapify_up(unsigned int idx)
+{
+    unsigned int p_idx; 
+
+    p_idx = heap_parent(idx);
+    std::cout << "[" << __func__ << "] parent for node[" 
+        << idx << "] is [" << p_idx << "]" << std::endl;
+
+    if(this->nodes[idx] > this->nodes[p_idx])
+    {
+        std::swap(this->nodes[idx], this->nodes[p_idx]);
+        this->heapify_up(p_idx);
+    }
+}
+
+void MaxHeap::heapify_down(unsigned int idx) {} 
+
+
+
+// ============== Heap utilities ================ //
+unsigned int heap_parent(unsigned int idx)
+{
+    if(idx <= 1)
+        return 0;
+
+    //return (unsigned int) (idx-1) >> 1;
+    return (unsigned int) (idx >> 1);
+}
+
+unsigned int heap_left_child_idx(unsigned int idx)
+{
+    return 2 * (idx + 1) - 1;
+}
+
+unsigned int heap_right_child_idx(unsigned int idx)
+{
+    return 2 * (idx + 1);
+}
+
+bool has_min_heap_property(const Heap& heap)
+{
+    return array_has_min_heap_property(heap.getVector(), 0);
+}
+
+bool has_max_heap_property(const Heap& heap)
+{
+    return array_has_max_heap_property(heap.getVector(), 0);
+}
+
+/*
+ * array_has_min_heap_property()
+ */
+bool array_has_min_heap_property(const std::vector<HeapNode>& nodes, unsigned int idx)
+{
+    unsigned int lidx, ridx;
+
+    if(idx >= nodes.size()-1)
+        return true;
+
+    lidx = heap_left_child_idx(idx);
+    ridx = heap_right_child_idx(idx);
+
+    // If we get to the end and we've satisfied the heap property, then
+    // this must be a heap.
+    if((lidx >= nodes.size()-1) || (ridx >= nodes.size()-1)) 
+        return true;
+
+    if((nodes[lidx] < nodes[idx]) && (nodes[ridx] < nodes[idx]))
+    {
+        return array_has_min_heap_property(nodes, idx+1);
+    }
+    else
+        return false;
+}
+
+
+/*
+ * array_has_max_heap_property()
+ */
+bool array_has_max_heap_property(const std::vector<HeapNode>& nodes, unsigned int idx)
+{
+    unsigned int lidx, ridx;
+
+    if(idx >= nodes.size()-1)
+        return true;
+
+    lidx = heap_left_child_idx(idx);
+    ridx = heap_right_child_idx(idx);
+
+    // If we get to the end and we've satisfied the heap property, then
+    // this must be a heap.
+    if((lidx >= nodes.size()-1) || (ridx >= nodes.size()-1)) 
+        return true;
+
+    if((nodes[lidx] > nodes[idx]) && (nodes[ridx] > nodes[idx]))
+    {
+        return array_has_max_heap_property(nodes, idx+1);
+    }
+    else
+        return false;
+}
+
