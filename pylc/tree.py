@@ -5,14 +5,14 @@ Implementations of various tree things
 Stefan Wong 2019
 """
 
-# debug 
+# debug
 from pudb import set_trace; set_trace()
 
 
 class BinaryTreeNode(object):
-    def __init__(self, 
-            val=None, 
-            left:'BinaryTreeNode'=None, 
+    def __init__(self,
+            val=None,
+            left:'BinaryTreeNode'=None,
             right:'BinaryTreeNode'=None) -> None:
         self.left  :'BinaryTreeNode' = left
         self.right :'BinaryTreeNode' = right
@@ -31,14 +31,14 @@ def repr_to_tree(rstring:str) -> BinaryTreeNode:
     root = None
     check_left = True
     for n, token in enumerate(rtokens):
-        # Strip any leading or trailing square brackets 
+        # Strip any leading or trailing square brackets
         if n == 0:
             if token[0] == '[':
                 token = token[1:]
 
-            # If this is the first node, assign here and 
+            # If this is the first node, assign here and
             # then skip to the next iteration
-            # NOTE : for now the values in the tree are ints 
+            # NOTE : for now the values in the tree are ints
             root = BinaryTreeNode(val = int(token))
             continue
 
@@ -54,7 +54,7 @@ def repr_to_tree(rstring:str) -> BinaryTreeNode:
             node = BinaryTreeNode(val = int(token))
             node_q.append(node)
 
-        # Assign the left node 
+        # Assign the left node
         if check_left:
             cur_node = node_q.pop(0)
             cur_node.left = node
@@ -79,32 +79,38 @@ def tree_size(root:BinaryTreeNode) -> int:
         size = size + tree_size(root.left)
     if root.right is not None:
         size = size + tree_size(root.right)
-    
+
     return size
 
 
 #def tree_to_str(root:BinaryTreeNode) -> str:
 #    s = []
-#    
+#
 #    if root is None:
 #        return "[]"
 
 
 
-# ==== traversal methods ==== #
+# ==== recursive traversal methods ==== #
 def inorder(root:BinaryTreeNode, traversal:list) -> list:
     if root is not None:
         inorder(root.left, traversal)
         traversal.append(root.val)
         inorder(root.right, traversal)
 
-        return res
+        return
+        #return res
+
+
+def levelorder(root:BinaryTreeNode, traversal:list) -> list:
+
+    pass
 
 
 # ==== iterative traversal methods ==== #
 def inorder_iter(root:BinaryTreeNode, traversal:list) -> list:
     traversal = []
-    stack = [] 
+    stack = []
 
     while True:
         while root:
@@ -116,6 +122,6 @@ def inorder_iter(root:BinaryTreeNode, traversal:list) -> list:
         traversal.append(node.val)
         root = node.right
 
-    
     return traversal
+
 

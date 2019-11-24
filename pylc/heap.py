@@ -6,11 +6,46 @@ Stefan Wong 2019
 """
 
 from copy import copy
+# debug
+from pudb import set_trace; set_trace()
 
-# TODO : a function that checks if an array has the heap property
-def has_heap_property(array:list) -> bool:
-    pass
 
+# Check min heap property
+def has_min_heap_property(array:list, idx:int=0) -> bool:
+    if idx >= len(array):
+        return True
+
+    lval = heap_left_child(idx)
+    rval = heap_right_child(idx)
+    # bounds check on children
+    if (lval >= len(array)) or (rval >= len(array)):
+        return True
+
+    if(array[lval] <= array[idx]) and (array[rval] <= array[idx]):
+        return has_min_heap_property(array, idx+1)
+    else:
+        return False
+
+
+# Check max heap property
+def has_max_heap_property(array:list, idx:int=0) -> bool:
+    if idx >= len(array):
+        return True
+
+    lval = heap_left_child(idx)
+    rval = heap_right_child(idx)
+
+    # bounds check on children
+    if (lval >= len(array)) or (rval >= len(array)):
+        return True
+
+    if(array[lval] >= array[idx]) and (array[rval] >= array[idx]):
+        return has_max_heap_property(array, idx+1)
+    else:
+        return False
+
+
+# Zero index left and right functions
 def heap_left_child(idx:int) -> int:
     return 2 * (idx + 1) - 1
 
@@ -35,19 +70,34 @@ class HeapNode(object):
         return 'HeapNode [%d]: %d' % (self.key, self.val)
 
     def __eq__(self, that:'HeapNode') -> bool:
-        return (self.key == that.key) and (self.val == that.val)
+        if isinstance(that, HeapNode):
+            return (self.key == that.key) and (self.val == that.val)
+        else:
+            return self.key == that
 
     def __lt__(self, that:'HeapNode') -> bool:
-        return (self.key < that.key)
+        if isinstance(that, HeapNode):
+            return (self.key < that.key)
+        else:
+            return self.key < that
 
-    def __lte__(self, that:'HeapNode') -> bool:
-        return (self.key <= that.key)
+    def __le__(self, that:'HeapNode') -> bool:
+        if isinstance(that, HeapNode):
+            return (self.key <= that.key)
+        else:
+            return self.key <= that
 
     def __gt__(self, that:'HeapNode') -> bool:
-        return (self.key > that.key)
+        if isinstance(that, HeapNode):
+            return (self.key > that.key)
+        else:
+            return self.key > that
 
-    def __gte__(self, that:'HeapNode') -> bool:
-        return (self.key >= that.key)
+    def __ge__(self, that:'HeapNode') -> bool:
+        if isinstance(that, HeapNode):
+            return (self.key >= that.key)
+        else:
+            return self.key >= that
 
 
 
@@ -64,9 +114,11 @@ class Heap(object):
     def __str__(self) -> str:
         return "%s-%d" % (repr(self), self.max_size)
 
+    # NOTE : we need to account for the zero index, hence -1
     def _left_child(self, idx:int) -> int:
         return 2 * (idx + 1) - 1
 
+    # NOTE: similarly here, we account for the zero-indexing
     def _right_child(self, idx:int) -> int:
         return 2 * (idx + 1)
 
