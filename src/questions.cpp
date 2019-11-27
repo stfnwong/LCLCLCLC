@@ -60,7 +60,6 @@ std::vector<std::string> letter_combinations_17(std::string digits)
 void find_letter_combo(
         std::string& digits,
         std::vector<std::string>& output,
-        //std::vector<std::string> mapping,
         std::unordered_map<char, std::string> mapping,
         std::string cur_string,
         int idx)
@@ -72,10 +71,8 @@ void find_letter_combo(
     }
 
     std::string substr = mapping[digits[idx]];
-    std::cout << "[" << __func__ << "] substr : " << substr << std::endl;
     for(unsigned int c = 0; c < substr.size(); ++c)
     {
-        std::cout << "[" << __func__ << " substr[" << c << "] : " << substr << std::endl;
-        //find_letter_combo(digits, output, mapping, std::string(substr[c]), idx+1);
+        find_letter_combo(digits, output, mapping, cur_string + substr[c], idx+1);
     }
 }

@@ -23,10 +23,16 @@ TEST_F(TestQuestions, test_question_17)
     std::vector<std::string> expected_output = {"ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"};
     std::vector<std::string> output;
 
-
+    // Get the outputs
     output = letter_combinations_17(input);
+    std::cout << "Outputs are ;" << std::endl;
+    for(unsigned int i = 0; i < output.size(); ++i)
+        std::cout << output[i] << ", ";
+    std::cout << std::endl;
 
-
+    ASSERT_EQ(expected_output.size(), output.size());
+    for(unsigned int i = 0; i < output.size(); ++i)
+        ASSERT_EQ(expected_output[i], output[i]);
 }
 
 
