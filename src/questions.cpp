@@ -19,20 +19,6 @@ std::vector<std::string> letter_combinations_17(std::string digits)
     if(digits.size() == 0)
         return output;
 
-    // create a mapping of digits
-    //std::vector<std::string> digit_map = {
-    //    "0",
-    //    "1,",
-    //    "abc",
-    //    "def",
-    //    "ghi",
-    //    "jkl",
-    //    "mno",
-    //    "pqrs",
-    //    "tuv",
-    //    "wxyz"
-    //};
-    
     std::unordered_map<char, std::string> digit_map = {
         {'0', "0"},
         {'1', "1"},
@@ -45,13 +31,7 @@ std::vector<std::string> letter_combinations_17(std::string digits)
         {'8', "tuv"},
         {'9', "wxyz"},
     };
-
-
     find_letter_combo(digits, output, digit_map, std::string(""), 0);
-    // Show output
-    std::cout << "[" << __func__ << "] output : " << std::endl;
-    for(unsigned int n = 0; n < output.size(); ++n)
-        std::cout << output[n] << std::endl;
     
     return output;
 }
