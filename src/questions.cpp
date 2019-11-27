@@ -5,9 +5,36 @@
  * Stefan Wong 2019
  */
 
+#include <cstdlib>
 #include <iostream>
 #include "questions.hpp"
 
+/*
+ * Question 1
+ */
+std::vector<int> two_sum(std::vector<int>& nums, int target)
+{
+    std::vector<int> output(2);
+    // why use a map here...
+    std::unordered_map<int, int> diff_map;
+
+    for(unsigned int n = 0; n < nums.size(); ++n)
+    {
+        int diff = target - nums[n];
+        if(diff_map.count(diff) > 0)
+        {
+            std::cout << "[" << __func__ << "] found key " << diff << std::endl;
+            output[0] = diff_map[diff];
+            output[1] = n;
+            return output;
+        }
+
+        // add new differences to map
+        diff_map.insert({nums[n], n});
+    }
+
+    return output;
+}
 
 /*
  * Question 17
@@ -55,4 +82,15 @@ void find_letter_combo(
     {
         find_letter_combo(digits, output, mapping, cur_string + substr[c], idx+1);
     }
+}
+
+
+
+
+/*
+ * Question 18
+ */
+std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target)
+{
+    
 }

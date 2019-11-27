@@ -13,6 +13,10 @@
 #include <unordered_map>
 
 
+// ==== QUESTION 1
+// https://leetcode.com/problems/two-sum/
+std::vector<int> two_sum(std::vector<int>& nums, int target);
+
 // ==== QUESTION 17
 // https://leetcode.com/problems/letter-combinations-of-a-phone-number/
 std::vector<std::string> letter_combinations_17(std::string digits);
@@ -25,5 +29,13 @@ void find_letter_combo(
         std::string cur_string,
         int idx
 );
+
+// ==== QUESTION 18
+// https://leetcode.com/problems/4sum/
+std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target);
+
+
+
+
 
 #endif /*__LC_QUESTIONS_HPP*/
