@@ -21,6 +21,7 @@ TEST_F(TestQuestions, test_question_17)
 {
     std::string input = "23";
     std::vector<std::string> expected_output = {"ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"};
+    std::vector<std::string> output;
 
 
     output = letter_combinations_17(input);
