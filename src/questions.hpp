@@ -17,9 +17,10 @@
 std::vector<std::string> letter_combinations_17(std::string digits);
 
 void find_letter_combo(
-        std::string digits,
-        std::vector<std::string> output,
-        std::vector<std::string> mapping,
+        std::string& digits,
+        std::vector<std::string>& output,
+        //std::vector<std::string> mapping,
+        std::unordered_map<char, std::string> mapping,
         std::string cur_string,
         int idx
 );
