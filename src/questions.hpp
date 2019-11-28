@@ -11,24 +11,31 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include "list.hpp"
 
 
 // ==== QUESTION 1
 // https://leetcode.com/problems/two-sum/
-std::vector<int> two_sum(std::vector<int>& nums, int target);
+std::vector<int> two_sum_map(std::vector<int>& nums, int target);
+std::vector<int> two_sum_pointer(std::vector<int>& nums, int target);
+
+// ==== QUESTION 2
+// https://leetcode.com/problems/add-two-numbers/
+lc_list::ListNode* add_two_numbers(lc_list::ListNode* l1, lc_list::ListNode* l2);
+
+// ==== QUESTION 3
+// https://leetcode.com/problems/longest-substring-without-repeating-characters/
+int length_of_longest_substring(std::string& s);
+
+// ==== QUESTION 14
+std::string longest_common_prefix_horz(std::vector<std::string>& strs);
+std::string longest_common_prefix_vert(std::vector<std::string>& strs);
+std::string longest_common_prefix_div(std::vector<std::string>& strs);
+
 
 // ==== QUESTION 17
 // https://leetcode.com/problems/letter-combinations-of-a-phone-number/
 std::vector<std::string> letter_combinations_17(std::string digits);
-
-void find_letter_combo(
-        std::string& digits,
-        std::vector<std::string>& output,
-        //std::vector<std::string> mapping,
-        std::unordered_map<char, std::string> mapping,
-        std::string cur_string,
-        int idx
-);
 
 // ==== QUESTION 18
 // https://leetcode.com/problems/4sum/

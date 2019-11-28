@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <gtest/gtest.h>
+#include "list.hpp"
 #include "questions.hpp"
 
 class TestQuestions : public ::testing::Test
@@ -25,18 +26,91 @@ TEST_F(TestQuestions, test_question_1)  // two-sum
 
     std::vector<int> two_sum_out;
 
-    two_sum_out = two_sum(inputs, target);
+    two_sum_out = two_sum_map(inputs, target);
 
     std::cout << "{";
     for(unsigned int i = 0; i < two_sum_out.size(); ++i)
         std::cout << two_sum_out[i] << ", ";
     std::cout << "}" << std::endl;
 
+    ASSERT_EQ(expected_output.size(), two_sum_out.size());
     for(unsigned int i = 0; i < two_sum_out.size(); ++i)
         ASSERT_EQ(expected_output[i], two_sum_out[i]);
 
+    // Also try another implementation (two pointers)
+    std::vector<int> two_sum_pointer_out = two_sum_pointer(inputs, target);
+    std::cout << "{";
+    for(unsigned int i = 0; i < two_sum_pointer_out.size(); ++i)
+        std::cout << two_sum_pointer_out[i] << ", ";
+    std::cout << "}" << std::endl;
+
+    ASSERT_EQ(expected_output.size(), two_sum_pointer_out.size());
+    for(unsigned int i = 0; i < two_sum_pointer_out.size(); ++i)
+        ASSERT_EQ(expected_output[i], two_sum_pointer_out[i]);
 }
 
+
+/*
+ * Question 2
+ */
+TEST_F(TestQuestions, test_question_2)  // two-sum
+{
+    std::vector<int> vec1 = {2, 4, 3};
+    std::vector<int> vec2 = {5, 6, 4};
+    lc_list::ListNode* input1 = lc_list::list_from_vector(vec1);
+    lc_list::ListNode* input2 = lc_list::list_from_vector(vec2);
+
+    std::cout << "[" << __func__ << "] created input lists" << std::endl;
+
+    int idx = 0;
+
+    std::cout << "input 1 " << std::endl;
+    lc_list::print_list_node(input1);
+    std::cout << "input 2 " << std::endl;
+    lc_list::print_list_node(input2);
+
+    lc_list::ListNode* output = add_two_numbers(input1, input2);
+    ASSERT_NE(nullptr, output);
+
+    std::vector<int> expected_out_vec = {7, 0, 8};
+    lc_list::ListNode* expected_output = lc_list::list_from_vector(expected_out_vec);
+
+    int out_len = 0;
+    int exp_len = 3;
+    
+    while(output != nullptr || expected_output != nullptr)
+    {
+        ASSERT_NE(nullptr, output);
+        ASSERT_NE(nullptr, expected_output);
+        output = output->next;
+        expected_output = expected_output->next;
+        out_len++;
+    }
+
+    ASSERT_EQ(exp_len, out_len);
+    
+
+    // TODO : memory clean up
+}
+
+
+/*
+ * Question 14
+ */
+TEST_F(TestQuestions, test_question_14)
+{
+    std::vector<std::string> inputs_1 = {"flower", "flow", "flight"};
+    std::string expected_output_1 = "fl";
+
+    std::vector<std::string> inputs_2 = {"dog", "racecar", "car"};
+    std::string expected_output_2 = "";
+
+}
+
+
+/*
+ * Question 17
+ */
 TEST_F(TestQuestions, test_question_17)
 {
     std::string input = "23";
@@ -55,6 +129,9 @@ TEST_F(TestQuestions, test_question_17)
         ASSERT_EQ(expected_output[i], output[i]);
 }
 
+/*
+ * Question 18
+ */
 TEST_F(TestQuestions, test_question_18)
 {
     std::vector<int> input = {1, 0, -1, 0, -2, 2};
