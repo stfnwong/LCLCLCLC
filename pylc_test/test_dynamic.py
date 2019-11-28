@@ -53,12 +53,18 @@ class TestFibonacci(unittest.TestCase):
             self.assertEqual(num, fib_output[n])
 
 
-#class TestHanoi(unittest.TestCase):
-#    def setUp(self) -> None:
-#        pass
-#
-#    def test_towers(self) -> None:
-#        dynamic.tower_of_hanoi()
+class TestHanoi(unittest.TestCase):
+    def setUp(self) -> None:
+        self.num_towers = 3
+        self.num_disks = 4
+
+    def test_towers(self) -> None:
+        print('Computing hanoi with %d towers and %d disks' % (self.num_towers, self.num_disks))
+        towers_out = dynamic.hanoi_simple(self.num_towers, self.num_disks)
+
+        print('Final towers :')
+        for t in towers_out:
+            print(t)
 
 
 

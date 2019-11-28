@@ -15,6 +15,14 @@ class Stack(object):
     def __repr__(self) -> str:
         return 'Stack'
 
+    def __str__(self) -> str:
+        s = []
+        s.append('%s :\n' % repr(self))
+        for n, elem in enumerate(self.array):
+            s.append('   [%s] : %s\n' % (str(n), str(elem)))
+
+        return ''.join(s)
+
     def __len__(self) -> int:
         return len(self.array)
 
