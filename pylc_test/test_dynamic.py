@@ -66,6 +66,22 @@ class TestHanoi(unittest.TestCase):
         for t in towers_out:
             print(t)
 
+        # Ensure that we have the expected number of towers and disks
+        self.assertEqual(self.num_towers, len(towers_out))
+        self.assertEqual(self.num_disks, len(towers_out[self.num_towers-1]))
+
+        # for the remaining towers (which are implemented internally as stacks)
+        # we expect the lengths to be zero
+        for n, tow in enumerate(towers_out):
+            if n == self.num_towers-1:
+                break
+            self.assertEqual(0, len(tow))
+
+        # we expect that if we iterate over the final tower we will see
+        # 3, 2, 1, 0 (same as initial order of first tower)
+        expected_final_tower = [3, 2, 1, 0]
+        for n, elem in enumerate(towers_out[self.num_towers-1].array):
+            self.assertEqual(expected_final_tower[n], elem)
 
 
 if __name__ == '__main__':

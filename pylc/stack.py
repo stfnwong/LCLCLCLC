@@ -17,9 +17,9 @@ class Stack(object):
 
     def __str__(self) -> str:
         s = []
-        s.append('%s :\n' % repr(self))
-        for n, elem in enumerate(self.array):
-            s.append('   [%s] : %s\n' % (str(n), str(elem)))
+        s.append('%s :\n    ' % repr(self))
+        for elem in self.array:
+            s.append(' %s,' % str(elem))
 
         return ''.join(s)
 
