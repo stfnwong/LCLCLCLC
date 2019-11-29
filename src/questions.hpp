@@ -41,6 +41,9 @@ std::vector<std::string> letter_combinations_17(std::string digits);
 // https://leetcode.com/problems/4sum/
 std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target);
 
+// ==== QUESTION 55
+// https://leetcode.com/problems/jump-game/
+bool can_jump(std::vector<int>& nums);
 
 
 

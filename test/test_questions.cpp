@@ -144,6 +144,35 @@ TEST_F(TestQuestions, test_question_18)
 
 }
 
+/*
+ * Question 55
+ */
+TEST_F(TestQuestions, test_question_55)
+{
+    std::vector<int> inp1 = {2, 3, 1, 1, 4};
+    std::vector<int> inp2 = {3, 2, 1, 0, 4};
+    std::vector<int> inp3 = {1, 5, 2, 1, 0, 2, 0};
+    std::vector<int> inp4 = {2, 0};
+
+    bool out1, out2, out3, out4;
+    bool exp1 = true;
+    bool exp2 = false;
+    bool exp3 = true;
+    bool exp4 = true;
+
+    out1 = can_jump(inp1);
+    ASSERT_EQ(exp1, out1);
+
+    out2 = can_jump(inp2);
+    ASSERT_EQ(exp2, out2);
+
+    out3 = can_jump(inp3);
+    ASSERT_EQ(exp3, out3);
+
+    out4 = can_jump(inp4);
+    ASSERT_EQ(exp4, out4);
+}
+
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);

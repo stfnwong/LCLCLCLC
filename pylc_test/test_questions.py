@@ -34,6 +34,8 @@ class TestQuestion55(unittest.TestCase):
         self.exp2 = False
         self.inp3 = [1, 5, 2, 1, 0, 2, 0]
         self.exp3 = True
+        self.inp4 = [2, 0]
+        self.exp4 = True
 
     def test_jump_game(self) -> None:
         jump1 = questions.jump_game_55(self.inp1)
@@ -43,6 +45,8 @@ class TestQuestion55(unittest.TestCase):
         jump3 = questions.jump_game_55(self.inp3)
         self.assertEqual(self.exp3, jump3)
 
+        jump4 = questions.jump_game_55(self.inp4)
+        self.assertEqual(self.exp4, jump4)
 
 
 if __name__ == '__main__':

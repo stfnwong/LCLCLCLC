@@ -37,7 +37,7 @@ def maximum_subarray_53(nums:list) -> int:
 # terminate with a True (can reach) if the current position is at
 # len(nums) - 1. If we terminate elsewhere, we must return False
 def jump_game_55(nums:list) -> bool:
-
+    print('input : %s' % str(nums))
     return jump_game_can_jump_basic(0, nums)
 
 
@@ -47,13 +47,18 @@ def jump_game_can_jump_basic(cur_pos:int, nums:list) -> bool:
         return True
 
     if (cur_pos + nums[cur_pos]) > (len(nums)-1):
-        max_jump = (cur_pos + nums[cur_pos]) - len(nums)-1
+        #max_jump = (cur_pos + nums[cur_pos]) - len(nums)-1
+        max_jump = len(nums) - 1
     else:
-        max_jump = nums[cur_pos]
+        max_jump = cur_pos + nums[cur_pos]
 
-    for j in range(max_jump):
-        can_jump = jump_game_can_jump_basic(cur_pos + max_jump - j, nums)
+    for next_pos in range(cur_pos + 1, cur_pos + max_jump + 1):
+        print('Jumping from %d -> %d' % (cur_pos, next_pos))
+        can_jump = jump_game_can_jump_basic(next_pos, nums)
         if can_jump:
             return True
 
     return False
+
+# The above solution is expensive, because we have to try every possible
+# jump from index zero and backtracking down

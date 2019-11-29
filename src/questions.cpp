@@ -220,3 +220,35 @@ std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target)
 {
     
 }
+
+/*
+ * Question 55
+ */
+// Lets implement the dumb way here. 
+
+bool can_jump_here_basic(int cur_pos, std::vector<int>& nums)
+{
+    if(cur_pos == nums.size()-1)
+        return true;
+
+    int max_jump;
+    if((cur_pos + nums[cur_pos]) > nums.size()-1)
+        max_jump = nums.size()-1;
+    else
+        max_jump = cur_pos + nums[cur_pos];
+
+    for(int next_pos = cur_pos+1; next_pos <= max_jump; ++next_pos)
+    {
+        //std::cout << "[" << __func__ << "] jumping from " << 
+        //    cur_pos << "->" << next_pos << std::endl;
+        if(can_jump_here_basic(next_pos, nums))
+            return true;
+    }
+
+    return false;
+}
+
+bool can_jump(std::vector<int>& nums)
+{
+    return can_jump_here_basic(0, nums);
+}
