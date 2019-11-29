@@ -52,11 +52,12 @@ def jump_game_can_jump_basic(cur_pos:int, nums:list) -> bool:
     else:
         max_jump = cur_pos + nums[cur_pos]
 
-    for next_pos in range(cur_pos + 1, cur_pos + max_jump + 1):
-        print('Jumping from %d -> %d' % (cur_pos, next_pos))
+    next_pos = cur_pos + 1
+    while(next_pos <= max_jump):
         can_jump = jump_game_can_jump_basic(next_pos, nums)
         if can_jump:
             return True
+        next_pos += 1
 
     return False
 
