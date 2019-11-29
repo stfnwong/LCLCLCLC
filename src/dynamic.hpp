@@ -10,10 +10,14 @@
 
 #include <vector>
 
-
+// ==== FIBONACCI ===== //
 int fibonacci(int i);
 int fibonacci_memo(int i);
 int fib_memo_inner(int i, std::vector<int>& memo);
 
+
+
+// ==== HANOI ===== //
+void
 
 #endif /*__LC_DYNAMIC_HPP*/

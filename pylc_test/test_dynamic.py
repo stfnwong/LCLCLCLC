@@ -52,6 +52,35 @@ class TestFibonacci(unittest.TestCase):
         for n, num in enumerate(self.expected_fib_numbers):
             self.assertEqual(num, fib_output[n])
 
+    def test_fib_iter(self) -> None:
+        fib_output = []
+
+        print('Computing %d fibonacci numbers with dynamic.fibonacci_iter()' % len(self.expected_fib_numbers))
+        start_time = default_timer()
+        for n in range(len(self.expected_fib_numbers)):
+            fib_output.append(dynamic.fibonacci_iter(n))
+        end_time = default_timer()
+        total_time = end_time - start_time
+        print('fibonacci_iter() took %ss' % str(total_time))
+
+        for n, num in enumerate(self.expected_fib_numbers):
+            self.assertEqual(num, fib_output[n])
+
+    def test_fib_iter_const_space(self) -> None:
+        fib_output = []
+
+        print('Computing %d fibonacci numbers with dynamic.fibonacci_iter_const_space()' % len(self.expected_fib_numbers))
+        start_time = default_timer()
+        for n in range(len(self.expected_fib_numbers)):
+            fib_output.append(dynamic.fibonacci_iter_const_space(n))
+        end_time = default_timer()
+        total_time = end_time - start_time
+        print('fibonacci_iter_const_space() took %ss' % str(total_time))
+
+        for n, num in enumerate(self.expected_fib_numbers):
+            self.assertEqual(num, fib_output[n])
+
+
 
 class TestHanoi(unittest.TestCase):
     def setUp(self) -> None:
@@ -60,6 +89,7 @@ class TestHanoi(unittest.TestCase):
 
     def test_towers(self) -> None:
         print('Computing hanoi with %d towers and %d disks' % (self.num_towers, self.num_disks))
+
         towers_out = dynamic.hanoi_simple(self.num_towers, self.num_disks)
 
         print('Final towers :')

@@ -58,7 +58,6 @@ TEST_F(TestDynamic, test_fib_memo)
 
 
 
-
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);
