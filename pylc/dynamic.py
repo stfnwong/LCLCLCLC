@@ -62,7 +62,6 @@ def fibonacci_iter_const_space(i:int) -> int:
         f_cur = f_old + f_oldest
         f_oldest = f_old
         f_old = f_cur
-        # ye olde print style debug
 
     return f_cur
 
@@ -70,7 +69,11 @@ def fibonacci_iter_const_space(i:int) -> int:
 # Fastest would be a direct form - not going to bother for now
 
 
-# ==== TOWERS OF HANOI ======== #
+
+# ======== COIN CHANGE  ======== #
+
+
+# ======== TOWERS OF HANOI ======== #
 
 def hanoi_simple(num_towers:int=3, num_disks:int=4, verbose:bool=False) -> list:
     towers = [stack.Stack() for _ in range(num_towers)]
