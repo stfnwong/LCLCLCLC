@@ -13,6 +13,7 @@
 namespace lc_list
 {
 
+    // TODO: memory management
     struct ListNode
     {
         int val;

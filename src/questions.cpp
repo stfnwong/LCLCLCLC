@@ -215,11 +215,6 @@ bool is_common_prefix(std::vector<std::string>& strs, unsigned int max_len)
                 return false;
         }
     }
-    //for(unsigned int s = 1; s < strs.size(); ++s)
-    //{
-    //    if(!strs[s].compare(0, max_len, ref_string))
-    //        return false;
-    //}
 
     return true;
 }
@@ -354,4 +349,64 @@ bool can_jump_here_basic(int cur_pos, std::vector<int>& nums)
 bool can_jump(std::vector<int>& nums)
 {
     return can_jump_here_basic(0, nums);
+}
+
+
+
+
+
+
+
+/*
+ * Question 1222
+ * Queens that can attack a King
+ */
+
+// helper function to ensure that this row, col pair lies on the board
+bool is_inside(int row, int col)
+{
+    if(row >= 0 && row <= 7 && col >= 0 && col <= 7)
+        return true;
+
+    return false;
+}
+
+std::vector<std::vector<int>> queensAttackTheKing(std::vector<std::vector<int>>& queens, std::vector<int>& king) 
+{
+    int row, col;
+    std::vector<std::vector<bool>> has_queen(8, std::vector<bool>(8));
+    std::vector<std::vector<int>> output;
+
+    // populate the vector that tells us if we have a queen
+    for(std::vector<int> q : queens)
+    {
+        has_queen[q[0]][q[1]] = true;
+    }
+    
+    // walk over the board in delta co-ordinates 
+    for(int d1 = -1; d1 <=1; d1++)
+    {
+        for(int d2 = -1; d2 <= 1; d2++)
+        {
+            if(d1 == 0 && d2 == 0)
+                continue;
+            // we know that the kind vector is a 2-tuple
+            row = king[0];
+            col = king[1];
+            do{
+                row += d1;
+                col += d2;
+            } while(is_inside(row, col) && !has_queen[row][col]);
+
+            // Getting we stop here if we are outside the board or there was
+            // a queen. Therefore if we test if we are inside then there must
+            // not have been a queen here.
+            if(is_inside(row, col))
+            {
+                output.push_back({row, col});       // didn't realise this syntax was legal
+            }
+        }
+    }
+
+    return output;
 }

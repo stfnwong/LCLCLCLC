@@ -256,10 +256,91 @@ TEST_F(TestQuestions, test_question_55)
     ASSERT_EQ(exp4, out4);
 }
 
+
+/*
+ * Question 1222
+ */
+TEST_F(TestQuestions, test_question_1222)
+{
+    // inputs 
+    std::vector<std::vector<int>> queen_input_1 = {{0,1},{1,0},{4,0},{0,4},{3,3},{2,4}};
+    std::vector<int> king_input_1 = {0, 0};
+    std::vector<std::vector<int>> queen_input_2 ={{0,0},{1,1},{2,2},{3,4},{3,5},{4,4},{4,5}}; 
+    std::vector<int> king_input_2 = {3, 3};
+    std::vector<std::vector<int>> queen_input_3 ={{5,6},{7,7},{2,1},{0,7},{1,6},{5,1},{3,7},{0,3},{4,0},{1,2},{6,3},{5,0},{0,4},{2,2},{1,1},{6,4},{5,4},{0,0},{2,6},{4,5},{5,2},{1,4},{7,5},{2,3},{0,5},{4,2},{1,0},{2,7},{0,1},{4,6},{6,1},{0,6},{4,3},{1,7}}; 
+    std::vector<int> king_input_3 = {3, 4};
+
+    // expected outputs
+    std::vector<std::vector<int>> exp_output_1 = {{0,1},{1,0},{3,3}};
+    std::vector<std::vector<int>> exp_output_2 = {{2,2},{3,4},{4,4}};
+    std::vector<std::vector<int>> exp_output_3 = {{2,3},{1,4},{1,6},{3,7},{4,3},{5,4},{4,5}};
+
+    // real outputs 
+    std::vector<std::vector<int>> output1;
+    std::vector<std::vector<int>> output2;
+    std::vector<std::vector<int>> output3;
+
+    // ---- test 1
+    output1 = queensAttackTheKing(queen_input_1, king_input_1);
+
+    // I think that while its legal in the leetcode submission to use any order
+    // the values in the output are 'sorted' in a sense
+    std::cout << "Output1 : " << std::endl << "{";
+    for(unsigned int o = 0; o < output1.size(); ++o)
+    {
+        std::cout << "(" << output1[o][0] << "," << output1[o][1] << "),";
+    }
+    std::cout << "}" << std::endl;
+    ASSERT_EQ(exp_output_1.size(), output1.size());
+
+    // Check each element of the output vector in turn
+    for(unsigned int elem = 0; elem < output1.size(); ++elem)
+    {
+        ASSERT_EQ(exp_output_1[elem][0], output1[elem][0]);
+        ASSERT_EQ(exp_output_1[elem][1], output1[elem][1]);
+    }
+
+    // ---- test 2
+    output2 = queensAttackTheKing(queen_input_2, king_input_2);
+
+    std::cout << "Output2 : " << std::endl << "{";
+    for(unsigned int o = 0; o < output2.size(); ++o)
+    {
+        std::cout << "(" << output2[o][0] << "," << output2[o][1] << "),";
+    }
+    std::cout << "}" << std::endl;
+    ASSERT_EQ(exp_output_2.size(), output2.size());
+
+    // Check each element of the output vector in turn
+    for(unsigned int elem = 0; elem < output2.size(); ++elem)
+    {
+        ASSERT_EQ(exp_output_2[elem][0], output2[elem][0]);
+        ASSERT_EQ(exp_output_2[elem][1], output2[elem][1]);
+    }
+
+    // ---- test 3
+    output3 = queensAttackTheKing(queen_input_3, king_input_3);
+
+    std::cout << "Output3 : " << std::endl << "{";
+    for(unsigned int o = 0; o < output3.size(); ++o)
+    {
+        std::cout << "(" << output3[o][0] << "," << output3[o][1] << "),";
+    }
+    std::cout << "}" << std::endl;
+    ASSERT_EQ(exp_output_3.size(), output3.size());
+
+    // Check each element of the output vector in turn
+    for(unsigned int elem = 0; elem < output3.size(); ++elem)
+    {
+        ASSERT_EQ(exp_output_3[elem][0], output3[elem][0]);
+        ASSERT_EQ(exp_output_3[elem][1], output3[elem][1]);
+    }
+}
+
+
+
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
-
-

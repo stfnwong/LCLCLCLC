@@ -47,6 +47,8 @@ std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target);
 bool can_jump(std::vector<int>& nums);
 
 
-
+// ==== QUESTION 1222
+// https://leetcode.com/problems/queens-that-can-attack-the-king/
+std::vector<std::vector<int>> queensAttackTheKing(std::vector<std::vector<int>>& queens, std::vector<int>& king);
 
 #endif /*__LC_QUESTIONS_HPP*/
