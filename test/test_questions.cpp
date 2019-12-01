@@ -80,17 +80,41 @@ TEST_F(TestQuestions, test_question_2)  // two-sum
     
     while(output != nullptr || expected_output != nullptr)
     {
-        ASSERT_NE(nullptr, output);
-        ASSERT_NE(nullptr, expected_output);
+        ASSERT_EQ(expected_output, output);
+        //ASSERT_NE(nullptr, output);
+        //ASSERT_NE(nullptr, expected_output);
         output = output->next;
         expected_output = expected_output->next;
         out_len++;
     }
 
     ASSERT_EQ(exp_len, out_len);
-    
 
-    // TODO : memory clean up
+    //delete output;
+    //delete expected_output;
+}
+
+/*
+ * Question 3
+ */
+TEST_F(TestQuestions, test_question_3)  // longest substring
+{
+    std::string input_1 = "abcabcbb";
+    std::string input_2 = "bbbbb";
+    std::string input_3 = "pwwkew";
+    int exp1 = 3;
+    int exp2 = 1;
+    int exp3 = 3;
+
+    int out1, out2, out3;
+
+    out1 = length_of_longest_substring(input_1);
+    out2 = length_of_longest_substring(input_2);
+    out3 = length_of_longest_substring(input_3);
+
+    ASSERT_EQ(exp1, out1); 
+    ASSERT_EQ(exp2, out2); 
+    ASSERT_EQ(exp3, out3); 
 }
 
 
@@ -105,6 +129,18 @@ TEST_F(TestQuestions, test_question_14)
     std::vector<std::string> inputs_2 = {"dog", "racecar", "car"};
     std::string expected_output_2 = "";
 
+    // Output prefixes
+    std::string p1, p2;
+    p1 = longest_common_prefix(inputs_1);
+    std::cout << "Input {";
+    for(unsigned int s = 0; s < inputs_1.size(); ++s)
+    {
+        std::cout << inputs_1[s] << ",";
+    }
+    std::cout << "} expected [" << expected_output_1 << "], got [" 
+        << p1 << "]" << std::endl;
+
+    ASSERT_EQ(expected_output_1, p1);
 }
 
 

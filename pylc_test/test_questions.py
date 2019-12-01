@@ -33,6 +33,23 @@ class TestQuestion3(unittest.TestCase):
         self.assertEqual(self.exp3, l3)
 
 
+class TestQuestion14(unittest.TestCase):
+    def setUp(self) -> None:
+        self.inp1 = ["flower", "flow", "flight"]
+        self.exp1 = "fl"
+        self.inp2 = ["dog", "racecar", "car"]
+        self.exp2 = ""
+
+    def test_longest_common_prefix(self) -> None:
+        p1 = questions.longest_common_prefix_14(self.inp1)
+        print('Input [%s] : expected %s, got %s' % (self.inp1, self.exp1, p1))
+        self.assertEqual(self.exp1, p1)
+
+        p2 = questions.longest_common_prefix_14(self.inp2)
+        print('Input [%s] : expected %s, got %s' % (self.inp2, self.exp2, p2))
+        self.assertEqual(self.exp2, p2)
+
+
 
 class TestQuestion53(unittest.TestCase):
     def setUp(self) -> None:

@@ -5,6 +5,8 @@ Answers to specific Leetcode questions
 Stefan Wong 2019
 """
 
+from typing import List
+
 # debug
 #from pudb import set_trace; set_trace()
 
@@ -32,6 +34,38 @@ def longest_unique_substring_3(s:str) -> int:
             start += 1
 
     return max_ever
+
+
+# leetcode 14
+#https://leetcode.com/problems/longest-common-prefix/
+def longest_common_prefix_14(strs:List[str]) -> str:
+    # It turns out that scanning ahead to find the maximum length
+    # the prefix could be is slightly faster on average. The reason
+    # for this is that we don't know what order the strings will be
+    # in the input, and therefore we might end uo checking more
+    # characters than we need to. For example, if the shortest string
+    # comes last and we test the string lengths as we go, we will have
+    # checked all the characters in the longer strings when it wasn't
+    # required
+
+    prefix = ""
+    if len(strs) == 0:
+        return prefix
+
+    max_prefix = 9999999
+    for s in strs:
+        if len(s) < max_prefix:
+            max_prefix = len(s)
+
+    # Now check each character at position n of string 0 against the
+    # character in position n of all other strings (vertical scan)
+    for n in range(max_prefix):
+        for s in range(len(strs)-1):
+            if strs[0][n] != strs[s+1][n]:
+                return prefix
+        prefix += strs[0][n]
+
+    return prefix
 
 
 # leetcode 53

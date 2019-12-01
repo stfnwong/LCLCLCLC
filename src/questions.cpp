@@ -105,8 +105,8 @@ lc_list::ListNode* add_two_numbers(lc_list::ListNode* l1, lc_list::ListNode* l2)
     root = new lc_list::ListNode(0);
     output = root;
 
-    int q_val;
-    int p_val;
+    //int q_val;
+    //int p_val;
 
     while(p != nullptr || q != nullptr)
     {
@@ -130,7 +130,6 @@ lc_list::ListNode* add_two_numbers(lc_list::ListNode* l1, lc_list::ListNode* l2)
         output->next = new lc_list::ListNode(carry);     // 'remainder' (but since list is reversed, its actually overflow)
 
     return root->next;    // ignore the first node - its just a dummy for init purposes
-    // NOTE : this wastes memory...
 }
 
 
@@ -139,26 +138,64 @@ lc_list::ListNode* add_two_numbers(lc_list::ListNode* l1, lc_list::ListNode* l2)
  */
 int length_of_longest_substring(std::string& s)
 {
-    // First idea - The question specifies that this must be a substring 
-    // and is therefore contiguous
+    unsigned int start = 0;
+    unsigned int end = 0;
+    int max_ever = 0;
+    std::unordered_map <char, bool> seen_chars;
+
+
+    // Create a sliding window and walk along the string. 
+    while(end < s.size())
+    {
+        // add new characters to the map and move the pointer forward
+        if(seen_chars.count(s[end]) == 0)
+        {
+            seen_chars.insert( {s[end], true} );
+            end++;
+            max_ever = std::max(max_ever, (int) seen_chars.size());
+        }
+        else
+        {
+            // this character has been seen before
+            seen_chars.erase(s[start]);
+            start++;
+        }
+    }
+
+    return max_ever;
 }
 
 /*
  * Question 14
  */
-std::string longest_common_prefix_horz(std::vector<std::string>& strs)
+std::string longest_common_prefix(std::vector<std::string>& strs)
 {
-    std::string output;
+    unsigned int max_prefix;
+    std::string prefix;
 
-    // This method is slow - we try scanning along each string in turn 
-    // looking for common prefixes
-    std::string prefix = strs[0];       // test against first string
-    for(unsigned int s = 1; s < strs.size(); ++s)
+    prefix = "";
+    max_prefix = 9999999;
+
+    // find the maximum length we could possibly need
+    for(unsigned int s = 0; s < strs.size(); ++s)
     {
-
+        if(strs[s].size() < max_prefix)
+            max_prefix = strs[s].size();
     }
 
-    return output;
+    // 'Vertically' scan over the strings and compare them with strs[0]
+    for(unsigned int c = 0; c < max_prefix; ++c)
+    {
+        // check each string in turn
+        for(unsigned int s = 1; s < strs.size(); ++s)
+        {
+            if(strs[0][c] != strs[s][c])
+                return prefix;
+        }
+        prefix = prefix + strs[0][c];
+    }
+
+    return prefix;
 }
 
 /*
@@ -228,11 +265,11 @@ std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target)
 
 bool can_jump_here_basic(int cur_pos, std::vector<int>& nums)
 {
-    if(cur_pos == nums.size()-1)
+    if(cur_pos == (int) nums.size()-1)
         return true;
 
     int max_jump;
-    if((cur_pos + nums[cur_pos]) > nums.size()-1)
+    if((cur_pos + nums[cur_pos]) > (int) nums.size()-1)
         max_jump = nums.size()-1;
     else
         max_jump = cur_pos + nums[cur_pos];

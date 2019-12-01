@@ -28,9 +28,9 @@ lc_list::ListNode* add_two_numbers(lc_list::ListNode* l1, lc_list::ListNode* l2)
 int length_of_longest_substring(std::string& s);
 
 // ==== QUESTION 14
-std::string longest_common_prefix_horz(std::vector<std::string>& strs);
-std::string longest_common_prefix_vert(std::vector<std::string>& strs);
-std::string longest_common_prefix_div(std::vector<std::string>& strs);
+std::string longest_common_prefix(std::vector<std::string>& strs);
+//std::string longest_common_prefix_vert(std::vector<std::string>& strs);
+//std::string longest_common_prefix_div(std::vector<std::string>& strs);
 
 
 // ==== QUESTION 17
