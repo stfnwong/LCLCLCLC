@@ -29,6 +29,7 @@ int length_of_longest_substring(std::string& s);
 
 // ==== QUESTION 14
 std::string longest_common_prefix(std::vector<std::string>& strs);
+std::string longest_common_prefix_binary_search(std::vector<std::string>& strs);
 //std::string longest_common_prefix_vert(std::vector<std::string>& strs);
 //std::string longest_common_prefix_div(std::vector<std::string>& strs);
 

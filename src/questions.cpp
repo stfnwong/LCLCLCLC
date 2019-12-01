@@ -165,6 +165,7 @@ int length_of_longest_substring(std::string& s)
     return max_ever;
 }
 
+
 /*
  * Question 14
  */
@@ -197,6 +198,68 @@ std::string longest_common_prefix(std::vector<std::string>& strs)
 
     return prefix;
 }
+
+/*
+ * Question 14 again
+ */
+
+bool is_common_prefix(std::vector<std::string>& strs, unsigned int max_len)
+{
+    std::string ref_string = strs[0].substr(0, max_len);
+
+    for(unsigned int c = 0; c < max_len; ++c)
+    {
+        for(unsigned int s = 1; s < strs.size(); ++s)
+        {
+            if(strs[s][c] != ref_string[c])
+                return false;
+        }
+    }
+    //for(unsigned int s = 1; s < strs.size(); ++s)
+    //{
+    //    if(!strs[s].compare(0, max_len, ref_string))
+    //        return false;
+    //}
+
+    return true;
+}
+
+std::string longest_common_prefix_binary_search(std::vector<std::string>& strs)
+{
+    unsigned int min_len = 99999;
+    std::string prefix = "";
+    int low, high, mid;
+
+    // if there are no strings, then we are done here
+    if(strs.size() == 0)
+        return prefix;
+
+    // find the length of the shortest string
+    for(unsigned int s = 0; s < strs.size(); ++s)
+    {
+        if(strs[s].size() < min_len)
+            min_len = strs[s].size();
+    }
+
+    low = 0;
+    high = min_len;
+    while(low <= high)
+    {
+        std::cout << "[" << __func__ << "] low : " << low << " high : " << high << std::endl;
+        mid = (high + low) / 2;
+        if(is_common_prefix(strs, mid))
+            low = mid + 1;      // all the characters below match (ignore)
+        else
+            high = mid - 1;     // none of the characters above match
+    }
+    // The prefix lies at the midpoint of low and high
+    prefix = strs[0].substr(0, (low + high) / 2);
+
+    return prefix;
+}
+
+
+
 
 /*
  * Question 17

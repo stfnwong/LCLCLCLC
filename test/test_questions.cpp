@@ -141,6 +141,53 @@ TEST_F(TestQuestions, test_question_14)
         << p1 << "]" << std::endl;
 
     ASSERT_EQ(expected_output_1, p1);
+
+    p2 = longest_common_prefix(inputs_2);
+    std::cout << "Input {";
+    for(unsigned int s = 0; s < inputs_2.size(); ++s)
+    {
+        std::cout << inputs_2[s] << ",";
+    }
+    std::cout << "} expected [" << expected_output_2 << "], got [" 
+        << p1 << "]" << std::endl;
+
+    ASSERT_EQ(expected_output_2, p2);
+}
+
+/*
+ * Question 14 again
+ */
+TEST_F(TestQuestions, test_question_14_binary_search)
+{
+    std::vector<std::string> inputs_1 = {"flower", "flow", "flight"};
+    std::string expected_output_1 = "fl";
+
+    std::vector<std::string> inputs_2 = {"dog", "racecar", "car"};
+    std::string expected_output_2 = "";
+
+    // Output prefixes
+    std::string p1, p2;
+    p1 = longest_common_prefix_binary_search(inputs_1);
+    std::cout << "Input {";
+    for(unsigned int s = 0; s < inputs_1.size(); ++s)
+    {
+        std::cout << inputs_1[s] << ",";
+    }
+    std::cout << "} expected [" << expected_output_1 << "], got [" 
+        << p1 << "]" << std::endl;
+
+    ASSERT_EQ(expected_output_1, p1);
+
+    p2 = longest_common_prefix_binary_search(inputs_2);
+    std::cout << "Input {";
+    for(unsigned int s = 0; s < inputs_2.size(); ++s)
+    {
+        std::cout << inputs_2[s] << ",";
+    }
+    std::cout << "} expected [" << expected_output_2 << "], got [" 
+        << p1 << "]" << std::endl;
+
+    ASSERT_EQ(expected_output_2, p2);
 }
 
 
