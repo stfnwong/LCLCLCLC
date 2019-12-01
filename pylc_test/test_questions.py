@@ -9,6 +9,31 @@ import unittest
 from pylc import questions
 
 
+
+class TestQuestion3(unittest.TestCase):
+    def setUp(self) -> None:
+        self.inp1 = "abcabcbb"
+        self.exp1 = 3
+        self.inp2 = "bbbbb"
+        self.exp2 = 1
+        self.inp3 = "pwwkew"
+        self.exp3 = 3
+
+    def test_longest_unique_substring(self) -> None:
+        l1 = questions.longest_unique_substring_3(self.inp1)
+        print('Input [%s] Expected length %d, got length %d' % (self.inp1, self.exp1, l1))
+        self.assertEqual(self.exp1, l1)
+
+        l2 = questions.longest_unique_substring_3(self.inp2)
+        print('Input [%s] Expected length %d, got length %d' % (self.inp2, self.exp2, l2))
+        self.assertEqual(self.exp2, l2)
+
+        l3 = questions.longest_unique_substring_3(self.inp3)
+        print('Input [%s] Expected length %d, got length %d' % (self.inp3, self.exp3, l3))
+        self.assertEqual(self.exp3, l3)
+
+
+
 class TestQuestion53(unittest.TestCase):
     def setUp(self) -> None:
         self.inp1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4]

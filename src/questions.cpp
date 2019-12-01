@@ -248,6 +248,9 @@ bool can_jump_here_basic(int cur_pos, std::vector<int>& nums)
     return false;
 }
 
+
+
+
 bool can_jump(std::vector<int>& nums)
 {
     return can_jump_here_basic(0, nums);
