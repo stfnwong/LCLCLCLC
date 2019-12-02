@@ -18,6 +18,5 @@ int fib_memo_inner(int i, std::vector<int>& memo);
 
 
 // ==== HANOI ===== //
-void
 
 #endif /*__LC_DYNAMIC_HPP*/

@@ -24,7 +24,7 @@ int fibonacci_memo(int i)
     // init the bottom cases
     memo[0] = 0;
     memo[1] = 0;
-    fib_memo_inner(i, memo);
+    return fib_memo_inner(i, memo);
     //fib_memo_inner(i, std::vector<int> memo(i + 1));
 }
 
