@@ -58,7 +58,25 @@ TEST_F(TestDynamic, test_fib_memo)
 
 
 // ======== EGG DROP ======== //
+TEST_F(TestDynamic, test_egg_drop)
+{
+    int num_floors;
+    int num_eggs;
+    int exp_output;
+    int output;
 
+    // One egg case - the answer should always be num_floors
+    num_eggs = 1;
+    num_floors = 100;
+    output = egg_drop(num_floors, num_eggs);
+    ASSERT_EQ(num_floors, output);
+
+    num_floors = 10;
+    num_eggs = 2;
+    exp_output = 4;
+    output = egg_drop(num_floors, num_eggs);
+    ASSERT_EQ(exp_output, output);
+}
 
 
 int main(int argc, char *argv[])

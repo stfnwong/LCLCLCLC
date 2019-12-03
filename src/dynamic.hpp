@@ -17,8 +17,7 @@ int fib_memo_inner(int i, std::vector<int>& memo);
 
 
 // ======== Egg Drop (maximize minimum regret)
-int egg_drop_2_eggs(int num_floors);
-// TODO : version for any number of eggs
+int egg_drop(int num_floors, int num_eggs);
 
 
 // ==== HANOI ===== //
