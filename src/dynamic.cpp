@@ -40,3 +40,13 @@ int fib_memo_inner(int i, std::vector<int>& memo)
 }
 
 // Bottom up implementation
+
+
+
+
+// ======== Egg Drop (maximize minimum regret)
+int egg_drop_2_eggs(int num_floors)
+{
+    // If we derive the max of min regret then we can in fact solve 
+    // this directly as n * (n+1) / 2
+}

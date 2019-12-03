@@ -16,8 +16,12 @@ int fibonacci_memo(int i);
 int fib_memo_inner(int i, std::vector<int>& memo);
 
 
+// ======== Egg Drop (maximize minimum regret)
+int egg_drop_2_eggs(int num_floors);
+// TODO : version for any number of eggs
+
 
 // ==== HANOI ===== //
-void
+
 
 #endif /*__LC_DYNAMIC_HPP*/
