@@ -14,6 +14,25 @@
 #include <utility>
 #include <unordered_map>
 
+// Aggregates key/value pairs with printing and whatnot
+// NOTE: another way to do this would be using GraphKV = std::pair<int, int> 
+// or something like that.
+struct GraphKV
+{
+    int key;
+    int val;
+
+    public:
+        GraphKV() : key(0), val(0) {} 
+        GraphKV(int k, int v) : key(k), val(v) {} 
+        
+        // Methods
+        void init(void);
+        std::string toString(void) const;
+        bool operator==(const GraphKV& that) const;
+        bool operator!=(const GraphKV& that) const;
+};
+
 
 // Graph node 
 class GraphNode
@@ -36,6 +55,8 @@ class GraphNode
         void mark(void);
         void unmark(void);
 
+        GraphKV getPair(void) const;
+
         std::string toString(void) const;
 };
 
@@ -48,32 +69,14 @@ class GraphNode
 //  - # seperates an adjacency list edge for a particular node
 //
 std::vector<std::string> graph_repr_to_token_vec(const std::string& repr);
-std::string graph_to_repr(const GraphNode* graph);
-GraphNode* repr_to_graph(const std::string& repr);
-GraphNode* createGraph(const std::string& repr);
+std::string              graph_to_repr(const GraphNode* graph);
+GraphNode*               repr_to_graph(const std::string& repr);
+GraphNode*               createGraph(const std::string& repr);
 
 // Methods that work on graph nodes
 GraphNode* cloneGraph(GraphNode* node);
 
 
-// Aggregates key/value pairs with printing and whatnot
-// NOTE: another way to do this would be using GraphKV = std::pair<int, int> 
-// or something like that.
-struct GraphKV
-{
-    int key;
-    int val;
-
-    public:
-        GraphKV() : key(0), val(0) {} 
-        GraphKV(int k, int v) : key(k), val(v) {} 
-        
-        // Methods
-        void init(void);
-        std::string toString(void) const;
-        bool operator==(const GraphKV& that) const;
-        bool operator!=(const GraphKV& that) const;
-};
 
 
 // ==== Traversals ==== //
@@ -148,6 +151,11 @@ class AdjList
         // getters 
         unsigned int numVerticies(void) const;
 };
+
+
+// ======== Traversals ======== //
+void adj_list_bfs(AdjList& list, std::vector<int>& traversal);
+//void adj_list_dfs(AdjList& list, std::vector<int> traversal);
 
 
 

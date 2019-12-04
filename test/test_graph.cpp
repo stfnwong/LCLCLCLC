@@ -19,7 +19,50 @@ class TestGraph : public ::testing::Test
         std::string empty_repr = "{}";
         std::string repr1      = "{0,1,2#1,2#2,2}";
         std::string repr2      = "{0,1,2#1,2#2,2#3,1,0#4,2,3}";
+        // this graph is from cracking the code pg 118
+        std::string repr3      = "{0,1,4,5#1,4,3#2,1#3,2,4#4#5}";   
+
+        // expected outputs
+        // graph 1
+        std::vector<int> expected_dfs_1 = {0,2,1};
+        std::vector<int> expected_bfs_1 = {0,1,2};
+        // graph 2
+        std::vector<int> expected_dfs_2 = {0,1,2,3,4};
+        std::vector<int> expected_bfs_2 = {0,1,2,3,4};
+        // graph 3
+        std::vector<int> expected_dfs_3 = {0, 1, 3, 2, 4, 5};
+        std::vector<int> expected_bfs_3 = {0, 1, 4, 5, 3, 2};
 };
+
+
+/*
+ * print_array()
+ * Prints an array of its with matching {}
+ */
+void print_array(const std::vector<int>& array)
+{
+    std::cout << "[" << __func__ << "] array of " 
+        << array.size() << " elements" << std::endl;
+    std::cout << "  {" << array[0];
+    for(unsigned int i = 1; i < array.size(); ++i)
+        std::cout << "," << array[i];
+    std::cout << "}" << std::endl;
+}
+
+/*
+ * print_traversal()
+ * Prints a GraphKV traversal of its with matching {}
+ */
+void print_traversal(const std::vector<GraphKV>& traversal)
+{
+    std::cout << "[" << __func__ << "] traversal with " 
+        << traversal.size() << " steps" << std::endl;
+
+    std::cout << "  {" << traversal[0].key;
+    for(unsigned int t = 1; t < traversal.size(); ++t)
+        std::cout << "," << traversal[t].key;
+    std::cout << "}" << std::endl;
+}
 
 
 // Test that we can turn a repr string into a graph
@@ -43,8 +86,9 @@ TEST_F(TestGraph, test_graph_repr)
 }
 
 // Breadth-first search on GraphNode object
-TEST_F(TestGraph, test_graph_bfs)
+TEST_F(TestGraph, test_graph1_bfs)
 {
+    // ======== GRAPH 1 ======== //
     // Try to traverse the first graph
     GraphNode* graph1;
     std::vector<GraphKV> traversal1;
@@ -52,19 +96,26 @@ TEST_F(TestGraph, test_graph_bfs)
     graph1 = createGraph(this->repr1);
     ASSERT_NE(nullptr, graph1);
 
-    std::cout << "Traversng graph1 (BFS)" << std::endl;
+    std::cout << std::endl << "==== Traversng graph1 (BFS)" << std::endl;
     graph_bfs(graph1, traversal1);
-    //ASSERT_GT(0, traversal1.size());
+    std::cout << "Graph1 " << this->repr1 << " traversal: " << std::endl;
+    print_traversal(traversal1);
+    std::cout << "Graph1 expected traversal :" << std::endl;
+    print_array(this->expected_bfs_1);
 
-    std::cout << "Printing BFS traversal1 (length " << traversal1.size() << ") :" << std::endl;
-    for(unsigned int t = 0; t < traversal1.size(); ++t)
+    ASSERT_GT(0, traversal1.size());
+    ASSERT_EQ(this->expected_bfs_1.size(), traversal1.size());
+
+    for(unsigned int n = 0; n < this->expected_bfs_1.size(); ++n)
     {
-        std::cout << "    " << traversal1[t].toString() << " ->" << std::endl;
+        ASSERT_EQ(this->expected_bfs_1[n], traversal1[n].key);
     }
+}
 
-    // TODO : fix this - traversal is too long
-    //ASSERT_EQ(3, traversal1.size());
 
+TEST_F(TestGraph, test_graph2_bfs)
+{
+    // ======== GRAPH 2 ======== //
     // Try to traverse the second graph
     GraphNode* graph2;
     std::vector<GraphKV> traversal2;
@@ -72,14 +123,59 @@ TEST_F(TestGraph, test_graph_bfs)
     graph2 = createGraph(this->repr2);
     ASSERT_NE(nullptr, graph2);
 
-    std::cout << "Traversng graph2 (BFS)" << std::endl;
+    std::cout << std::endl << "==== Traversng graph2 (BFS)" << std::endl;
     graph_bfs(graph2, traversal2);
-    //ASSERT_GT(0, traversal2.size());
+    // Do the real testing
+    ASSERT_GT(0, traversal2.size());
+    print_traversal(traversal2);
+    ASSERT_GT(0, traversal2.size());
+    ASSERT_EQ(this->expected_bfs_2.size(), traversal2.size());
+}
 
-    std::cout << "Printing BFS traversal2 (length " << traversal2.size() << ") :" << std::endl;
-    for(unsigned int t = 0; t < traversal2.size(); ++t)
+TEST_F(TestGraph, test_graph3_bfs)
+{
+    // ======== GRAPH 3 ======== //
+    GraphNode* graph3;
+    std::vector<GraphKV> traversal3;
+
+    graph3 = createGraph(this->repr3);
+    ASSERT_NE(nullptr, graph3);
+
+    std::cout << std::endl << "==== Traversng graph3 (BFS)" << std::endl;
+    graph_bfs(graph3, traversal3);
+
+    ASSERT_GT(0, traversal3.size());
+    print_traversal(traversal3);
+    ASSERT_GT(0, traversal3.size());
+    ASSERT_EQ(this->expected_bfs_3.size(), traversal3.size());
+
+    // check the traversal
+
+}
+
+// Test graph dfs
+TEST_F(TestGraph, test_graph_dfs)
+{
+    // Try to traverse the first graph
+    GraphNode* graph3;
+    std::vector<GraphKV> traversal3;
+
+    graph3 = createGraph(this->repr3);
+    ASSERT_NE(nullptr, graph3);
+
+    std::cout << std::endl << "==== Traversng graph3 (DFS)" << std::endl;
+    graph_dfs(graph3, traversal3);
+    //ASSERT_GT(0, traversal3.size());
+
+    std::cout << "Printing DFS traversal1 (length " << traversal3.size() << ") :" << std::endl;
+    print_traversal(traversal3);
+    std::cout << "Expected traversal : " << std::endl;
+    print_array(this->expected_dfs_3);
+
+    // Test each value in turn
+    for(unsigned int t = 0; t < traversal3.size(); ++t)
     {
-        std::cout << "    " << traversal2[t].toString() << " ->" << std::endl;
+        ASSERT_EQ(this->expected_dfs_3[t], traversal3[t].key);
     }
 }
 

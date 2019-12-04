@@ -52,6 +52,11 @@ void GraphNode::unmark(void)
     this->visited = false;
 }
 
+GraphKV GraphNode::getPair(void) const
+{
+    return GraphKV(this->key, this->val);
+}
+
 std::string GraphNode::toString(void) const
 {
     std::ostringstream oss;
@@ -165,10 +170,13 @@ GraphNode* repr_to_graph(const std::string& repr)
         }
     }
 
-    //return graph_root;
     return nodes[0];
 }
 
+
+/*
+ * graph_to_repr()
+ */
 std::string graph_to_repr(const GraphNode* graph)
 {
     // Iterate over the vector
@@ -191,16 +199,16 @@ GraphNode* createGraph(const std::string& repr)
     if(repr.length() < 1)
         return nullptr;
 
-    // {}  is a valid repr, and corresponds to an empty graph
+    // {}  is a valid repr, and corresponds to an empty graph (which
+    // is returned as null). If its an invalid repr, we also return null
     if(repr.length() == 2)
     {
         if(repr[0] == '{' && repr[1] == '}')
             return nullptr;
-        else
-        {
-            std::cout << "[" << __func__ << "] invalid repr " << repr << std::endl;
-            return nullptr;
-        }
+
+        std::cout << "[" << __func__ << "] invalid repr " 
+            << repr << std::endl;
+        return nullptr;
     }
 
     // Now parse the various sub-lists of the adjacency repr
@@ -261,21 +269,20 @@ bool GraphKV::operator!=(const GraphKV& that) const
 // NoTE: was const, but that doesn't make sense since I am modifying visited inside each object
 void graph_bfs(GraphNode* root, std::vector<GraphKV>& traversal)
 {
+    // TODO : remove debug printing
     std::queue<GraphNode*> node_q;
 
     node_q.push(root);
-
-    // TODO: remove debug printing
     int num_visited = 0;
     while(!node_q.empty())
     {
         GraphNode* cur_node = node_q.front();
         cur_node->visited = true;
         node_q.pop();           // dequeue the node
-        if(node_q.empty())
-            std::cout << "[" << __func__ << "] q is empty" << std::endl;
-        std::cout << "[" << __func__ << "] checking node" << std::endl;
-        std::cout << cur_node->toString() << std::endl;
+        //if(node_q.empty())
+        //    std::cout << "[" << __func__ << "] q is empty" << std::endl;
+        //std::cout << "[" << __func__ << "] checking node" << std::endl;
+        //std::cout << cur_node->toString() << std::endl;
 
         // TODO: we need some structure to keep track of which nodes have 
         // been visited. A simple queue or stack is awkward since we would need to be able to search
@@ -286,9 +293,9 @@ void graph_bfs(GraphNode* root, std::vector<GraphKV>& traversal)
             if(!cur_node->neighbours[n]->visited)
             {
                 // TODO: debug only, remove 
-                std::cout << "[" << __func__ << "] adding node ["
-                    << n+1 << "/" << cur_node->neighbours.size() 
-                    << "]" << std::endl;
+                //std::cout << "[" << __func__ << "] adding node ["
+                //    << n+1 << "/" << cur_node->neighbours.size() 
+                //    << "]" << std::endl;
                 node_q.push(cur_node->neighbours[n]);
             }
         }
@@ -296,14 +303,30 @@ void graph_bfs(GraphNode* root, std::vector<GraphKV>& traversal)
         traversal.push_back(GraphKV(cur_node->key, cur_node->val));
         
         // DEBUG: remove 
-        std::cout << "[" << __func__ << "] num_visited " << num_visited << std::endl;
+        //std::cout << "[" << __func__ << "] num_visited " << num_visited << std::endl;
     }
 }
 
-// DFS
-void graph_dfs(const GraphNode* root, std::vector<GraphKV>& traversal)
+void graph_dfs_visit_q(const GraphNode* root, std::vector<GraphKV>& traversal)
 {
-    std::cout << "[" << __func__ << "] AH HA HA HA HA! No DFS in this commit!" << std::endl;
+    std::cout << "[" << __func__ << "] AH HA HA HA HA! No Queue DFS in this commit!" << std::endl;
+}
+
+// DFS
+void graph_dfs(GraphNode* root, std::vector<GraphKV>& traversal)
+{
+    if(root != nullptr)
+    {
+        traversal.push_back(GraphKV(root->key, root->val));
+        root->visited = true;
+        for(unsigned int n = 0; n < root->neighbours.size(); ++n)
+        {
+            if(!root->neighbours[n]->visited)
+            {
+                graph_dfs(root->neighbours[n], traversal);
+            }
+        }
+    }
 }
 
 
@@ -457,3 +480,12 @@ unsigned int AdjList::numVerticies(void) const
     return this->adj_list.size();
 }
 // TODO : num edges for directed and undirected graphs
+
+
+
+
+// ======== ADJ_LIST_BFS ======== //
+void adj_list_bfs(AdjList& list, std::vector<int>& traversal)
+{
+    std::cout << "[" << __func__ << "] TODO!" << std::endl;
+}
