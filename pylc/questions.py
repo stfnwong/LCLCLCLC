@@ -68,6 +68,58 @@ def longest_common_prefix_14(strs:List[str]) -> str:
     return prefix
 
 
+# leetcode 39
+# https://leetcode.com/problems/combination-sum/
+def combination_sum_39(candidates:List[int], target:int) -> List[List[int]]:
+    pass
+
+# leetcode 40
+# https://leetcode.com/problems/combination-sum-ii/
+# Integers are positive, can't have duplicates in output. (outputs are unique)
+
+# Helper function for recursing on combinations
+def find_sum_cands_recursive(cands:List[int], idx:int, target:int, current:List[int], result:List[int]) -> None:
+    # Here we actually take and not take the decision to include the next
+    # candidate in the output
+    if target == 0:
+        result.append(current[:])
+
+    # In this particular version of the problem we can't have negative numbers
+    if target < 0:
+        return
+
+    for i in range(idx, len(cands)):
+        # There are two relevant checks here.
+        # 1) (i == idx) indicates that this is the first iteration of the loop,
+        # and therefore there is no previous number
+        # 2) In this instance of the problem we need to check for duplicates
+        if (i == idx) or (cands[i] != cands[i-1]):
+            current.append(cands[i])
+            find_sum_cands_recursive(cands, i+1, target - cands[i], current, result)
+            # remove the number we just took
+            current.pop(len(current) - 1)
+
+
+def combination_sum_40(candidates:List[int], target:int) -> List[List[int]]:
+    # Some useful intuition here is that whenever we have these kinds of
+    # combination problems we can probably re-formulate them into some kind of
+    # DFS traversal, where at each step we recursively simulate taking and not
+    # taking one of the options. In this case, that means simulating adding or
+    # not adding one of the numbers to the output set.
+
+    result = []
+    # Walk over the input array. The trouble here is mainly around rejecting
+    # duplicates. One option (which I will use to start) is to sort the input
+    # array. If its sorted, then duplicates will be adjacent to each other and
+    # therefore we can just test the next element and skip it if it matches the
+    # current element.
+    sorted_cands = sorted(candidates)
+
+    find_sum_cands_recursive(sorted_cands, 0, target, [], result)
+
+    return result
+
+
 # leetcode 53
 # https://leetcode.com/problems/maximum-subarray/
 def maximum_subarray_53(nums:list) -> int:

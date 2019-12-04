@@ -50,6 +50,32 @@ class TestQuestion14(unittest.TestCase):
         self.assertEqual(self.exp2, p2)
 
 
+class TestQuestion39(unittest.TestCase):
+    def setUp(self) -> None:
+        # input format is (candiates, target)
+        self.inp1 = ([2, 3, 6, 7], 7)
+        self.exp1 = [[7], [2, 2, 3]]
+        self.inp2 = ([2,3,5], 8)
+        self.exp2 = [[2, 2, 2, 2], [2, 3, 3], [3, 5]]
+
+
+class TestQuestion40(unittest.TestCase):
+    def setUp(self) -> None:
+        # input format is (candiates, target)
+        self.inp1 = ([10, 1, 2, 7, 6, 1, 5], 8)
+        self.exp1 = [[1, 7], [1, 2, 5], [2, 6], [1, 1, 6]]
+        self.inp2 = ([2, 5, 2, 1, 2], 5)
+        self.exp2 = [[1, 2, 2], [5]]
+
+    def test_combination_sum(self) -> None:
+        result1 = questions.combination_sum_40(self.inp1[0], self.inp1[1])
+
+        print('Got %s' % str(result1))
+        print('Expected %s' % str(self.exp1))
+
+        # Not sure that we can rely on order for assertions here...
+
+
 
 class TestQuestion53(unittest.TestCase):
     def setUp(self) -> None:
