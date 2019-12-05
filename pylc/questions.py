@@ -89,9 +89,10 @@ def comb_sum_39_inner(cands:List[int], idx:int, target:int, current:List[int], r
             # Account for removing the value from the set
             current.pop(-1)
 
-
+# Entry point for question 39
 def combination_sum_39(candidates:List[int], target:int) -> List[List[int]]:
     result = []
+
     sorted_cands = sorted(candidates)
     comb_sum_39_inner(sorted_cands, 0, target, [], result)
 

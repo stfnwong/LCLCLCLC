@@ -289,7 +289,9 @@ TEST_F(TestQuestions, test_question_40)
 
     // lets try the first output
     result1 = combination_sum_ii(cands1, target1);
+    std::cout << "Expected : " << std::endl;
     print_comb_sum_result(exp1);
+    std::cout << "Output : " << std::endl;
     print_comb_sum_result(result1);
 
     // start by checking we have the expected number of combinations

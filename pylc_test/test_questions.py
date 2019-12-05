@@ -98,6 +98,7 @@ class TestQuestion40(unittest.TestCase):
         # The output here is a list of lists, so the first thing we can
         # do is check that each of the expected lists is in fact in the
         # output
+        self.assertEqual(len(self.exp1), len(result1))
         for n, (out, exp) in enumerate(zip(sorted(result1), sorted(self.exp1))):
             for o, e in zip(out, exp):
                 self.assertEqual(e, o)
@@ -107,10 +108,10 @@ class TestQuestion40(unittest.TestCase):
         print('Got %s' % str(sorted(result2)))
         print('Expected %s' % str(sorted((self.exp2))))
 
+        self.assertEqual(len(self.exp2), len(result2))
         for n, (out, exp) in enumerate(zip(sorted(result2), sorted(self.exp2))):
             for o, e in zip(out, exp):
                 self.assertEqual(e, o)
-
 
 
 class TestQuestion53(unittest.TestCase):

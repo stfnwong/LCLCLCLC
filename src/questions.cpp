@@ -361,6 +361,9 @@ void comb_sum_i_inner(
     // result vector
     for(int i = idx; i < (int) cands.size(); ++i)
     {
+        // Because we don't care about duplicates we only need to know if we reached
+        // the target amount. If we could still subtract, then try that candidate and
+        // collect up the solution
         if(target >= cands[i])
         {
             cur_vector.push_back(cands[i]);
@@ -420,9 +423,11 @@ void comb_sum_ii_inner(
         {
             // Inner loop debug print
             std::cout << "[" << __func__ << "] i = " << i << " cands[i] = " 
-                << cands[i] << " target = " << target << std::endl;
+                << cands[i] << " target = " << target 
+                << " cands.size() : " << cands.size() << std::endl;
+
+            // Add candidate to this set and test solution
             cur_vector.push_back(cands[i]);
-            // branch where we add number to set 
             comb_sum_ii_inner(
                     cands, 
                     i+1, 
@@ -431,8 +436,7 @@ void comb_sum_ii_inner(
                     result_vector
             );
             // branch where we remove number from set
-            cands.pop_back();
-            //cur_vector.pop_back();
+            cur_vector.pop_back();
         }
     }
 }
@@ -445,6 +449,7 @@ std::vector<std::vector<int>> combination_sum_ii(std::vector<int>& candidates, i
 
     // In-place sort of candidates
     std::sort(candidates.begin(), candidates.end());
+    std::cout << "[" << __func__ << "] candidates.size() : " << candidates.size() << std::endl;
     comb_sum_ii_inner(candidates, 0, target, cur_vector, result);
 
     return result;
