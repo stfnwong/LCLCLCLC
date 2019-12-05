@@ -212,19 +212,85 @@ TEST_F(TestQuestions, test_question_17)
         ASSERT_EQ(expected_output[i], output[i]);
 }
 
-/*
- * Question 18
- */
-TEST_F(TestQuestions, test_question_18)
+///*
+// * Question 18
+// */
+//TEST_F(TestQuestions, test_question_18)
+//{
+//    std::vector<int> input = {1, 0, -1, 0, -2, 2};
+//    int target = 0;
+//
+//    // We need to find all combinations of unique 4-tuples that 
+//    // add up to target. There must not be any duplicate tuples.
+//
+//
+//
+//}
+
+void print_comb_sum_result(const std::vector<std::vector<int>>& result)
 {
-    std::vector<int> input = {1, 0, -1, 0, -2, 2};
-    int target = 0;
+    std::cout << "[" << __func__ << "] vector = {";
+    for(unsigned int s = 0; s < result.size(); ++s)     // sub-list
+    {
+        std::cout << "[";
+        for(unsigned int elem = 0; elem < result[s].size(); ++elem)
+        {
+            std::cout << result[s][elem];
+            // format the last comma a bit more nicely
+            if(elem < result[s].size()-1)
+                std::cout << ", ";
+        }
+        std::cout << "] ";
+    }
 
-    // We need to find all combinations of unique 4-tuples that 
-    // add up to target. There must not be any duplicate tuples.
+    std::cout << "}" << std::endl;
+}
 
+/*
+ * Question 39
+ https://leetcode.com/problems/combination-sum/
+ */
+TEST_F(TestQuestions, test_question_39)
+{
+    int target1 = 7;
+    std::vector<int> cands1 = {2, 3, 6, 7};
+    std::vector<std::vector<int>> exp1 = {{7}, {2, 2, 3}};
 
+    //int target2 = 8;
+    //std::vector<int> cands2 = {2,3,5};
+    //std::vector<std::vector<int>> exp2 = {{2, 2, 2, 2}, {2, 3, 3}, {3, 5}};
 
+    std::vector<std::vector<int>> result1;
+
+    result1 = combination_sum_i(cands1, target1);
+    std::cout << "Expected : " << std::endl;
+    print_comb_sum_result(exp1);
+    std::cout << "Output : " << std::endl;
+    print_comb_sum_result(result1);
+
+    // first of all lets make sure we have the expected number of sublists
+    ASSERT_EQ(exp1.size(), result1.size());
+}
+
+/*
+ * Question 40
+ https://leetcode.com/problems/combination-sum-ii/
+ */
+TEST_F(TestQuestions, test_question_40)
+{
+    int target1 = 8;
+    std::vector<int> cands1 = {10, 1, 2, 7, 6, 1, 5};
+    std::vector<std::vector<int>> exp1 = {{1, 7}, {1, 2, 5}, {2, 6}, {1, 1, 6}};
+    std::vector<std::vector<int>> result1;
+
+    //int target2 = 5;
+    //std::vector<int> cands2 = {2, 5, 2, 1, 2};
+    //std::vector<std::vector<int>> exp2 = {{1, 2, 2}, {5}};
+
+    // lets try the first output
+    result1 = combination_sum_ii(cands1, target1);
+    print_comb_sum_result(exp1);
+    print_comb_sum_result(result1);
 }
 
 /*

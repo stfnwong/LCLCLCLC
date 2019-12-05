@@ -255,7 +255,6 @@ std::string longest_common_prefix_binary_search(std::vector<std::string>& strs)
 
 
 
-
 /*
  * Question 17
  */
@@ -269,7 +268,7 @@ void find_letter_combo(
         std::string cur_string,
         int idx)
 {
-    if(idx == digits.size())
+    if(idx == (int) digits.size())      // c-style cast, but shuts linter up
     {
         output.push_back(cur_string);
         return;
@@ -311,9 +310,152 @@ std::vector<std::string> letter_combinations_17(std::string digits)
 /*
  * Question 18
  */
-std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target)
+//std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target)
+//{
+//        
+//}
+
+/*
+ * Question 39
+# https://leetcode.com/problems/combination-sum/
+ */
+
+void print_comb_vec(const std::vector<int>& comb_vec)
 {
-    
+    std::cout << "{";
+    for(unsigned int i = 0; i < comb_vec.size(); ++i)
+    {
+        std::cout << comb_vec[i];
+        if(i < comb_vec.size()-1)
+            std::cout << ", ";
+    }
+    std::cout << "}" << std::endl;
+}
+
+void comb_sum_i_inner(
+        std::vector<int>& cands,
+        int idx,
+        int target,
+        std::vector<int>& cur_vector, 
+        std::vector<std::vector<int>>& result_vector
+        )
+{
+    // Since we progressively subtract more elements from the current
+    // vector, we know we have a valid solution once we reach 0 here
+    if(target == 0)
+    {
+        result_vector.push_back(cur_vector);
+        return;
+    }
+
+    // we can exclude negative numbers in this formulation of the problem
+    if(target < 0)
+        return;
+
+    // Dump some output
+    std::cout << "[" << __func__ << "] idx = " << idx << " target = " << target << std::endl;
+    std::cout << "[" << __func__ << "] cur_vector : ";
+    print_comb_vec(cur_vector);
+
+    // Walk through all the candidates and determine the effect of adding or not adding each to the 
+    // result vector
+    for(int i = idx; i < (int) cands.size(); ++i)
+    {
+        cur_vector.push_back(cands[i]);
+        comb_sum_i_inner(cands, i+1, target - cands[i], cur_vector, result_vector);
+        cur_vector.pop_back();
+        //if(i == idx)        // we are on the start index.
+        //{
+        //    // Inner loop debug print
+        //    std::cout << "[" << __func__ << "] i = " << i << " cands[i] = " 
+        //        << cands[i] << " target = " << target << std::endl;
+        //    cur_vector.push_back(cands[i]);
+        //    // try next index
+        //    comb_sum_i_inner(cands, i+1, target - cands[i], cur_vector, result_vector);
+        //    // remove the current candidate from future calls in this branch 
+        //    cur_vector.pop_back();
+        //}
+    }
+}
+
+// Question 39 entry point
+std::vector<std::vector<int>> combination_sum_i(std::vector<int>& candidates, int target)
+{
+    std::vector<std::vector<int>> result;
+    std::vector<int> cur_vector;
+
+    // In-place sort of candidates
+    std::sort(candidates.begin(), candidates.end());
+    comb_sum_i_inner(candidates, 0, target, cur_vector, result);
+
+    return result;
+}
+
+/*
+ * Question 40
+ https://leetcode.com/problems/combination-sum-ii/
+ */
+void comb_sum_ii_inner(
+        std::vector<int>& cands,
+        int idx,
+        int target,
+        std::vector<int>& cur_vector, 
+        std::vector<std::vector<int>>& result_vector
+        )
+{
+    // we are decrementing the target sum, so once we've minimized it
+    // (to zero in this case) we append the current vector to the 
+    // results vector and return. Zero here would indicate that the 
+    // numbers we chose did in fact sum to the target.
+    if(target == 0)
+    {
+        result_vector.push_back(cur_vector);
+        return;
+    }
+
+    // There are no negative integers in this problem, so if the target
+    // drops below zero then we can just terminate this branch
+    if(target < 0)
+        return;
+
+    // Lets dump some debug info to the console
+    std::cout << "[" << __func__ << "] idx = " << idx << " target = " << target << std::endl;
+
+    // Walk over the candidates and try adding and not adding each in turn
+    for(int i = idx; idx < (int) cands.size(); ++i)
+    {
+        if((i == idx) || (cands[i] != cands[i-1]))      // doesn't terminate correctly if there are duplicates...
+        {
+            // Inner loop debug print
+            std::cout << "[" << __func__ << "] i = " << i << " cands[i] = " 
+                << cands[i] << " target = " << target << std::endl;
+            cur_vector.push_back(cands[i]);
+            // branch where we add number to set 
+            comb_sum_ii_inner(
+                    cands, 
+                    i+1, 
+                    target - cands[i], 
+                    cur_vector, 
+                    result_vector
+            );
+            // branch where we remove number from set
+            //cands.pop_back();
+            cur_vector.pop_back();
+        }
+    }
+}
+
+// Main (outer) function of combination sum ii
+std::vector<std::vector<int>> combination_sum_ii(std::vector<int>& candidates, int target)
+{
+    std::vector<std::vector<int>> result;
+    std::vector<int> cur_vector;
+
+    // In-place sort of candidates
+    std::sort(candidates.begin(), candidates.end());
+    comb_sum_ii_inner(candidates, 0, target, cur_vector, result);
+
+    return result;
 }
 
 /*

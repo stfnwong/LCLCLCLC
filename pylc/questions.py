@@ -70,8 +70,32 @@ def longest_common_prefix_14(strs:List[str]) -> str:
 
 # leetcode 39
 # https://leetcode.com/problems/combination-sum/
+
+def comb_sum_39_inner(cands:List[int], idx:int, target:int, current:List[int], result:List[int]) -> None:
+    # In this problem we don't have negative values
+    if target == 0:
+        result.append(current[:])
+
+    if target < 0:
+        return
+
+    for i in range(idx, len(cands)):
+        if (i == idx):
+            current.append(cands[i])
+            # Try adding the value to the set
+            comb_sum_39_inner(cands, i+1, target - cands[i], current, result)
+            # Account for removing the value from the set
+            #current.pop(len(current) - 1)
+            cands.pop(-1)       # Why does this work? Why do we need to modify cands?
+
+
 def combination_sum_39(candidates:List[int], target:int) -> List[List[int]]:
-    pass
+    result = []
+    sorted_cands = sorted(candidates)
+    comb_sum_39_inner(sorted_cands, 0, target, [], result)
+
+    return result
+
 
 # leetcode 40
 # https://leetcode.com/problems/combination-sum-ii/
@@ -95,8 +119,10 @@ def find_sum_cands_recursive(cands:List[int], idx:int, target:int, current:List[
         # 2) In this instance of the problem we need to check for duplicates
         if (i == idx) or (cands[i] != cands[i-1]):
             current.append(cands[i])
+            # This call is the branch where we add the value to the set
             find_sum_cands_recursive(cands, i+1, target - cands[i], current, result)
-            # remove the number we just took
+            # remove the number we just took - this is the branch where we
+            # don't add the value
             current.pop(len(current) - 1)
 
 
@@ -114,7 +140,6 @@ def combination_sum_40(candidates:List[int], target:int) -> List[List[int]]:
     # therefore we can just test the next element and skip it if it matches the
     # current element.
     sorted_cands = sorted(candidates)
-
     find_sum_cands_recursive(sorted_cands, 0, target, [], result)
 
     return result

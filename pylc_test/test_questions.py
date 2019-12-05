@@ -58,6 +58,17 @@ class TestQuestion39(unittest.TestCase):
         self.inp2 = ([2,3,5], 8)
         self.exp2 = [[2, 2, 2, 2], [2, 3, 3], [3, 5]]
 
+    def test_combination_sum(self) -> None:
+        result1 = questions.combination_sum_39(self.inp1[0], self.inp1[1])
+
+        print('Got %s' % str(result1))
+        print('Expected %s' % str(self.exp1))
+
+        result2 = questions.combination_sum_39(self.inp2[0], self.inp2[1])
+
+        print('Got %s' % str(result2))
+        print('Expected %s' % str(self.exp2))
+
 
 class TestQuestion40(unittest.TestCase):
     def setUp(self) -> None:
@@ -70,10 +81,25 @@ class TestQuestion40(unittest.TestCase):
     def test_combination_sum(self) -> None:
         result1 = questions.combination_sum_40(self.inp1[0], self.inp1[1])
 
-        print('Got %s' % str(result1))
-        print('Expected %s' % str(self.exp1))
+        print('Got %s' % str(sorted(result1)))
+        print('Expected %s' % str(sorted((self.exp1))))
 
         # Not sure that we can rely on order for assertions here...
+        # The output here is a list of lists, so the first thing we can
+        # do is check that each of the expected lists is in fact in the
+        # output
+        for n, (out, exp) in enumerate(zip(sorted(result1), sorted(self.exp1))):
+            for o, e in zip(out, exp):
+                self.assertEqual(e, o)
+
+        result2 = questions.combination_sum_40(self.inp2[0], self.inp2[1])
+
+        print('Got %s' % str(sorted(result2)))
+        print('Expected %s' % str(sorted((self.exp2))))
+
+        for n, (out, exp) in enumerate(zip(sorted(result2), sorted(self.exp2))):
+            for o, e in zip(out, exp):
+                self.assertEqual(e, o)
 
 
 
