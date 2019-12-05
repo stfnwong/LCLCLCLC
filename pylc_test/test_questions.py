@@ -35,6 +35,7 @@ class TestQuestion3(unittest.TestCase):
         self.assertEqual(self.exp3, l3)
 
 
+# ======== QUESTION 14
 class TestQuestion14(unittest.TestCase):
     def setUp(self) -> None:
         self.inp1 = ["flower", "flow", "flight"]
@@ -52,6 +53,7 @@ class TestQuestion14(unittest.TestCase):
         self.assertEqual(self.exp2, p2)
 
 
+# ======== QUESTION 39
 class TestQuestion39(unittest.TestCase):
     def setUp(self) -> None:
         # input format is (candiates, target)
@@ -79,6 +81,7 @@ class TestQuestion39(unittest.TestCase):
             self.assertIn(sublist, result2)
 
 
+# ======== QUESTION 40
 class TestQuestion40(unittest.TestCase):
     def setUp(self) -> None:
         # input format is (candiates, target)
@@ -113,7 +116,29 @@ class TestQuestion40(unittest.TestCase):
             for o, e in zip(out, exp):
                 self.assertEqual(e, o)
 
+# ======== QUESTION 41
+class TestQuestion41(unittest.TestCase):
+    def setUp(self) -> None:
+        self.inp1 = [1, 2, 0]
+        self.exp1 = 3
+        self.inp2 = [3, 4, -1, 1]
+        self.exp2 = 2
 
+    def test_first_missing_positive(self) -> None:
+        print('Testing Q41 : first missing positive')
+        res1 = questions.first_missing_positive_41(self.inp1)
+        print('Expecting %d' % self.exp1)
+        print('Got %d' % res1)
+        self.assertEqual(self.exp1, res1)
+
+        res2 = questions.first_missing_positive_41(self.inp2)
+        print('Expecting %d' % self.exp2)
+        print('Got %d' % res2)
+        self.assertEqual(self.exp2, res2)
+
+
+
+# ======== QUESTION 53
 class TestQuestion53(unittest.TestCase):
     def setUp(self) -> None:
         self.inp1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4]

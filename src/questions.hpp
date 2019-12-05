@@ -50,6 +50,10 @@ std::vector<std::vector<int>> combination_sum_i(std::vector<int>& candidates, in
 // https://leetcode.com/problems/combination-sum-ii/
 std::vector<std::vector<int>> combination_sum_ii(std::vector<int>& candidates, int target);
 
+// ==== QUESTION 41
+// https://leetcode.com/problems/first-missing-positive/
+int first_missing_positive(std::vector<int>& nums);
+
 // ==== QUESTION 55
 // https://leetcode.com/problems/jump-game/
 bool can_jump(std::vector<int>& nums);

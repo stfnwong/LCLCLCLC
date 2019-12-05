@@ -146,6 +146,23 @@ def combination_sum_40(candidates:List[int], target:int) -> List[List[int]]:
 
     return result
 
+# leetcode 41
+# https://leetcode.com/problems/first-missing-positive/
+def first_missing_positive_41(nums:List[int]) -> int:
+    output = [0 for _ in range(len(nums))]
+
+    # build an array of numbers
+    # What we are sort of recording here is like a list of what numbers
+    # we have seen
+    for n, num in enumerate(nums):
+        if num > 0 and num <= len(nums):
+            output[num-1] = num
+
+    for n in range(len(output)):
+        if output[n] != n+1:
+            return n+1
+
+    return len(nums)+1
 
 # leetcode 53
 # https://leetcode.com/problems/maximum-subarray/

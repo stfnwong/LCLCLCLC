@@ -456,6 +456,41 @@ std::vector<std::vector<int>> combination_sum_ii(std::vector<int>& candidates, i
 }
 
 /*
+ * Question 41
+ */
+// https://leetcode.com/problems/first-missing-positive/
+int first_missing_positive(std::vector<int>& nums)
+{
+    std::vector<int> output(nums.size(), 0);
+
+    for(int i = 0; i < (int) nums.size(); ++i)
+    {
+        if(nums[i] > 0 && nums[i] <= (int) nums.size())
+            output[nums[i] - 1] = nums[i];
+    }
+
+    std::cout << "[" << __func__ << "] output after first pass : " << std::endl;
+    std::cout << "{";
+    for(unsigned int n = 0; n < output.size(); ++n)
+    {
+        std::cout << output[n];
+        if(n < output.size()-1)
+            std::cout << ", ";
+    }
+    std::cout << "}" << std::endl;
+
+    // Now iterate over input again. 
+    // TODO : why does this work?
+    for(int i = 0; i < (int) nums.size(); ++i)
+    {
+        if(output[i] != (i+1))
+            return i+1;
+    }
+
+    return (int) (nums.size() + 1);
+}
+
+/*
  * Question 55
  */
 // Lets implement the dumb way here. 

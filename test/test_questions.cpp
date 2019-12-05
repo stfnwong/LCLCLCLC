@@ -299,6 +299,29 @@ TEST_F(TestQuestions, test_question_40)
 }
 
 /*
+ * Question 41
+ */
+// https://leetcode.com/problems/first-missing-positive/
+TEST_F(TestQuestions, test_question_41)
+{
+    std::vector<int> inp1 = {1, 2, 0};
+    int exp1 = 3;
+    int result1;
+
+    result1 = first_missing_positive(inp1);
+    std::cout << "result 1 = " << result1 << std::endl;
+    ASSERT_EQ(exp1, result1);
+
+    std::vector<int> inp2 = {3, 4, -1, 1};
+    int exp2 = 2;
+    int result2;
+
+    result2 = first_missing_positive(inp2);
+    std::cout << "result 2 = " << result2 << std::endl;
+    ASSERT_EQ(exp2, result2);
+}
+
+/*
  * Question 55
  */
 TEST_F(TestQuestions, test_question_55)
