@@ -291,6 +291,9 @@ TEST_F(TestQuestions, test_question_40)
     result1 = combination_sum_ii(cands1, target1);
     print_comb_sum_result(exp1);
     print_comb_sum_result(result1);
+
+    // start by checking we have the expected number of combinations
+    ASSERT_EQ(exp1.size(), result1.size());
 }
 
 /*

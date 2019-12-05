@@ -361,20 +361,12 @@ void comb_sum_i_inner(
     // result vector
     for(int i = idx; i < (int) cands.size(); ++i)
     {
-        cur_vector.push_back(cands[i]);
-        comb_sum_i_inner(cands, i+1, target - cands[i], cur_vector, result_vector);
-        cur_vector.pop_back();
-        //if(i == idx)        // we are on the start index.
-        //{
-        //    // Inner loop debug print
-        //    std::cout << "[" << __func__ << "] i = " << i << " cands[i] = " 
-        //        << cands[i] << " target = " << target << std::endl;
-        //    cur_vector.push_back(cands[i]);
-        //    // try next index
-        //    comb_sum_i_inner(cands, i+1, target - cands[i], cur_vector, result_vector);
-        //    // remove the current candidate from future calls in this branch 
-        //    cur_vector.pop_back();
-        //}
+        if(target >= cands[i])
+        {
+            cur_vector.push_back(cands[i]);
+            comb_sum_i_inner(cands, i, target - cands[i], cur_vector, result_vector);
+            cur_vector.pop_back();
+        }
     }
 }
 
@@ -439,8 +431,8 @@ void comb_sum_ii_inner(
                     result_vector
             );
             // branch where we remove number from set
-            //cands.pop_back();
-            cur_vector.pop_back();
+            cands.pop_back();
+            //cur_vector.pop_back();
         }
     }
 }

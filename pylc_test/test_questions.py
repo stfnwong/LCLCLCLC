@@ -8,6 +8,8 @@ Stefan Wong 2019
 import unittest
 from pylc import questions
 
+# debug
+#from pudb import set_trace; set_trace()
 
 
 class TestQuestion3(unittest.TestCase):
@@ -59,15 +61,22 @@ class TestQuestion39(unittest.TestCase):
         self.exp2 = [[2, 2, 2, 2], [2, 3, 3], [3, 5]]
 
     def test_combination_sum(self) -> None:
+        print('Testing Q39 (combination sum i)')
         result1 = questions.combination_sum_39(self.inp1[0], self.inp1[1])
 
-        print('Got %s' % str(result1))
-        print('Expected %s' % str(self.exp1))
+        print('Got %s (len %d)' % (str(result1), len(result1)))
+        print('Expected %s (len %d)' % (str(self.exp1), len(self.exp1)))
+        self.assertEqual(len(self.exp1), len(result1))
+        for sublist in self.exp1:
+            self.assertIn(sublist, result1)
 
         result2 = questions.combination_sum_39(self.inp2[0], self.inp2[1])
 
         print('Got %s' % str(result2))
         print('Expected %s' % str(self.exp2))
+        self.assertEqual(len(self.exp2), len(result2))
+        for sublist in self.exp2:
+            self.assertIn(sublist, result2)
 
 
 class TestQuestion40(unittest.TestCase):
@@ -79,6 +88,7 @@ class TestQuestion40(unittest.TestCase):
         self.exp2 = [[1, 2, 2], [5]]
 
     def test_combination_sum(self) -> None:
+        print('Testing Q40 (combination sum ii)')
         result1 = questions.combination_sum_40(self.inp1[0], self.inp1[1])
 
         print('Got %s' % str(sorted(result1)))

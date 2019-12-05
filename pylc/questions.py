@@ -80,13 +80,14 @@ def comb_sum_39_inner(cands:List[int], idx:int, target:int, current:List[int], r
         return
 
     for i in range(idx, len(cands)):
-        if (i == idx):
+        if target >= cands[i]:       # still need to subtract
             current.append(cands[i])
-            # Try adding the value to the set
-            comb_sum_39_inner(cands, i+1, target - cands[i], current, result)
+            # Try adding the value to the set. We don't need to
+            # increment here since we can re-use the same number as many times
+            # as we like.
+            comb_sum_39_inner(cands, i, target - cands[i], current, result)
             # Account for removing the value from the set
-            #current.pop(len(current) - 1)
-            cands.pop(-1)       # Why does this work? Why do we need to modify cands?
+            current.pop(-1)
 
 
 def combination_sum_39(candidates:List[int], target:int) -> List[List[int]]:
