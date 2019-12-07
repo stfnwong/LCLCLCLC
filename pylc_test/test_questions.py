@@ -179,5 +179,25 @@ class TestQuestion55(unittest.TestCase):
         self.assertEqual(self.exp4, jump4)
 
 
+# ======== QUESTION 224
+#https://leetcode.com/problems/basic-calculator/
+class TestQuestion224(unittest.TestCase):
+    def setUp(self) -> None:
+        # NOTE: on Leetcode we are allowed to assume the expression we are
+        # given is always valid for this question
+        self.inp1 = "1 + 1"
+        self.exp1 = 2
+        self.inp2 = "2 - 1 + 2"
+        self.exp2 = 3
+        self.inp3 = "(1 + (4 + 5 + 2) - 3) + (6 + 8)"
+        self.exp3 = 23
+
+    def test_calculator(self) -> None:
+
+        res3 = questions.calculate224(self.inp3)
+        print(res3)
+
+
+
 if __name__ == '__main__':
     unittest.main()

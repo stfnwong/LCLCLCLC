@@ -56,8 +56,11 @@ int first_missing_positive(std::vector<int>& nums);
 
 // ==== QUESTION 55
 // https://leetcode.com/problems/jump-game/
+// TODO : finish this one
 bool can_jump(std::vector<int>& nums);
 
+// ==== QUESTION 224
+// https://leetcode.com/problems/basic-calculator/
 
 // ==== QUESTION 1222
 // https://leetcode.com/problems/queens-that-can-attack-the-king/

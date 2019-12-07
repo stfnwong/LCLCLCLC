@@ -7,6 +7,8 @@ Stefan Wong 2019
 
 from typing import List
 
+from pylc import stack
+
 # debug
 #from pudb import set_trace; set_trace()
 
@@ -239,6 +241,38 @@ def coin_change_322(coins:list, amount:int) -> int:
 
     return -1
 
+
+# Question 224
+#https://leetcode.com/problems/basic-calculator/
+# Just evaluates a basic string expression
+def calculate224(s:str) -> int:
+
+    # lets walk along the string and tokenize into operators and operands
+    operator_stack = stack.Stack()
+    operand_stack  = stack.Stack()
+
+    cur_operand = ""
+    for n, c in enumerate(s):
+        print(n, c)
+        # Check types here
+        if c == '+' or c == '-' or c == '/' or c == '*' or c == '(' or c == ')':
+            operator_stack.push(c)
+        elif c.isdigit():
+            cur_operand += c
+            #operand_stack.push(c)       # only works for single char digits
+
+        if c == ' ':
+            # Take the cur operand, convert to int and place on
+            # operand stack
+            # Don't bother to handle exceptions here, just let the program
+            # crash.
+            print('cur_operand is :', cur_operand)
+            operand_stack.push(int(cur_operand))
+            cur_operand = ""
+
+    # lets see what is on the stacks
+    print(operator_stack)
+    print(operand_stack)
 
 
 # Question 416

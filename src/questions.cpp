@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
+#include <unordered_set>
 #include "questions.hpp"
 
 /*
@@ -29,7 +30,6 @@ std::vector<int> two_sum_map(std::vector<int>& nums, int target)
             output[1] = n;
             return output;
         }
-
         // add new differences to map
         diff_map.insert({nums[n], n});
     }
@@ -86,6 +86,7 @@ std::vector<int> two_sum_pointer(std::vector<int>& nums, int target)
 
     return output;
 }
+
 
 /*
  * Question 2
@@ -252,6 +253,11 @@ std::string longest_common_prefix_binary_search(std::vector<std::string>& strs)
 
     return prefix;
 }
+
+/*
+ * Quesiton 15
+ * https://leetcode.com/problems/3sum/
+ */
 
 
 
@@ -436,7 +442,8 @@ void comb_sum_ii_inner(
                     result_vector
             );
             // branch where we remove number from set
-            cur_vector.pop_back();
+            if(cur_vector.size() > 0)
+                cur_vector.pop_back();
         }
     }
 }
@@ -480,7 +487,8 @@ int first_missing_positive(std::vector<int>& nums)
     std::cout << "}" << std::endl;
 
     // Now iterate over input again. 
-    // TODO : why does this work?
+    // Why does the offset need to be +1? This accounts for the
+    // fact that we only want to return positive integers?
     for(int i = 0; i < (int) nums.size(); ++i)
     {
         if(output[i] != (i+1))
@@ -494,7 +502,6 @@ int first_missing_positive(std::vector<int>& nums)
  * Question 55
  */
 // Lets implement the dumb way here. 
-
 bool can_jump_here_basic(int cur_pos, std::vector<int>& nums)
 {
     if(cur_pos == (int) nums.size()-1)
@@ -520,6 +527,11 @@ bool can_jump_here_basic(int cur_pos, std::vector<int>& nums)
 
 
 
+/*
+ * Question 55
+ * Queens that can attack a King
+ */
+// https://leetcode.com/problems/jump-game/
 bool can_jump(std::vector<int>& nums)
 {
     return can_jump_here_basic(0, nums);
