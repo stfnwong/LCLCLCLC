@@ -137,8 +137,6 @@ class Heap(object):
     # NOTE: for now this is a max heap
     def _bubble_up(self, idx:int) -> None:
         parent_idx = self._parent(idx)
-        #if parent_idx == 0:
-        #    return
         if self.nodes[parent_idx] < self.nodes[idx]:
             self.nodes[idx], self.nodes[parent_idx] = self.nodes[parent_idx], self.nodes[idx]
             self._bubble_up(parent_idx)
@@ -182,7 +180,7 @@ class MinHeap(Heap):
 
     def _bubble_up(self, idx:int) -> None:
         parent_idx = self._parent(idx)
-        # Min heap - parent should be lesser
+        # Min heap - parent should be lesser than children
         if self.nodes[parent_idx] > self.nodes[idx]:
             self.nodes[idx], self.nodes[parent_idx] = self.nodes[parent_idx], self.nodes[idx]
             self._bubble_up(parent_idx)

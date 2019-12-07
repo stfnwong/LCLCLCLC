@@ -144,6 +144,7 @@ Heap::Heap(const unsigned int max) : nodes(std::vector<HeapNode>(max)), max_size
 /*
  * insertNode()
  * Add the node to the end of the array and apply heapify up to it
+ * recursively to form an array that satisfies the heap property
  */
 void Heap::insertNode(const HeapNode& node)
 {
@@ -178,7 +179,6 @@ HeapNode Heap::remove(unsigned int idx)
  */
 unsigned int Heap::getNumElem(void) const
 {
-	//return this->nodes.size();
     return this->num_elem;
 }
 
@@ -212,10 +212,8 @@ void MinHeap::heapify_up(unsigned int idx)
     unsigned int p_idx; 
 
     p_idx = heap_parent(idx);
-    std::cout << "[" << __func__ << "] parent for node[" 
-        << idx << "] is [" << p_idx << "]" << std::endl;
-
-    if(this->nodes[idx] < this->nodes[p_idx])
+    // MinHeap : parents must be less than children
+    if(this->nodes[p_idx] > this->nodes[idx])
     {
         std::swap(this->nodes[idx], this->nodes[p_idx]);
         this->heapify_up(p_idx);
@@ -223,6 +221,8 @@ void MinHeap::heapify_up(unsigned int idx)
 }
 
 void MinHeap::heapify_down(unsigned int idx) {} 
+
+
 
 
 // ==== MinHeap
@@ -235,10 +235,8 @@ void MaxHeap::heapify_up(unsigned int idx)
     unsigned int p_idx; 
 
     p_idx = heap_parent(idx);
-    std::cout << "[" << __func__ << "] parent for node[" 
-        << idx << "] is [" << p_idx << "]" << std::endl;
-
-    if(this->nodes[idx] > this->nodes[p_idx])
+    // MaxHeap : parents must be greater than children
+    if(this->nodes[p_idx] > this->nodes[idx])
     {
         std::swap(this->nodes[idx], this->nodes[p_idx]);
         this->heapify_up(p_idx);
@@ -252,16 +250,12 @@ void MaxHeap::heapify_down(unsigned int idx) {}
 // ============== Heap utilities ================ //
 unsigned int heap_parent(unsigned int idx)
 {
-    if(idx <= 1)
-        return 0;
-
-    //return (unsigned int) (idx-1) >> 1;
-    return (unsigned int) (idx >> 1);
+    return (unsigned int) (idx <= 1) ? 0 : (idx >> 1);
 }
 
 unsigned int heap_left_child_idx(unsigned int idx)
 {
-    return 2 * (idx + 1) - 1;
+    return 2 * (idx + 1) - 1;   // -1 here to account for zero index
 }
 
 unsigned int heap_right_child_idx(unsigned int idx)
@@ -297,7 +291,7 @@ bool array_has_min_heap_property(const std::vector<HeapNode>& nodes, unsigned in
     if((lidx >= nodes.size()-1) || (ridx >= nodes.size()-1)) 
         return true;
 
-    if((nodes[lidx] < nodes[idx]) && (nodes[ridx] < nodes[idx]))
+    if((nodes[lidx] <= nodes[idx]) && (nodes[ridx] <= nodes[idx]))
     {
         return array_has_min_heap_property(nodes, idx+1);
     }
@@ -324,7 +318,7 @@ bool array_has_max_heap_property(const std::vector<HeapNode>& nodes, unsigned in
     if((lidx >= nodes.size()-1) || (ridx >= nodes.size()-1)) 
         return true;
 
-    if((nodes[lidx] > nodes[idx]) && (nodes[ridx] > nodes[idx]))
+    if((nodes[lidx] >= nodes[idx]) && (nodes[ridx] >= nodes[idx]))
     {
         return array_has_max_heap_property(nodes, idx+1);
     }

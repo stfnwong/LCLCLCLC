@@ -55,6 +55,7 @@ class Heap
 	public:
 		Heap();
 		Heap(const unsigned int max);
+        // TODO: implement these...
         Heap(const Heap& that) = delete;
         Heap(const Heap&& that) = delete;
 
@@ -69,8 +70,10 @@ class Heap
         std::vector<HeapNode> getVector(void) const;
 };
 
-
 // Specialize into MinHeap and MaxHeap
+/*
+ * MinHeap
+ */
 class MinHeap : public Heap
 {
     public:
@@ -82,7 +85,9 @@ class MinHeap : public Heap
 		void heapify_down(unsigned int n) override;
 };
 
-
+/*
+ * MaxHeap
+ */
 class MaxHeap : public Heap
 {
     public:
@@ -95,12 +100,10 @@ class MaxHeap : public Heap
 };
 
 
-
 // Jump around a heap array
 unsigned int heap_parent(unsigned int idx);
 unsigned int heap_left_child_idx(unsigned int idx);
 unsigned int heap_right_child_idx(unsigned int idx);
-
 
 // Util functions 
 bool has_min_heap_property(const Heap& heap);
@@ -109,6 +112,5 @@ bool has_max_heap_property(const Heap& heap);
 // 'private' functions
 bool array_has_min_heap_property(const std::vector<HeapNode>& nodes, unsigned int idx);
 bool array_has_max_heap_property(const std::vector<HeapNode>& nodes, unsigned int idx);
-
 
 #endif /*__HEAP_HPP*/
