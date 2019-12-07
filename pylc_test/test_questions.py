@@ -191,11 +191,17 @@ class TestQuestion224(unittest.TestCase):
         self.exp2 = 3
         self.inp3 = "(1 + (4 + 5 + 2) - 3) + (6 + 8)"
         self.exp3 = 23
+        # Also try operands that require more than one digit to represent
+        self.inp4 = "(55 + (4 * 2))"
+        self.exp4 = 63
 
     def test_calculator(self) -> None:
 
         res3 = questions.calculate224(self.inp3)
         print(res3)
+
+        res4 = questions.calculate224(self.inp4)
+        print(res4)
 
 
 

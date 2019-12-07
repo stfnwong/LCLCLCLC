@@ -252,23 +252,26 @@ def calculate224(s:str) -> int:
     operand_stack  = stack.Stack()
 
     cur_operand = ""
-    for n, c in enumerate(s):
+    n = 0
+    while(n < len(s)):
+        c = s[n]
         print(n, c)
         # Check types here
         if c == '+' or c == '-' or c == '/' or c == '*' or c == '(' or c == ')':
             operator_stack.push(c)
         elif c.isdigit():
             cur_operand += c
-            #operand_stack.push(c)       # only works for single char digits
+            # Handle operands that require more than a single digit
+            n = n + 1
+            while(s[n].isdigit()):
+                cur_operand += c
+                n = n + 1
 
-        if c == ' ':
-            # Take the cur operand, convert to int and place on
-            # operand stack
-            # Don't bother to handle exceptions here, just let the program
-            # crash.
-            print('cur_operand is :', cur_operand)
             operand_stack.push(int(cur_operand))
             cur_operand = ""
+            continue
+
+        n = n + 1
 
     # lets see what is on the stacks
     print(operator_stack)
