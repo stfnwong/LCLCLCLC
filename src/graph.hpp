@@ -40,24 +40,40 @@ class GraphNode
     public:
         int key;
         int val;
-        bool visited;
+        int uid;        // now the question is - how to generate some unique ids?
         std::vector <GraphNode*> neighbours;
 
     public:
-        GraphNode();
-        GraphNode(int val, int key);
-        GraphNode(int val, int key, std::vector<GraphNode*> nbors); 
+        GraphNode(int uid);
+        GraphNode(int uid, int val, int key);
+        GraphNode(int uid, int val, int key, std::vector<GraphNode*> nbors); 
 
         void addNeighbour(GraphNode* n);
         void init(void);
 
         void setVal(int v);
-        void mark(void);
-        void unmark(void);
-
         GraphKV getPair(void) const;
-
         std::string toString(void) const;
+};
+
+
+// What about representing and entire graph?
+// This is actually the implementation that is used in https://www.youtube.com/watch?v=zaBhtODEL0w
+//
+
+/*
+ * Graph
+ * A Graph is a collection of Graph Nodes
+ */
+class Graph
+{
+    private:
+        // this is just a lookup for traversals
+        std::unordered_map<int, GraphNode> node_lut;
+
+    public:
+        Graph();
+
 };
 
 // Create graphs from repr strings

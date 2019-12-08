@@ -13,12 +13,13 @@
 
 
 // GraphNode implementation
-GraphNode::GraphNode() : key(0), val(0), visited(false) {}
+GraphNode::GraphNode(int uid) : key(0), val(0), uid(uid) {}
 
-GraphNode::GraphNode(int key, int val) : key(key), val(val), visited(false) {} 
+GraphNode::GraphNode(int uid, int key, int val) : key(key), val(val), uid(uid) {} 
 
-GraphNode::GraphNode(int key, int val, std::vector<GraphNode*> nbors)
+GraphNode::GraphNode(int uid, int key, int val, std::vector<GraphNode*> nbors)
 {
+    this->uid = uid;
     this->val = val;
     this->key = key;
     this->visited = false;
@@ -32,6 +33,7 @@ void GraphNode::addNeighbour(GraphNode* n)
 
 void GraphNode::init(void)
 {
+    this->uid
     this->key = 0;
     this->val = 0;
     this->neighbours.clear();
@@ -52,11 +54,18 @@ void GraphNode::unmark(void)
     this->visited = false;
 }
 
+/*
+ * getPair()
+ */
+// NOTE: this is a dumb way to do things
 GraphKV GraphNode::getPair(void) const
 {
     return GraphKV(this->key, this->val);
 }
 
+/*
+ * toString()
+ */
 std::string GraphNode::toString(void) const
 {
     std::ostringstream oss;
@@ -267,6 +276,10 @@ bool GraphKV::operator!=(const GraphKV& that) const
 // ======== TRAVERSALS ======== //
 // BFS
 // NoTE: was const, but that doesn't make sense since I am modifying visited inside each object
+
+
+// TODO: now we need to refactor this in terms of this new Graph object 
+// which holds an entire graph.
 void graph_bfs(GraphNode* root, std::vector<GraphKV>& traversal)
 {
     // TODO : remove debug printing
