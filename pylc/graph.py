@@ -61,12 +61,10 @@ class GraphNode(object):
         else:
             return self.node_id >= that
 
-    # TODO : iteratable?
-
     def add_neighbour(self, n:'GraphNode') -> None:
         self.neigbours.append(n)
 
-
+    # TODO : iteratable?
 
 
 class Graph(object):

@@ -44,6 +44,11 @@ class TestGraphNode(unittest.TestCase):
             self.assertFalse(nodes[n-1] >= nodes[n])
             self.assertFalse(nodes[n-1] > nodes[n])
 
+        # Also if we go backwards these rules are now invalid
+        # as the list is now monotonically decreasing
+        for n in range(len(nodes)-1, 1, -1):
+            self.assertTrue(nodes[n] >= nodes[n-1])
+
 
 
 class TestGraph(unittest.TestCase):
