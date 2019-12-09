@@ -79,22 +79,36 @@ class TestGraph(unittest.TestCase):
 
 class TestGraphAdjDict(unittest.TestCase):
     def setUp(self) -> None:
-        pass
+        self.test_graph = graph.GraphAdjDict()
+        self.test_graph.add_edge(0, 1)
+        self.test_graph.add_edge(0, 2)
+        self.test_graph.add_edge(1, 2)
+        self.test_graph.add_edge(2, 0)
+        self.test_graph.add_edge(2, 3)
+        self.test_graph.add_edge(3, 3)
 
     def test_graph_dfs(self) -> None:
-        test_graph = graph.GraphAdjDict()
-        test_graph.add_edge(0, 1)
-        test_graph.add_edge(0, 2)
-        test_graph.add_edge(1, 2)
-        test_graph.add_edge(2, 1)
-        test_graph.add_edge(2, 3)
-        test_graph.add_edge(3, 3)
 
-        print(test_graph)
-        self.assertEqual(4, len(test_graph))
+        print(self.test_graph)
+        self.assertEqual(4, len(self.test_graph))
 
-        test_graph.dfs(2)
+        self.test_graph.dfs(2)
 
+    def test_graph_bfs(self) -> None:
+        print(self.test_graph)
+        self.assertEqual(4, len(self.test_graph))
+        exp_bfs = [2, 0, 3, 1]
+
+        print('Generatng BFS traversal for graph %s' % str(self.test_graph))
+        out_bfs = self.test_graph.bfs(2)
+
+        for t in out_bfs:
+            print(t, end=',')
+        print('\n')
+
+        self.assertEqual(len(exp_bfs), len(out_bfs))
+        for exp, out in zip(exp_bfs, out_bfs):
+            self.assertEqual(exp, out)
 
 
 if __name__ == '__main__':

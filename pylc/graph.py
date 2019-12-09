@@ -8,6 +8,9 @@ Stefan Wong 2019
 from typing import List
 from pylc import queue
 
+# debug
+#from pudb import set_trace; set_trace()
+
 
 class GraphNode(object):
     """
@@ -243,20 +246,21 @@ class GraphAdjDict:
     def _bfs_inner(self, src:int, visited:dict) -> list:
         bfs_q     = queue.Queue()
         traversal = []
-        visited   = dict()
+        visited   = set()
 
         bfs_q.enqueue(src)
-        visited[src] = True
+        visited.add(src)
 
         while(not bfs_q.empty()):
             node = bfs_q.dequeue()
-            traversal.append(self.graph[node])
+            traversal.append(node)
+            #traversal.append(self.graph[node])
 
             # visit children
             for n in self.graph[node]:
-                if visited[n] == False:
+                if n not in visited:
                     bfs_q.enqueue(n)
-                    visited[n] = True
+                    visited.add(n)
 
         return traversal
 
