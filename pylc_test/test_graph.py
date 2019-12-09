@@ -91,8 +91,18 @@ class TestGraphAdjDict(unittest.TestCase):
 
         print(self.test_graph)
         self.assertEqual(4, len(self.test_graph))
+        exp_dfs = [2, 0, 1, 3]
 
-        self.test_graph.dfs(2)
+        print('Generatng DFS traversal for graph %s' % str(self.test_graph))
+        out_dfs = self.test_graph.dfs(2)
+
+        for t in out_dfs:
+            print(t, end=',')
+        print('\n')
+
+        self.assertEqual(len(exp_dfs), len(out_dfs))
+        for exp, out in zip(exp_dfs, out_dfs):
+            self.assertEqual(exp, out)
 
     def test_graph_bfs(self) -> None:
         print(self.test_graph)

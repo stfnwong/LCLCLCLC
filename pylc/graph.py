@@ -9,7 +9,7 @@ from typing import List
 from pylc import queue
 
 # debug
-#from pudb import set_trace; set_trace()
+from pudb import set_trace; set_trace()
 
 
 class GraphNode(object):
@@ -234,12 +234,15 @@ class GraphAdjDict:
         # TODO : find path
 
     # Built in traversals
-    def _dfs_inner(self, src:int, visited:dict, traversal:list) -> list:
+    def _dfs_inner(self, src:int, visited:set, traversal:list) -> list:
         traversal = []
-        visited[src] = True
+        visited.add(src)
 
+        traversal.append(src)
+        # visit children
         for child in self.graph[src]:
-            print(child)
+            if child not in visited:
+                traversal += self._dfs_inner(child, visited, traversal)
 
         return traversal
 
@@ -254,8 +257,6 @@ class GraphAdjDict:
         while(not bfs_q.empty()):
             node = bfs_q.dequeue()
             traversal.append(node)
-            #traversal.append(self.graph[node])
-
             # visit children
             for n in self.graph[node]:
                 if n not in visited:
@@ -275,7 +276,7 @@ class GraphAdjDict:
         return self._bfs_inner(src, visited)
 
     def dfs(self, src:int) -> list:
-        visited = dict()
+        visited = set()
         return self._dfs_inner(src, visited, [])
 
     def bfs_path(self, src:int, dst:int) -> list:
