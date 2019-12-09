@@ -5,7 +5,6 @@
  * Stefan Wong 2019
  */
 
-
 #include <iostream>
 #include <sstream>
 #include <string>

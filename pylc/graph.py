@@ -113,6 +113,9 @@ class Graph(object):
         # therefore there is no path from this location to elsewhere
         return False
 
+    def _path_bfs_inner(self, src:GraphNode, dst:GraphNode, visited:set) -> bool:
+        pass
+
     # TODO : do we need to bother doing a check here? Doesn't
     # python3 do that already?
     def add_node(self, node:GraphNode) -> None:
@@ -131,7 +134,7 @@ class Graph(object):
 
         src     = self.nodes[src_id]
         dst     = self.nodes[dst_id]
-        visited = set()
+        visited = set()         # NOTE : could also do this with a list (if the graph is implemented as an array)
 
         return self._path_dfs_inner(src, dst, visited)
 

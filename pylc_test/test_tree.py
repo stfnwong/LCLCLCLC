@@ -29,10 +29,11 @@ class TestTreeTraverse(unittest.TestCase):
     def setUp(self):
         self.rstring = "[1, 2, None, 3, 4, None, 5, 6, 7]"
         self.expected_size = 7
+        self.expected_inorder = []
 
     def test_inorder_recur(self):
         # get a new tree
-       tree = tree.repr_to_tree(self.rstring)
+        tree = tree.repr_to_tree(self.rstring)
         self.assertEqual(self.expected_size, tree.tree_size(tree))
 
         traversal = inorder(tree)
@@ -44,3 +45,4 @@ class TestTreeTraverse(unittest.TestCase):
         self.assertEqual(self.expected_size, tree.tree_size(tree))
 
         traversal = inorder_iter(tree)
+

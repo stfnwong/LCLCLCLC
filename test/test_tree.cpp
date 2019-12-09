@@ -24,6 +24,10 @@ class TestTree : public ::testing::Test
         int tree1_size = 3;
         int tree2_size = 3;
         int tree3_size = 4;
+
+        // Expected traversals
+        std::vector<int> exp_inorder_1 = {2, 1, 3};
+        std::vector<int> exp_inorder_2 = {1, 3, 2};
 };
 
 
@@ -45,6 +49,7 @@ TEST_F(TestTree, test_repr_to_tree)
     
     // Since the traversals are tested seperately, we just test 
     // the size here.
+    ASSERT_EQ(3, tree_size(repr1_tree));
 
     // clean up
     destroy_tree(repr1_tree);

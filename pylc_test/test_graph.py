@@ -52,7 +52,6 @@ class TestGraphNode(unittest.TestCase):
 
 
 class TestGraph(unittest.TestCase):
-
     def setUp(self) -> None:
         self.empty_repr = "{}"
         self.repr3      = "{0,1,4,5#1,4,3#2,1#3,2,4#4#5}"
