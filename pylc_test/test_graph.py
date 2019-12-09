@@ -50,13 +50,15 @@ class TestGraphNode(unittest.TestCase):
             self.assertTrue(nodes[n] >= nodes[n-1])
 
 
-
 class TestGraph(unittest.TestCase):
     def setUp(self) -> None:
         self.empty_repr = "{}"
         self.repr3      = "{0,1,4,5#1,4,3#2,1#3,2,4#4#5}"
         self.expected_graph3_bfs = [0, 1, 4, 5, 3, 2]
         self.expected_graph3_dfs = [0, 1, 3, 2, 4, 5]
+
+    def test_graph_dfs_path(self) -> None:
+        pass
 
     #def test_init_graph_empty(self) -> None:
     #    g = graph.Graph()
@@ -73,6 +75,26 @@ class TestGraph(unittest.TestCase):
 
     #def test_init_graph_from_repr(self) -> None:
     #    pass
+
+
+class TestGraphAdjDict(unittest.TestCase):
+    def setUp(self) -> None:
+        pass
+
+    def test_graph_dfs(self) -> None:
+        test_graph = graph.GraphAdjDict()
+        test_graph.add_edge(0, 1)
+        test_graph.add_edge(0, 2)
+        test_graph.add_edge(1, 2)
+        test_graph.add_edge(2, 1)
+        test_graph.add_edge(2, 3)
+        test_graph.add_edge(3, 3)
+
+        print(test_graph)
+        self.assertEqual(4, len(test_graph))
+
+        test_graph.dfs(2)
+
 
 
 if __name__ == '__main__':

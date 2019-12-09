@@ -6,6 +6,7 @@ Stefan Wong 2019
 """
 
 from typing import List
+from pylc import queue
 
 
 class GraphNode(object):
@@ -18,6 +19,9 @@ class GraphNode(object):
         self.val:int = val
         self.node_id:int = node_id
         self.neighbours:list = []
+
+        # bookkeeping for iteration
+        self.idx = 0
 
     def __repr__(self) -> None:
         return 'GraphNode'
@@ -61,10 +65,36 @@ class GraphNode(object):
         else:
             return self.node_id >= that
 
+    # How many neighbours?
+    def __len__(self) -> int:
+        return len(self.neighbours)
+
+    # Iteration
+    def __iter__(self) -> 'GraphNode':
+        return self
+
+    def __next__(self) -> 'GraphNode':
+        self.idx += 1
+        if (self.idx-1) < len(self.neighbours):
+            return self.neighbours[idx - 1]
+
+        raise StopIteration
+
+    def __getitem__(self, idx:int) -> 'GraphNode':
+        if idx < 0:
+            raise IndexError
+
+        if idx < len(self.neighbours):
+            return self.neighbours[idx]
+        else:
+            raise IndexError
+
     def add_neighbour(self, n:'GraphNode') -> None:
         self.neigbours.append(n)
 
-    # TODO : iteratable?
+    def remove_neighbour(self, idx:int) -> None:
+        if (idx >= 0) and (idx < len(self.neighbours)):
+            del self.neighbours[idx]
 
 
 class Graph(object):
@@ -114,6 +144,32 @@ class Graph(object):
         return False
 
     def _path_bfs_inner(self, src:GraphNode, dst:GraphNode, visited:set) -> bool:
+        bfs_q = queue.Queue()
+        visited.add(src)
+
+        bfs_q.enqueue(src)
+        while(not bfs_q.empty()):
+            node = bfs_q.dequeue()
+            # If this is the node we are looking for, then there is a path
+            if node == dst:
+                return True
+
+            # If we've seen this node before, then skip
+            if node.node_id in visisted:
+                continue
+
+            # Put all the children of this node into the queue
+            visited.add(node)
+            for child in node:
+                bfs_q.enqueue(child)
+
+        return False
+
+    # Methods to return the actual traversal as a list
+    def _dfs_inner(self, src:GraphNode, dst:GraphNode, visited:set) -> list:
+        pass
+
+    def _bfs_inner(self, src:GraphNode, dst:GraphNode, visited:set) -> list:
         pass
 
     # TODO : do we need to bother doing a check here? Doesn't
@@ -140,31 +196,116 @@ class Graph(object):
 
     def has_path_bfs(self, src_id:int, dst_id:int) -> bool:
         # TODO : need a queue here
-        pass
+        visited = set()
+        return self._path_bfs_inner(src, dst, visited)
 
 
-class GraphAdjList(object):
+class GraphAdjDict:
     """
-    GraphAdjList
-
-    Same idea, but the adjaceny list is a literal list.
+    GraphAdjDict
+    Another Graph implementation based on an adjacency list.
+    Adjacency list is implemented with a dict.
     """
-    def __init__(self, adj_list:list=[], **kwargs) -> None:
-        self.adj = adj_list
+    def __init__(self, adj_dict:dict=None) -> None:
+        if adj_dict is None:
+            self.graph = dict()
+        else:
+            self.graph = adj_dict
 
     def __repr__(self) -> str:
-        return 'GraphAdjList'
+        return 'GraphAdjDict'
+
+    def __str__(self) -> str:
+        return '%s (%d nodes)' % (repr(self), len(self))
 
     def __len__(self) -> int:
-        return len(self.adj_list)
+        return len(self.graph)
 
-    def add_node(self, node_adj_list:list) -> None:
-        self.adj.append(node_adj_list)
+    # Internal methods (ie: inner of paths, etc)
+    def _dfs_path_inner(self, src:int, dst:int, visited:set) -> list:
+        visited.add(src)
+        # TODO : find path
 
-    def remove_node(self, idx:int) -> None:
-        if idx < len(self):
-            del self.adj[idx]
+    def _bfs_path_inner(self, src:int, dst:int, visited:set) -> list:
+        visited.add(src)
+        # TODO : find path
 
+    # Built in traversals
+    def _dfs_inner(self, src:int, visited:dict, traversal:list) -> list:
+        traversal = []
+        visited[src] = True
+
+        for child in self.graph[src]:
+            print(child)
+
+        return traversal
+
+    def _bfs_inner(self, src:int, visited:dict) -> list:
+        bfs_q     = queue.Queue()
+        traversal = []
+        visited   = dict()
+
+        bfs_q.enqueue(src)
+        visited[src] = True
+
+        while(not bfs_q.empty()):
+            node = bfs_q.dequeue()
+            traversal.append(self.graph[node])
+
+            # visit children
+            for n in self.graph[node]:
+                if visited[n] == False:
+                    bfs_q.enqueue(n)
+                    visited[n] = True
+
+        return traversal
+
+    def add_edge(self, k:int, v:int) -> None:
+        if k not in self.graph:
+            self.graph[k] = []
+
+        self.graph[k].append(v)
+
+    def bfs(self, src:int) -> list:
+        visited = dict()
+        return self._bfs_inner(src, visited)
+
+    def dfs(self, src:int) -> list:
+        visited = dict()
+        return self._dfs_inner(src, visited, [])
+
+    def bfs_path(self, src:int, dst:int) -> list:
+        pass
+        visited = set()
+        return self._bfs_path_inner(src, visited)
+
+    def dfs_path(self, src:int, dst:int) -> list:
+        visited = set()
+        return self._dfs_path_inner(src, visited)
+
+
+#class GraphAdjList(object):
+#    """
+#    GraphAdjList
+#
+#    Same idea, but the adjaceny list is a literal list.
+#    """
+#    def __init__(self, adj_list:list=[], **kwargs) -> None:
+#        self.adj = adj_list
+#
+#    def __repr__(self) -> str:
+#        return 'GraphAdjList'
+#
+#    def __len__(self) -> int:
+#        return len(self.adj_list)
+#
+#    def add_node(self, node_adj_list:list) -> None:
+#        self.adj.append(node_adj_list)
+#
+#    def remove_node(self, idx:int) -> None:
+#        if idx < len(self):
+#            del self.adj[idx]
+#
 
 # repr to graph?
 def repr_to_graph(graph_repr:str) -> Graph:
