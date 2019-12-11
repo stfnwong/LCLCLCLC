@@ -184,7 +184,8 @@ class TestQuestion55(unittest.TestCase):
 class TestQuestion224(unittest.TestCase):
     def setUp(self) -> None:
         # NOTE: on Leetcode we are allowed to assume the expression we are
-        # given is always valid for this question
+        # given is always valid for this question. Additionally there are only
+        # '+' and '-' operators in this question.
         self.inp1 = "1 + 1"
         self.exp1 = 2
         self.inp2 = "2 - 1 + 2"
@@ -194,14 +195,23 @@ class TestQuestion224(unittest.TestCase):
         # Also try operands that require more than one digit to represent
         self.inp4 = "(55 + (4 * 2))"
         self.exp4 = 63
+        self.ex_inp = "(1 + (4 + 5 + 2) - 3)"
 
     def test_calculator(self) -> None:
 
-        res3 = questions.calculate224(self.inp3)
-        print(res3)
+        # example
+        print('Computing for expression [%s]' % str(self.ex_inp))
+        exp_res = questions.calculate224(self.ex_inp)
+        print(exp_res)
 
-        res4 = questions.calculate224(self.inp4)
-        print(res4)
+
+        #print('Computing for expression [%s]' % str(self.inp3))
+        #res3 = questions.calculate224(self.inp3)
+        #print(res3)
+
+        #print('Computing for expression [%s]' % str(self.inp4))
+        #res4 = questions.calculate224(self.inp4)
+        #print(res4)
 
 
 

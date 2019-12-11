@@ -17,17 +17,27 @@ class Stack(object):
 
     def __str__(self) -> str:
         s = []
-        s.append('%s :\n    ' % repr(self))
-        for elem in self.array:
-            s.append(' %s,' % str(elem))
+        s.append('%s :\n' % repr(self))
+        for n, elem in enumerate(reversed(self.array)):
+            s.append('[%d]  %s\n' % (len(self.array) - n, str(elem)))
 
         return ''.join(s)
 
     def __len__(self) -> int:
         return len(self.array)
 
+    def empty(self) -> bool:
+        if len(self) > 0:
+            return False
+
+        return True
+
     def push(self, elem:Any) -> None:
         self.array.append(elem)
 
     def pop(self) -> Any:
-        return self.array.pop()
+        if len(self.array) > 0:
+            return self.array.pop()
+        else:
+            return None
+

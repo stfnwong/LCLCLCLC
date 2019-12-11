@@ -266,6 +266,7 @@ def calculate224(s:str) -> int:
             while(s[n].isdigit()):
                 cur_operand += c
                 n = n + 1
+                print(n, c)     # for debugging
 
             operand_stack.push(int(cur_operand))
             cur_operand = ""
@@ -274,8 +275,24 @@ def calculate224(s:str) -> int:
         n = n + 1
 
     # lets see what is on the stacks
+    print('Operator stack:')
     print(operator_stack)
+    print('Operand stack:')
     print(operand_stack)
+
+    # Now that we have the stack, lets evaluate it
+    # If we see a '(', then we compute the subexpression that lies between
+    # the '(' and ')' and push that back to the operand stack. In this way
+    # the values in the stack become progressively reduced until ultimately
+    # we are left with a single variable.
+
+    operand_temp = stack.Stack()
+    while(not operator_stack.empty()):
+        cur_op = operator_stack.pop()
+        # pop a single operand off the stack
+        operand_temp.push(operand_stack.pop())
+        # If the next operand is also a closing paren then we need to open a
+        # new scope..?
 
 
 # Question 416
