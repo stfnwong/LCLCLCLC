@@ -51,16 +51,16 @@ void print_array(const std::vector<int>& array)
 
 /*
  * print_traversal()
- * Prints a GraphKV traversal of its with matching {}
+ * Prints a int traversal of its with matching {}
  */
-void print_traversal(const std::vector<GraphKV>& traversal)
+void print_traversal(const std::vector<int>& traversal)
 {
     std::cout << "[" << __func__ << "] traversal with " 
         << traversal.size() << " steps" << std::endl;
 
-    std::cout << "  {" << traversal[0].key;
+    std::cout << "  {" << traversal[0];
     for(unsigned int t = 1; t < traversal.size(); ++t)
-        std::cout << "," << traversal[t].key;
+        std::cout << "," << traversal[t];
     std::cout << "}" << std::endl;
 }
 
@@ -91,7 +91,7 @@ TEST_F(TestGraph, test_graph1_bfs)
     // ======== GRAPH 1 ======== //
     // Try to traverse the first graph
     GraphNode* graph1;
-    std::vector<GraphKV> traversal1;
+    std::vector<int> traversal1;
 
     graph1 = createGraph(this->repr1);
     ASSERT_NE(nullptr, graph1);
@@ -108,7 +108,7 @@ TEST_F(TestGraph, test_graph1_bfs)
 
     for(unsigned int n = 0; n < this->expected_bfs_1.size(); ++n)
     {
-        ASSERT_EQ(this->expected_bfs_1[n], traversal1[n].key);
+        ASSERT_EQ(this->expected_bfs_1[n], traversal1[n]);
     }
 }
 
@@ -118,7 +118,7 @@ TEST_F(TestGraph, test_graph2_bfs)
     // ======== GRAPH 2 ======== //
     // Try to traverse the second graph
     GraphNode* graph2;
-    std::vector<GraphKV> traversal2;
+    std::vector<int> traversal2;
 
     graph2 = createGraph(this->repr2);
     ASSERT_NE(nullptr, graph2);
@@ -136,7 +136,7 @@ TEST_F(TestGraph, test_graph3_bfs)
 {
     // ======== GRAPH 3 ======== //
     GraphNode* graph3;
-    std::vector<GraphKV> traversal3;
+    std::vector<int> traversal3;
 
     graph3 = createGraph(this->repr3);
     ASSERT_NE(nullptr, graph3);
@@ -158,7 +158,7 @@ TEST_F(TestGraph, test_graph_dfs)
 {
     // Try to traverse the first graph
     GraphNode* graph3;
-    std::vector<GraphKV> traversal3;
+    std::vector<int> traversal3;
 
     graph3 = createGraph(this->repr3);
     ASSERT_NE(nullptr, graph3);
@@ -175,7 +175,7 @@ TEST_F(TestGraph, test_graph_dfs)
     // Test each value in turn
     for(unsigned int t = 0; t < traversal3.size(); ++t)
     {
-        ASSERT_EQ(this->expected_dfs_3[t], traversal3[t].key);
+        ASSERT_EQ(this->expected_dfs_3[t], traversal3[t]);
     }
 }
 

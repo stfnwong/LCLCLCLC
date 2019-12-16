@@ -43,14 +43,6 @@ void GraphNode::setVal(int v)
     this->val = v;      // obviated somewhat by public access
 }
 
-/*
- * getPair()
- */
-// NOTE: this is a dumb way to do things
-GraphKV GraphNode::getPair(void) const
-{
-    return GraphKV(this->key, this->val);
-}
 
 /*
  * toString()
@@ -225,42 +217,6 @@ GraphNode* cloneGraph(GraphNode* node)
 }
 
 
-/*
- * KEY VALUE STRUCT
- * This is just for printing and whatnot, its really just two ints (and 
- * could otherwise be implemented as std::pair<int, int>)
- */
-void GraphKV::init(void)
-{
-    this->key = 0;
-    this->val = 0;
-}
-
-std::string GraphKV::toString(void) const
-{
-    std::ostringstream oss;
-
-    oss << "GraphKV : ";    // put something else...
-    oss << "[" << this->key << "] :" << this->val;
-
-    return oss.str();
-}
-
-bool GraphKV::operator==(const GraphKV& that) const
-{
-    if(this->key != that.key)
-        return false;
-    if(this->val != that.val)
-        return false;
-
-    return true;
-}
-
-bool GraphKV::operator!=(const GraphKV& that) const
-{
-    return !(*this == that);
-}
-
 
 // ======== TRAVERSALS ======== //
 // BFS
@@ -269,7 +225,7 @@ bool GraphKV::operator!=(const GraphKV& that) const
 
 // TODO: now we need to refactor this in terms of this new Graph object 
 // which holds an entire graph.
-void graph_bfs(GraphNode* root, std::vector<GraphKV>& traversal)
+void graph_bfs(GraphNode* root, std::vector<int>& traversal)
 {
     // TODO : remove debug printing
     std::queue<GraphNode*> node_q;
@@ -302,24 +258,24 @@ void graph_bfs(GraphNode* root, std::vector<GraphKV>& traversal)
         //    }
         //}
         //num_visited++;
-        //traversal.push_back(GraphKV(cur_node->key, cur_node->val));
+        //traversal.push_back(int(cur_node->key, cur_node->val));
         
         // DEBUG: remove 
         //std::cout << "[" << __func__ << "] num_visited " << num_visited << std::endl;
     }
 }
 
-void graph_dfs_visit_q(const GraphNode* root, std::vector<GraphKV>& traversal)
+void graph_dfs_visit_q(const GraphNode* root, std::vector<int>& traversal)
 {
     std::cout << "[" << __func__ << "] AH HA HA HA HA! No Queue DFS in this commit!" << std::endl;
 }
 
 // DFS
-void graph_dfs(GraphNode* root, std::vector<GraphKV>& traversal)
+void graph_dfs(GraphNode* root, std::vector<int>& traversal)
 {
     if(root != nullptr)
     {
-        traversal.push_back(GraphKV(root->key, root->val));
+        traversal.push_back(root->uid);
         //root->visited = true;
         //for(unsigned int n = 0; n < root->neighbours.size(); ++n)
         //{

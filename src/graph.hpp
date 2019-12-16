@@ -12,26 +12,8 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <map>
 #include <unordered_map>
-
-// Aggregates key/value pairs with printing and whatnot
-// NOTE: another way to do this would be using GraphKV = std::pair<int, int> 
-// or something like that.
-struct GraphKV
-{
-    int key;
-    int val;
-
-    public:
-        GraphKV() : key(0), val(0) {} 
-        GraphKV(int k, int v) : key(k), val(v) {} 
-        
-        // Methods
-        void init(void);
-        std::string toString(void) const;
-        bool operator==(const GraphKV& that) const;
-        bool operator!=(const GraphKV& that) const;
-};
 
 
 // Graph node 
@@ -52,13 +34,12 @@ class GraphNode
         void init(void);
 
         void setVal(int v);
-        GraphKV getPair(void) const;
         std::string toString(void) const;
 };
 
 
-// What about representing and entire graph?
-// This is actually the implementation that is used in https://www.youtube.com/watch?v=zaBhtODEL0w
+// What about representing an entire graph?
+// This is actually the implementation that is used in https://www.youtube.com/watch?v=zaBhtODEL0w (Hackerrank video)
 //
 
 /*
@@ -70,6 +51,8 @@ class Graph
     private:
         // this is just a lookup for traversals
         std::unordered_map<int, GraphNode> node_lut;
+        // storage for internal graph nodes
+        std::map<int, GraphNode> graph;
 
         // TODO : Where to place the node memory?
 
@@ -102,8 +85,8 @@ GraphNode* cloneGraph(GraphNode* node);
 
 
 // ==== Traversals ==== //
-void graph_bfs(GraphNode* root, std::vector<GraphKV>& traversal);
-void graph_dfs(GraphNode* root, std::vector<GraphKV>& traversal);
+void graph_bfs(GraphNode* root, std::vector<int>& traversal);
+void graph_dfs(GraphNode* root, std::vector<int>& traversal);
 
 
 
