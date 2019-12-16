@@ -10,7 +10,7 @@ import unittest
 import pylc.graph as graph
 
 # debug
-from pudb import set_trace; set_trace()
+#from pudb import set_trace; set_trace()
 
 
 class TestGraphNode(unittest.TestCase):

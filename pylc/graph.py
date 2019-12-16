@@ -271,22 +271,19 @@ class GraphAdjDict:
 
         return traversal
 
-    def _cycle_inner(self, src:int, visited:set, rec_set:list) -> bool:
+    def _cycle_inner(self, src:int, visited:set) -> bool:
         visited.add(src)
-        rec_set.add(src)
 
         # Walk over the children of this node. If a child is in
         # both the rec_set and has been visited before, then
         # there must be a cycle
         for n in self.graph[src]:
             if n not in visited:
-                cycle = self._cycle_inner(n, visited, rec_set)
+                cycle = self._cycle_inner(n, visited)
                 if cycle == True:
                     return True     # we've seen this before, so there was a a cycle
-            elif n in rec_set:
+            else:
                 return True
-
-        rec_set.discard(src)
 
         return False
 
@@ -321,11 +318,10 @@ class GraphAdjDict:
 
     def has_cycle(self) -> bool:
         visited = set()
-        rec_set = set()         # set to recurse on
 
         for node in range(len(self.graph)):
             if node not in visited:
-                cycle = self._cycle_inner(node, visited, rec_set)
+                cycle = self._cycle_inner(node, visited)
                 if cycle == True:
                     return True
 
