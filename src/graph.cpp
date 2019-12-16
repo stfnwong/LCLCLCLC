@@ -22,7 +22,6 @@ GraphNode::GraphNode(int uid, int key, int val, std::vector<GraphNode*> nbors)
     this->uid = uid;
     this->val = val;
     this->key = key;
-    this->visited = false;
     this->neighbours = nbors;
 }
 
@@ -33,7 +32,7 @@ void GraphNode::addNeighbour(GraphNode* n)
 
 void GraphNode::init(void)
 {
-    this->uid
+    this->uid = 0;  // NOTE: there aren't any actual checks for uniqueness
     this->key = 0;
     this->val = 0;
     this->neighbours.clear();
@@ -42,16 +41,6 @@ void GraphNode::init(void)
 void GraphNode::setVal(int v)
 {
     this->val = v;      // obviated somewhat by public access
-}
-
-void GraphNode::mark(void)
-{
-    this->visited = true;
-}
-
-void GraphNode::unmark(void)
-{
-    this->visited = false;
 }
 
 /*
@@ -156,7 +145,7 @@ GraphNode* repr_to_graph(const std::string& repr)
         std::getline(ss, tok_substr, ',');
 
         // default values are 0, keys are whatever was in the repr
-        GraphNode* node = new GraphNode(std::stoi(tok_substr), 0);
+        GraphNode* node = new GraphNode(std::stoi(tok_substr), 0, 0);
         nodes.push_back(node);
     }
 
@@ -290,7 +279,7 @@ void graph_bfs(GraphNode* root, std::vector<GraphKV>& traversal)
     while(!node_q.empty())
     {
         GraphNode* cur_node = node_q.front();
-        cur_node->visited = true;
+        //cur_node->visited = true;
         node_q.pop();           // dequeue the node
         //if(node_q.empty())
         //    std::cout << "[" << __func__ << "] q is empty" << std::endl;
@@ -301,19 +290,19 @@ void graph_bfs(GraphNode* root, std::vector<GraphKV>& traversal)
         // been visited. A simple queue or stack is awkward since we would need to be able to search
         // in the queue for nodes (eg: has this node been visited? Lets iterated over the queue and see
         // what's there, and if its there then we have O(N)).
-        for(unsigned int n = 0; n < cur_node->neighbours.size(); ++n)
-        {
-            if(!cur_node->neighbours[n]->visited)
-            {
-                // TODO: debug only, remove 
-                //std::cout << "[" << __func__ << "] adding node ["
-                //    << n+1 << "/" << cur_node->neighbours.size() 
-                //    << "]" << std::endl;
-                node_q.push(cur_node->neighbours[n]);
-            }
-        }
-        num_visited++;
-        traversal.push_back(GraphKV(cur_node->key, cur_node->val));
+        //for(unsigned int n = 0; n < cur_node->neighbours.size(); ++n)
+        //{
+        //    if(!cur_node->neighbours[n]->visited)
+        //    {
+        //        // TODO: debug only, remove 
+        //        //std::cout << "[" << __func__ << "] adding node ["
+        //        //    << n+1 << "/" << cur_node->neighbours.size() 
+        //        //    << "]" << std::endl;
+        //        node_q.push(cur_node->neighbours[n]);
+        //    }
+        //}
+        //num_visited++;
+        //traversal.push_back(GraphKV(cur_node->key, cur_node->val));
         
         // DEBUG: remove 
         //std::cout << "[" << __func__ << "] num_visited " << num_visited << std::endl;
@@ -331,14 +320,14 @@ void graph_dfs(GraphNode* root, std::vector<GraphKV>& traversal)
     if(root != nullptr)
     {
         traversal.push_back(GraphKV(root->key, root->val));
-        root->visited = true;
-        for(unsigned int n = 0; n < root->neighbours.size(); ++n)
-        {
-            if(!root->neighbours[n]->visited)
-            {
-                graph_dfs(root->neighbours[n], traversal);
-            }
-        }
+        //root->visited = true;
+        //for(unsigned int n = 0; n < root->neighbours.size(); ++n)
+        //{
+        //    if(!root->neighbours[n]->visited)
+        //    {
+        //        graph_dfs(root->neighbours[n], traversal);
+        //    }
+        //}
     }
 }
 

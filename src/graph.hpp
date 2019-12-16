@@ -71,10 +71,16 @@ class Graph
         // this is just a lookup for traversals
         std::unordered_map<int, GraphNode> node_lut;
 
+        // TODO : Where to place the node memory?
+
     public:
         Graph();
 
+        void addNode(const GraphNode& node);
+
 };
+
+
 
 // Create graphs from repr strings
 // NOTE: repr format looks like
