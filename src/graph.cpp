@@ -129,15 +129,20 @@ void Graph::dfs_inner(int src_uid, std::vector<int>& traversal)
  */
 void Graph::init(void)
 {
+    this->graph.clear();
+    this->node_lut.clear();
 }
 
 
 /*
  * addNode()
  */
-void Graph::addNode(const GraphNode& node)
+void Graph::addNode(GraphNode* node)
 {
-    this->graph.insert({this->size() + 1, node});
+    this->graph.insert(std::pair<int, GraphNode*>(int(this->size()), node));
+    //this->graph.insert(
+    //        std::make_pair(unsigned(this->size() + 1), node)
+    //    );
 }
 
 /*
@@ -149,6 +154,8 @@ void Graph::removeNode(int uid)
         this->graph.erase(uid);
 }
 
+// TODO : addEdge()
+
 /*
  * checkUnique()
  */
@@ -158,8 +165,8 @@ bool Graph::checkUnique(void) const
 
     for(auto it = this->graph.begin(); it != this->graph.end(); ++it)
     {
-        if(uids.count(it->second.uid) == 0)
-            uids.insert(it->second.uid);
+        if(uids.count(it->second->uid) == 0)
+            uids.insert(it->second->uid);
         else
             return false;
     }
@@ -175,25 +182,63 @@ int Graph::size(void) const
     return this->graph.size();
 }
 
+/*
+ * get()
+ */
+GraphNode* Graph::get(int uid)
+{
+    if(this->graph.count(uid) == 0)
+    {
+        // TODO : debug, remove 
+        std::cout << "[" << __func__ << "] cant find element with uid " << uid << std::endl;
+        return nullptr;
+    }
+
+    return this->graph.at(uid);
+}
+
+/*
+ * getIds()
+ */
+std::vector<int> Graph::getIds(void) const
+{
+    std::vector<int> ids;
+
+    for(auto it = this->graph.begin(); it != this->graph.end(); ++it)
+    {
+        ids.push_back(it->first);
+    }
+
+    return ids;
+}
+
 // Traversals 
 
 /*
  * bfs()
  */
-void Graph::bfs(int src_uid, std::vector<int>& traversal)
+std::vector<int> Graph::bfs(int src_uid)
 {
+    std::vector<int> traversal;
+
     if(this->graph.count(src_uid) == 0)
-        return;         // there is no such node in this graph
+        return traversal;
 
     this->bfs_inner(src_uid, traversal);
+
+    return traversal;
 }
 
-void Graph::dfs(int src_uid, std::vector<int>& traversal)
+std::vector<int> Graph::dfs(int src_uid)
 {
+    std::vector<int> traversal;
+
     if(this->graph.count(src_uid) == 0)
-        return;         // there is no such node in this graph
+        return traversal;
 
     this->dfs_inner(src_uid, traversal);
+
+    return traversal;
 }
 
 /*
@@ -207,13 +252,11 @@ std::string Graph::toString(void) const
 
     for(auto it = this->graph.begin(); it != this->graph.end(); ++it)
     {
-        oss << "    " << it->second.toString() << std::endl;
+        oss << "    " << it->second->toString() << std::endl;
     }
 
     return oss.str();
 }
-
-
 
 
 

@@ -207,18 +207,18 @@ TEST_F(TestGraph, test_graph_init)
 TEST_F(TestGraph, test_graph_add_node)
 {
     Graph test_graph;
-    GraphNode test_node1(0, 1);
+    GraphNode* test_node1 = new GraphNode(0, 1);
 
     ASSERT_EQ(0, test_graph.size());
 
     test_graph.addNode(test_node1);
-    std::cout << "Added node [" << test_node1.toString() << "] to graph" << std::endl;
+    std::cout << "Added node [" << test_node1->toString() << "] to graph" << std::endl;
     ASSERT_EQ(1, test_graph.size());
 
     // Show updated node
     std::cout << test_graph.toString() << std::endl;
 
-    GraphNode test_node2(1, 2);
+    GraphNode* test_node2 = new GraphNode(1, 2);
     test_graph.addNode(test_node2);
     ASSERT_EQ(2, test_graph.size());
 
@@ -226,10 +226,10 @@ TEST_F(TestGraph, test_graph_add_node)
     std::cout << test_graph.toString() << std::endl;
 
     // Now add a node that has 0, 1 as neighous
-    GraphNode test_node3(2, 2);
-    test_node3.addAdj(&test_node1);
-    test_node3.addAdj(&test_node2);
-    ASSERT_EQ(2, test_node3.numAdj());
+    GraphNode* test_node3 = new GraphNode(2, 2);
+    test_node3->addAdj(test_node1);
+    test_node3->addAdj(test_node2);
+    ASSERT_EQ(2, test_node3->numAdj());
 
     test_graph.addNode(test_node3);
 
@@ -237,6 +237,23 @@ TEST_F(TestGraph, test_graph_add_node)
 
     // Show updated node
     std::cout << test_graph.toString() << std::endl;
+
+    std::vector<int> ids = test_graph.getIds();
+    std::cout << "Found there are " << ids.size() << " ids in graph" << std::endl;
+    for(unsigned int i = 0; i < ids.size(); ++i)
+    {
+        std::cout << "    " << i << " : " << ids[i] << std::endl;
+    }
+
+    // Now check some of the nodes
+    GraphNode* out_node;
+
+    out_node = test_graph.get(0);
+    ASSERT_NE(nullptr, out_node);
+    ASSERT_EQ(test_node1, out_node);
+
+    test_graph.init();
+    ASSERT_EQ(0, test_graph.size());
 }
 
 

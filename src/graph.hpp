@@ -45,13 +45,14 @@ class GraphNode
  * Graph
  * A Graph is a collection of Graph Nodes
  */
+// TODO : make all pointers into unique_ptr<GraphNode>
 class Graph
 {
     private:
         // this is just a lookup for traversals
-        std::unordered_map<int, GraphNode> node_lut;
+        std::unordered_map<int, GraphNode*> node_lut;
         // storage for internal graph nodes - this follows the implemntation for GraphAdjList in pylc/graph.py
-        std::map<int, GraphNode> graph;
+        std::map<int, GraphNode*>           graph;
 
     private:
         void bfs_inner(int src_uid, std::vector<int>& traversal);
@@ -60,17 +61,21 @@ class Graph
 
     public:
         Graph();
+        // TODO : destructor for all nodes
 
         void init(void);
-        void addNode(const GraphNode& node);
+        void addNode(GraphNode* node);
         void removeNode(int uid);
         void addEdge(int uid, const std::vector<int>& adj);
         bool checkUnique(void) const;
         int  size(void) const;
+
+        GraphNode* get(int uid);
+        std::vector<int> getIds(void) const;
         
         // traversal
-        void bfs(int src_uid, std::vector<int>& traversal);
-        void dfs(int src_uid, std::vector<int>& traversal);
+        std::vector<int> bfs(int src_uid);
+        std::vector<int> dfs(int src_uid);
         std::vector<int> levelOrder(void) const;
 
         // display
