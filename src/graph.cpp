@@ -9,6 +9,7 @@
 #include <queue>
 #include <sstream>
 #include <vector>
+#include <unordered_set>
 #include "graph.hpp"
 
 
@@ -65,6 +66,132 @@ std::string GraphNode::toString(void) const
     return oss.str();
 }
 
+// ======== GRAPH CLASS ======== //
+Graph::Graph() {}       // not sure what to do yet...
+
+// Private functions for traversal
+void Graph::bfs_inner(int src_uid, std::vector<int>& traversal)
+{
+    std::queue<GraphNode>  bfs_q;      // TODO : should I use pointer here?
+    std::unordered_set<int> visited_uids;
+
+    visited_uids.insert(src_uid);
+    //bfs_q.emplace(this->graph[src_uid]);
+
+    while(!bfs_q.empty())
+    {
+        GraphNode cur_node = bfs_q.front();
+        bfs_q.pop();
+        traversal.push_back(cur_node.uid);
+
+        // visit the children of this node
+        // TODO: need to think more carefully about how graph is actually implemented..
+        for(unsigned int n = 0; n < cur_node.neighbours.size(); ++n)
+        {
+            //if(visited_uids.count(cur_node.neighbours[n]) == 0)
+            //{
+            //    bfs_q.emplace(this->graph[cur_node.neighbours[n]]);
+            //}
+        }
+    }
+
+
+    //bfs_q     = queue.Queue()
+    //traversal = []
+    //visited   = set()
+
+    //bfs_q.enqueue(src)
+    //visited.add(src)
+
+    //while(not bfs_q.empty()):
+    //    node = bfs_q.dequeue()
+    //    traversal.append(node)
+    //    # visit children
+    //    for n in self.graph[node]:
+    //        if n not in visited:
+    //            bfs_q.enqueue(n)
+    //            visited.add(n)
+
+    //return traversal
+
+}
+
+void Graph::dfs_inner(int src_uid, std::vector<int>& traversal)
+{
+
+}
+
+/*
+ * init()
+ */
+void Graph::init(void)
+{
+}
+
+
+/*
+ * addNode()
+ */
+void Graph::addNode(const GraphNode& node)
+{
+    this->graph.insert({this->size() + 1, node});
+}
+
+/*
+ * removeNode()
+ */
+void Graph::removeNode(int uid)
+{
+    if(this->graph.count(uid) > 0)
+        this->graph.erase(uid);
+}
+
+/*
+ * checkUnique()
+ */
+bool Graph::checkUnique(void) const
+{
+    std::unordered_set<int> uids;
+
+    for(auto it = this->graph.begin(); it != this->graph.end(); ++it)
+    {
+        if(uids.count(it->second.uid) == 0)
+            uids.insert(it->second.uid);
+        else
+            return false;
+    }
+
+    return true;
+}
+
+/*
+ * size()
+ */
+int Graph::size(void) const
+{
+    return this->graph.size();
+}
+
+// Traversals 
+
+/*
+ * bfs()
+ */
+void Graph::bfs(int src_uid, std::vector<int>& traversal)
+{
+    if(this->graph.count(src_uid) == 0)
+        return;         // there is no such node in this graph
+
+    this->bfs_inner(src_uid, traversal);
+}
+
+void Graph::dfs(int src_uid, std::vector<int>& traversal)
+{
+    if(this->graph.count(src_uid) == 0)
+        return;         // there is no such node in this graph
+
+    this->dfs_inner(src_uid, traversal);
+}
 
 // ======== GRAPH FUNCTIONS ======== //
 std::vector<std::string> graph_repr_to_token_vec(const std::string& repr)
@@ -110,9 +237,9 @@ std::vector<std::string> graph_repr_to_token_vec(const std::string& repr)
 }
 
 /*
- * repr_to_graph()
+ * repr_to_graph_node()
  */
-GraphNode* repr_to_graph(const std::string& repr)
+GraphNode* repr_to_graph_node(const std::string& repr)
 {
     // The repr is a string representation of an adjacency list. We 
     // iterate over the list here and create each node in turn. The
@@ -200,18 +327,27 @@ GraphNode* createGraph(const std::string& repr)
             << repr << std::endl;
         return nullptr;
     }
-
     // Now parse the various sub-lists of the adjacency repr
-    return repr_to_graph(repr);
+    return repr_to_graph_node(repr);
 }
 
 
 /*
- * cloneGraph()
+ * cloneGraphNode()
  */
-GraphNode* cloneGraph(GraphNode* node)
+GraphNode* cloneGraphNode(GraphNode* node)
 {
     GraphNode* out_graph;
+
+    return out_graph;
+}
+
+/*
+ * cloneGraph()
+ */
+Graph* cloneGraph(const Graph& graph)
+{
+    Graph* out_graph;
 
     return out_graph;
 }
@@ -225,17 +361,21 @@ GraphNode* cloneGraph(GraphNode* node)
 
 // TODO: now we need to refactor this in terms of this new Graph object 
 // which holds an entire graph.
-void graph_bfs(GraphNode* root, std::vector<int>& traversal)
+void graph_node_bfs(GraphNode* root, std::vector<int>& traversal)
 {
     // TODO : remove debug printing
     std::queue<GraphNode*> node_q;
+    std::unordered_set<int> visited;        // hold uids of visited nodes
 
     node_q.push(root);
-    int num_visited = 0;
+
     while(!node_q.empty())
     {
         GraphNode* cur_node = node_q.front();
-        //cur_node->visited = true;
+
+        if(visited.count(cur_node->uid) == 0)
+            visited.insert(cur_node->uid);
+
         node_q.pop();           // dequeue the node
         //if(node_q.empty())
         //    std::cout << "[" << __func__ << "] q is empty" << std::endl;
@@ -271,7 +411,7 @@ void graph_dfs_visit_q(const GraphNode* root, std::vector<int>& traversal)
 }
 
 // DFS
-void graph_dfs(GraphNode* root, std::vector<int>& traversal)
+void graph_node_dfs(GraphNode* root, std::vector<int>& traversal)
 {
     if(root != nullptr)
     {

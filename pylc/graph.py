@@ -9,7 +9,7 @@ from typing import List
 from pylc import queue
 
 # debug
-from pudb import set_trace; set_trace()
+#from pudb import set_trace; set_trace()
 
 
 class GraphNode(object):
@@ -292,7 +292,6 @@ class GraphAdjDict:
             self.graph[k] = []
 
         self.graph[k].append(v)
-
         # Also ensure that any nodes that we have pointed to when adding
         # an edge are also represented in the graph.
         for v in self.graph[k]:

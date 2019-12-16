@@ -51,16 +51,28 @@ class Graph
     private:
         // this is just a lookup for traversals
         std::unordered_map<int, GraphNode> node_lut;
-        // storage for internal graph nodes
+        // storage for internal graph nodes - this follows the implemntation for GraphAdjList in pylc/graph.py
         std::map<int, GraphNode> graph;
 
-        // TODO : Where to place the node memory?
+    private:
+        void bfs_inner(int src_uid, std::vector<int>& traversal);
+        void dfs_inner(int src_uid, std::vector<int>& traversal);
+        void level_order_inner(std::vector<int>& traversal);
 
     public:
         Graph();
 
+        void init(void);
         void addNode(const GraphNode& node);
-
+        void removeNode(int uid);
+        void addEdge(int uid, const std::vector<int>& adj);
+        bool checkUnique(void) const;
+        int  size(void) const;
+        
+        // traversal
+        void bfs(int src_uid, std::vector<int>& traversal);
+        void dfs(int src_uid, std::vector<int>& traversal);
+        std::vector<int> levelOrder(void) const;
 };
 
 
@@ -75,18 +87,18 @@ class Graph
 //
 std::vector<std::string> graph_repr_to_token_vec(const std::string& repr);
 std::string              graph_to_repr(const GraphNode* graph);
-GraphNode*               repr_to_graph(const std::string& repr);
+GraphNode*               repr_to_graph_node(const std::string& repr);
 GraphNode*               createGraph(const std::string& repr);
 
 // Methods that work on graph nodes
-GraphNode* cloneGraph(GraphNode* node);
+GraphNode* cloneGraphNode(GraphNode* node);
 
 
 
 
 // ==== Traversals ==== //
-void graph_bfs(GraphNode* root, std::vector<int>& traversal);
-void graph_dfs(GraphNode* root, std::vector<int>& traversal);
+void graph_node_bfs(GraphNode* root, std::vector<int>& traversal);
+void graph_node_dfs(GraphNode* root, std::vector<int>& traversal);
 
 
 

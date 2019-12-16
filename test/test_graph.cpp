@@ -10,7 +10,7 @@
 #include "graph.hpp"
 
 
-class TestGraph : public ::testing::Test
+class TestGraphNode : public ::testing::Test
 {
     virtual void SetUp() {}
     virtual void TearDown() {}
@@ -66,7 +66,7 @@ void print_traversal(const std::vector<int>& traversal)
 
 
 // Test that we can turn a repr string into a graph
-TEST_F(TestGraph, test_graph_repr)
+TEST_F(TestGraphNode, test_graph_repr)
 {
     GraphNode* empty_graph;
     GraphNode* graph1;
@@ -86,7 +86,7 @@ TEST_F(TestGraph, test_graph_repr)
 }
 
 // Breadth-first search on GraphNode object
-TEST_F(TestGraph, test_graph1_bfs)
+TEST_F(TestGraphNode, test_graph1_bfs)
 {
     // ======== GRAPH 1 ======== //
     // Try to traverse the first graph
@@ -97,7 +97,7 @@ TEST_F(TestGraph, test_graph1_bfs)
     ASSERT_NE(nullptr, graph1);
 
     std::cout << std::endl << "==== Traversng graph1 (BFS)" << std::endl;
-    graph_bfs(graph1, traversal1);
+    graph_node_bfs(graph1, traversal1);
     std::cout << "Graph1 " << this->repr1 << " traversal: " << std::endl;
     print_traversal(traversal1);
     std::cout << "Graph1 expected traversal :" << std::endl;
@@ -113,7 +113,7 @@ TEST_F(TestGraph, test_graph1_bfs)
 }
 
 
-TEST_F(TestGraph, test_graph2_bfs)
+TEST_F(TestGraphNode, test_graph2_bfs)
 {
     // ======== GRAPH 2 ======== //
     // Try to traverse the second graph
@@ -124,7 +124,7 @@ TEST_F(TestGraph, test_graph2_bfs)
     ASSERT_NE(nullptr, graph2);
 
     std::cout << std::endl << "==== Traversng graph2 (BFS)" << std::endl;
-    graph_bfs(graph2, traversal2);
+    graph_node_bfs(graph2, traversal2);
     // Do the real testing
     ASSERT_GT(0, traversal2.size());
     print_traversal(traversal2);
@@ -132,7 +132,7 @@ TEST_F(TestGraph, test_graph2_bfs)
     ASSERT_EQ(this->expected_bfs_2.size(), traversal2.size());
 }
 
-TEST_F(TestGraph, test_graph3_bfs)
+TEST_F(TestGraphNode, test_graph3_bfs)
 {
     // ======== GRAPH 3 ======== //
     GraphNode* graph3;
@@ -142,7 +142,7 @@ TEST_F(TestGraph, test_graph3_bfs)
     ASSERT_NE(nullptr, graph3);
 
     std::cout << std::endl << "==== Traversng graph3 (BFS)" << std::endl;
-    graph_bfs(graph3, traversal3);
+    graph_node_bfs(graph3, traversal3);
 
     ASSERT_GT(0, traversal3.size());
     print_traversal(traversal3);
@@ -154,7 +154,7 @@ TEST_F(TestGraph, test_graph3_bfs)
 }
 
 // Test graph dfs
-TEST_F(TestGraph, test_graph_dfs)
+TEST_F(TestGraphNode, test_graph_node_dfs)
 {
     // Try to traverse the first graph
     GraphNode* graph3;
@@ -164,7 +164,7 @@ TEST_F(TestGraph, test_graph_dfs)
     ASSERT_NE(nullptr, graph3);
 
     std::cout << std::endl << "==== Traversng graph3 (DFS)" << std::endl;
-    graph_dfs(graph3, traversal3);
+    graph_node_dfs(graph3, traversal3);
     //ASSERT_GT(0, traversal3.size());
 
     std::cout << "Printing DFS traversal1 (length " << traversal3.size() << ") :" << std::endl;
@@ -179,10 +179,7 @@ TEST_F(TestGraph, test_graph_dfs)
     }
 }
 
-
-
-
-//TEST_F(TestGraph, test_clone)
+//TEST_F(TestGraphNode, test_clone)
 //{
 //    GraphNode* src_graph;
 //    GraphNode* dst_graph;
@@ -190,6 +187,35 @@ TEST_F(TestGraph, test_graph_dfs)
 //
 //    // Need to make a src_graph to test with.
 //}
+
+
+
+class TestGraph : public ::testing::Test
+{
+    virtual void SetUp() {}
+    virtual void TearDown() {}
+
+};
+
+TEST_F(TestGraph, test_graph_init)
+{
+    Graph test_graph;
+
+    ASSERT_EQ(0, test_graph.size());
+
+}
+
+TEST_F(TestGraph, test_graph_add_node)
+{
+
+}
+
+
+TEST_F(TestGraph, test_graph_add_edge)
+{
+
+}
+
 
 
 class TestAdj : public ::testing::Test

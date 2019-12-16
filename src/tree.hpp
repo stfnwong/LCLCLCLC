@@ -85,4 +85,11 @@ struct ObjTraverser
 };
 
 
+/*
+ * TODO:
+ * Complete tree object. This is really just an object oriented 
+ * re-implementation of the above methods 
+ */
+
+
 #endif /*__LC_TREE_HPP*/
