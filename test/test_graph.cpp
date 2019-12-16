@@ -78,7 +78,7 @@ TEST_F(TestGraphNode, test_graph_repr)
     graph1 = createGraph(this->repr1);
     ASSERT_NE(nullptr, graph1);
     // The key for the first node is zero, as is its value (as per the construction in createGraph())
-    ASSERT_EQ(0, graph1->key);
+    ASSERT_EQ(0, graph1->uid);
     ASSERT_EQ(0, graph1->val);
     // Note that the string representation is just the key and value of THIS node - 
     // it does not traverse the graph to print all components.
@@ -202,19 +202,48 @@ TEST_F(TestGraph, test_graph_init)
     Graph test_graph;
 
     ASSERT_EQ(0, test_graph.size());
-
 }
 
 TEST_F(TestGraph, test_graph_add_node)
 {
+    Graph test_graph;
+    GraphNode test_node1(0, 1);
 
+    ASSERT_EQ(0, test_graph.size());
+
+    test_graph.addNode(test_node1);
+    std::cout << "Added node [" << test_node1.toString() << "] to graph" << std::endl;
+    ASSERT_EQ(1, test_graph.size());
+
+    // Show updated node
+    std::cout << test_graph.toString() << std::endl;
+
+    GraphNode test_node2(1, 2);
+    test_graph.addNode(test_node2);
+    ASSERT_EQ(2, test_graph.size());
+
+    // Show updated node
+    std::cout << test_graph.toString() << std::endl;
+
+    // Now add a node that has 0, 1 as neighous
+    GraphNode test_node3(2, 2);
+    test_node3.addAdj(&test_node1);
+    test_node3.addAdj(&test_node2);
+    ASSERT_EQ(2, test_node3.numAdj());
+
+    test_graph.addNode(test_node3);
+
+    ASSERT_EQ(3, test_graph.size());
+
+    // Show updated node
+    std::cout << test_graph.toString() << std::endl;
 }
 
 
-TEST_F(TestGraph, test_graph_add_edge)
-{
-
-}
+//TEST_F(TestGraph, test_graph_add_edge)
+//{
+//
+//}
 
 
 

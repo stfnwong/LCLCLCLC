@@ -14,19 +14,18 @@
 
 
 // GraphNode implementation
-GraphNode::GraphNode(int uid) : key(0), val(0), uid(uid) {}
+GraphNode::GraphNode(int uid) : uid(uid), val(0) {}
 
-GraphNode::GraphNode(int uid, int key, int val) : key(key), val(val), uid(uid) {} 
+GraphNode::GraphNode(int uid, int val) : uid(uid), val(val) {} 
 
-GraphNode::GraphNode(int uid, int key, int val, std::vector<GraphNode*> nbors)
+GraphNode::GraphNode(int uid, int val, std::vector<GraphNode*> nbors)
 {
     this->uid = uid;
     this->val = val;
-    this->key = key;
     this->neighbours = nbors;
 }
 
-void GraphNode::addNeighbour(GraphNode* n)
+void GraphNode::addAdj(GraphNode* n)
 {
     this->neighbours.push_back(n);
 }
@@ -34,7 +33,6 @@ void GraphNode::addNeighbour(GraphNode* n)
 void GraphNode::init(void)
 {
     this->uid = 0;  // NOTE: there aren't any actual checks for uniqueness
-    this->key = 0;
     this->val = 0;
     this->neighbours.clear();
 }
@@ -42,6 +40,11 @@ void GraphNode::init(void)
 void GraphNode::setVal(int v)
 {
     this->val = v;      // obviated somewhat by public access
+}
+
+unsigned int GraphNode::numAdj(void) const
+{
+    return this->neighbours.size();
 }
 
 
@@ -52,14 +55,14 @@ std::string GraphNode::toString(void) const
 {
     std::ostringstream oss;
 
-    oss << "GraphNode <" << this->key << "> [" << this->val 
-        << "]" << std::endl;
+    oss << "GraphNode <" << this->uid << "> [" << this->val 
+        << "]";
     if(this->neighbours.size() > 0)
     {
         for(unsigned int n = 0; n < this->neighbours.size(); ++n)
         {
-            oss << "    -> " << this->neighbours[n]->key 
-                << "[" << this->neighbours[n]->val << "]" << std::endl;
+            oss << " -> " << this->neighbours[n]->uid
+                << "[" << this->neighbours[n]->val << "]";
         }
     }
 
@@ -193,6 +196,27 @@ void Graph::dfs(int src_uid, std::vector<int>& traversal)
     this->dfs_inner(src_uid, traversal);
 }
 
+/*
+ * toString()
+ */
+std::string Graph::toString(void) const
+{
+    std::ostringstream oss;
+
+    oss << "Graph (" << this->size() << " nodes)" << std::endl;
+
+    for(auto it = this->graph.begin(); it != this->graph.end(); ++it)
+    {
+        oss << "    " << it->second.toString() << std::endl;
+    }
+
+    return oss.str();
+}
+
+
+
+
+
 // ======== GRAPH FUNCTIONS ======== //
 std::vector<std::string> graph_repr_to_token_vec(const std::string& repr)
 {
@@ -236,6 +260,8 @@ std::vector<std::string> graph_repr_to_token_vec(const std::string& repr)
 	return token_vec;
 }
 
+
+
 /*
  * repr_to_graph_node()
  */
@@ -264,7 +290,7 @@ GraphNode* repr_to_graph_node(const std::string& repr)
         std::getline(ss, tok_substr, ',');
 
         // default values are 0, keys are whatever was in the repr
-        GraphNode* node = new GraphNode(std::stoi(tok_substr), 0, 0);
+        GraphNode* node = new GraphNode(std::stoi(tok_substr), 0);
         nodes.push_back(node);
     }
 
@@ -281,7 +307,7 @@ GraphNode* repr_to_graph_node(const std::string& repr)
             if(tokn > 0)
             {
                 int node_idx = std::stoi(tok_substr);   // Exception...
-                nodes[v]->addNeighbour(nodes[node_idx]);
+                nodes[v]->addAdj(nodes[node_idx]);
             }
             tokn++;
         }

@@ -20,20 +20,19 @@
 class GraphNode
 {
     public:
-        int key;
-        int val;
         int uid;        // now the question is - how to generate some unique ids?
+        int val;
         std::vector <GraphNode*> neighbours;
 
     public:
         GraphNode(int uid);
-        GraphNode(int uid, int val, int key);
-        GraphNode(int uid, int val, int key, std::vector<GraphNode*> nbors); 
+        GraphNode(int uid, int val);
+        GraphNode(int uid, int val, std::vector<GraphNode*> nbors); 
 
-        void addNeighbour(GraphNode* n);
+        void addAdj(GraphNode* n);
         void init(void);
-
         void setVal(int v);
+        unsigned int numAdj(void) const;
         std::string toString(void) const;
 };
 
@@ -73,6 +72,9 @@ class Graph
         void bfs(int src_uid, std::vector<int>& traversal);
         void dfs(int src_uid, std::vector<int>& traversal);
         std::vector<int> levelOrder(void) const;
+
+        // display
+        std::string toString(void) const;
 };
 
 
