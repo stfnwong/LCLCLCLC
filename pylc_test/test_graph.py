@@ -9,6 +9,9 @@ import unittest
 # unit under test
 import pylc.graph as graph
 
+# debug
+from pudb import set_trace; set_trace()
+
 
 class TestGraphNode(unittest.TestCase):
 
@@ -87,9 +90,27 @@ class TestGraphAdjDict(unittest.TestCase):
         self.test_graph.add_edge(2, 3)
         self.test_graph.add_edge(3, 3)
 
-    def test_graph_dfs(self) -> None:
+        # Graph without cycles
+        self.tree_graph1 = graph.GraphAdjDict()
+        self.tree_graph1.add_edge(0,1)
+        self.tree_graph1.add_edge(0,2)
+        self.tree_graph1.add_edge(1,3)
+        self.tree_graph1.add_edge(1,4)
+        self.tree_graph1.add_edge(2,5)
 
-        print(self.test_graph)
+        # Graph with cycles
+        self.cycle_graph1 = graph.GraphAdjDict()
+        self.cycle_graph1.add_edge(0, 1)
+        self.cycle_graph1.add_edge(1, 0)
+
+        # Diamond graph
+        self.cycle_graph2 = graph.GraphAdjDict()
+        self.cycle_graph2.add_edge(0, 1)
+        self.cycle_graph2.add_edge(0, 2)
+        self.cycle_graph2.add_edge(1, 3)
+        self.cycle_graph2.add_edge(2, 3)
+
+    def test_graph_dfs(self) -> None:
         self.assertEqual(4, len(self.test_graph))
         exp_dfs = [2, 0, 1, 3]
 
@@ -105,7 +126,6 @@ class TestGraphAdjDict(unittest.TestCase):
             self.assertEqual(exp, out)
 
     def test_graph_bfs(self) -> None:
-        print(self.test_graph)
         self.assertEqual(4, len(self.test_graph))
         exp_bfs = [2, 0, 3, 1]
 
@@ -119,6 +139,15 @@ class TestGraphAdjDict(unittest.TestCase):
         self.assertEqual(len(exp_bfs), len(out_bfs))
         for exp, out in zip(exp_bfs, out_bfs):
             self.assertEqual(exp, out)
+
+    def test_graph_cycle(self) -> None:
+        print('Checking cycle for graph [%s]' % str(self.tree_graph1))
+        self.assertEqual(False, self.tree_graph1.has_cycle())
+        print('Checking cycle for graph [%s]' % str(self.cycle_graph1))
+        self.assertEqual(True, self.cycle_graph1.has_cycle())
+        print('Checking cycle for graph [%s]' % str(self.cycle_graph2))
+        self.assertEqual(True, self.cycle_graph2.has_cycle())
+
 
 
 if __name__ == '__main__':

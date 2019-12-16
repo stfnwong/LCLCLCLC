@@ -219,7 +219,13 @@ class GraphAdjDict:
         return 'GraphAdjDict'
 
     def __str__(self) -> str:
-        return '%s (%d nodes)' % (repr(self), len(self))
+        #return '%s (%d nodes)' % (repr(self), len(self))
+        s = []
+        s.append('%s (%d nodes)\n' % (repr(self), len(self)))
+        for k, v in self.graph.items():
+            s.append('   [%s] -> %s\n' % (str(k), str(v)))
+
+        return ''.join(s)
 
     def __len__(self) -> int:
         return len(self.graph)
@@ -265,11 +271,36 @@ class GraphAdjDict:
 
         return traversal
 
+    def _cycle_inner(self, src:int, visited:set, rec_set:list) -> bool:
+        visited.add(src)
+        rec_set.add(src)
+
+        # Walk over the children of this node. If a child is in
+        # both the rec_set and has been visited before, then
+        # there must be a cycle
+        for n in self.graph[src]:
+            if n not in visited:
+                cycle = self._cycle_inner(n, visited, rec_set)
+                if cycle == True:
+                    return True     # we've seen this before, so there was a a cycle
+            elif n in rec_set:
+                return True
+
+        rec_set.discard(src)
+
+        return False
+
     def add_edge(self, k:int, v:int) -> None:
         if k not in self.graph:
             self.graph[k] = []
 
         self.graph[k].append(v)
+
+        # Also ensure that any nodes that we have pointed to when adding
+        # an edge are also represented in the graph.
+        for v in self.graph[k]:
+            if v not in self.graph:
+                self.graph[v] = []
 
     def bfs(self, src:int) -> list:
         visited = dict()
@@ -287,6 +318,18 @@ class GraphAdjDict:
     def dfs_path(self, src:int, dst:int) -> list:
         visited = set()
         return self._dfs_path_inner(src, visited)
+
+    def has_cycle(self) -> bool:
+        visited = set()
+        rec_set = set()         # set to recurse on
+
+        for node in range(len(self.graph)):
+            if node not in visited:
+                cycle = self._cycle_inner(node, visited, rec_set)
+                if cycle == True:
+                    return True
+
+        return False
 
 
 #class GraphAdjList(object):
@@ -339,7 +382,4 @@ def repr_to_graph(graph_repr:str) -> Graph:
 
 
 
-
-# Various traversals
-
-
+# ======== CYCLE DETECTION ======== #
