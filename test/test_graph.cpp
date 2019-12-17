@@ -214,6 +214,32 @@ TEST_F(TestGraphNode, test_graph1_dfs)
         ASSERT_EQ(this->expected_dfs_1[n], traversal1[n]);
 }
 
+TEST_F(TestGraphNode, test_graph2_dfs)
+{
+    GraphNode* graph2;
+    std::vector<int> traversal2;
+
+    graph2 = createGraph(this->repr2);
+    ASSERT_NE(nullptr, graph2);
+
+    std::cout << std::endl << "==== Traversng graph2 (DFS)" << std::endl;
+    graph_node_dfs(graph2, traversal2);
+    ASSERT_GT(traversal2.size(), 0);
+
+    std::cout << "Graph2 " << this->repr2 << " traversal: " << std::endl;
+    print_traversal(traversal2);
+    std::cout << "Graph2 expected traversal :" << std::endl;
+    print_array(this->expected_dfs_2);
+
+    ASSERT_EQ(this->expected_dfs_2.size(), traversal2.size());
+
+    // Test each value in turn
+    for(unsigned int t = 0; t < traversal2.size(); ++t)
+    {
+        ASSERT_EQ(this->expected_dfs_2[t], traversal2[t]);
+    }
+}
+
 TEST_F(TestGraphNode, test_graph3_dfs)
 {
     // Try to traverse the first graph

@@ -93,9 +93,8 @@ void Graph::bfs_inner(int src_uid, std::vector<int>& traversal)
     GraphNode* cur_node;
     std::queue<GraphNode*> bfs_q;
     std::unordered_set<GraphNode*> visited_nodes;
-    //std::unordered_set<int> visited_uids;
 
-    //visited_uids.insert(src_uid);
+    bfs_q.push(this->graph[src_uid]);
 
     while(!bfs_q.empty())
     {
@@ -108,37 +107,29 @@ void Graph::bfs_inner(int src_uid, std::vector<int>& traversal)
         // visit the children of this node
         for(unsigned int n = 0; n < cur_node->neighbours.size(); ++n)
         {
-            //if(visited_uids.count(cur_node.neighbours[n]) == 0)
-            //{
-            //    bfs_q.emplace(this->graph[cur_node.neighbours[n]]);
-            //}
+            if(visited_uids.count(cur_node.neighbours[n]) == 0)
+            {
+                bfs_q.push(this->graph[cur_node.neighbours[n]]);
+            }
         }
     }
-
-
-    //bfs_q     = queue.Queue()
-    //traversal = []
-    //visited   = set()
-
-    //bfs_q.enqueue(src)
-    //visited.add(src)
-
-    //while(not bfs_q.empty()):
-    //    node = bfs_q.dequeue()
-    //    traversal.append(node)
-    //    # visit children
-    //    for n in self.graph[node]:
-    //        if n not in visited:
-    //            bfs_q.enqueue(n)
-    //            visited.add(n)
-
-    //return traversal
-
 }
 
-void Graph::dfs_inner(int src_uid, std::vector<int>& traversal)
+void Graph::dfs_inner(int src_uid, std::vector<int>& traversal, std::unordered_set<GraphNode*>& visited)
 {
+    GraphNode* cur_node;
+    traversal.append(src_uid);
 
+    cur_node = this->graph[uid];
+
+    for(unsigned int n = 0; n < cur_node->neighbours.size(); ++n)
+    {
+        if(visited.count(cur_node->neighbours[n]) == 0)
+        {
+            visited.insert(cur_node->neighbours[n]);
+            this->dfs_inner(cur_node->neighbours[n], traversal, visited);
+        }
+    }
 }
 
 /*
@@ -204,11 +195,7 @@ int Graph::size(void) const
 GraphNode* Graph::get(int uid)
 {
     if(this->graph.count(uid) == 0)
-    {
-        // TODO : debug, remove 
-        std::cout << "[" << __func__ << "] cant find element with uid " << uid << std::endl;
         return nullptr;
-    }
 
     return this->graph.at(uid);
 }
@@ -248,11 +235,12 @@ std::vector<int> Graph::bfs(int src_uid)
 std::vector<int> Graph::dfs(int src_uid)
 {
     std::vector<int> traversal;
+    std::unordered_set<GraphNode*> visited;
 
     if(this->graph.count(src_uid) == 0)
         return traversal;
 
-    this->dfs_inner(src_uid, traversal);
+    this->dfs_inner(src_uid, traversal, visited);
 
     return traversal;
 }
