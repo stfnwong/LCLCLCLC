@@ -194,14 +194,20 @@ def maximum_subarray_53(nums:list) -> int:
 # walking towards the end (right hand side) of the array, we can only
 # terminate with a True (can reach) if the current position is at
 # len(nums) - 1. If we terminate elsewhere, we must return False
-def jump_game_55(nums:list) -> bool:
+def jump_game_55(nums:list, use_memo:bool=True) -> bool:
     print('input : %s' % str(nums))
-    return jump_game_can_jump_basic(0, nums)
+    if use_memo == True:
+        # 0 - bad, 1 = good, -1 = unknown
+        memo = {k: -1 for k in range(len(nums))}
+        memo[len(nums)-1] = 1
+        return jump_game_can_jump_memo(0, nums, memo)
+    else:
+        return jump_game_can_jump_basic(0, nums)
 
 
 # Inner function - determine if we can jump to the end from here
 # NOTE: This function is much too slow.
-def jump_game_can_jump_basic(cur_pos:int, nums:list) -> bool:
+def jump_game_can_jump_basic(cur_pos:int, nums:List[int]) -> bool:
     if cur_pos == len(nums)-1:
         return True
 
@@ -221,6 +227,29 @@ def jump_game_can_jump_basic(cur_pos:int, nums:list) -> bool:
 
 # The above solution is expensive, because we have to try every possible
 # jump from index zero and backtracking down
+def jump_game_can_jump_memo(cur_pos:int, nums:List[int], memo:dict) -> bool:
+    if memo[cur_pos] == 0:  # 0 - bad
+        return False
+    if memo[cur_pos] == 1:  # 1 - good
+        return True
+
+    # If we get to here then we don't have any prior information
+    # about the state of that position
+    if (cur_pos + nums[cur_pos]) > (len(nums)-1):
+        max_jump = len(nums) - 1
+    else:
+        max_jump = cur_pos + nums[cur_pos]
+
+    next_pos = cur_pos + 1
+    while(next_pos <= max_jump):
+        can_jump = jump_game_can_jump_memo(next_pos, nums, memo)
+        if can_jump:
+            memo[cur_pos] = 1
+            return True
+        next_pos += 1
+
+    memo[cur_pos] = 0
+    return False
 
 
 # Question 322
