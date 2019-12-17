@@ -107,9 +107,9 @@ void Graph::bfs_inner(int src_uid, std::vector<int>& traversal)
         // visit the children of this node
         for(unsigned int n = 0; n < cur_node->neighbours.size(); ++n)
         {
-            if(visited_uids.count(cur_node.neighbours[n]) == 0)
+            if(visited_nodes.count(cur_node->neighbours[n]) == 0)
             {
-                bfs_q.push(this->graph[cur_node.neighbours[n]]);
+                bfs_q.push(this->graph[cur_node->neighbours[n]->uid]);
             }
         }
     }
@@ -118,16 +118,16 @@ void Graph::bfs_inner(int src_uid, std::vector<int>& traversal)
 void Graph::dfs_inner(int src_uid, std::vector<int>& traversal, std::unordered_set<GraphNode*>& visited)
 {
     GraphNode* cur_node;
-    traversal.append(src_uid);
+    traversal.push_back(src_uid);
 
-    cur_node = this->graph[uid];
+    cur_node = this->graph[src_uid];
 
     for(unsigned int n = 0; n < cur_node->neighbours.size(); ++n)
     {
         if(visited.count(cur_node->neighbours[n]) == 0)
         {
             visited.insert(cur_node->neighbours[n]);
-            this->dfs_inner(cur_node->neighbours[n], traversal, visited);
+            this->dfs_inner(cur_node->neighbours[n]->uid, traversal, visited);
         }
     }
 }
@@ -457,6 +457,8 @@ int graphSize(const GraphNode* root)
 
 bool hasCycle(const GraphNode* graph)
 {
+    const GraphNode* cur_node;
+    std::unordered_set<const GraphNode*> visited;
 }
 
 

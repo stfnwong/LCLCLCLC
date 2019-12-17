@@ -29,6 +29,11 @@ struct TreeNode
  * Count the number of nodes in a tree
  */
 int tree_size(const TreeNode* root);
+/*
+ * tree_depth()
+ * Find the depth of a tree.
+ */
+int tree_depth(const TreeNode* root);
 
 // NOTE: see https://support.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation- for details about how this representation works.
 

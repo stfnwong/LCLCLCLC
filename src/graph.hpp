@@ -14,6 +14,7 @@
 #include <utility>
 #include <map>
 #include <unordered_map>
+#include <unordered_set>
 
 
 // Graph node 
@@ -61,7 +62,7 @@ class Graph
 
     private:
         void bfs_inner(int src_uid, std::vector<int>& traversal);
-        void dfs_inner(int src_uid, std::vector<int>& traversal);
+        void dfs_inner(int src_uid, std::vector<int>& traversal, std::unordered_set<GraphNode*>& visited);
         void level_order_inner(std::vector<int>& traversal);
 
     public:

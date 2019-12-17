@@ -283,6 +283,8 @@ class TestGraph : public ::testing::Test
     virtual void SetUp() {}
     virtual void TearDown() {}
 
+    public:
+
 };
 
 TEST_F(TestGraph, test_graph_init)
@@ -351,7 +353,6 @@ TEST_F(TestGraph, test_graph_add_node)
     out_node = test_graph.get(2);
     ASSERT_NE(nullptr, out_node);
     ASSERT_EQ(test_node3, out_node);
-
 
     test_graph.init();
     ASSERT_EQ(0, test_graph.size());

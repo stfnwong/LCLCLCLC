@@ -33,6 +33,22 @@ int tree_size(const TreeNode* root)
     return size;
 }
 
+/*
+ * tree_depth()
+ */
+int tree_depth(const TreeNode* root)
+{
+    int left_depth, right_depth;
+
+    if(root == nullptr)
+        return 0;
+
+    left_depth  = tree_depth(root->left);
+    right_depth = tree_depth(root->right);
+
+    return (left_depth > right_depth) ? (left_depth + 1) : (right_depth + 1);
+}
+
 
 /*
  * create_tree()

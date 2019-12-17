@@ -30,6 +30,26 @@ class TestTree : public ::testing::Test
         std::vector<int> exp_inorder_2 = {1, 3, 2};
 };
 
+TEST_F(TestTree, test_tree_depth)
+{
+    TreeNode* repr1_tree;
+
+    repr1_tree = repr_to_tree(this->repr1);
+    ASSERT_NE(nullptr, repr1_tree);
+    ASSERT_EQ(2, tree_depth(repr1_tree));
+
+    TreeNode* repr2_tree;
+
+    repr2_tree = repr_to_tree(this->repr2);
+    ASSERT_NE(nullptr, repr2_tree);
+    ASSERT_EQ(3, tree_depth(repr2_tree));
+
+    TreeNode* repr3_tree;
+
+    repr3_tree = repr_to_tree(this->repr3);
+    ASSERT_NE(nullptr, repr3_tree);
+    ASSERT_EQ(4, tree_depth(repr3_tree));
+}
 
 TEST_F(TestTree, test_repr_to_tree)
 {
