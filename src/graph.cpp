@@ -25,6 +25,21 @@ GraphNode::GraphNode(int uid, int val, std::vector<GraphNode*> nbors)
     this->neighbours = nbors;
 }
 
+// Operators 
+bool GraphNode::operator==(const GraphNode& that) const
+{
+    if(this->uid != that.uid)
+        return false;
+    if(this->val != that.val)
+        return false;
+    return true;
+}
+
+bool GraphNode::operator!=(const GraphNode& that) const
+{
+    return !(*this == that);
+}
+
 void GraphNode::addAdj(GraphNode* n)
 {
     this->neighbours.push_back(n);
@@ -75,21 +90,23 @@ Graph::Graph() {}       // not sure what to do yet...
 // Private functions for traversal
 void Graph::bfs_inner(int src_uid, std::vector<int>& traversal)
 {
-    std::queue<GraphNode>  bfs_q;      // TODO : should I use pointer here?
-    std::unordered_set<int> visited_uids;
+    GraphNode* cur_node;
+    std::queue<GraphNode*> bfs_q;
+    std::unordered_set<GraphNode*> visited_nodes;
+    //std::unordered_set<int> visited_uids;
 
-    visited_uids.insert(src_uid);
-    //bfs_q.emplace(this->graph[src_uid]);
+    //visited_uids.insert(src_uid);
 
     while(!bfs_q.empty())
     {
-        GraphNode cur_node = bfs_q.front();
+        cur_node = bfs_q.front();
         bfs_q.pop();
-        traversal.push_back(cur_node.uid);
+
+        visited_nodes.insert(cur_node);
+        traversal.push_back(cur_node->uid);
 
         // visit the children of this node
-        // TODO: need to think more carefully about how graph is actually implemented..
-        for(unsigned int n = 0; n < cur_node.neighbours.size(); ++n)
+        for(unsigned int n = 0; n < cur_node->neighbours.size(); ++n)
         {
             //if(visited_uids.count(cur_node.neighbours[n]) == 0)
             //{
@@ -139,10 +156,9 @@ void Graph::init(void)
  */
 void Graph::addNode(GraphNode* node)
 {
-    this->graph.insert(std::pair<int, GraphNode*>(int(this->size()), node));
-    //this->graph.insert(
-    //        std::make_pair(unsigned(this->size() + 1), node)
-    //    );
+    this->graph.insert(
+            std::pair<int, GraphNode*>(int(this->size()), node)
+    );
 }
 
 /*
@@ -412,6 +428,51 @@ GraphNode* cloneGraphNode(GraphNode* node)
 }
 
 /*
+ * graphSize()
+ */
+int graphSize(const GraphNode* root)
+{
+    int n = 0;
+    const GraphNode* cur_node;
+    std::unordered_set<const GraphNode*> visited;
+    std::queue<const GraphNode*> bfs_q;
+
+    if(root == nullptr)
+        return n;
+
+    bfs_q.push(root);
+
+    while(!bfs_q.empty())
+    {
+        cur_node = bfs_q.front();
+        bfs_q.pop();
+
+        // add to visited list
+        if(visited.count(cur_node) == 0)
+        {
+            visited.insert(cur_node);
+            n++;
+        }
+
+        // Now check all the neighbours of this node
+        for(unsigned int n = 0; n < cur_node->neighbours.size(); ++n)
+        {
+            if(visited.count(cur_node->neighbours[n]) == 0)
+            {
+                bfs_q.push(cur_node->neighbours[n]);
+            }
+        }
+    }
+    
+    return n;
+}
+
+bool hasCycle(const GraphNode* graph)
+{
+}
+
+
+/*
  * cloneGraph()
  */
 Graph* cloneGraph(const Graph& graph)
@@ -425,74 +486,75 @@ Graph* cloneGraph(const Graph& graph)
 
 // ======== TRAVERSALS ======== //
 // BFS
-// NoTE: was const, but that doesn't make sense since I am modifying visited inside each object
 
-
-// TODO: now we need to refactor this in terms of this new Graph object 
-// which holds an entire graph.
+/*
+ * graph_node_bfs()
+ */
 void graph_node_bfs(GraphNode* root, std::vector<int>& traversal)
 {
-    // TODO : remove debug printing
-    std::queue<GraphNode*> node_q;
+    GraphNode* cur_node;
+    std::queue<GraphNode*>  node_q;
     std::unordered_set<int> visited;        // hold uids of visited nodes
 
     node_q.push(root);
 
     while(!node_q.empty())
     {
-        GraphNode* cur_node = node_q.front();
+        cur_node = node_q.front();
+        node_q.pop();
 
+        // add to visited list
         if(visited.count(cur_node->uid) == 0)
             visited.insert(cur_node->uid);
 
-        node_q.pop();           // dequeue the node
-        //if(node_q.empty())
-        //    std::cout << "[" << __func__ << "] q is empty" << std::endl;
-        //std::cout << "[" << __func__ << "] checking node" << std::endl;
-        //std::cout << cur_node->toString() << std::endl;
+        traversal.push_back(cur_node->uid);
 
-        // TODO: we need some structure to keep track of which nodes have 
-        // been visited. A simple queue or stack is awkward since we would need to be able to search
-        // in the queue for nodes (eg: has this node been visited? Lets iterated over the queue and see
-        // what's there, and if its there then we have O(N)).
-        //for(unsigned int n = 0; n < cur_node->neighbours.size(); ++n)
-        //{
-        //    if(!cur_node->neighbours[n]->visited)
-        //    {
-        //        // TODO: debug only, remove 
-        //        //std::cout << "[" << __func__ << "] adding node ["
-        //        //    << n+1 << "/" << cur_node->neighbours.size() 
-        //        //    << "]" << std::endl;
-        //        node_q.push(cur_node->neighbours[n]);
-        //    }
-        //}
-        //num_visited++;
-        //traversal.push_back(int(cur_node->key, cur_node->val));
-        
-        // DEBUG: remove 
-        //std::cout << "[" << __func__ << "] num_visited " << num_visited << std::endl;
+        // Now check all the neighbours of this node
+        for(unsigned int n = 0; n < cur_node->neighbours.size(); ++n)
+        {
+            if(visited.count(cur_node->neighbours[n]->uid) == 0)
+            {
+                std::cout << "[" << __func__ << "] adding node " << cur_node->neighbours[n]->toString()
+                    << " with uid [" << cur_node->neighbours[n]->uid << "]" << std::endl;
+                node_q.push(cur_node->neighbours[n]);
+                visited.insert(cur_node->neighbours[n]->uid);
+            }
+        }
     }
 }
 
+/*
+ * graph_dfs_visit_q()
+ */
 void graph_dfs_visit_q(const GraphNode* root, std::vector<int>& traversal)
 {
     std::cout << "[" << __func__ << "] AH HA HA HA HA! No Queue DFS in this commit!" << std::endl;
 }
 
 // DFS
+void graph_node_dfs_inner(GraphNode* root, std::vector<int>& traversal, std::unordered_set<GraphNode*>& visited)
+{
+    visited.insert(root);
+    traversal.push_back(root->uid);
+
+    for(unsigned int n = 0; n < root->neighbours.size(); ++n)
+    {
+        if(visited.count(root->neighbours[n]) == 0)
+        {
+            graph_node_dfs_inner(root->neighbours[n], traversal, visited);
+        }
+    }
+}
+/*
+ * graph_node_dfs()
+ */
 void graph_node_dfs(GraphNode* root, std::vector<int>& traversal)
 {
+    std::unordered_set<GraphNode*> visited;
+
     if(root != nullptr)
     {
-        traversal.push_back(root->uid);
-        //root->visited = true;
-        //for(unsigned int n = 0; n < root->neighbours.size(); ++n)
-        //{
-        //    if(!root->neighbours[n]->visited)
-        //    {
-        //        graph_dfs(root->neighbours[n], traversal);
-        //    }
-        //}
+        graph_node_dfs_inner(root, traversal, visited);
     }
 }
 

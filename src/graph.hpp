@@ -25,6 +25,11 @@ class GraphNode
         std::vector <GraphNode*> neighbours;
 
     public:
+        // operators
+        bool operator==(const GraphNode& that) const;
+        bool operator!=(const GraphNode& that) const;
+
+    public:
         GraphNode(int uid);
         GraphNode(int uid, int val);
         GraphNode(int uid, int val, std::vector<GraphNode*> nbors); 
@@ -100,6 +105,8 @@ GraphNode*               createGraph(const std::string& repr);
 // Methods that work on graph nodes
 GraphNode* cloneGraphNode(GraphNode* node);
 
+int graphSize(const GraphNode* graph);
+bool hasCycle(const GraphNode* graph);
 
 
 

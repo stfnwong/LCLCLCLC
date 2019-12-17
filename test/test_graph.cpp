@@ -9,32 +9,6 @@
 #include <gtest/gtest.h>
 #include "graph.hpp"
 
-
-class TestGraphNode : public ::testing::Test
-{
-    virtual void SetUp() {}
-    virtual void TearDown() {}
-
-    public:
-        std::string empty_repr = "{}";
-        std::string repr1      = "{0,1,2#1,2#2,2}";
-        std::string repr2      = "{0,1,2#1,2#2,2#3,1,0#4,2,3}";
-        // this graph is from cracking the code pg 118
-        std::string repr3      = "{0,1,4,5#1,4,3#2,1#3,2,4#4#5}";   
-
-        // expected outputs
-        // graph 1
-        std::vector<int> expected_dfs_1 = {0,2,1};
-        std::vector<int> expected_bfs_1 = {0,1,2};
-        // graph 2
-        std::vector<int> expected_dfs_2 = {0,1,2,3,4};
-        std::vector<int> expected_bfs_2 = {0,1,2,3,4};
-        // graph 3
-        std::vector<int> expected_dfs_3 = {0, 1, 3, 2, 4, 5};
-        std::vector<int> expected_bfs_3 = {0, 1, 4, 5, 3, 2};
-};
-
-
 /*
  * print_array()
  * Prints an array of its with matching {}
@@ -62,6 +36,58 @@ void print_traversal(const std::vector<int>& traversal)
     for(unsigned int t = 1; t < traversal.size(); ++t)
         std::cout << "," << traversal[t];
     std::cout << "}" << std::endl;
+}
+
+
+// ================ UNIT TESTS ================= //
+class TestGraphNode : public ::testing::Test
+{
+    virtual void SetUp() {}
+    virtual void TearDown() {}
+
+    public:
+        std::string empty_repr = "{}";
+        std::string repr1      = "{0,1,2#1,2#2,2}";
+        std::string repr2      = "{0,1,2#1,2#2,2,4#3,1,0#4,2,3}";
+        // this graph is from cracking the code pg 118
+        std::string repr3      = "{0,1,4,5#1,4,3#2,1#3,2,4#4#5}";   
+
+        // expected outputs
+        // graph 1
+        std::vector<int> expected_dfs_1 = {0,1,2};
+        std::vector<int> expected_bfs_1 = {0,1,2};
+        // graph 2
+        std::vector<int> expected_dfs_2 = {0,1,2,4,3};
+        std::vector<int> expected_bfs_2 = {0,1,2,4,3};
+        // graph 3
+        std::vector<int> expected_dfs_3 = {0, 1, 4, 3, 2, 5};
+        std::vector<int> expected_bfs_3 = {0, 1, 4, 5, 3, 2};
+};
+
+
+
+TEST_F(TestGraphNode, test_graph_size)
+{
+    GraphNode* graph1;
+    GraphNode* graph2;
+    GraphNode* graph3;
+    GraphNode* empty_graph;
+
+    graph1 = createGraph(this->repr1);
+    ASSERT_NE(nullptr, graph1);
+    ASSERT_EQ(3, graphSize(graph1));
+
+    graph2 = createGraph(this->repr2);
+    ASSERT_NE(nullptr, graph2);
+    ASSERT_EQ(5, graphSize(graph2));
+
+    graph3 = createGraph(this->repr3);
+    ASSERT_NE(nullptr, graph3);
+    ASSERT_EQ(6, graphSize(graph3));
+    
+    empty_graph = createGraph(this->empty_repr);
+    ASSERT_EQ(nullptr, empty_graph);
+    ASSERT_EQ(0, graphSize(empty_graph));
 }
 
 
@@ -97,13 +123,14 @@ TEST_F(TestGraphNode, test_graph1_bfs)
     ASSERT_NE(nullptr, graph1);
 
     std::cout << std::endl << "==== Traversng graph1 (BFS)" << std::endl;
+    std::cout << graph1->toString() << std::endl;
     graph_node_bfs(graph1, traversal1);
     std::cout << "Graph1 " << this->repr1 << " traversal: " << std::endl;
     print_traversal(traversal1);
     std::cout << "Graph1 expected traversal :" << std::endl;
     print_array(this->expected_bfs_1);
 
-    ASSERT_GT(0, traversal1.size());
+    ASSERT_GT(traversal1.size(), 0);
     ASSERT_EQ(this->expected_bfs_1.size(), traversal1.size());
 
     for(unsigned int n = 0; n < this->expected_bfs_1.size(); ++n)
@@ -111,7 +138,6 @@ TEST_F(TestGraphNode, test_graph1_bfs)
         ASSERT_EQ(this->expected_bfs_1[n], traversal1[n]);
     }
 }
-
 
 TEST_F(TestGraphNode, test_graph2_bfs)
 {
@@ -124,12 +150,22 @@ TEST_F(TestGraphNode, test_graph2_bfs)
     ASSERT_NE(nullptr, graph2);
 
     std::cout << std::endl << "==== Traversng graph2 (BFS)" << std::endl;
+    std::cout << graph2->toString() << std::endl;
     graph_node_bfs(graph2, traversal2);
-    // Do the real testing
-    ASSERT_GT(0, traversal2.size());
+
+    std::cout << "Graph2 " << this->repr2 << " traversal: " << std::endl;
     print_traversal(traversal2);
-    ASSERT_GT(0, traversal2.size());
+    std::cout << "Graph2 expected traversal :" << std::endl;
+    print_array(this->expected_bfs_2);
+
+    // Do the real testing
+    ASSERT_GT(traversal2.size(), 0);
+    print_traversal(traversal2);
+    ASSERT_GT(traversal2.size(), 0);
     ASSERT_EQ(this->expected_bfs_2.size(), traversal2.size());
+
+    for(unsigned int n = 0; n < this->expected_bfs_2.size(); ++n)
+        ASSERT_EQ(this->expected_bfs_2[n], traversal2[n]);
 }
 
 TEST_F(TestGraphNode, test_graph3_bfs)
@@ -144,17 +180,41 @@ TEST_F(TestGraphNode, test_graph3_bfs)
     std::cout << std::endl << "==== Traversng graph3 (BFS)" << std::endl;
     graph_node_bfs(graph3, traversal3);
 
-    ASSERT_GT(0, traversal3.size());
+    ASSERT_GT(traversal3.size(), 0);
     print_traversal(traversal3);
-    ASSERT_GT(0, traversal3.size());
+    ASSERT_GT(traversal3.size(), 0);
     ASSERT_EQ(this->expected_bfs_3.size(), traversal3.size());
 
     // check the traversal
-
+    for(unsigned int n = 0; n < this->expected_bfs_3.size(); ++n)
+        ASSERT_EQ(this->expected_bfs_3[n], traversal3[n]);
 }
 
 // Test graph dfs
-TEST_F(TestGraphNode, test_graph_node_dfs)
+TEST_F(TestGraphNode, test_graph1_dfs)
+{
+    GraphNode* graph1;
+    std::vector<int> traversal1;
+
+    graph1 = createGraph(this->repr1);
+    ASSERT_NE(nullptr, graph1);
+
+    std::cout << std::endl << "==== Traversng graph1 (DFS)" << std::endl;
+    graph_node_dfs(graph1, traversal1);
+    ASSERT_GT(traversal1.size(), 0);
+
+    std::cout << "Graph1 " << this->repr1 << " traversal: " << std::endl;
+    print_traversal(traversal1);
+    std::cout << "Graph3 expected traversal :" << std::endl;
+    print_array(this->expected_dfs_1);
+
+    ASSERT_EQ(this->expected_dfs_1.size(), traversal1.size());
+
+    for(unsigned int n = 0; n < this->expected_dfs_1.size(); ++n)
+        ASSERT_EQ(this->expected_dfs_1[n], traversal1[n]);
+}
+
+TEST_F(TestGraphNode, test_graph3_dfs)
 {
     // Try to traverse the first graph
     GraphNode* graph3;
@@ -165,12 +225,14 @@ TEST_F(TestGraphNode, test_graph_node_dfs)
 
     std::cout << std::endl << "==== Traversng graph3 (DFS)" << std::endl;
     graph_node_dfs(graph3, traversal3);
-    //ASSERT_GT(0, traversal3.size());
+    ASSERT_GT(traversal3.size(), 0);
 
-    std::cout << "Printing DFS traversal1 (length " << traversal3.size() << ") :" << std::endl;
+    std::cout << "Graph3 " << this->repr3 << " traversal: " << std::endl;
     print_traversal(traversal3);
-    std::cout << "Expected traversal : " << std::endl;
+    std::cout << "Graph3 expected traversal :" << std::endl;
     print_array(this->expected_dfs_3);
+
+    ASSERT_EQ(this->expected_dfs_3.size(), traversal3.size());
 
     // Test each value in turn
     for(unsigned int t = 0; t < traversal3.size(); ++t)
@@ -248,9 +310,22 @@ TEST_F(TestGraph, test_graph_add_node)
     // Now check some of the nodes
     GraphNode* out_node;
 
+    // There is no such node, so we should get a nullptr here
+    out_node = test_graph.get(10);
+    ASSERT_EQ(nullptr, out_node);       
+
     out_node = test_graph.get(0);
     ASSERT_NE(nullptr, out_node);
     ASSERT_EQ(test_node1, out_node);
+
+    out_node = test_graph.get(1);
+    ASSERT_NE(nullptr, out_node);
+    ASSERT_EQ(test_node2, out_node);
+
+    out_node = test_graph.get(2);
+    ASSERT_NE(nullptr, out_node);
+    ASSERT_EQ(test_node3, out_node);
+
 
     test_graph.init();
     ASSERT_EQ(0, test_graph.size());
@@ -262,48 +337,44 @@ TEST_F(TestGraph, test_graph_add_node)
 //
 //}
 
-
-
-class TestAdj : public ::testing::Test
-{
-    virtual void SetUp() {}
-    virtual void TearDown() {}
-
-    public:
-        unsigned int test_v = 8;
-        std::string repr1 = "{0,1,2#1,2#2,2}";
-};
-
-
-TEST_F(TestAdj, test_adj_matrix_init)
-{
-    AdjMatrix test_matrix(this->test_v);
-    
-    ASSERT_EQ(this->test_v, test_matrix.getDim());     // TODO: come up with a real test
-    // Start adding some edges 
-    // Make a repr here that we can parse. The most natural way to do this would be a similar adjacency 
-    // list format, maybe something like [k1, k2, #] for an edge that connectes to nodes k1, k2 (values are omitted).
-    std::vector<GraphEdge> edge1 = {GraphEdge(2, 0)};
-    std::vector<GraphEdge> edge2 = {GraphEdge(8, 1), GraphEdge(5, 1), GraphEdge(4, 1), GraphEdge(1, 0)};
-    std::vector<GraphEdge> edge3 = {GraphEdge(4, 0)};
-    std::vector<GraphEdge> edge4 = {GraphEdge(2, 0), GraphEdge(3, 0)};
-    std::vector<GraphEdge> edge5 = {GraphEdge(2, 0), GraphEdge(7, 0), GraphEdge(6, 0), GraphEdge(9, 0)};
-    std::vector<GraphEdge> edge6 = {GraphEdge(5, 0)};
-    std::vector<GraphEdge> edge7 = {GraphEdge(5, 0)};
-    std::vector<GraphEdge> edge8 = {GraphEdge(2, 0)};
-    std::vector<GraphEdge> edge9 = {GraphEdge(5, 0)};
-
-}
-
-
+//class TestAdj : public ::testing::Test
+//{
+//    virtual void SetUp() {}
+//    virtual void TearDown() {}
+//
+//    public:
+//        unsigned int test_v = 8;
+//        std::string repr1 = "{0,1,2#1,2#2,2}";
+//};
+//
+//
+//TEST_F(TestAdj, test_adj_matrix_init)
+//{
+//    AdjMatrix test_matrix(this->test_v);
+//    
+//    ASSERT_EQ(this->test_v, test_matrix.getDim());     // TODO: come up with a real test
+//    // Start adding some edges 
+//    // Make a repr here that we can parse. The most natural way to do this would be a similar adjacency 
+//    // list format, maybe something like [k1, k2, #] for an edge that connectes to nodes k1, k2 (values are omitted).
+//    std::vector<GraphEdge> edge1 = {GraphEdge(2, 0)};
+//    std::vector<GraphEdge> edge2 = {GraphEdge(8, 1), GraphEdge(5, 1), GraphEdge(4, 1), GraphEdge(1, 0)};
+//    std::vector<GraphEdge> edge3 = {GraphEdge(4, 0)};
+//    std::vector<GraphEdge> edge4 = {GraphEdge(2, 0), GraphEdge(3, 0)};
+//    std::vector<GraphEdge> edge5 = {GraphEdge(2, 0), GraphEdge(7, 0), GraphEdge(6, 0), GraphEdge(9, 0)};
+//    std::vector<GraphEdge> edge6 = {GraphEdge(5, 0)};
+//    std::vector<GraphEdge> edge7 = {GraphEdge(5, 0)};
+//    std::vector<GraphEdge> edge8 = {GraphEdge(2, 0)};
+//    std::vector<GraphEdge> edge9 = {GraphEdge(5, 0)};
+//
+//}
 // Test that we can make a new AdjList object
-TEST_F(TestAdj, test_adj_list_init)
-{
-    AdjList test_list(this->repr1);
-
-    std::cout << "test_list string representation : " << std::endl;
-    std::cout << "\t" << test_list.toString() << std::endl;
-}
+//TEST_F(TestAdj, test_adj_list_init)
+//{
+//    AdjList test_list(this->repr1);
+//
+//    std::cout << "test_list string representation : " << std::endl;
+//    std::cout << "\t" << test_list.toString() << std::endl;
+//}
 
 
 
