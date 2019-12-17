@@ -19,9 +19,15 @@ class TestSharedPtr : public ::testing::Test
 TEST_F(TestSharedPtr, test_init)
 {
     int* some_val = new int(42);
+    int* some_other_val = new int(42);
     SharedPtr<int> ref1(some_val);
 
     ASSERT_EQ(1, ref1.numRef());
+
+    SharedPtr<int> ref2(some_other_val);
+
+    ASSERT_EQ(1, ref2.numRef());
+    ASSERT_NE(ref1, ref2);          // memory is not common, should fail
 }
 
 TEST_F(TestSharedPtr, test_dtor)
@@ -30,20 +36,23 @@ TEST_F(TestSharedPtr, test_dtor)
 
     SharedPtr<int> ref1(some_val);
     ASSERT_EQ(1, ref1.numRef());
+    std::cout << "There are " << ref1.numRef() << " references to some_val" << std::endl;
     SharedPtr<int> ref2(ref1);
     ASSERT_EQ(2, ref1.numRef());
+    std::cout << "There are " << ref1.numRef() << " references to some_val" << std::endl;
     SharedPtr<int> ref3(ref2);
     ASSERT_EQ(3, ref1.numRef());
+    std::cout << "There are " << ref1.numRef() << " references to some_val" << std::endl;
     SharedPtr<int> ref4(ref3);
     ASSERT_EQ(4, ref1.numRef());
+    std::cout << "There are " << ref1.numRef() << " references to some_val" << std::endl;
 
     // All these should be 'equal' since they have the same pointer
     ASSERT_EQ(ref2, ref1);
     ASSERT_EQ(ref3, ref2);
     ASSERT_EQ(ref3, ref4);
-
-    std::cout << "There are " << ref4.numRef() << " references to some_val remaining" << std::endl;
 }
+
 
 
 int main(int argc, char *argv[])

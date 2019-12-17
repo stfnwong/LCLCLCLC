@@ -11,8 +11,8 @@
 
 template <typename T> class SharedPtr
 {
-    int* num_ref;
-    T*   ptr;
+    int *num_ref;
+    T   *ptr;
 
     public:
         SharedPtr();
@@ -32,19 +32,22 @@ template <typename T> class SharedPtr
     // status 
     public:
         int numRef(void) const;
+        T*  get(void) const;
 };
 
 
+// base ctor
 template <typename T> SharedPtr<T>::SharedPtr() 
 {
     this->num_ref = new int(0);
     this->ptr     = nullptr;
 }
 
+// new value ctor
 template <typename T> SharedPtr<T>::SharedPtr(T* ref)
 {
-    this->ptr = ref;
     this->num_ref = new int(1);
+    this->ptr = ref;
 }
 
 // copy ctor
@@ -53,21 +56,19 @@ template <typename T> SharedPtr<T>::SharedPtr(const SharedPtr<T>& that)
     this->ptr     = that.ptr;
     this->num_ref = that.num_ref;
     (*this->num_ref) = (*this->num_ref) + 1;
-    std::cout << "[" << __func__ << "] this->num_ref = " << *this->num_ref << std::endl;
 }
 
 // dtor 
 template <typename T> SharedPtr<T>::~SharedPtr()
 {
     (*this->num_ref)--;
-    std::cout << "[" << __func__ << "] this->num_ref = " << *this->num_ref << std::endl;
     
     // clean this up if its the last reference
     if((*this->num_ref) == 0)
     {
         std::cout << "[" << __func__ << "] cleaning memory..." << std::endl;
         delete this->ptr;
-        //delete this->num_ref;
+        delete this->num_ref;
     }
 }
 
@@ -91,6 +92,11 @@ template <typename T> bool SharedPtr<T>::operator!=(const SharedPtr<T>& that) co
 template <typename T> int SharedPtr<T>::numRef(void) const
 {
     return *this->num_ref;
+}
+
+template <typename T> T* SharedPtr<T>::get(void) const
+{
+    return this->ptr;
 }
 
 #endif /*__LC_SHARED_PTR*/
