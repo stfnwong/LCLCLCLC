@@ -8,7 +8,9 @@
 #ifndef __LC_SHARED_PTR
 #define __LC_SHARED_PTR
 
-
+/*
+ * SharedPtr
+ */
 template <typename T> class SharedPtr
 {
     int *num_ref;
@@ -17,7 +19,7 @@ template <typename T> class SharedPtr
     public:
         SharedPtr();
         SharedPtr(T* ref);
-        SharedPtr(const SharedPtr<T>& that);
+        SharedPtr(const SharedPtr<T>& that);    // copy ctor
         ~SharedPtr();
 
     // operators 
@@ -84,8 +86,6 @@ template <typename T> bool SharedPtr<T>::operator!=(const SharedPtr<T>& that) co
 {
     return !(*this == that);
 }
-
-
 
 // ==== Status ==== //
 // TODO : what is the benefit of returning a const int?

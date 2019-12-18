@@ -51,7 +51,28 @@ TEST_F(TestSharedPtr, test_dtor)
     ASSERT_EQ(ref2, ref1);
     ASSERT_EQ(ref3, ref2);
     ASSERT_EQ(ref3, ref4);
+    ASSERT_EQ(ref4, ref1);
+
+    // Now if we make some more shared pointers here with a different var, 
+    // we should find that they fail any equality test with ref1 - ref4
+    int* some_other_val = new int(24);
+    // NOTE: we are only copy-constructing here 
+    SharedPtr<int> new_ref1(some_other_val);
+    SharedPtr<int> new_ref2(new_ref1);
+
+    ASSERT_EQ(new_ref1, new_ref2);
+    // Any combination of these will fail
+    ASSERT_NE(ref1, new_ref1);
+    ASSERT_NE(ref1, new_ref2);
+    ASSERT_NE(ref2, new_ref2);
+    ASSERT_NE(ref2, new_ref1);
+    // And so on....
 }
+
+//TEST_F(TestSharedPtr, test_multiple_share)
+//{
+//
+//}
 
 
 
