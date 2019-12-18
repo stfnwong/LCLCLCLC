@@ -68,7 +68,6 @@ template <typename T> SharedPtr<T>::~SharedPtr()
     // clean this up if its the last reference
     if((*this->num_ref) == 0)
     {
-        std::cout << "[" << __func__ << "] cleaning memory..." << std::endl;
         delete this->ptr;
         delete this->num_ref;
     }
