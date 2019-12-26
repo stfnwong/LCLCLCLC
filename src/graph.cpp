@@ -62,6 +62,11 @@ unsigned int GraphNode::numAdj(void) const
     return this->neighbours.size();
 }
 
+int GraphNode::getUid(void) const
+{
+    return this->uid;
+}
+
 
 /*
  * toString()

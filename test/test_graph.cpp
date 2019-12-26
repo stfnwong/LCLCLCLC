@@ -308,6 +308,7 @@ TEST_F(TestGraphNode, test_clone)
     dst_graph = cloneGraphNode(src_graph); 
     ASSERT_NE(nullptr, dst_graph);
 
+    // If the clone worked, then these graphs will be equal
     ASSERT_EQ(true, graph_node_equal(src_graph, dst_graph));
 }
 

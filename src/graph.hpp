@@ -35,10 +35,10 @@ class GraphNode
         GraphNode(int uid, int val);
         GraphNode(int uid, int val, std::vector<GraphNode*> nbors); 
 
-        // TODO : get uid?
         void addAdj(GraphNode* n);
         void init(void);
         void setVal(int v);
+        int getUid(void) const;
         unsigned int numAdj(void) const;
         std::string toString(void) const;
 };
