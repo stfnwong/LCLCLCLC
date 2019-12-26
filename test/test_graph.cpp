@@ -267,14 +267,28 @@ TEST_F(TestGraphNode, test_graph3_dfs)
     }
 }
 
-//TEST_F(TestGraphNode, test_clone)
+
+//TEST_F(TestGraphNode, test_graph_equal)
 //{
-//    GraphNode* src_graph;
-//    GraphNode* dst_graph;
 //
-//
-//    // Need to make a src_graph to test with.
 //}
+
+
+TEST_F(TestGraphNode, test_clone)
+{
+    GraphNode* src_graph;
+    GraphNode* dst_graph;
+
+    // Use graph3
+    src_graph = createGraph(this->repr3);
+    ASSERT_NE(nullptr, src_graph);
+
+    // Now try to clone
+    dst_graph = cloneGraphNode(src_graph); 
+    ASSERT_NE(nullptr, dst_graph);
+
+    ASSERT_EQ(true, graph_node_equal(src_graph, dst_graph));
+}
 
 
 

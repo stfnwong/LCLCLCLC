@@ -35,6 +35,7 @@ class GraphNode
         GraphNode(int uid, int val);
         GraphNode(int uid, int val, std::vector<GraphNode*> nbors); 
 
+        // TODO : get uid?
         void addAdj(GraphNode* n);
         void init(void);
         void setVal(int v);
@@ -89,7 +90,6 @@ class Graph
 };
 
 
-
 // Create graphs from repr strings
 // NOTE: repr format looks like
 //
@@ -102,19 +102,18 @@ std::vector<std::string> graph_repr_to_token_vec(const std::string& repr);
 std::string              graph_to_repr(const GraphNode* graph);
 GraphNode*               repr_to_graph_node(const std::string& repr);
 GraphNode*               createGraph(const std::string& repr);
+//void                     destroyGraph(GraphNode* graph);
 
 // Methods that work on graph nodes
-GraphNode* cloneGraphNode(GraphNode* node);
+GraphNode* cloneGraphNode(GraphNode* root);
 
-int graphSize(const GraphNode* graph);
+int  graphSize(const GraphNode* graph);
 bool hasCycle(const GraphNode* graph);
-
-
 
 // ==== Traversals ==== //
 void graph_node_bfs(GraphNode* root, std::vector<int>& traversal);
 void graph_node_dfs(GraphNode* root, std::vector<int>& traversal);
-
+bool graph_node_equal(GraphNode* a, GraphNode* b);
 
 
 // Adjacency Matrix 

@@ -408,11 +408,52 @@ GraphNode* createGraph(const std::string& repr)
 /*
  * cloneGraphNode()
  */
-GraphNode* cloneGraphNode(GraphNode* node)
+GraphNode* cloneGraphNode(GraphNode* root)
 {
     GraphNode* out_graph;
+    GraphNode* cur_node;
+    // keep track of current nodes
+    std::map<GraphNode*, GraphNode*> node_map;
+    std::queue<GraphNode*>           node_q;
 
-    return out_graph;
+    if(root == nullptr)
+        return nullptr;
+
+    // BFS over the graph, copy each node as we see it.
+    node_q.push(root);
+    out_graph = new GraphNode(root->uid);
+    out_graph->val = root->val;
+
+    node_map[root] = out_graph;
+
+    while(!node_q.empty())
+    {
+        cur_node = node_q.front();
+        node_q.pop();
+        // visit all the neighbours of this node
+        std::vector<GraphNode*> adj = cur_node->neighbours;
+
+        for(unsigned int i = 0; i < adj.size(); ++i)
+        {
+            // check if we have created this node already
+            if(node_map[adj[i]] == nullptr)
+            {
+                // create a new node
+                out_graph = new GraphNode(adj[i]->uid);
+                out_graph->val = adj[i]->val;
+                node_map[adj[i]] = out_graph;
+                node_q.push(adj[i]);
+            }
+
+            // Add neighbours for this node to the 
+            // output graph node.
+            node_map[cur_node]->neighbours.push_back(
+                    node_map[adj[i]]
+            );
+        }
+    }
+
+    return node_map[root];
 }
 
 /*
@@ -455,6 +496,7 @@ int graphSize(const GraphNode* root)
     return n;
 }
 
+// TODO : implement this
 bool hasCycle(const GraphNode* graph)
 {
     const GraphNode* cur_node;
@@ -546,6 +588,29 @@ void graph_node_dfs(GraphNode* root, std::vector<int>& traversal)
     {
         graph_node_dfs_inner(root, traversal, visited);
     }
+}
+
+// Compare two graphs
+bool graph_node_equal(GraphNode* a, GraphNode* b)
+{
+    std::vector<int> traversal_a;
+    std::vector<int> traversal_b;
+
+    // BFS on each of the graphs
+    graph_node_bfs(a, traversal_a);
+    graph_node_bfs(b, traversal_b);
+
+    // Compare the two traversals
+    if(traversal_a.size() != traversal_b.size())
+        return false;
+
+    for(unsigned int n = 0; n < traversal_a.size(); ++n)
+    {
+        if(traversal_a[n] != traversal_b[n])
+            return false;
+    }
+
+    return true;
 }
 
 
