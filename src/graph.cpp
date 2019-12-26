@@ -383,8 +383,6 @@ std::string graph_to_repr(const GraphNode* graph)
  */
 GraphNode* createGraph(const std::string& repr)
 {
-    GraphNode* graph_root;
-
     // do the various basic sanity checks 
     if(repr.length() < 1)
         return nullptr;
@@ -546,8 +544,6 @@ void graph_node_bfs(GraphNode* root, std::vector<int>& traversal)
         {
             if(visited.count(cur_node->neighbours[n]->uid) == 0)
             {
-                std::cout << "[" << __func__ << "] adding node " << cur_node->neighbours[n]->toString()
-                    << " with uid [" << cur_node->neighbours[n]->uid << "]" << std::endl;
                 node_q.push(cur_node->neighbours[n]);
                 visited.insert(cur_node->neighbours[n]->uid);
             }

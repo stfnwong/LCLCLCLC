@@ -268,10 +268,31 @@ TEST_F(TestGraphNode, test_graph3_dfs)
 }
 
 
-//TEST_F(TestGraphNode, test_graph_equal)
-//{
-//
-//}
+TEST_F(TestGraphNode, test_graph_equal)
+{
+    GraphNode* graph_a;
+    GraphNode* graph_b;
+
+    graph_a = createGraph(this->repr2);
+    graph_b = createGraph(this->repr2);
+
+    // These graphs are the same, and therefore we expect
+    // that graph_node_equal() will return true
+    ASSERT_EQ(true, graph_node_equal(graph_a, graph_b));
+}
+
+TEST_F(TestGraphNode, test_graph_not_equal)
+{
+    GraphNode* graph_a;
+    GraphNode* graph_b;
+
+    graph_a = createGraph(this->repr2);
+    graph_b = createGraph(this->repr3);
+
+    // These graphs are the same, and therefore we expect
+    // that graph_node_equal() will return true
+    ASSERT_EQ(false, graph_node_equal(graph_a, graph_b));
+}
 
 
 TEST_F(TestGraphNode, test_clone)
