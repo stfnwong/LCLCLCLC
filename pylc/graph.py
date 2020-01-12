@@ -273,7 +273,6 @@ class GraphAdjDict:
 
     def _cycle_inner(self, src:int, visited:set) -> bool:
         visited.add(src)
-
         # Walk over the children of this node. If a child is in
         # both the rec_set and has been visited before, then
         # there must be a cycle
@@ -327,28 +326,6 @@ class GraphAdjDict:
         return False
 
 
-#class GraphAdjList(object):
-#    """
-#    GraphAdjList
-#
-#    Same idea, but the adjaceny list is a literal list.
-#    """
-#    def __init__(self, adj_list:list=[], **kwargs) -> None:
-#        self.adj = adj_list
-#
-#    def __repr__(self) -> str:
-#        return 'GraphAdjList'
-#
-#    def __len__(self) -> int:
-#        return len(self.adj_list)
-#
-#    def add_node(self, node_adj_list:list) -> None:
-#        self.adj.append(node_adj_list)
-#
-#    def remove_node(self, idx:int) -> None:
-#        if idx < len(self):
-#            del self.adj[idx]
-#
 
 # repr to graph?
 def repr_to_graph(graph_repr:str) -> Graph:
@@ -374,7 +351,3 @@ def repr_to_graph(graph_repr:str) -> Graph:
         cur_node = GraphNode(nsplit[0], 0)
         for s in nsplit[1:]:
             cur_node.add_neighbour(int(s))
-
-
-
-# ======== CYCLE DETECTION ======== #

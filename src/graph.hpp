@@ -35,12 +35,12 @@ class GraphNode
         GraphNode(int uid, int val);
         GraphNode(int uid, int val, std::vector<GraphNode*> nbors); 
 
-        void addAdj(GraphNode* n);
-        void init(void);
-        void setVal(int v);
-        int getUid(void) const;
+        void         addAdj(GraphNode* n);
+        void         init(void);
+        void         setVal(int v);
+        int          getUid(void) const;
         unsigned int numAdj(void) const;
-        std::string toString(void) const;
+        std::string  toString(void) const;
 };
 
 
@@ -89,6 +89,18 @@ class Graph
         std::string toString(void) const;
 };
 
+/*
+ * Structure for cleaning up graph nodes
+ */
+struct GraphNodeCleanup
+{
+    std::vector<std::set<GraphNode*>> colors;
+    GraphNode* to_delete;
+    size_t entry_node_idx;
+
+    public:
+        GraphNodeCleanup();
+};
 
 // Create graphs from repr strings
 // NOTE: repr format looks like
@@ -102,18 +114,20 @@ std::vector<std::string> graph_repr_to_token_vec(const std::string& repr);
 std::string              graph_to_repr(const GraphNode* graph);
 GraphNode*               repr_to_graph_node(const std::string& repr);
 GraphNode*               createGraph(const std::string& repr);
-//void                     destroyGraph(GraphNode* graph);
-
 // Methods that work on graph nodes
-GraphNode* cloneGraphNode(GraphNode* root);
+GraphNode*               cloneGraphNode(GraphNode* root);
+void                     destroyGraphNode(GraphNode* graph);
 
-int  graphSize(const GraphNode* graph);
-bool hasCycle(const GraphNode* graph);
+int  graphNodeSize(const GraphNode* graph);
+bool graphNodeHasCycle(const GraphNode* graph);
 
 // ==== Traversals ==== //
 void graph_node_bfs(GraphNode* root, std::vector<int>& traversal);
 void graph_node_dfs(GraphNode* root, std::vector<int>& traversal);
 bool graph_node_equal(GraphNode* a, GraphNode* b);
+
+// Coloring 
+void color_graph_node_greedy(GraphNode* root, std::vector<int>& coloring);
 
 
 // Adjacency Matrix 

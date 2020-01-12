@@ -9,6 +9,7 @@
 #include <queue>
 #include <sstream>
 #include <vector>
+#include <set>
 #include <unordered_set>
 #include "graph.hpp"
 
@@ -268,6 +269,12 @@ std::string Graph::toString(void) const
 }
 
 
+// ======== GRAPH CLEANUP ======== //
+GraphNodeCleanup::GraphNodeCleanup()
+{
+    this->to_delete = nullptr;
+    this->entry_node_idx = 0;
+}
 
 // ======== GRAPH FUNCTIONS ======== //
 std::vector<std::string> graph_repr_to_token_vec(const std::string& repr)
@@ -311,7 +318,6 @@ std::vector<std::string> graph_repr_to_token_vec(const std::string& repr)
 
 	return token_vec;
 }
-
 
 
 /*
@@ -407,7 +413,6 @@ GraphNode* createGraph(const std::string& repr)
     return repr_to_graph_node(repr);
 }
 
-
 /*
  * cloneGraphNode()
  */
@@ -459,10 +464,20 @@ GraphNode* cloneGraphNode(GraphNode* root)
     return node_map[root];
 }
 
+
 /*
- * graphSize()
+ * destroyGraphNode
  */
-int graphSize(const GraphNode* root)
+void destroyGraphNode(GraphNode* root)
+{
+    GraphNodeCleanup cleanup;
+}
+
+
+/*
+ * graphNodeSize()
+ */
+int graphNodeSize(const GraphNode* root)
 {
     int n = 0;
     const GraphNode* cur_node;
@@ -500,28 +515,14 @@ int graphSize(const GraphNode* root)
 }
 
 // TODO : implement this
-bool hasCycle(const GraphNode* graph)
+bool graphNodeHasCycle(const GraphNode* graph)
 {
     const GraphNode* cur_node;
     std::unordered_set<const GraphNode*> visited;
 }
 
 
-/*
- * cloneGraph()
- */
-Graph* cloneGraph(const Graph& graph)
-{
-    Graph* out_graph;
-
-    return out_graph;
-}
-
-
-
 // ======== TRAVERSALS ======== //
-// BFS
-
 /*
  * graph_node_bfs()
  */
@@ -613,6 +614,14 @@ bool graph_node_equal(GraphNode* a, GraphNode* b)
 
     return true;
 }
+
+// ======== GRAPH COLORING ======== ///
+void color_graph_node_greedy(GraphNode* root, std::vector<int>& coloring)
+{
+
+}
+
+
 
 
 // ======== ADJACENCY MATRIX ======== ///

@@ -75,19 +75,19 @@ TEST_F(TestGraphNode, test_graph_size)
 
     graph1 = createGraph(this->repr1);
     ASSERT_NE(nullptr, graph1);
-    ASSERT_EQ(3, graphSize(graph1));
+    ASSERT_EQ(3, graphNodeSize(graph1));
 
     graph2 = createGraph(this->repr2);
     ASSERT_NE(nullptr, graph2);
-    ASSERT_EQ(5, graphSize(graph2));
+    ASSERT_EQ(5, graphNodeSize(graph2));
 
     graph3 = createGraph(this->repr3);
     ASSERT_NE(nullptr, graph3);
-    ASSERT_EQ(6, graphSize(graph3));
+    ASSERT_EQ(6, graphNodeSize(graph3));
     
     empty_graph = createGraph(this->empty_repr);
     ASSERT_EQ(nullptr, empty_graph);
-    ASSERT_EQ(0, graphSize(empty_graph));
+    ASSERT_EQ(0, graphNodeSize(empty_graph));
 }
 
 
