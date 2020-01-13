@@ -1,0 +1,19 @@
+# LC travis config
+
+sudo: false
+language: cpp
+compiler: g++
+
+# Lets get a newer version of GCC
+addons:
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - g++-6
+
+script:
+    - make clean && make all
+    - ./bin/test/test_tree
+    - ./bin/test/test_tree_traverse
+    - ./bin/test/test_shared_ptr
