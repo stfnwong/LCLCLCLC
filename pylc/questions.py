@@ -251,6 +251,27 @@ def jump_game_can_jump_memo(cur_pos:int, nums:List[int], memo:dict) -> bool:
     memo[cur_pos] = 0
     return False
 
+# This version is no longer recursive, which saves stack calls, etc
+def jump_game_can_jump_iter(cur_pos:int, nums:List[int]) -> bool:
+    # we use the same enumeration here
+    # 0  = bad
+    # 1  = good
+    # -1 = unknown
+    memo = {k: -1 for k in range(len(nums))}
+    memo[len(nums)-1] = 1
+
+    for pos in range(len(nums)-2, 0, -1):
+        max_jump = min(pos + nums[pos], len(nums)-1)
+        for cur_jump in range(pos+1, max_jump):
+            if memo[cur_jump] == 1:     # cur_jump is good
+                memo[pos] = 1
+                break
+
+    if memo[0] == 1:
+        return True
+    else:
+        return False
+
 
 # Question 322
 # https://leetcode.com/problems/coin-change/

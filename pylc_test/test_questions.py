@@ -166,6 +166,8 @@ class TestQuestion55(unittest.TestCase):
         self.exp3 = True
         self.inp4 = [2, 0]
         self.exp4 = True
+        # TODO : maybe we can read some of the longer leetcode tests from a
+        # file on disk
 
     def test_jump_game(self) -> None:
         jump1 = questions.jump_game_55(self.inp1)
@@ -177,6 +179,8 @@ class TestQuestion55(unittest.TestCase):
 
         jump4 = questions.jump_game_55(self.inp4)
         self.assertEqual(self.exp4, jump4)
+
+        # TODO Do one of the really long jumps - read the input from disk
 
 
 # ======== QUESTION 224
