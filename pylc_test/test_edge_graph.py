@@ -38,8 +38,7 @@ class TestEdgeWeightedDigraph(unittest.TestCase):
         test_graph = edge_graph.graph_from_file(self.tiny_filename, verbose=True)
 
         # Debug print
-        for k, v in test_graph.adj.items():
-            print('[%s] : %s' % (str(k), str(v)))
+        print(test_graph)
 
         self.assertEqual(self.tiny_exp_num_vertex, test_graph.num_verticies())
         self.assertEqual(self.tiny_exp_num_edge, test_graph.num_edges())

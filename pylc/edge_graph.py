@@ -17,7 +17,7 @@ class DirectedEdge:
         return 'DirectedEdge'
 
     def __str__(self) -> str:
-        return '%s (%d -> %d [%f])' % (repr(self), self.w, self.v, self.weight)
+        return '%s (%d -> %d [%3.2f])' % (repr(self), self.w, self.v, self.weight)
 
     def get_from(self) -> int:
         return self.v
@@ -25,8 +25,6 @@ class DirectedEdge:
     def get_to(self) -> int:
         return self.w
 
-
-#from pudb import set_trace; set_trace()
 
 
 class EdgeWeightedDigraph:
@@ -45,6 +43,20 @@ class EdgeWeightedDigraph:
 
     def __repr__(self) -> str:
         return 'EdgeWeightedDigraph'
+
+    def __str__(self) -> str:
+        s = []
+        s.append('[%s] (%d verticies, %d edges)\n' %\
+                 (repr(self), self.num_verticies(), self.num_edges())
+        )
+
+        for k, edges in self.adj.items():
+            s.append('    ')
+            for e in edges:
+                s.append('%s ' % str(e))
+            s.append('\n')
+
+        return ''.join(s)
 
     def _validate_vertex(self, v:int) -> bool:
         if (v < 0) or (v >= len(self.adj)):
