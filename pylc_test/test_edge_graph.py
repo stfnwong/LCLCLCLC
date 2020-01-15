@@ -24,24 +24,34 @@ class TestDirectedEdge(unittest.TestCase):
         self.assertAlmostEqual(0.0, test_edge.weight)
 
 
-# TODO: another for the graph
-
 
 class TestEdgeWeightedDigraph(unittest.TestCase):
     def setUp(self) -> None:
+        # Tiny graph
         self.tiny_filename = 'data/tiny_ewd.txt'
         self.tiny_exp_num_vertex = 8
         self.tiny_exp_num_edge   = 15
 
-    def test_graph_from_file(self) -> None:
+        # 250 vertex graph
+        self.g250_filename = 'data/ewd_250.txt'
+        self.g250_exp_num_vertex = 250
+        self.g250_exp_num_edge   = 2546
 
+
+    def test_tiny_graph_from_file(self) -> None:
         test_graph = edge_graph.graph_from_file(self.tiny_filename, verbose=True)
-
         # Debug print
         print(test_graph)
 
         self.assertEqual(self.tiny_exp_num_vertex, test_graph.num_verticies())
         self.assertEqual(self.tiny_exp_num_edge, test_graph.num_edges())
+
+        # Check each of the nodes?
+
+    def test_250_graph_from_file(self) -> None:
+        test_graph = edge_graph.graph_from_file(self.g250_filename, verbose=True)
+        self.assertEqual(self.g250_exp_num_vertex, test_graph.num_verticies())
+        self.assertEqual(self.g250_exp_num_edge, test_graph.num_edges())
 
 
 

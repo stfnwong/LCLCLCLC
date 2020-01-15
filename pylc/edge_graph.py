@@ -75,12 +75,6 @@ class EdgeWeightedDigraph:
         return self.E
 
     def add_edge(self, edge:DirectedEdge) -> None:
-        #if self._validate_vertex(edge.get_to()) == False:
-        #    return
-
-        #if self._validate_vertex(edge.get_from()) == False:
-        #    return
-
         if edge.get_from() not in self.adj:
             self.adj[edge.get_from()] = []
             self.indegree[edge.get_from()] = 0
@@ -90,6 +84,7 @@ class EdgeWeightedDigraph:
         self.E += 1
 
 
+#from pudb import set_trace; set_trace()
 
 def graph_from_file(filename:str, **kwargs) -> EdgeWeightedDigraph:
     """
@@ -110,13 +105,28 @@ def graph_from_file(filename:str, **kwargs) -> EdgeWeightedDigraph:
     out_graph = EdgeWeightedDigraph(**kwargs)
     # Each of the following lines is a vertex in the graph
     for n in range(2, len(text)):
-        vertex_text = text[n].split(' ')
-        edge = DirectedEdge(
-            int(vertex_text[0]),
-            int(vertex_text[1]),
-            float(vertex_text[2])
-        )
+        vertex_text = text[n].lstrip(' ').split(' ')
+        # TODO : this is dumb, but it will work
+        for n in range(len(vertex_text)):
+            if vertex_text[n] == '':
+                del vertex_text[n]
+                break
+
+        try:
+            edge = DirectedEdge(
+                int(vertex_text[0]),
+                int(vertex_text[1]),
+                float(vertex_text[2])
+            )
+        except Exception as e:
+            print('Got exception %s' % str(e))
 
         out_graph.add_edge(edge)
+
+    #check here that we have the expected number of edges
+    if num_edges != out_graph.num_edges():
+        print('Expected to get %d edges, but final graph has %d edges' %\
+              (num_edges, out_graph.num_edges())
+        )
 
     return out_graph
