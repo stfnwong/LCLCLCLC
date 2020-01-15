@@ -9,6 +9,7 @@
 #include <gtest/gtest.h>
 #include "edge_graph.hpp"
 
+// TODO: the plan is to port all of this over to catch2
 
 /*
  * Test just the DirectedEdge class
@@ -30,7 +31,7 @@ TEST_F(TestDirectedEdge, test_init)
     
     ASSERT_EQ(0, test_edge.getTo());
     ASSERT_EQ(0, test_edge.getFrom());
-    ASSERT_EQ(0.0, test_edge.getWeight());
+    EXPECT_FLOAT_EQ(0.0, test_edge.getWeight());
 }
 
 
@@ -42,7 +43,8 @@ class TestEdgeGraph : public ::testing::Test
     virtual void SetUp() {}
     virtual void TearDown() {}
 
-    //std::string repr1 = "{4:5,5:4,4:7,5:7,7:5,5:1,0:4,0:2,7:3,1:3,2:7,6:2,3:6,6:0,6:4}";
+    public:
+        std::string tiny_graph_file = "data/tiny_ewd.txt";
 };
 
 /*
@@ -59,13 +61,14 @@ class TestEdgeGraph : public ::testing::Test
 
 TEST_F(TestEdgeGraph, test_file_read)
 {
-    std::string test_file = "data/tiny_ewd.txt";
     std::string repr_text;
 
-    repr_text = repr_from_file(test_file);
+    repr_text = repr_from_file(this->tiny_graph_file);
 
     std::cout << "[" << __func__ << "] repr output:" << std::endl;
     std::cout << repr_text << std::endl;
+
+
 }
 
 TEST_F(TestEdgeGraph, test_init)

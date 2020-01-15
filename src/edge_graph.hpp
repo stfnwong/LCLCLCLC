@@ -64,7 +64,8 @@ class EdgeWeightedDigraph
 
         // setters 
         void addEdge(const DirectedEdge& edge);
-        std::vector<unsigned int> adj(unsigned int v);
+        // get all the neighbours of vertex v
+        //std::vector<unsigned int> adj(unsigned int v);
 
         std::string toString(void) const;
 };

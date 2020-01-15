@@ -73,7 +73,51 @@ EdgeWeightedDigraph::EdgeWeightedDigraph(unsigned int v) : V(v), E(0), verticies
 
 EdgeWeightedDigraph::EdgeWeightedDigraph(const std::string& repr)
 {
+    std::string cur_token;
+    int num_edges, num_verticies;
+    // For now we just assume that the format is correct.
+    // The first line is the number of veritices.
+    unsigned int repr_ptr = 0; 
 
+    while(repr[repr_ptr] != '\n')
+    {
+        cur_token += repr[repr_ptr];
+        repr_ptr++;
+    }
+    
+    num_verticies = std::atoi(cur_token);   // TODO: check exceptions, etc
+    cur_token.clear();
+
+    // The second line is the number of edges 
+    repr_ptr++;
+    while(repr[repr_ptr] != '\n')
+    {
+        cur_token += repr[repr_ptr];
+        repr_ptr++;
+    }
+
+    num_edges = std::atoi(cur_token);
+    this->V = (unsigned int) num_verticies;
+    this->E = (unsigned int) num_edges;
+
+
+    std::string cur_line;
+    for(unsigned int c = repr_ptr; c < repr.size(); ++c)
+    {
+        cur_line += repr[c];
+        // At the end of each line, capture the string for parsing
+        if(repr[c] == '\n')
+        {
+            ++c;        // skip the newline char
+            // TODO : parse line here 
+            int node_v, node_w;
+            float node_weight;
+            // clear the string for next line
+            cur_line.clear();
+        }
+    }
+
+    // Each subsequent line describes one DirectedEdge in the graph
 }
 
 // Processing graph repr
@@ -95,9 +139,35 @@ unsigned int EdgeWeightedDigraph::numEdges(void) const
 }
 
 
+/*
+ * addEdge()
+ */
 void EdgeWeightedDigraph::addEdge(const DirectedEdge& edge)
 {
     this->verticies.push_back(edge);
+}
+
+/*
+ * adj()
+ */
+//std::vector<unsigned int> EdgeWeightedDigraph::adj(unsigned int v)
+//{
+//
+//}
+
+std::string EdgeWeightedDigraph::toString(void) const
+{
+    std::ostringstream oss;
+
+    oss << "EdgeWeightedDigraph [" << this->V 
+        << "verticies]" << std::endl;
+
+    for(unsigned int v = 0; v < this->verticies.size(); ++v)
+        oss << this->verticies[v].toString() << std::endl;
+
+    oss << std::endl;
+
+    return oss.str();
 }
 
 
