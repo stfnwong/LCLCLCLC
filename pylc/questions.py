@@ -347,3 +347,14 @@ def calculate224(s:str) -> int:
 
 # Question 416
 # https://leetcode.com/problems/partition-equal-subset-sum/
+
+# Question 438
+# https://leetcode.com/problems/find-all-anagrams-in-a-string/
+def find_anagrams_438(s:str, p:str) -> List[int]:
+    pass
+
+
+# Question 1091
+# https://leetcode.com/problems/shortest-path-in-binary-matrix/
+def shortest_path_in_binary_matrix_1091(grid:List[List[int]]) -> int:
+    pass
