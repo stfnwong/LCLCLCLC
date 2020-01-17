@@ -46,13 +46,20 @@ class TestEdgeWeightedDigraph(unittest.TestCase):
         self.assertEqual(self.tiny_exp_num_vertex, test_graph.num_verticies())
         self.assertEqual(self.tiny_exp_num_edge, test_graph.num_edges())
 
-        # Check each of the nodes?
-
     def test_250_graph_from_file(self) -> None:
         test_graph = edge_graph.graph_from_file(self.g250_filename, verbose=True)
         self.assertEqual(self.g250_exp_num_vertex, test_graph.num_verticies())
         self.assertEqual(self.g250_exp_num_edge, test_graph.num_edges())
 
+    def test_ewd_dijsktra(self) -> None:
+        # Get the small graph and check its the correct size
+        test_graph = edge_graph.graph_from_file(self.tiny_filename, verbose=True)
+        self.assertEqual(self.tiny_exp_num_vertex, test_graph.num_verticies())
+        self.assertEqual(self.tiny_exp_num_edge, test_graph.num_edges())
+
+        start_node = 4
+
+        visited, path = edge_graph.ewd_dijsktra(test_graph, start_node)
 
 
 if __name__ == '__main__':

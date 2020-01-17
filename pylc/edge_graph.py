@@ -6,6 +6,9 @@ graph from (https://algs4.cs.princeton.edu/44sp/).
 Stefan Wong 2020
 """
 
+from typing import List
+from typing import Tuple
+
 
 class DirectedEdge:
     def __init__(self, v:int=0, w:int=0, weight:float=0.0) -> None:
@@ -58,15 +61,15 @@ class EdgeWeightedDigraph:
 
         return ''.join(s)
 
-    def _validate_vertex(self, v:int) -> bool:
-        if (v < 0) or (v >= len(self.adj)):
-            if self.verbose:
-                print('Vertex %d is not between 0 and %d' %\
-                      (v, len(self.adj))
-                )
-            return False
+    #def _validate_vertex(self, v:int) -> bool:
+    #    if (v < 0) or (v >= len(self.adj)):
+    #        if self.verbose:
+    #            print('Vertex %d is not between 0 and %d' %\
+    #                  (v, len(self.adj))
+    #            )
+    #        return False
 
-        return True
+    #    return True
 
     def num_verticies(self) -> int:
         return len(self.adj)
@@ -83,8 +86,50 @@ class EdgeWeightedDigraph:
         self.indegree[edge.get_from()] += 1
         self.E += 1
 
+    def get_edge(self, k:int) -> DirectedEdge:
+        if k not in self.adj:
+            return None
+        return self.adj[k]
+
+    def get_edges(self) -> dict:
+        return self.adj
+
+
+# NOTE: its actually debatable if an object oriented approach is really
+# useful here, but lets so it anyway for now
+#class EWDPathFinder:
+#    def __init__(self, graph:EdgeWeightedDigraph, start:int=0, **kwargs) -> None:
+#        self.graph:EdgeWeightedDigraph = graph
+#        self.start:int = start
+#
+#    def __repr__(self) -> str:
+#        return 'EWDPathFinder'
+#
+#    def dist_to(self, dest:int) -> float:
+#        pass
+#
+#    def path_to(self, dest:int) -> List[DirectedEdge]:
+#        pass
 
 #from pudb import set_trace; set_trace()
+
+
+def ewd_dijsktra(graph:EdgeWeightedDigraph, start:int) -> Tuple[dict, dict]:
+
+    # Visited maps graph to known distances
+    visited = {start: 0}
+    path    = {}
+
+    nodes = set(graph.get_edges())
+
+    while nodes:
+        min_node = None
+        # start visiing neighbours
+        for node in gra[:
+            print(node)
+
+    return (None, None)
+
 
 def graph_from_file(filename:str, **kwargs) -> EdgeWeightedDigraph:
     """
@@ -118,8 +163,10 @@ def graph_from_file(filename:str, **kwargs) -> EdgeWeightedDigraph:
                 int(vertex_text[1]),
                 float(vertex_text[2])
             )
-        except Exception as e:
-            print('Got exception %s' % str(e))
+        except:
+            pass
+        #except Exception as e:
+        #    print('Got exception %s' % str(e))
 
         out_graph.add_edge(edge)
 
