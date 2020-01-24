@@ -15,35 +15,35 @@
 #include "shared_ptr.hpp"
 
 
-TEST_CASE("test_shared_ptr_init", "[classic]")
+TEST_CASE("test_shared_ptr_intrusive_init", "[classic]")
 {
     int* some_val = new int(42);
     int* some_other_val = new int(42);
-    SharedPtr<int> ref1(some_val);
+    SharedPtrIntrusive<int> ref1(some_val);
 
     REQUIRE(1 == ref1.numRef());
 
-    SharedPtr<int> ref2(some_other_val);
+    SharedPtrIntrusive<int> ref2(some_other_val);
 
     REQUIRE(1 == ref2.numRef());
     REQUIRE(ref1 != ref2);          // memory is not common, should fail
 }
 
 
-TEST_CASE("test_shared_ptr_share", "[classic]")
+TEST_CASE("test_shared_ptr_intrusive_share", "[classic]")
 {
     int* some_val = new int(24);
 
-    SharedPtr<int> ref1(some_val);
+    SharedPtrIntrusive<int> ref1(some_val);
     REQUIRE(1 == ref1.numRef());
     std::cout << "There are " << ref1.numRef() << " references to some_val" << std::endl;
-    SharedPtr<int> ref2(ref1);
+    SharedPtrIntrusive<int> ref2(ref1);
     REQUIRE(2 == ref1.numRef());
     std::cout << "There are " << ref1.numRef() << " references to some_val" << std::endl;
-    SharedPtr<int> ref3(ref2);
+    SharedPtrIntrusive<int> ref3(ref2);
     REQUIRE(3 == ref1.numRef());
     std::cout << "There are " << ref1.numRef() << " references to some_val" << std::endl;
-    SharedPtr<int> ref4(ref3);
+    SharedPtrIntrusive<int> ref4(ref3);
     REQUIRE(4 == ref1.numRef());
     std::cout << "There are " << ref1.numRef() << " references to some_val" << std::endl;
 
@@ -64,8 +64,8 @@ TEST_CASE("test_shared_ptr_share", "[classic]")
     // we should find that they fail any equality test with ref1 - ref4
     int* some_other_val = new int(48);
     // NOTE: we are only copy-constructing here 
-    SharedPtr<int> new_ref1(some_other_val);
-    SharedPtr<int> new_ref2(new_ref1);
+    SharedPtrIntrusive<int> new_ref1(some_other_val);
+    SharedPtrIntrusive<int> new_ref2(new_ref1);
 
     REQUIRE(new_ref1 == new_ref2);
     // Any combination of these will fail
@@ -81,7 +81,7 @@ TEST_CASE("test_shared_ptr_share", "[classic]")
 
 
 
-//TEST_CASE("test_shared_ptr_ref", "[classic]")
+//TEST_CASE("test_shared_ptr_intrusive_ref", "[classic]")
 //{
 //    int* some_val = new int(24);
 //
@@ -89,7 +89,7 @@ TEST_CASE("test_shared_ptr_share", "[classic]")
 //}
 
 
-//TEST_F(TestSharedPtr, test_multiple_share)
+//TEST_F(TestSharedPtrIntrusive, test_multiple_share)
 //{
 //
 //}
