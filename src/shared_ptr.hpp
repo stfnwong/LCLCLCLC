@@ -10,6 +10,8 @@
 
 /*
  * SharedPtr
+ * NOTE that this is an intrusive shared pointer. Implement various versions 
+ * and see what happens.
  */
 template <typename T> class SharedPtr
 {
@@ -27,6 +29,9 @@ template <typename T> class SharedPtr
         bool operator==(const SharedPtr<T>& that) const;
         bool operator!=(const SharedPtr<T>& that) const;
 
+        // referencing operators
+        T* operator->(void);
+        T& operator*(void);
     // assignment
     //public:
     //    SharedPtr<T>& operator=(const SharedPtr<T>& that) const;
@@ -84,6 +89,16 @@ template <typename T> bool SharedPtr<T>::operator==(const SharedPtr<T>& that) co
 template <typename T> bool SharedPtr<T>::operator!=(const SharedPtr<T>& that) const
 {
     return !(*this == that);
+}
+
+template <typename T> T* SharedPtr<T>::operator->(void) 
+{
+    return ptr;
+}
+
+template <typename T> T& SharedPtr<T>::operator*(void)
+{
+    return *ptr;
 }
 
 // ==== Status ==== //
