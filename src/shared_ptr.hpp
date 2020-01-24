@@ -91,12 +91,12 @@ template <typename T> bool SharedPtrIntrusive<T>::operator!=(const SharedPtrIntr
 
 template <typename T> T* SharedPtrIntrusive<T>::operator->(void) 
 {
-    return ptr;
+    return this->ptr;
 }
 
 template <typename T> T& SharedPtrIntrusive<T>::operator*(void)
 {
-    return *ptr;
+    return *this->ptr;
 }
 
 // ==== Status ==== //
@@ -110,7 +110,6 @@ template <typename T> T* SharedPtrIntrusive<T>::get(void) const
 {
     return this->ptr;
 }
-
 
 
 /*
@@ -146,6 +145,10 @@ template <typename T> class SharedPtr
         bool operator!=(const SharedPtr<T>& that) const;
         T*   operator->(void);
         T&   operator*(void);
+
+    // Getters / Setters
+    public:
+        int numRef(void) const;
 };
 
 // regular ctor
@@ -154,7 +157,7 @@ template <typename T> SharedPtr<T>::SharedPtr(T* ptr) : ptr(ptr), ref_count(new 
 // copy ctor
 template <typename T> SharedPtr<T>::SharedPtr(const SharedPtr<T>& that) : ptr(that.ptr), ref_count(that.ref_count)
 {
-    this->refcount->count++;
+    this->ref_count->count++;
 }
 
 // dtor
@@ -164,12 +167,13 @@ template <typename T> SharedPtr<T>::~SharedPtr()
 
     if(this->ref_count->count == 0)
     {
-        delete this->refcount;
+        delete this->ref_count;
         delete this->ptr;
     }
 }
 
 // Operators 
+// Equality
 template <typename T> bool SharedPtr<T>::operator==(const SharedPtr<T>& that) const
 {
     if(this->ptr == that.ptr)
@@ -177,10 +181,26 @@ template <typename T> bool SharedPtr<T>::operator==(const SharedPtr<T>& that) co
     return false;
 }
 
+// Inequality
 template <typename T> bool SharedPtr<T>::operator!=(const SharedPtr<T>& that) const
 {
     return !(*this == that);
 }
 
+template <typename T> T* SharedPtr<T>::operator->(void) 
+{
+    return this->ptr;
+}
+
+template <typename T> T& SharedPtr<T>::operator*(void)
+{
+    return *this->ptr;
+}
+
+// num_ref()
+template <typename T> int SharedPtr<T>::numRef(void) const
+{
+    return this->ref_count->count;
+}
 
 #endif /*__LC_SHARED_PTR*/
