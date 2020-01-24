@@ -10,17 +10,39 @@
 
 
 // Some simple classes for showing dtor order
-class Base
+// Below: classes that don't implement virtual dtor correctly
+class BaseNotVirtual
 {
     public:
-        ~Base();
+        ~BaseNotVirtual();
 };
 
 
-class Derived : public Base
+class DerivedNotVirtual : public BaseNotVirtual
+{
+    int* some_number;
+
+    public:
+        DerivedNotVirtual(int num);
+        ~DerivedNotVirtual();
+};
+
+
+
+// Below: classes that do implement virtual dtor correctly.
+class BaseVirtual
 {
     public:
-        ~Derived();
+        virtual ~BaseVirtual();
+};
+
+class DerivedVirtual : public BaseVirtual
+{
+    int* some_number;
+
+    public:
+        DerivedVirtual(int num);
+        ~DerivedVirtual();
 };
 
 
