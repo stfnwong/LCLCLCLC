@@ -1,4 +1,6 @@
 # Ignore swap files 
 *.swp
+# Ignore pycache files 
+*.pyc
 # Ignore my notes
 notes
