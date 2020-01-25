@@ -5,6 +5,9 @@ Quick shortest path experiment
 Stefan Wong 2020
 """
 
+import re
+from typing import Tuple
+
 
 class Graph:
     def __init__(self) -> None:
@@ -42,19 +45,52 @@ class Graph:
 
     def get_num_edges(self) -> int:
         num_edges = 0
-
         for k in self.edges:
             num_edges += len(self.edges[k])
 
         return num_edges
 
-        #return len(self.edges)
+    def get_nodes(self) -> dict:
+        return self.nodes
+
+    def get_edges(self) -> dict:
+        return self.edges
+
+
+def dijsktra(graph:Graph, start:int) -> Tuple[dict, dict]:
+    visited = {start: 0}
+    path    = dict()
+
+    nodes = set(graph.get_nodes())
+
+    while nodes:
+        min_node = None
+        # Walk over the neighbours
+        for node in nodes:
+            if node in visited:
+                if (min_node is None):
+                    min_node = node
+            elif (visited[node] < visited[min_node]):
+                min_node = node
+
+        if min_node is None:
+            break
+
+        nodes.remove(min_node)
+        cur_weight = visited[min_node]
 
 
 #from pudb import set_trace; set_trace()
 
 
 def graph_from_file(filename:str, bidir:bool=True) -> Graph:
+    """
+    graph_from_file
+
+    Read a graph description from a text file and transform into a
+    graph object
+    """
+
     text = []
     with open(filename, 'r') as fp:
         for line in fp:
@@ -65,31 +101,43 @@ def graph_from_file(filename:str, bidir:bool=True) -> Graph:
     num_verticies = int(text[0])
     # Second line is number of edges
     num_edges     = int(text[1])
+    num_fails     = 0
+    which_fails   = []
 
     out_graph = Graph()
     # Each of the following lines is a vertex in the graph
     for n in range(2, len(text)):
-        vertex_text = text[n].lstrip(' ').split(' ')
-        # TODO : this is dumb, but it will work to handle leading spaces
-        for n in range(len(vertex_text)):
-            if vertex_text[n] == '':
-                del vertex_text[n]
-                break
+        # Make a regex to extract numbers
+        text_nums = re.findall('\d+\.?\d*', repr(text[n].split(' ')))
 
         try:
             out_graph.add_edge(
-                int(vertex_text[0]),
-                int(vertex_text[1]),
-                float(vertex_text[2]),
+                int(text_nums[0]),
+                int(text_nums[1]),
+                float(text_nums[2]),
                 bidir = bidir
             )
         except:
+            num_fails += 1
+            which_fails.append(n)
+            print('Failed vertex text was %d:%s' % (n, repr(text_nums)))
             pass
 
+    # TODO : Maybe I want proper logging here at some point
+    print('Caught %d failing edges' % num_fails)
+    if num_fails > 0:
+        print(which_fails)
+
     #check here that we have the expected number of edges
-    if num_edges != out_graph.get_num_edges():
-        print('Expected to get %d edges, but final graph has %d edges' %\
-              (num_edges, out_graph.get_num_edges())
-        )
+    if bidir:
+        if (2 * num_edges) != out_graph.get_num_edges():
+            print('Expected to get %d edges, but final graph has %d edges' %\
+                (2 * num_edges, out_graph.get_num_edges())
+            )
+    else:
+        if num_edges != out_graph.get_num_edges():
+            print('Expected to get %d edges, but final graph has %d edges' %\
+                (num_edges, out_graph.get_num_edges())
+            )
 
     return out_graph

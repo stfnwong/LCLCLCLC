@@ -85,7 +85,7 @@ EdgeWeightedDigraph::EdgeWeightedDigraph(const std::string& repr)
         repr_ptr++;
     }
     
-    num_verticies = std::atoi(cur_token);   // TODO: check exceptions, etc
+    num_verticies = std::stoi(cur_token);   // TODO: check exceptions, etc
     cur_token.clear();
 
     // The second line is the number of edges 
@@ -96,10 +96,9 @@ EdgeWeightedDigraph::EdgeWeightedDigraph(const std::string& repr)
         repr_ptr++;
     }
 
-    num_edges = std::atoi(cur_token);
+    num_edges = std::stoi(cur_token);
     this->V = (unsigned int) num_verticies;
     this->E = (unsigned int) num_edges;
-
 
     std::string cur_line;
     for(unsigned int c = repr_ptr; c < repr.size(); ++c)
