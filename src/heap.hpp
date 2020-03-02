@@ -45,7 +45,7 @@ class Heap
 {
 	protected:
 		std::vector<HeapNode> nodes;
-		unsigned int max_size;
+		unsigned int max_size;          // TODO : what does this do?
         unsigned int num_elem;
 
 	protected:

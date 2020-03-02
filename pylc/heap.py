@@ -9,6 +9,19 @@ from copy import copy
 # debug
 #from pudb import set_trace; set_trace()
 
+# Zero index left and right functions
+def heap_left_child(idx:int) -> int:
+    return 2 * idx + 1
+    #return 2 * (idx + 1) - 1
+
+def heap_right_child(idx:int) -> int:
+    return 2 * idx + 2
+    #return 2 * (idx + 1)
+
+def heap_parent(idx:int) -> int:
+    return max(0, (idx-1) // 2)
+    #return max(0, (idx // 2))
+
 
 # Check min heap property
 def has_min_heap_property(array:list, idx:int=0) -> bool:
@@ -44,16 +57,7 @@ def has_max_heap_property(array:list, idx:int=0) -> bool:
         return False
 
 
-# Zero index left and right functions
-def heap_left_child(idx:int) -> int:
-    return 2 * (idx + 1) - 1
-
-def heap_right_child(idx:int) -> int:
-    return 2 * (idx + 1)
-
-
-
-class HeapNode(object):
+class HeapNode:
     """
     HeapNode
     A node in a heap
@@ -63,7 +67,7 @@ class HeapNode(object):
         self.val = val
 
     def __repr__(self) -> str:
-        return 'HeapNode'
+        return 'HeapNode(%s, %s)' % (str(self.key), str(self.val))
 
     def __str__(self) -> str:
         return 'HeapNode [%d]: %d' % (self.key, self.val)
@@ -99,7 +103,14 @@ class HeapNode(object):
             return self.key >= that
 
 
-class Heap(object):
+class Heap:
+    """
+    Heap
+
+    Base class for heap. This isn't actually an abstract class, so you could
+    use it directly, however there are specializations below for MinHeaps and
+    MaxHeaps
+    """
     def __init__(self, max_size:int=32) -> None:
         self.max_size:int = max_size
         self.cur_idx:int  = 0
@@ -142,20 +153,31 @@ class Heap(object):
             self._bubble_up(parent_idx)
 
     def _bubble_down(self, idx:int) -> None:
-        pass
+        parent_idx = self._parent(idx)
+        if self.nodes[parent_idx] > self.nodes[idx]:
+            self.nodes[idx], self.nodes[parent_idx] = self.nodes[parent_idx], self.nodes[idx]
+            self._bubble_up(parent_idx)
+
+    def _extend(self) -> None:
+        self.nodes.extend([HeapNode(0, 0)] * self.max_size)
+        self.max_size = 2 * self.max_size
 
     # TODO : all the balancing stuff
-    def insertNode(self, node:HeapNode) -> None:
+    def insert_node(self, node:HeapNode) -> None:
         if self.cur_idx < self.max_size:
             self.nodes[self.cur_idx] = node
             self._bubble_up(self.cur_idx)
             self.cur_idx += 1
 
     def get_array(self) -> list:
+        #return [n.key for n in self.nodes[0 : self.cur_idx]]
         return self.nodes[0 : self.cur_idx]
 
 
 class MaxHeap(Heap):
+    """
+    MaxHeap Specialization
+    """
     def __init__(self, max_size:int=32) -> None:
         super(MaxHeap, self).__init__(max_size=max_size)
 
@@ -172,6 +194,9 @@ class MaxHeap(Heap):
 
 
 class MinHeap(Heap):
+    """
+    MinHeap Specialization
+    """
     def __init__(self, max_size:int=32) -> None:
         super(MinHeap, self).__init__(max_size=max_size)
 

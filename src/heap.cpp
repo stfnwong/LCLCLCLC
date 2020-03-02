@@ -199,7 +199,6 @@ std::vector<HeapNode> Heap::getVector(void) const
 }
 
 
-
 // ======== Specializations 
 
 // ==== MinHeap
@@ -207,6 +206,9 @@ MinHeap::MinHeap() : Heap() {}
 
 MinHeap::MinHeap(const unsigned int max) :  Heap(max) {} 
 
+/*
+ * MinHeap::heapify_up()
+ */
 void MinHeap::heapify_up(unsigned int idx)
 {
     unsigned int p_idx; 
@@ -220,9 +222,10 @@ void MinHeap::heapify_up(unsigned int idx)
     }
 }
 
+/*
+ * MinHeap::heapify_down()
+ */
 void MinHeap::heapify_down(unsigned int idx) {} 
-
-
 
 
 // ==== MinHeap
@@ -230,6 +233,9 @@ MaxHeap::MaxHeap() : Heap() {}
 
 MaxHeap::MaxHeap(const unsigned int max) : Heap(max) {} 
 
+/*
+ * MaxHeap::heapify_up()
+ */
 void MaxHeap::heapify_up(unsigned int idx)
 {
     unsigned int p_idx; 
@@ -243,6 +249,9 @@ void MaxHeap::heapify_up(unsigned int idx)
     }
 }
 
+/*
+ * MaxHeap::heapify_down()
+ */
 void MaxHeap::heapify_down(unsigned int idx) {} 
 
 
