@@ -32,18 +32,51 @@ class TestHeap2(unittest.TestCase):
         self.input_keys_1 = [1, 2, 3, 7, 17, 19, 25, 36, 100]
         self.input_keys_2 = [1, 2, 7, 3, 17, 36, 25, 19, 100]
 
-    def test_heap_12_init(self) -> None:
+    def test_heap_2_init(self) -> None:
         # grab a heap
-        test_heap_1 = heap2.Heap()
-        self.assertEqual([], test_heap_1.heap)
+        # TODO : currently implemented as a MaxHeap
+        test_heap = heap2.Heap()
+        self.assertEqual([], test_heap.heap)
+        self.assertEqual(0, len(test_heap))
 
         # what happens as we add elements from self.input_keys?
         print('Adding keys %s to heap...' % str(self.input_keys_1))
         for n, k in enumerate(self.input_keys_1):
-            test_heap_1.insert(k)
-            self.assertEqual(len(test_heap_1), n+1)
+            test_heap.insert(k)
+            self.assertEqual(len(test_heap), n+1)
 
-        print(test_heap_1)
+        print(test_heap)
+        # Ensure that this is a min heap
+        self.assertEqual(False, heap2.has_min_heap_property(test_heap.heap))
+        self.assertEqual(True, heap2.has_max_heap_property(test_heap.heap))
+        self.assertEqual(len(self.input_keys_1), len(test_heap))
+
+    def test_heap_2_remove(self) -> None:
+        # NOTE: remember that this is a MaxHeap at the moment
+        test_heap = heap2.Heap()
+        self.assertEqual([], test_heap.heap)
+        self.assertEqual(0, len(test_heap))
+
+        # what happens as we add elements from self.input_keys?
+        print('Adding keys %s to heap...' % str(self.input_keys_1))
+        for n, k in enumerate(self.input_keys_1):
+            test_heap.insert(k)
+            self.assertEqual(len(test_heap), n+1)
+
+        print(test_heap)
+        print(test_heap.get_root())
+        heap_min = test_heap.remove_min()
+        self.assertEqual(1, heap_min)
+
+        print(test_heap)
+        print(test_heap.get_root())
+        heap_min = test_heap.remove_min()
+        self.assertEqual(2, heap_min)
+
+        print(test_heap)
+        print(test_heap.get_root())
+        heap_min = test_heap.remove_min()
+        self.assertEqual(3, heap_min)
 
 
 if __name__ == '__main__':

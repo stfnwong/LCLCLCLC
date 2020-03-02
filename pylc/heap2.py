@@ -18,6 +18,38 @@ def heap_parent(idx:int) -> int:
     return max(0, (idx-1) // 2)
 
 
+# Functions to test heap property
+def has_min_heap_property(array:list, idx:int=0) -> bool:
+    if idx >= len(array):
+        return True
+
+    lval = heap_left_child(idx)
+    rval = heap_right_child(idx)
+    # bounds check on children
+    if (lval >= len(array)) or (rval >= len(array)):
+        return True
+
+    if(array[lval] <= array[idx]) and (array[rval] <= array[idx]):
+        return has_min_heap_property(array, idx+1)
+    else:
+        return False
+
+
+def has_max_heap_property(array:list, idx:int=0) -> bool:
+    if idx >= len(array):
+        return True
+
+    lval = heap_left_child(idx)
+    rval = heap_right_child(idx)
+    # bounds check on children
+    if (lval >= len(array)) or (rval >= len(array)):
+        return True
+
+    if(array[lval] >= array[idx]) and (array[rval] >= array[idx]):
+        return has_max_heap_property(array, idx+1)
+    else:
+        return False
+
 
 
 # New (simpler) heap class
@@ -44,7 +76,8 @@ class Heap:
         child_idx = idx
         while child_idx > 0:
             parent_idx = heap_parent(child_idx)
-            if self.heap[parent_idx] >= self.heap[child_idx]:
+            # comp
+            if self.heap[parent_idx] <= self.heap[child_idx]:
                 return
             # swap
             self.heap[parent_idx], self.heap[child_idx] = self.heap[child_idx], self.heap[parent_idx]
@@ -52,21 +85,26 @@ class Heap:
 
     # heapify from the root to the bottom
     def _heapify_down(self, idx:int) -> None:
-        if len(self.heap) == 1:
+        if len(self.heap) == 1:     # nothing to heapify
             return
-        parent_idx = heap_parent(idx)
 
-        while parent_idx >= len(self.heap):
+        parent_idx = heap_parent(idx)
+        while parent_idx <= len(self.heap):
             child_idx = heap_left_child(parent_idx)
-            if ((child_idx + 1) < len(self.heap)) and (self.heap[child_idx + 1] >= self.heap[child_idx]):
-                child_idx += 1
-            if self.heap[parent_idx] >= self.heap[child_idx]:
+            if child_idx >= len(self.heap):     # TODO : feels like a hack...
                 return
+            # comp
+            if ((child_idx + 1) < len(self.heap)) and (self.heap[child_idx + 1] <= self.heap[child_idx]):
+                child_idx += 1
+
+            if self.heap[parent_idx] <= self.heap[child_idx]:
+                return
+
             # swap
             self.heap[parent_idx], self.heap[child_idx] = self.heap[child_idx], self.heap[parent_idx]
             parent_idx = child_idx
 
-    def get_min(self) -> Union[None, int]:
+    def get_root(self) -> Union[None, int]:
         if not self.heap:
             return None
         return self.heap[0]
