@@ -69,13 +69,40 @@ class Heap:
     def __len__(self) -> int:
         return len(self.heap)
 
-    # heapify from the bottom to the root
-    def _heapify_up(self, idx:int) -> None:
+    def _compare(self, a:int, b:int) -> bool:
         raise NotImplemented
 
-    # heapify from the root to the bottom
+    # heapify from the bottom to the root
+    def _heapify_up(self, idx:int) -> None:
+        child_idx = idx
+        while child_idx > 0:
+            parent_idx = heap_parent(child_idx)
+            # comp
+            if self._compare(self.heap[parent_idx], self.heap[child_idx]):
+                return
+            # swap
+            self.heap[parent_idx], self.heap[child_idx] = self.heap[child_idx], self.heap[parent_idx]
+            child_idx = parent_idx
+
+    # min heapify from the root to the bottom
     def _heapify_down(self, idx:int) -> None:
-        raise NotImplemented
+        if len(self.heap) == 1:     # nothing to heapify
+            return
+
+        parent_idx = heap_parent(idx)
+        while parent_idx <= len(self.heap):
+            child_idx = heap_left_child(parent_idx)
+            if child_idx >= len(self.heap):     # TODO : feels like a hack...
+                return
+            # comp
+            if ((child_idx + 1) < len(self.heap)) and (self._compare(self.heap[child_idx + 1], self.heap[child_idx])):
+                child_idx += 1
+
+            if self._compare(self.heap[parent_idx], self.heap[child_idx]):
+                return
+            # swap
+            self.heap[parent_idx], self.heap[child_idx] = self.heap[child_idx], self.heap[parent_idx]
+            parent_idx = child_idx
 
     def get_root(self) -> Union[None, int]:
         if not self.heap:
@@ -97,37 +124,8 @@ class MinHeap(Heap):
     def __repr__(self) -> str:
         return 'MinHeap(%s)' % str(self.heap)
 
-    # min heapify from the bottom to the root
-    def _heapify_up(self, idx:int) -> None:
-        child_idx = idx
-        while child_idx > 0:
-            parent_idx = heap_parent(child_idx)
-            # comp
-            if self.heap[parent_idx] >= self.heap[child_idx]:
-                return
-            # swap
-            self.heap[parent_idx], self.heap[child_idx] = self.heap[child_idx], self.heap[parent_idx]
-            child_idx = parent_idx
-
-    # min heapify from the root to the bottom
-    def _heapify_down(self, idx:int) -> None:
-        if len(self.heap) == 1:     # nothing to heapify
-            return
-
-        parent_idx = heap_parent(idx)
-        while parent_idx <= len(self.heap):
-            child_idx = heap_left_child(parent_idx)
-            if child_idx >= len(self.heap):     # TODO : feels like a hack...
-                return
-            # comp
-            if ((child_idx + 1) < len(self.heap)) and (self.heap[child_idx + 1] >= self.heap[child_idx]):
-                child_idx += 1
-
-            if self.heap[parent_idx] >= self.heap[child_idx]:
-                return
-            # swap
-            self.heap[parent_idx], self.heap[child_idx] = self.heap[child_idx], self.heap[parent_idx]
-            parent_idx = child_idx
+    def _compare(self, a:int, b:int) -> bool:
+        return a >= b
 
     def remove_max(self) -> int:
         last_elem = self.heap.pop()
@@ -141,7 +139,6 @@ class MinHeap(Heap):
         return elem
 
 
-
 class MaxHeap(Heap):
     """
     MaxHeap specialization - OOP style
@@ -152,38 +149,8 @@ class MaxHeap(Heap):
     def __repr__(self) -> str:
         return 'MaxHeap(%s)' % str(self.heap)
 
-    # max heapify from the bottom to the root
-    def _heapify_up(self, idx:int) -> None:
-        child_idx = idx
-        while child_idx > 0:
-            parent_idx = heap_parent(child_idx)
-            # comp
-            if self.heap[parent_idx] <= self.heap[child_idx]:
-                return
-            # swap
-            self.heap[parent_idx], self.heap[child_idx] = self.heap[child_idx], self.heap[parent_idx]
-            child_idx = parent_idx
-
-    # max heapify from the root to the bottom
-    def _heapify_down(self, idx:int) -> None:
-        if len(self.heap) == 1:     # nothing to heapify
-            return
-
-        parent_idx = heap_parent(idx)
-        while parent_idx <= len(self.heap):
-            child_idx = heap_left_child(parent_idx)
-            if child_idx >= len(self.heap):     # TODO : feels like a hack...
-                return
-            # comp
-            if ((child_idx + 1) < len(self.heap)) and (self.heap[child_idx + 1] <= self.heap[child_idx]):
-                child_idx += 1
-
-            if self.heap[parent_idx] <= self.heap[child_idx]:
-                return
-
-            # swap
-            self.heap[parent_idx], self.heap[child_idx] = self.heap[child_idx], self.heap[parent_idx]
-            parent_idx = child_idx
+    def _compare(self, a:int, b:int) -> bool:
+        return a <= b
 
     def remove_min(self) -> int:
         last_elem = self.heap.pop()
