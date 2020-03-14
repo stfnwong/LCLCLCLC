@@ -25,18 +25,20 @@ template <typename T> class SharedPtrIntrusive
 
     // operators 
     public:
-        bool operator==(const SharedPtrIntrusive<T>& that) const;
-        bool operator!=(const SharedPtrIntrusive<T>& that) const;
+        bool operator==(const SharedPtrIntrusive<T>& that) const noexcept;
+        bool operator!=(const SharedPtrIntrusive<T>& that) const noexcept;
 
         // referencing operators
         T* operator->(void);
         T& operator*(void);
+
     // assignment
     //public:
     //    SharedPtrIntrusive<T>& operator=(const SharedPtrIntrusive<T>& that) const;
 
     // status 
     public:
+        bool empty(void) const noexcept;        // TODO: getting non-class type error here...
         int numRef(void) const;
         T*  get(void) const;
 };
@@ -46,7 +48,7 @@ template <typename T> class SharedPtrIntrusive
 template <typename T> SharedPtrIntrusive<T>::SharedPtrIntrusive() 
 {
     this->num_ref = new int(0);
-    this->raw_ptr     = nullptr;
+    this->raw_ptr = nullptr;
 }
 
 // new value ctor
@@ -59,9 +61,9 @@ template <typename T> SharedPtrIntrusive<T>::SharedPtrIntrusive(T* ref)
 // copy ctor
 template <typename T> SharedPtrIntrusive<T>::SharedPtrIntrusive(const SharedPtrIntrusive<T>& that)
 {
-    this->raw_ptr     = that.raw_ptr;
-    this->num_ref = that.num_ref;
-    (*this->num_ref) = (*this->num_ref) + 1;
+    this->raw_ptr   = that.raw_ptr;
+    this->num_ref    = that.num_ref;
+    (*this->num_ref)++; 
 }
 
 // dtor 
@@ -78,23 +80,27 @@ template <typename T> SharedPtrIntrusive<T>::~SharedPtrIntrusive()
 }
 
 // ======== OPERATORS ======== //
-template <typename T> bool SharedPtrIntrusive<T>::operator==(const SharedPtrIntrusive<T>& that) const
+// Equality
+template <typename T> bool SharedPtrIntrusive<T>::operator==(const SharedPtrIntrusive<T>& that) const noexcept
 {
     if(this->raw_ptr == that.raw_ptr)
         return true;
     return false;
 }
 
-template <typename T> bool SharedPtrIntrusive<T>::operator!=(const SharedPtrIntrusive<T>& that) const
+// Inequality
+template <typename T> bool SharedPtrIntrusive<T>::operator!=(const SharedPtrIntrusive<T>& that) const noexcept
 {
     return !(*this == that);
 }
 
+// Reference to member
 template <typename T> T* SharedPtrIntrusive<T>::operator->(void) 
 {
     return this->raw_ptr;
 }
 
+// Dereference member
 template <typename T> T& SharedPtrIntrusive<T>::operator*(void)
 {
     return *this->raw_ptr;
@@ -112,6 +118,11 @@ template <typename T> T* SharedPtrIntrusive<T>::get(void) const
     return this->raw_ptr;
 }
 
+// Has this been assigned a reference?
+template <typename T> bool SharedPtrIntrusive<T>::empty(void) const noexcept
+{
+    return (this->raw_ptr == nullptr) ? true : false;
+}
 
 /*
  * Reference count structure
@@ -150,6 +161,7 @@ template <typename T> class SharedPtr
 
     // Getters / Setters
     public:
+        bool empty(void) const noexcept;
         int numRef(void) const;
 };
 
@@ -203,6 +215,11 @@ template <typename T> T& SharedPtr<T>::operator*(void)
 template <typename T> int SharedPtr<T>::numRef(void) const
 {
     return this->ref_count->count;
+}
+
+template <typename T> bool SharedPtr<T>::empty(void) const noexcept
+{
+    return (this->raw_ptr == nullptr) ? true : false;
 }
 
 #endif /*__LC_SHARED_PTR*/

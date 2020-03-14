@@ -22,8 +22,8 @@ template <typename T> class UniquePtr
     public:
         UniquePtr() : raw_ptr(nullptr) {} 
         UniquePtr(T* ptr) : raw_ptr(ptr) {} 
-        UniquePtr(const UniquePtr<T>& that) = delete;   // don't allow copy construction
         UniquePtr(UniquePtr&& that) : raw_ptr(std::move(that)) {} 
+        UniquePtr(const UniquePtr<T>& that) = delete;   // don't allow copy construction
         ~UniquePtr();
 
         // operators 
@@ -46,7 +46,6 @@ template <typename T> UniquePtr<T>::~UniquePtr()
 }
 
 // operators
-// TODO : why the move reference on the RHS?
 template <typename T> UniquePtr<T>& UniquePtr<T>::operator=(UniquePtr<T>&& that) noexcept
 {
     if(this->raw_ptr == that.raw_ptr)
