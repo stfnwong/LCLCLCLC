@@ -14,12 +14,13 @@
 template <typename T> class SharedPtrIntrusive
 {
     int *num_ref;
-    T   *ptr;
+    T   *raw_ptr;
 
     public:
         SharedPtrIntrusive();
         SharedPtrIntrusive(T* ref);
         SharedPtrIntrusive(const SharedPtrIntrusive<T>& that);    // copy ctor
+        // TODO : what about move ctor? 
         ~SharedPtrIntrusive();
 
     // operators 
@@ -45,20 +46,20 @@ template <typename T> class SharedPtrIntrusive
 template <typename T> SharedPtrIntrusive<T>::SharedPtrIntrusive() 
 {
     this->num_ref = new int(0);
-    this->ptr     = nullptr;
+    this->raw_ptr     = nullptr;
 }
 
 // new value ctor
 template <typename T> SharedPtrIntrusive<T>::SharedPtrIntrusive(T* ref)
 {
     this->num_ref = new int(1);
-    this->ptr = ref;
+    this->raw_ptr = ref;
 }
 
 // copy ctor
 template <typename T> SharedPtrIntrusive<T>::SharedPtrIntrusive(const SharedPtrIntrusive<T>& that)
 {
-    this->ptr     = that.ptr;
+    this->raw_ptr     = that.raw_ptr;
     this->num_ref = that.num_ref;
     (*this->num_ref) = (*this->num_ref) + 1;
 }
@@ -71,7 +72,7 @@ template <typename T> SharedPtrIntrusive<T>::~SharedPtrIntrusive()
     // clean this up if its the last reference
     if((*this->num_ref) == 0)
     {
-        delete this->ptr;
+        delete this->raw_ptr;
         delete this->num_ref;
     }
 }
@@ -79,7 +80,7 @@ template <typename T> SharedPtrIntrusive<T>::~SharedPtrIntrusive()
 // ======== OPERATORS ======== //
 template <typename T> bool SharedPtrIntrusive<T>::operator==(const SharedPtrIntrusive<T>& that) const
 {
-    if(this->ptr == that.ptr)
+    if(this->raw_ptr == that.raw_ptr)
         return true;
     return false;
 }
@@ -91,12 +92,12 @@ template <typename T> bool SharedPtrIntrusive<T>::operator!=(const SharedPtrIntr
 
 template <typename T> T* SharedPtrIntrusive<T>::operator->(void) 
 {
-    return this->ptr;
+    return this->raw_ptr;
 }
 
 template <typename T> T& SharedPtrIntrusive<T>::operator*(void)
 {
-    return *this->ptr;
+    return *this->raw_ptr;
 }
 
 // ==== Status ==== //
@@ -108,7 +109,7 @@ template <typename T> int SharedPtrIntrusive<T>::numRef(void) const
 
 template <typename T> T* SharedPtrIntrusive<T>::get(void) const
 {
-    return this->ptr;
+    return this->raw_ptr;
 }
 
 
@@ -123,7 +124,6 @@ struct RefCount
         RefCount() : count(1) {}
 };
 
-
 /*
  * SharedPtr
  * Non-instrusive shared pointer
@@ -131,7 +131,7 @@ struct RefCount
 template <typename T> class SharedPtr
 {
     private:
-        T* ptr;
+        T* raw_ptr;
         RefCount* ref_count;
 
     public:
@@ -146,16 +146,18 @@ template <typename T> class SharedPtr
         T*   operator->(void);
         T&   operator*(void);
 
+        // assignment
+
     // Getters / Setters
     public:
         int numRef(void) const;
 };
 
 // regular ctor
-template <typename T> SharedPtr<T>::SharedPtr(T* ptr) : ptr(ptr), ref_count(new RefCount) {}
+template <typename T> SharedPtr<T>::SharedPtr(T* ptr) : raw_ptr(ptr), ref_count(new RefCount) {}
 
 // copy ctor
-template <typename T> SharedPtr<T>::SharedPtr(const SharedPtr<T>& that) : ptr(that.ptr), ref_count(that.ref_count)
+template <typename T> SharedPtr<T>::SharedPtr(const SharedPtr<T>& that) : raw_ptr(that.raw_ptr), ref_count(that.ref_count)
 {
     this->ref_count->count++;
 }
@@ -168,7 +170,7 @@ template <typename T> SharedPtr<T>::~SharedPtr()
     if(this->ref_count->count == 0)
     {
         delete this->ref_count;
-        delete this->ptr;
+        delete this->raw_ptr;
     }
 }
 
@@ -176,7 +178,7 @@ template <typename T> SharedPtr<T>::~SharedPtr()
 // Equality
 template <typename T> bool SharedPtr<T>::operator==(const SharedPtr<T>& that) const
 {
-    if(this->ptr == that.ptr)
+    if(this->raw_ptr == that.raw_ptr)
         return true;
     return false;
 }
@@ -189,12 +191,12 @@ template <typename T> bool SharedPtr<T>::operator!=(const SharedPtr<T>& that) co
 
 template <typename T> T* SharedPtr<T>::operator->(void) 
 {
-    return this->ptr;
+    return this->raw_ptr;
 }
 
 template <typename T> T& SharedPtr<T>::operator*(void)
 {
-    return *this->ptr;
+    return *this->raw_ptr;
 }
 
 // num_ref()

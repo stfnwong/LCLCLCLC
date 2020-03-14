@@ -1,5 +1,5 @@
 /* TEST_SHARED_PTR
- * Unit tests for shared_ptr object
+ * Unit tests for SharedPtr object
  *
  * Stefan Wong 2019
  */
@@ -9,7 +9,6 @@
 
 #include <vector>
 #include <string>
-//#include <gtest/gtest.h>
 
 // Module(s) under test
 #include "shared_ptr.hpp"

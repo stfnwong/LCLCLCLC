@@ -4,7 +4,6 @@
 #
 # Stefan Wong 2020
 
-
 # OUTPUT DIRS
 BIN_DIR=bin
 OBJ_DIR=obj
@@ -12,12 +11,12 @@ SRC_DIR=src
 TEST_DIR=test
 ASM_DIR=asm
 TEST_BIN_DIR=$(BIN_DIR)/test
-PROGRAM_DIR=programs
+#PROGRAM_DIR=programs		# NOTE: no programs yet
 
 # Tool options
 CXX=g++
 OPT=-O0
-CXXFLAGS=-Wall -g2 -std=c++14 -D_REENTRANT $(OPT) 
+CXXFLAGS=-Wall -Wshadow -g2 -std=c++14 -D_REENTRANT $(OPT) 
 TESTFLAGS=-lgtest -lgtest_main
 LDFLAGS=-pthread
 LIBS = 
@@ -52,35 +51,19 @@ $(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@ 
 
 # ==== TEST TARGETS ==== #
-TESTS=test_shared_ptr
+TESTS=test_shared_ptr test_unique_ptr
 $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(OBJECTS) $(OBJ_DIR)/$@.o\
 		-o $(TEST_BIN_DIR)/$@ $(LIBS) $(TEST_LIBS)
 
 
-# ==== PROGRAM TARGETS ==== #
-#PROGRAMS = tree_traverser obj_tree_traverser
-#PROGRAM_OBJECTS := $(PROGRAM_SOURCES:$(PROGRAM_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-#
-#$(PROGRAM_OBJECTS): $(OBJ_DIR)/%.o : $(PROGRAM_DIR)/%.cpp
-#	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@
-#
-#$(PROGRAMS): $(OBJECTS) $(PROGRAM_OBJECTS)
-#	$(CXX) $(LDFLAGS) $(OBJECTS) $(OBJ_DIR)/$@.o \
-#		$(INCS) -o $(BIN_DIR)/$@ $(LIBS)
-
 # Main targets 
 #
 .PHONY: clean
 
-
-all : test programs
+all : test 
 
 test : $(OBJECTS) $(TESTS)
-
-programs : $(PROGRAMS)
-
-assem : $(ASSEM_OBJECTS)
 
 clean:
 	rm -rfv *.o $(OBJ_DIR)/*.o 
