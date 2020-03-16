@@ -11,31 +11,20 @@
 #define __LC_HEAP2_HPP
 
 #include <algorithm>
+#include <string>
 #include <vector>
 
-
-// NOTE: we assume zero-index arrays here
-int heap_left_child(int idx)
-{
-    return 2 * idx + 1;
-}
-int heap_right_child(int idx)
-{
-    return 2 * idx + 2;
-}
-int heap_parent(int idx)
-{
-    return std::max(0, idx / 2);
-}
+// TODO : namespacing ?
 
 // Test if a vector has the min heap property
-bool vector_is_min_heap(const std::vector<int>& vec);
-
+bool vector_is_min_heap2(const std::vector<int>& vec, unsigned int idx);
 // Test if a vector has the max heap property
-bool vector_is_max_heap(const std::vector<int>& vec);
+bool vector_is_max_heap2(const std::vector<int>& vec, unsigned int idx);
 
-
-
+/*
+ * Heap2 
+ * New (simpler) heap implementation to get logic correct.
+ */
 class Heap2
 {
     protected:
@@ -53,6 +42,7 @@ class Heap2
 
     public:
         Heap2();
+        // FIXME : Copy ctor?
 
         // setters 
         void         insert(int val);
@@ -62,9 +52,14 @@ class Heap2
         int          getRoot(void) const;
         int          getMin(void) const;
         int          getMax(void) const;
+        bool         empty(void) const;
+        std::string  toString(void) const;
+        std::vector<int> getVec(void) const;    // TODO : this is bad API design, but leave it for now until internal implementation is sorted
         // functions that modify heap
         //int          popMin(void);
         //int          popMax(void);
+
+        // TODO : some way to print the heap?
 };
 
 
@@ -72,7 +67,5 @@ class Heap2
 //{
 //
 //};
-
-
 
 #endif /*__LC_HEAP2_HPP*/

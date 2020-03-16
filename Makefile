@@ -50,7 +50,7 @@ $(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp $(HEADERS)
 
 # ==== TEST TARGETS ==== #
 TESTS=test_tree test_threaded_tree test_tree_traverse test_distance \
-	  test_graph test_heap
+	  test_graph test_heap2
 
 $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(OBJECTS) $(OBJ_DIR)/$@.o\
