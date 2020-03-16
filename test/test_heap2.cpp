@@ -15,6 +15,9 @@
 // unit(s) under test 
 #include "heap2.hpp"
 
+const std::vector<int> input_array   = {5, 8, 1, 10, 15, 4, 3};
+const std::vector<int> expected_heap = {1, 8, 3, 10, 15 ,5, 4};   // final heap array format
+
 
 // Just test that the object can be constructed (ie: this test doesn't deal with edge cases)
 TEST_CASE("Test heap2 init", "[classic]")
@@ -28,17 +31,26 @@ TEST_CASE("Test heap2 init", "[classic]")
     REQUIRE(vector_is_max_heap2(test_heap.getVec(), 0) == true);
 }
 
+//TEST_CASE("Test heap2 ctors", "[classic]")
+//{
+//    std::vector<int> out_array;
+//
+//
+//    //.Heap2 dst_heap;
+//}
+
 TEST_CASE("Test heap2 insert", "[classic]")
 {
-    std::vector<int> input_array   = {5, 8, 1, 10, 15, 4, 3};
-    std::vector<int> expected_heap = {1, 8, 3, 10, 15 ,5, 4};   // final heap array format
-
     Heap2 test_heap;
     REQUIRE(test_heap.empty() == true);
+    
+    // Start inserting elements into the heap 
+    for(unsigned int i = 0; i < input_array.size(); ++i)
+    {
+        test_heap.insert(input_array[i]);
+        std::cout << "[after input " << i << "] : " << test_heap.toString() << std::endl;
+    }
 
-
-
-
-    // Note that this is a heap of ints 
-     
+    // TODO : why does 1 not go to the top?
 }
+

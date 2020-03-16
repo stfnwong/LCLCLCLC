@@ -8,16 +8,17 @@
  */
 
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 
 #include "heap2.hpp"
 
 // NOTE: we assume zero-index arrays here
-int heap_left_child2(int idx)
+int heap2_left_child(int idx)
 {
     return 2 * idx + 1;
 }
-int heap_right_child2(int idx)
+int heap2_right_child(int idx)
 {
     return 2 * idx + 2;
 }
@@ -34,8 +35,8 @@ bool vector_is_min_heap2(const std::vector<int>& vec, unsigned int idx)
 
     unsigned int lval, rval;
 
-    lval = heap_left_child2(idx);
-    rval = heap_right_child2(idx);
+    lval = heap2_left_child(idx);
+    rval = heap2_right_child(idx);
 
     if(lval >= vec.size() || rval >= vec.size())
         return true;
@@ -54,8 +55,8 @@ bool vector_is_max_heap2(const std::vector<int>& vec, unsigned int idx)
 
     unsigned int lval, rval;
 
-    lval = heap_left_child2(idx);
-    rval = heap_right_child2(idx);
+    lval = heap2_left_child(idx);
+    rval = heap2_right_child(idx);
 
     // bounds check children
     if(lval >= vec.size() || rval >= vec.size())
@@ -71,6 +72,20 @@ bool vector_is_max_heap2(const std::vector<int>& vec, unsigned int idx)
 // ======== HEAP2 base class ======== //
 Heap2::Heap2() {}
 
+// copy ctor
+Heap2::Heap2(const Heap2& that) 
+{
+    this->heap = that.heap;     
+}
+
+// move ctor
+Heap2::Heap2(const Heap2&& that) 
+{
+    this->heap = std::move(that.heap);
+    // how to I invalidate the src structure?
+}
+
+
 // Heap comparison, for now make it a min heap. In future this should be 
 // one of the few methods that might need to be specalized for child heap
 // types. TODO : Make Heap2 an abstract base class?
@@ -79,7 +94,7 @@ Heap2::Heap2() {}
  */
 bool Heap2::compare(int a, int b) const
 {
-    return a >= b;
+    return a <= b;
 }
 
 /*
@@ -87,7 +102,24 @@ bool Heap2::compare(int a, int b) const
  */
 void Heap2::swap(int idx_a, int idx_b)
 {
-    std::iter_swap(this->heap.begin() + idx_a, this->heap.begin() + idx_b);
+    //std::iter_swap(this->heap.begin() + idx_a, this->heap.begin() + idx_b);
+    // FIXME : crap swap
+    int a_val = this->heap[idx_a];
+    int b_val = this->heap[idx_b];
+
+    std::cout << "[" << __func__ << "] swapping heap[" << idx_a 
+        << "] = " << this->heap[idx_a] << " with heap[" << idx_b
+        << "] = " << this->heap[idx_b] << std::endl;
+
+    this->heap[idx_a] = b_val;
+    this->heap[idx_b] = a_val;
+}
+
+// INSERTION 
+void Heap2::insert(int val)
+{
+    this->heap.push_back(val);
+    this->min_heapify(0);
 }
 
 /*
@@ -113,63 +145,79 @@ std::string Heap2::toString(void) const
 {
     std::ostringstream oss;
 
+    // FIXME  : for now I just print the vector contents
+    oss << "{";
+    for(unsigned int i = 0; i < this->heap.size(); ++i)
+        oss << this->heap[i] << " ";
+    oss << "}";
 
     return oss.str();
 }
 
+/*
+ * getVec()
+ */
 std::vector<int> Heap2::getVec(void) const
 {
     return this->heap;
 }
 
-
 /*
- * heapify_up()
+ * max_heapify()
+ * NOTE: this works from the top down...
  */
-void Heap2::heapify_up(int idx)
+void Heap2::max_heapify(int idx)
 {
-    unsigned int child_idx;
-    unsigned int parent_idx;
-   
-    child_idx = idx;
-    while(child_idx > 0)
+    unsigned int left, right;
+    unsigned int largest_idx;
+
+    left  = heap2_left_child(idx);
+    right = heap2_right_child(idx);
+
+    // TODO : note to self, how robust is this implementation really?
+    // TODO : there must be faster way to do this rather than checking and re-checking
+    if(left < this->heap.size() && this->heap[left] > this->heap[right])
+        largest_idx = left;
+    else
+        largest_idx = idx;
+
+    if(right < this->heap.size() && this->heap[right] > this->heap[largest_idx])
+        largest_idx = right;
+
+    if(largest_idx != idx)
     {
-        parent_idx = heap_parent2(child_idx);
-        if(this->compare(this->heap[parent_idx], this->heap[child_idx]))
-            return;
-        this->swap(parent_idx, child_idx);
-        child_idx = parent_idx;
+        this->swap(idx, largest_idx);
+        this->max_heapify(largest_idx);
     }
 }
 
 /*
- * heapify_down()
+ * min_heapify()
+ * NOTE: we start from the root and go down...
  */
-void Heap2::heapify_down(int idx)
+void Heap2::min_heapify(int idx)
 {
-    unsigned int child_idx;
-    unsigned int parent_idx;
+    unsigned int left, right;
+    unsigned int smallest_idx;
 
-    child_idx = idx;
-    while(child_idx > 0)
+    left  = heap2_left_child(idx);
+    right = heap2_right_child(idx);
+
+    if(left < this->heap.size() && this->heap[left] < this->heap[idx])
+        smallest_idx = left;
+    else
+        smallest_idx = idx;
+
+    if(right < this->heap.size() && this->heap[right] < this->heap[smallest_idx])
+        smallest_idx = right;
+
+    std::cout << "[" << __func__ << "] idx : " << idx << " left : " << left 
+        << ", right : " << right << ", smallest : " 
+        << smallest_idx << std::endl;
+
+    if(smallest_idx != idx)
     {
-        parent_idx = heap_parent2(child_idx);
-        while(parent_idx < this->heap.size())
-        {
-            if(child_idx >= this->heap.size())
-                return;
-
-            // Do compare
-            if((child_idx + 1 < this->heap.size()) && 
-                    this->compare(child_idx + 1, child_idx))
-                child_idx++;
-
-            if(this->compare(this->heap[parent_idx], this->heap[child_idx]))
-                return;
-
-            //this->swap(this->heap[parent_idx], this->heap[child_idx]);
-            this->swap(parent_idx, child_idx);
-            parent_idx = child_idx;
-        }
+        this->swap(idx, smallest_idx);
+        this->min_heapify(smallest_idx);
     }
 }

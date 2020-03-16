@@ -37,16 +37,17 @@ class Heap2
 
     // Update heap
     protected:
-        void heapify_up(int idx);
-        void heapify_down(int idx);
+        void max_heapify(int idx);
+        void min_heapify(int idx);
+        //void build_min_heap(const std::vector<int>& arr);
 
     public:
         Heap2();
-        // FIXME : Copy ctor?
+        Heap2(const Heap2& that);
+        Heap2(const Heap2&& that);
 
         // setters 
         void         insert(int val);
-
         // getters
         unsigned int size(void) const;
         int          getRoot(void) const;
