@@ -38,18 +38,6 @@ bool vector_is_min_heap2(const std::vector<int>& vec, unsigned int idx)
     lchild = heap2_left_child(idx);
     rchild = heap2_right_child(idx);
 
-    std::cout << "[" << __func__ << "] (indicies) idx: " << idx 
-        << ", lchild: " << lchild << ", rchild: " << rchild 
-        << std::endl;
-    std::cout << "[" << __func__ << "] values : ";
-    std::cout << "heap[" << idx << "] = " << vec[idx]
-        << ",  ";
-    std::cout << "heap[" << lchild << "] = " << vec[lchild]
-        << ",  ";
-    std::cout << "heap[" << rchild << "] = " << vec[rchild]
-        << " ";
-    std::cout << std::endl;
-
     // bounds check children
     if(lchild >= vec.size() || rchild >= vec.size())
         return true;
@@ -115,17 +103,7 @@ bool Heap2::compare(int parent, int child) const
  */
 void Heap2::swap(int idx_a, int idx_b)
 {
-    //std::iter_swap(this->heap.begin() + idx_a, this->heap.begin() + idx_b);
-    // FIXME : crap swap
-    int a_val = this->heap[idx_a];
-    int b_val = this->heap[idx_b];
-
-    std::cout << "[" << __func__ << "] swapping heap[" << idx_a 
-        << "] = " << this->heap[idx_a] << " with heap[" << idx_b
-        << "] = " << this->heap[idx_b] << std::endl;
-
-    this->heap[idx_a] = b_val;
-    this->heap[idx_b] = a_val;
+    std::iter_swap(this->heap.begin() + idx_a, this->heap.begin() + idx_b);
 }
 
 // INSERTION 
@@ -133,8 +111,6 @@ void Heap2::insert(int val)
 {
     this->heap.push_back(val);
     this->heapify(this->heap.size() - 1);
-    //this->min_heapify(this->heap.size() - 1);       // start from the bottom
-    //this->min_heapify(0);   // start from the top
 }
 
 /*

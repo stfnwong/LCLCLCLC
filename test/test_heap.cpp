@@ -50,21 +50,14 @@ TEST_CASE("Test heap2 insert", "[classic]")
         test_heap.insert(input_array[i]);
         std::cout << "[after input " << i << "] : " << test_heap.toString() << std::endl;
     }
-
     std::cout << "Heapvec : " << test_heap.toString() << std::endl;
 
     std::vector<int> vec_out = test_heap.getVec();
 
     REQUIRE(test_heap.empty() == false);
-    REQUIRE(vec_out.size() == expected_heap.size());
+    REQUIRE(vec_out.size() == expected_min_heap.size());
     REQUIRE(vector_is_min_heap2(vec_out, 0) == true);
     REQUIRE(vector_is_max_heap2(vec_out, 0) == false);
-
-    //bool vector_is_min_heap2(const std::vector<int>& vec, unsigned int idx);
-    //// Test if a vector has the max heap property
-    //bool vector_is_max_heap2(const std::vector<int>& vec, unsigned int idx);
-
-    // TODO : why does 1 not go to the top?
 }
 
 //TEST_CASE("Test MinHeap insert", "[classic]")
