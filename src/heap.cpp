@@ -1,337 +1,216 @@
 /*
- * HEAP
- * Implementation of a heap
+ * HEAP2
+ * This is just a copy of the Python Heap2 class.
+ * Eventually this will be destroyed and folded into
+ * the actual heap class.
  *
- * Stefan Wong 2019
+ * Stefan Wong 2020
  */
 
-#include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
+
 #include "heap.hpp"
 
-
-// ============== HEAP NODE ================ //
-
-HeapNode::HeapNode()
+// NOTE: we assume zero-index arrays here
+int heap2_left_child(int idx)
 {
-	this->init();
+    return 2 * idx + 1;
+}
+int heap2_right_child(int idx)
+{
+    return 2 * idx + 2;
+}
+int heap_parent2(int idx)
+{
+    return std::max(0, idx / 2);
 }
 
-HeapNode::HeapNode(int key)
+// Test if a vector has the min heap property
+bool vector_is_min_heap2(const std::vector<int>& vec, unsigned int idx)
 {
-    this->key = key;
-    this->val = 0;
+    if(idx >= vec.size())
+        return true;
+
+    unsigned int lchild, rchild;
+
+    lchild = heap2_left_child(idx);
+    rchild = heap2_right_child(idx);
+
+    std::cout << "[" << __func__ << "] (indicies) idx: " << idx 
+        << ", lchild: " << lchild << ", rchild: " << rchild 
+        << std::endl;
+    std::cout << "[" << __func__ << "] values : ";
+    std::cout << "heap[" << idx << "] = " << vec[idx]
+        << ",  ";
+    std::cout << "heap[" << lchild << "] = " << vec[lchild]
+        << ",  ";
+    std::cout << "heap[" << rchild << "] = " << vec[rchild]
+        << " ";
+    std::cout << std::endl;
+
+    // bounds check children
+    if(lchild >= vec.size() || rchild >= vec.size())
+        return true;
+    
+    if((vec[lchild] >= vec[idx]) && (vec[rchild] >= vec[idx]))
+        return vector_is_min_heap2(vec, idx+1);
+    
+    return false;
 }
 
-HeapNode::HeapNode(int key, int val)
+// Test if a vector has the max heap property
+bool vector_is_max_heap2(const std::vector<int>& vec, unsigned int idx)
 {
-	this->key = key;
-	this->val = val;
+    if(idx >= vec.size())
+        return true;
+
+    unsigned int lchild, rchild;
+
+    lchild = heap2_left_child(idx);
+    rchild = heap2_right_child(idx);
+
+    // bounds check children
+    if(lchild >= vec.size() || rchild >= vec.size())
+        return true;
+
+    if((vec[lchild] <= vec[idx]) && (vec[rchild] <= vec[idx]))
+        return vector_is_max_heap2(vec, idx+1);
+    
+    return false;
 }
+
+
+// ======== HEAP2 base class ======== //
+Heap2::Heap2() {}
 
 // copy ctor
-HeapNode::HeapNode(const HeapNode& that)
+Heap2::Heap2(const Heap2& that) 
 {
-    this->key = that.key;
-    this->val = that.val;
+    this->heap = that.heap;     
 }
 
 // move ctor
-//HeapNode::HeapNode(HeapNode&& that)
-//{
-//
-//}
-
-void HeapNode::init(void)
+Heap2::Heap2(const Heap2&& that) 
 {
-	this->key = 0;
-	this->val = 0;
+    this->heap = std::move(that.heap);
+    // how to I invalidate the src structure?
 }
 
-bool HeapNode::operator==(const HeapNode& that) const
-{
-	if(this->key != that.key)
-		return false;
-	if(this->val != that.val)
-		return false;
 
-	return true;
+// Heap comparison, for now make it a min heap. In future this should be 
+// one of the few methods that might need to be specalized for child heap
+// types. TODO : Make Heap2 an abstract base class?
+/*
+ * compare()
+ */
+bool Heap2::compare(int parent, int child) const
+{
+    return parent > child;
 }
 
-bool HeapNode::operator!=(const HeapNode& that) const
+/*
+ * swap()
+ */
+void Heap2::swap(int idx_a, int idx_b)
 {
-	return !(*this == that);
+    //std::iter_swap(this->heap.begin() + idx_a, this->heap.begin() + idx_b);
+    // FIXME : crap swap
+    int a_val = this->heap[idx_a];
+    int b_val = this->heap[idx_b];
+
+    std::cout << "[" << __func__ << "] swapping heap[" << idx_a 
+        << "] = " << this->heap[idx_a] << " with heap[" << idx_b
+        << "] = " << this->heap[idx_b] << std::endl;
+
+    this->heap[idx_a] = b_val;
+    this->heap[idx_b] = a_val;
 }
 
-bool HeapNode::operator<(const HeapNode& that) const
+// INSERTION 
+void Heap2::insert(int val)
 {
-    return (this->key < that.key) ? true : false;
+    this->heap.push_back(val);
+    this->heapify(this->heap.size() - 1);
+    //this->min_heapify(this->heap.size() - 1);       // start from the bottom
+    //this->min_heapify(0);   // start from the top
 }
 
-bool HeapNode::operator<=(const HeapNode& that) const
+/*
+ * size()
+ */
+unsigned int Heap2::size(void) const
 {
-    return (this->key <= that.key) ? true : false;
+    return this->heap.size();
 }
 
-bool HeapNode::operator>(const HeapNode& that) const
+/*
+ * empty()
+ */
+bool Heap2::empty(void) const
 {
-    return (this->key > that.key) ? true : false;
+    return (this->heap.size() == 0) ? true : false;
 }
 
-bool HeapNode::operator>=(const HeapNode& that) const
-{
-    return (this->key >= that.key) ? true : false;
-}
-
-std::string HeapNode::toString(void) const
+/*
+ * toString()
+ */
+std::string Heap2::toString(void) const
 {
     std::ostringstream oss;
 
-    oss << "[" << this->key << "]->" << this->val;
+    // FIXME  : for now just print the vector contents
+    oss << "{";
+    for(unsigned int i = 0; i < this->heap.size(); ++i)
+        oss << this->heap[i] << " ";
+    oss << "}";
 
     return oss.str();
 }
 
+/*
+ * getVec()
+ */
+std::vector<int> Heap2::getVec(void) const
+{
+    return this->heap;
+}
 
-// ============== HEAP ================ //
-Heap::Heap() : nodes(std::vector<HeapNode>(100)), max_size(100), num_elem(0) {}
+/*
+ * heapify()
+ * TODO : we can put this->compare() here and generalize
+ */
+void Heap2::heapify(int idx)
+{
+    unsigned int parent_idx;
 
-Heap::Heap(const unsigned int max) : nodes(std::vector<HeapNode>(max)), max_size(max), num_elem(0) {} 
+    // this must be smaller than the current idx
+    parent_idx = heap_parent2(idx);
     
-
-// ======== Internal balancing functions ======== //
-
-/*
- * heapify_down()
- * TODO: this style sucks, and also I'm pretty sure this implementation
- * is not correct.
- */
-//void Heap::heapify_down(unsigned int n)
-//{
-//    unsigned int j;
-//    if((2*n) > this->max_size)
-//    {
-//        // do nothing
-//        return;
-//    }
-//    else if((2*n) < this->max_size)
-//    {
-//        unsigned int left  = this->left_child(n);
-//        unsigned int right = this->right_child(n);
-//
-//        std::cout << "[" << __func__ << "] node " << n 
-//            << " left child is at " << left << ", right child is at " 
-//            << right << std::endl;
-//
-//        if(this->nodes[left].key < this->nodes[right].key)
-//            j = left;
-//        else
-//            j = right;
-//    }
-//    else        // 2*n == this->size
-//    {
-//        j = 2 * n;
-//    }
-//
-//    if(this->nodes[j].key < this->nodes[n].key)
-//    {
-//        std::swap(this->nodes[j], this->nodes[n]);
-//        this->heapify_down(j);
-//    }
-//}
-
-/*
- * insertNode()
- * Add the node to the end of the array and apply heapify up to it
- * recursively to form an array that satisfies the heap property
- */
-void Heap::insertNode(const HeapNode& node)
-{
-    if(this->num_elem < this->max_size)
+    // this node needs to be less than its parent
+    if(this->compare(this->heap[parent_idx], this->heap[idx]))
     {
-        this->nodes[this->num_elem] = node;
-        this->heapify_up(num_elem);
-        this->num_elem++;
+        this->swap(idx, parent_idx);
+        this->heapify(parent_idx);  // check this nodes parent
     }
 }
 
-/*
- * deleteNode()
- */
-void Heap::deleteNode(unsigned int idx)
-{
-    std::cout << "[" << __func__ << "] not yet implemented" << std::endl;
-}
 
 /*
- * remove()
- * Should be O(2 * log n)
+ * MinHeap comparison
  */
-HeapNode Heap::remove(unsigned int idx)
+bool MinHeap2::compare(int parent, int child)
 {
-    this->num_elem--;
-    return this->nodes[this->num_elem+1];
+    return parent > child;
 }
 
 /*
- * getNumElem()
+ * MaxHeap comparison
  */
-unsigned int Heap::getNumElem(void) const
+bool MaxHeap2::compare(int parent, int child)
 {
-    return this->num_elem;
+    return parent < child;
 }
 
-/*
- * getMaxSize()
- */
-unsigned int Heap::getMaxSize(void) const
-{
-    return this->max_size;
-}
-
-/*
- * getVector()
- */
-std::vector<HeapNode> Heap::getVector(void) const
-{
-    return this->nodes;
-}
-
-
-// ======== Specializations 
-
-// ==== MinHeap
-MinHeap::MinHeap() : Heap() {} 
-
-MinHeap::MinHeap(const unsigned int max) :  Heap(max) {} 
-
-/*
- * MinHeap::heapify_up()
- */
-void MinHeap::heapify_up(unsigned int idx)
-{
-    unsigned int p_idx; 
-
-    p_idx = heap_parent(idx);
-    // MinHeap : parents must be less than children
-    if(this->nodes[p_idx] > this->nodes[idx])
-    {
-        std::swap(this->nodes[idx], this->nodes[p_idx]);
-        this->heapify_up(p_idx);
-    }
-}
-
-/*
- * MinHeap::heapify_down()
- */
-void MinHeap::heapify_down(unsigned int idx) {} 
-
-
-// ==== MinHeap
-MaxHeap::MaxHeap() : Heap() {} 
-
-MaxHeap::MaxHeap(const unsigned int max) : Heap(max) {} 
-
-/*
- * MaxHeap::heapify_up()
- */
-void MaxHeap::heapify_up(unsigned int idx)
-{
-    unsigned int p_idx; 
-
-    p_idx = heap_parent(idx);
-    // MaxHeap : parents must be greater than children
-    if(this->nodes[p_idx] > this->nodes[idx])
-    {
-        std::swap(this->nodes[idx], this->nodes[p_idx]);
-        this->heapify_up(p_idx);
-    }
-}
-
-/*
- * MaxHeap::heapify_down()
- */
-void MaxHeap::heapify_down(unsigned int idx) {} 
-
-
-
-// ============== Heap utilities ================ //
-unsigned int heap_parent(unsigned int idx)
-{
-    return (unsigned int) (idx <= 1) ? 0 : (idx >> 1);
-}
-
-unsigned int heap_left_child_idx(unsigned int idx)
-{
-    return 2 * (idx + 1) - 1;   // -1 here to account for zero index
-}
-
-unsigned int heap_right_child_idx(unsigned int idx)
-{
-    return 2 * (idx + 1);
-}
-
-bool has_min_heap_property(const Heap& heap)
-{
-    return array_has_min_heap_property(heap.getVector(), 0);
-}
-
-bool has_max_heap_property(const Heap& heap)
-{
-    return array_has_max_heap_property(heap.getVector(), 0);
-}
-
-/*
- * array_has_min_heap_property()
- */
-bool array_has_min_heap_property(const std::vector<HeapNode>& nodes, unsigned int idx)
-{
-    unsigned int lidx, ridx;
-
-    if(idx >= nodes.size()-1)
-        return true;
-
-    lidx = heap_left_child_idx(idx);
-    ridx = heap_right_child_idx(idx);
-
-    // If we get to the end and we've satisfied the heap property, then
-    // this must be a heap.
-    if((lidx >= nodes.size()-1) || (ridx >= nodes.size()-1)) 
-        return true;
-
-    if((nodes[lidx] <= nodes[idx]) && (nodes[ridx] <= nodes[idx]))
-    {
-        return array_has_min_heap_property(nodes, idx+1);
-    }
-    else
-        return false;
-}
-
-
-/*
- * array_has_max_heap_property()
- */
-bool array_has_max_heap_property(const std::vector<HeapNode>& nodes, unsigned int idx)
-{
-    unsigned int lidx, ridx;
-
-    if(idx >= nodes.size()-1)
-        return true;
-
-    lidx = heap_left_child_idx(idx);
-    ridx = heap_right_child_idx(idx);
-
-    // If we get to the end and we've satisfied the heap property, then
-    // this must be a heap.
-    if((lidx >= nodes.size()-1) || (ridx >= nodes.size()-1)) 
-        return true;
-
-    if((nodes[lidx] >= nodes[idx]) && (nodes[ridx] >= nodes[idx]))
-    {
-        return array_has_max_heap_property(nodes, idx+1);
-    }
-    else
-        return false;
-}
 

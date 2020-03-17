@@ -50,7 +50,7 @@ $(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp $(HEADERS)
 
 # ==== TEST TARGETS ==== #
 TESTS=test_tree test_threaded_tree test_tree_traverse test_distance \
-	  test_graph test_heap2
+	  test_graph test_heap
 
 $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(OBJECTS) $(OBJ_DIR)/$@.o\
@@ -82,7 +82,9 @@ programs : $(PROGRAMS)
 assem : $(ASSEM_OBJECTS)
 
 clean:
-	rm -rfv *.o $(OBJ_DIR)/*.o 
+	rm -fv *.o $(OBJ_DIR)/*.o 
+	# Clean test programs
+	rm -fv $(TEST_BIN_DIR)/test_*
 
 print-%:
 	@echo $* = $($*)
