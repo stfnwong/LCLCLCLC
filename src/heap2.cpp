@@ -105,9 +105,9 @@ Heap2::Heap2(const Heap2&& that)
 /*
  * compare()
  */
-bool Heap2::compare(int a, int b) const
+bool Heap2::compare(int parent, int child) const
 {
-    return a <= b;
+    return parent > child;
 }
 
 /*
@@ -227,6 +227,7 @@ void Heap2::min_heapify(int idx)
     if(right < this->heap.size() && this->heap[right] < this->heap[smallest_idx])
         smallest_idx = right;
 
+    // TODO: debug, remove
     std::cout << "[" << __func__ << "] idx : " << idx << " left : " << left 
         << ", right : " << right << ", smallest : " 
         << smallest_idx << std::endl;
@@ -250,7 +251,7 @@ void Heap2::up_heap_min(int idx)
     parent_idx = heap_parent2(idx);
     
     // this node needs to be less than its parent
-    if(this->heap[idx] < this->heap[parent_idx])
+    if(this->compare(this->heap[parent_idx], this->heap[idx]))
     {
         this->swap(idx, parent_idx);
         this->up_heap_min(parent_idx);  // check this nodes parent
