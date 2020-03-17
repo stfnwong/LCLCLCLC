@@ -40,6 +40,10 @@ class Heap2
         void max_heapify(int idx);
         void min_heapify(int idx);
         //void build_min_heap(const std::vector<int>& arr);
+        // NOTE : this is the alternative construction where we
+        // always insert at the bottom leftmost position and then
+        // bubble up if needed 
+        void up_heap_min(int idx);
 
     public:
         Heap2();

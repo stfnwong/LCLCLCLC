@@ -33,15 +33,28 @@ bool vector_is_min_heap2(const std::vector<int>& vec, unsigned int idx)
     if(idx >= vec.size())
         return true;
 
-    unsigned int lval, rval;
+    unsigned int lchild, rchild;
 
-    lval = heap2_left_child(idx);
-    rval = heap2_right_child(idx);
+    lchild = heap2_left_child(idx);
+    rchild = heap2_right_child(idx);
 
-    if(lval >= vec.size() || rval >= vec.size())
+    std::cout << "[" << __func__ << "] (indicies) idx: " << idx 
+        << ", lchild: " << lchild << ", rchild: " << rchild 
+        << std::endl;
+    std::cout << "[" << __func__ << "] values : ";
+    std::cout << "heap[" << idx << "] = " << vec[idx]
+        << ",  ";
+    std::cout << "heap[" << lchild << "] = " << vec[lchild]
+        << ",  ";
+    std::cout << "heap[" << rchild << "] = " << vec[rchild]
+        << " ";
+    std::cout << std::endl;
+
+    // bounds check children
+    if(lchild >= vec.size() || rchild >= vec.size())
         return true;
     
-    if((vec[lval] <= vec[idx]) && (vec[rval] <= vec[idx]))
+    if((vec[lchild] >= vec[idx]) && (vec[rchild] >= vec[idx]))
         return vector_is_min_heap2(vec, idx+1);
     
     return false;
@@ -53,17 +66,17 @@ bool vector_is_max_heap2(const std::vector<int>& vec, unsigned int idx)
     if(idx >= vec.size())
         return true;
 
-    unsigned int lval, rval;
+    unsigned int lchild, rchild;
 
-    lval = heap2_left_child(idx);
-    rval = heap2_right_child(idx);
+    lchild = heap2_left_child(idx);
+    rchild = heap2_right_child(idx);
 
     // bounds check children
-    if(lval >= vec.size() || rval >= vec.size())
+    if(lchild >= vec.size() || rchild >= vec.size())
         return true;
 
-    if((vec[lval] >= vec[idx]) && (vec[rval] >= vec[idx]))
-        return vector_is_min_heap2(vec, idx+1);
+    if((vec[lchild] <= vec[idx]) && (vec[rchild] <= vec[idx]))
+        return vector_is_max_heap2(vec, idx+1);
     
     return false;
 }
@@ -119,7 +132,9 @@ void Heap2::swap(int idx_a, int idx_b)
 void Heap2::insert(int val)
 {
     this->heap.push_back(val);
-    this->min_heapify(0);
+    this->up_heap_min(this->heap.size() - 1);
+    //this->min_heapify(this->heap.size() - 1);       // start from the bottom
+    //this->min_heapify(0);   // start from the top
 }
 
 /*
@@ -145,7 +160,7 @@ std::string Heap2::toString(void) const
 {
     std::ostringstream oss;
 
-    // FIXME  : for now I just print the vector contents
+    // FIXME  : for now just print the vector contents
     oss << "{";
     for(unsigned int i = 0; i < this->heap.size(); ++i)
         oss << this->heap[i] << " ";
@@ -191,6 +206,7 @@ void Heap2::max_heapify(int idx)
     }
 }
 
+// TODO : derive a new method for heap sorting these
 /*
  * min_heapify()
  * NOTE: we start from the root and go down...
@@ -219,5 +235,24 @@ void Heap2::min_heapify(int idx)
     {
         this->swap(idx, smallest_idx);
         this->min_heapify(smallest_idx);
+    }
+}
+
+/*
+ * up_heap_min()
+ * TODO : we can put this->compare() here and generalize
+ */
+void Heap2::up_heap_min(int idx)
+{
+    unsigned int parent_idx;
+
+    // this must be smaller than the current idx
+    parent_idx = heap_parent2(idx);
+    
+    // this node needs to be less than its parent
+    if(this->heap[idx] < this->heap[parent_idx])
+    {
+        this->swap(idx, parent_idx);
+        this->up_heap_min(parent_idx);  // check this nodes parent
     }
 }
