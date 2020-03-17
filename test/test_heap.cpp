@@ -22,13 +22,13 @@ const std::vector<int> expected_min_heap = {1, 8, 3, 10, 15 ,5, 4};   // final h
 // Just test that the object can be constructed (ie: this test doesn't deal with edge cases)
 TEST_CASE("Test heap2 init", "[classic]")
 {
-    Heap2 test_heap;
+    Heap test_heap;
 
     REQUIRE(test_heap.size() == 0);
     // the heap property tests are defined 
     // such that they pass for empty heaps
-    REQUIRE(vector_is_min_heap2(test_heap.getVec(), 0) == true);
-    REQUIRE(vector_is_max_heap2(test_heap.getVec(), 0) == true);
+    REQUIRE(vector_is_min_heap(test_heap.getVec(), 0) == true);
+    REQUIRE(vector_is_max_heap(test_heap.getVec(), 0) == true);
 }
 
 //TEST_CASE("Test heap2 ctors", "[classic]")
@@ -36,12 +36,12 @@ TEST_CASE("Test heap2 init", "[classic]")
 //    std::vector<int> out_array;
 //
 //
-//    //.Heap2 dst_heap;
+//    //.Heap dst_heap;
 //}
 
 TEST_CASE("Test heap2 insert", "[classic]")
 {
-    Heap2 test_heap;
+    Heap test_heap;
     REQUIRE(test_heap.empty() == true);
     
     // Start inserting elements into the heap 
@@ -56,11 +56,42 @@ TEST_CASE("Test heap2 insert", "[classic]")
 
     REQUIRE(test_heap.empty() == false);
     REQUIRE(vec_out.size() == expected_min_heap.size());
-    REQUIRE(vector_is_min_heap2(vec_out, 0) == true);
-    REQUIRE(vector_is_max_heap2(vec_out, 0) == false);
+    REQUIRE(vector_is_min_heap(vec_out, 0) == true);
+    REQUIRE(vector_is_max_heap(vec_out, 0) == false);
 }
 
-//TEST_CASE("Test MinHeap insert", "[classic]")
-//{
-//
-//}
+TEST_CASE("Test MinHeap insert", "[classic]")
+{
+    MinHeap test_heap;
+    REQUIRE(test_heap.empty() == true);
+
+    // 
+    for(unsigned int i = 0; i < input_array.size(); ++i)
+    {
+        test_heap.insert(input_array[i]);
+        std::cout << "[after input " << i << "] : " << test_heap.toString() << std::endl;
+    }
+
+    std::vector<int> vec_out = test_heap.getVec();
+    REQUIRE(vector_is_min_heap(vec_out, 0) == true);
+    REQUIRE(vector_is_max_heap(vec_out, 0) == false);
+}
+
+
+// Ens
+TEST_CASE("Test MaxHeap insert", "[classic]")
+{
+    MaxHeap test_heap;
+    REQUIRE(test_heap.empty() == true);
+
+    // 
+    for(unsigned int i = 0; i < input_array.size(); ++i)
+    {
+        test_heap.insert(input_array[i]);
+        std::cout << "[after input " << i << "] : " << test_heap.toString() << std::endl;
+    }
+
+    std::vector<int> vec_out = test_heap.getVec();
+    REQUIRE(vector_is_min_heap(vec_out, 0) == true);
+    REQUIRE(vector_is_max_heap(vec_out, 0) == false);
+}

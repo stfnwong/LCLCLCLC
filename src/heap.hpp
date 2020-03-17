@@ -1,6 +1,6 @@
 /*
  * HEAP2
- * This is just a copy of the Python Heap2 class.
+ * This is just a copy of the Python Heap class.
  * Eventually this will be destroyed and folded into
  * the actual heap class.
  *
@@ -17,15 +17,15 @@
 // TODO : namespacing ?
 
 // Test if a vector has the min heap property
-bool vector_is_min_heap2(const std::vector<int>& vec, unsigned int idx);
+bool vector_is_min_heap(const std::vector<int>& vec, unsigned int idx);
 // Test if a vector has the max heap property
-bool vector_is_max_heap2(const std::vector<int>& vec, unsigned int idx);
+bool vector_is_max_heap(const std::vector<int>& vec, unsigned int idx);
 
 /*
- * Heap2 
+ * Heap 
  * New (simpler) heap implementation to get logic correct.
  */
-class Heap2
+class Heap
 {
     protected:
         std::vector<int> heap;
@@ -40,9 +40,9 @@ class Heap2
         void heapify(int idx);
 
     public:
-        Heap2();
-        Heap2(const Heap2& that);
-        Heap2(const Heap2&& that);
+        Heap();
+        Heap(const Heap& that);
+        Heap(const Heap&& that);
 
         // setters 
         void         insert(int val);
@@ -66,7 +66,7 @@ class Heap2
  * MinHeap
  * Implements a min heap
  */
-class MinHeap2 : public Heap2
+class MinHeap : public Heap
 {
     protected:
         bool compare(int parent, int child);
@@ -74,7 +74,7 @@ class MinHeap2 : public Heap2
     // TODO : what about ctors?
 };
 
-class MaxHeap2 : public Heap2
+class MaxHeap : public Heap
 {
     protected:
         bool compare(int parent, int child);

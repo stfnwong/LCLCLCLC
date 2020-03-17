@@ -1,6 +1,6 @@
 /*
  * HEAP2
- * This is just a copy of the Python Heap2 class.
+ * This is just a copy of the Python Heap class.
  * Eventually this will be destroyed and folded into
  * the actual heap class.
  *
@@ -28,7 +28,7 @@ int heap_parent2(int idx)
 }
 
 // Test if a vector has the min heap property
-bool vector_is_min_heap2(const std::vector<int>& vec, unsigned int idx)
+bool vector_is_min_heap(const std::vector<int>& vec, unsigned int idx)
 {
     if(idx >= vec.size())
         return true;
@@ -43,13 +43,13 @@ bool vector_is_min_heap2(const std::vector<int>& vec, unsigned int idx)
         return true;
     
     if((vec[lchild] >= vec[idx]) && (vec[rchild] >= vec[idx]))
-        return vector_is_min_heap2(vec, idx+1);
+        return vector_is_min_heap(vec, idx+1);
     
     return false;
 }
 
 // Test if a vector has the max heap property
-bool vector_is_max_heap2(const std::vector<int>& vec, unsigned int idx)
+bool vector_is_max_heap(const std::vector<int>& vec, unsigned int idx)
 {
     if(idx >= vec.size())
         return true;
@@ -64,36 +64,32 @@ bool vector_is_max_heap2(const std::vector<int>& vec, unsigned int idx)
         return true;
 
     if((vec[lchild] <= vec[idx]) && (vec[rchild] <= vec[idx]))
-        return vector_is_max_heap2(vec, idx+1);
+        return vector_is_max_heap(vec, idx+1);
     
     return false;
 }
 
 
 // ======== HEAP2 base class ======== //
-Heap2::Heap2() {}
+Heap::Heap() {}
 
 // copy ctor
-Heap2::Heap2(const Heap2& that) 
+Heap::Heap(const Heap& that) 
 {
     this->heap = that.heap;     
 }
 
 // move ctor
-Heap2::Heap2(const Heap2&& that) 
+Heap::Heap(const Heap&& that) 
 {
     this->heap = std::move(that.heap);
     // how to I invalidate the src structure?
 }
 
-
-// Heap comparison, for now make it a min heap. In future this should be 
-// one of the few methods that might need to be specalized for child heap
-// types. TODO : Make Heap2 an abstract base class?
 /*
  * compare()
  */
-bool Heap2::compare(int parent, int child) const
+bool Heap::compare(int parent, int child) const
 {
     return parent > child;
 }
@@ -101,13 +97,13 @@ bool Heap2::compare(int parent, int child) const
 /*
  * swap()
  */
-void Heap2::swap(int idx_a, int idx_b)
+void Heap::swap(int idx_a, int idx_b)
 {
     std::iter_swap(this->heap.begin() + idx_a, this->heap.begin() + idx_b);
 }
 
 // INSERTION 
-void Heap2::insert(int val)
+void Heap::insert(int val)
 {
     this->heap.push_back(val);
     this->heapify(this->heap.size() - 1);
@@ -116,7 +112,7 @@ void Heap2::insert(int val)
 /*
  * size()
  */
-unsigned int Heap2::size(void) const
+unsigned int Heap::size(void) const
 {
     return this->heap.size();
 }
@@ -124,7 +120,7 @@ unsigned int Heap2::size(void) const
 /*
  * empty()
  */
-bool Heap2::empty(void) const
+bool Heap::empty(void) const
 {
     return (this->heap.size() == 0) ? true : false;
 }
@@ -132,7 +128,7 @@ bool Heap2::empty(void) const
 /*
  * toString()
  */
-std::string Heap2::toString(void) const
+std::string Heap::toString(void) const
 {
     std::ostringstream oss;
 
@@ -148,23 +144,21 @@ std::string Heap2::toString(void) const
 /*
  * getVec()
  */
-std::vector<int> Heap2::getVec(void) const
+std::vector<int> Heap::getVec(void) const
 {
     return this->heap;
 }
 
 /*
  * heapify()
- * TODO : we can put this->compare() here and generalize
  */
-void Heap2::heapify(int idx)
+void Heap::heapify(int idx)
 {
     unsigned int parent_idx;
 
     // this must be smaller than the current idx
     parent_idx = heap_parent2(idx);
     
-    // this node needs to be less than its parent
     if(this->compare(this->heap[parent_idx], this->heap[idx]))
     {
         this->swap(idx, parent_idx);
@@ -172,11 +166,10 @@ void Heap2::heapify(int idx)
     }
 }
 
-
 /*
  * MinHeap comparison
  */
-bool MinHeap2::compare(int parent, int child)
+bool MinHeap::compare(int parent, int child)
 {
     return parent > child;
 }
@@ -184,9 +177,7 @@ bool MinHeap2::compare(int parent, int child)
 /*
  * MaxHeap comparison
  */
-bool MaxHeap2::compare(int parent, int child)
+bool MaxHeap::compare(int parent, int child)
 {
     return parent < child;
 }
-
-
