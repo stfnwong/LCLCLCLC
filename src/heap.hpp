@@ -32,7 +32,7 @@ class Heap
 
     // internal manipulation
     protected:
-        bool compare(int a, int b) const;
+        virtual bool compare(int a, int b) const = 0;
         void swap(int idx_a, int idx_b);
 
     // Update heap
@@ -69,7 +69,7 @@ class Heap
 class MinHeap : public Heap
 {
     protected:
-        bool compare(int parent, int child);
+        bool compare(int parent, int child) const;
 
     // TODO : what about ctors?
 };
@@ -77,7 +77,7 @@ class MinHeap : public Heap
 class MaxHeap : public Heap
 {
     protected:
-        bool compare(int parent, int child);
+        bool compare(int parent, int child) const;
 };
 
 #endif /*__LC_HEAP2_HPP*/

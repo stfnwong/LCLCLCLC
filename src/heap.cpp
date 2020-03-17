@@ -87,14 +87,6 @@ Heap::Heap(const Heap&& that)
 }
 
 /*
- * compare()
- */
-bool Heap::compare(int parent, int child) const
-{
-    return parent > child;
-}
-
-/*
  * swap()
  */
 void Heap::swap(int idx_a, int idx_b)
@@ -169,7 +161,7 @@ void Heap::heapify(int idx)
 /*
  * MinHeap comparison
  */
-bool MinHeap::compare(int parent, int child)
+bool MinHeap::compare(int parent, int child) const
 {
     return parent > child;
 }
@@ -177,7 +169,7 @@ bool MinHeap::compare(int parent, int child)
 /*
  * MaxHeap comparison
  */
-bool MaxHeap::compare(int parent, int child)
+bool MaxHeap::compare(int parent, int child) const
 {
     return parent < child;
 }
