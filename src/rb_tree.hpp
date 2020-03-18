@@ -42,12 +42,14 @@ class RedBlackNode
  */
 class RedBlackTree
 {
+    RedBlackNode*             root;
     std::vector<RedBlackNode> nodes;
 
     public:
         RedBlackTree();
 
         unsigned int getBlackHeight(void) const;
+        void         leftRotate(RedBlackNode* node);
 
         std::string toString(void) const;
 };

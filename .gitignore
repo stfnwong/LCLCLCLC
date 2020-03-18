@@ -1,2 +1,5 @@
 # Ignore swap files 
 *.swp
+
+# Ignore pycache files 
+*.pyc
