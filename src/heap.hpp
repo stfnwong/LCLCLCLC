@@ -57,8 +57,6 @@ class Heap
         // functions that modify heap
         //int          popMin(void);
         //int          popMax(void);
-
-        // TODO : some way to print the heap?
 };
 
 

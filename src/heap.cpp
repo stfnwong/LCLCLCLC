@@ -22,7 +22,7 @@ int heap2_right_child(int idx)
 {
     return 2 * idx + 2;
 }
-int heap_parent2(int idx)
+int heap_parent(int idx)
 {
     return std::max(0, idx / 2);
 }
@@ -149,8 +149,7 @@ void Heap::heapify(int idx)
     unsigned int parent_idx;
 
     // this must be smaller than the current idx
-    parent_idx = heap_parent2(idx);
-    
+    parent_idx = heap_parent(idx);
     if(this->compare(this->heap[parent_idx], this->heap[idx]))
     {
         this->swap(idx, parent_idx);
