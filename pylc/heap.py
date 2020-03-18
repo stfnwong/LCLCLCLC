@@ -1,29 +1,25 @@
 """
-PYLC_HEAP
-Heap implementation for LC in Python
+HEAP
+A binary heap
 
-Stefan Wong 2019
+Stefan Wong 2020
 """
 
 from copy import copy
-# debug
-#from pudb import set_trace; set_trace()
+from typing import Union
 
-# Zero index left and right functions
+# Get the children or parents of a zero-indexed heap array
 def heap_left_child(idx:int) -> int:
     return 2 * idx + 1
-    #return 2 * (idx + 1) - 1
 
 def heap_right_child(idx:int) -> int:
     return 2 * idx + 2
-    #return 2 * (idx + 1)
 
 def heap_parent(idx:int) -> int:
     return max(0, (idx-1) // 2)
-    #return max(0, (idx // 2))
 
 
-# Check min heap property
+# ---- Functions to test heap property ----
 def has_min_heap_property(array:list, idx:int=0) -> bool:
     if idx >= len(array):
         return True
@@ -34,13 +30,12 @@ def has_min_heap_property(array:list, idx:int=0) -> bool:
     if (lval >= len(array)) or (rval >= len(array)):
         return True
 
-    if(array[lval] <= array[idx]) and (array[rval] <= array[idx]):
+    if(array[lval] >= array[idx]) and (array[rval] >= array[idx]):
         return has_min_heap_property(array, idx+1)
-    else:
-        return False
+
+    return False
 
 
-# Check max heap property
 def has_max_heap_property(array:list, idx:int=0) -> bool:
     if idx >= len(array):
         return True
@@ -51,161 +46,142 @@ def has_max_heap_property(array:list, idx:int=0) -> bool:
     if (lval >= len(array)) or (rval >= len(array)):
         return True
 
-    if(array[lval] >= array[idx]) and (array[rval] >= array[idx]):
+    if(array[lval] <= array[idx]) and (array[rval] <= array[idx]):
         return has_max_heap_property(array, idx+1)
-    else:
-        return False
+
+    return False
 
 
-class HeapNode:
-    """
-    HeapNode
-    A node in a heap
-    """
-    def __init__(self, key:int=0, val:int=0) -> None:
-        self.key = key
-        self.val = val
-
-    def __repr__(self) -> str:
-        return 'HeapNode(%s, %s)' % (str(self.key), str(self.val))
-
-    def __str__(self) -> str:
-        return 'HeapNode [%d]: %d' % (self.key, self.val)
-
-    def __eq__(self, that:'HeapNode') -> bool:
-        if isinstance(that, HeapNode):
-            return (self.key == that.key) and (self.val == that.val)
-        else:
-            return self.key == that
-
-    def __lt__(self, that:'HeapNode') -> bool:
-        if isinstance(that, HeapNode):
-            return (self.key < that.key)
-        else:
-            return self.key < that
-
-    def __le__(self, that:'HeapNode') -> bool:
-        if isinstance(that, HeapNode):
-            return (self.key <= that.key)
-        else:
-            return self.key <= that
-
-    def __gt__(self, that:'HeapNode') -> bool:
-        if isinstance(that, HeapNode):
-            return (self.key > that.key)
-        else:
-            return self.key > that
-
-    def __ge__(self, that:'HeapNode') -> bool:
-        if isinstance(that, HeapNode):
-            return (self.key >= that.key)
-        else:
-            return self.key >= that
-
-
+# New (simpler) heap class
 class Heap:
-    """
-    Heap
-
-    Base class for heap. This isn't actually an abstract class, so you could
-    use it directly, however there are specializations below for MinHeaps and
-    MaxHeaps
-    """
-    def __init__(self, max_size:int=32) -> None:
-        self.max_size:int = max_size
-        self.cur_idx:int  = 0
-        # Trying a version with a 'pre-allocated' array
-        self.nodes:list   = [HeapNode(0, 0) for _ in range(self.max_size)]
+    def __init__(self, heap:list=None) -> None:
+        if heap is None:
+            self.heap = []
+        else:
+            self.heap = heap
 
     def __repr__(self) -> str:
-        return 'Heap'
+        return 'Heap(%s)' % str(self.heap)
 
     def __str__(self) -> str:
-        return "%s-%d" % (repr(self), self.max_size)
+        return self.__repr__()
 
-    # NOTE : we need to account for the zero index, hence -1
-    def _left_child(self, idx:int) -> int:
-        return 2 * (idx + 1) - 1
+    def __len__(self) -> int:
+        return len(self.heap)
 
-    # NOTE: similarly here, we account for the zero-indexing
-    def _right_child(self, idx:int) -> int:
-        return 2 * (idx + 1)
+    def _compare(self, parent_idx:int, child_idx:int) -> bool:
+        raise NotImplementedError('_compare() should be implementd in derived class')
 
-    def _parent(self, idx:int) -> int:
-        if idx <= 1:
-            return 0
+    def _swap(self, a_idx:int, b_idx:int) -> None:
+        self.heap[a_idx], self.heap[b_idx] = self.heap[b_idx], self.heap[a_idx]
 
-        return int(idx // 2)
+    def heapify_up(self, idx:int) -> None:
+        # heapify from the leaf up
+        parent_idx = heap_parent(idx)
 
-    def _swap(self, a:HeapNode, b:HeapNode) -> tuple:
-        a, b = b, a
-        return a, b
+        if self._compare(self.heap[parent_idx], self.heap[idx]):
+            self._swap(parent_idx, idx)
+            self.heapify_up(parent_idx)
 
-    def _swap_copy(self, a:HeapNode, b:HeapNode) -> tuple:
-        return (copy(b), copy(a))
+    def heapify_down(self, idx:int) -> None:
+        # heapify from the root down
+        raise NotImplemented('_heapify_down() should be implemented in derived class')
 
-    # Internal balancing functions
-    # NOTE: for now this is a max heap
-    def _bubble_up(self, idx:int) -> None:
-        parent_idx = self._parent(idx)
-        if self.nodes[parent_idx] < self.nodes[idx]:
-            self.nodes[idx], self.nodes[parent_idx] = self.nodes[parent_idx], self.nodes[idx]
-            self._bubble_up(parent_idx)
+    def get_root(self) -> Union[None, int]:
+        if not self.heap:
+            return None
+        return self.heap[0]
 
-    def _bubble_down(self, idx:int) -> None:
-        parent_idx = self._parent(idx)
-        if self.nodes[parent_idx] > self.nodes[idx]:
-            self.nodes[idx], self.nodes[parent_idx] = self.nodes[parent_idx], self.nodes[idx]
-            self._bubble_up(parent_idx)
-
-    def _extend(self) -> None:
-        self.nodes.extend([HeapNode(0, 0)] * self.max_size)
-        self.max_size = 2 * self.max_size
-
-    # TODO : all the balancing stuff
-    def insert_node(self, node:HeapNode) -> None:
-        if self.cur_idx < self.max_size:
-            self.nodes[self.cur_idx] = node
-            self._bubble_up(self.cur_idx)
-            self.cur_idx += 1
-
-    def get_array(self) -> list:
-        #return [n.key for n in self.nodes[0 : self.cur_idx]]
-        return self.nodes[0 : self.cur_idx]
-
-
-class MaxHeap(Heap):
-    """
-    MaxHeap Specialization
-    """
-    def __init__(self, max_size:int=32) -> None:
-        super(MaxHeap, self).__init__(max_size=max_size)
-
-    def __repr__(self) -> str:
-        return 'MaxHeap'
-
-    # Parents must be greater than children
-    def _bubble_up(self, idx:int) -> None:
-        parent_idx = self._parent(idx)
-        # MaxHeap - parent should be greater
-        if self.nodes[parent_idx] < self.nodes[idx]:
-            self.nodes[idx], self.nodes[parent_idx] = self.nodes[parent_idx], self.nodes[idx]
-            self._bubble_up(parent_idx)
+    def insert(self, element:int) -> None:
+        self.heap.append(element)
+        self.heapify_up(len(self.heap) - 1)
 
 
 class MinHeap(Heap):
     """
-    MinHeap Specialization
+    MinHeap specialization - OOP style
     """
-    def __init__(self, max_size:int=32) -> None:
-        super(MinHeap, self).__init__(max_size=max_size)
+    def __init__(self, heap:list=None) -> None:
+        super(MinHeap, self).__init__(heap)
 
     def __repr__(self) -> str:
-        return 'MinHeap'
+        return 'MinHeap(%s)' % str(self.heap)
 
-    def _bubble_up(self, idx:int) -> None:
-        parent_idx = self._parent(idx)
-        # Min heap - parent should be lesser than children
-        if self.nodes[parent_idx] > self.nodes[idx]:
-            self.nodes[idx], self.nodes[parent_idx] = self.nodes[parent_idx], self.nodes[idx]
-            self._bubble_up(parent_idx)
+    def _compare(self, parent:int, child:int) -> bool:
+        return parent > child
+
+    def heapify_down(self, idx:int) -> None:
+        # Heapify from the root down
+        lchild = heap_left_child(idx)
+        rchild = heap_right_child(idx)
+
+        # bounds check children
+        if(lchild >= len(self.heap)) or (rchild >= len(self.heap)):
+            return
+
+        if self.heap[lchild] < self.heap[idx]:
+            smallest_idx = lchild
+        else:
+            smallest_idx = idx
+        if self.heap[rchild] < self.heap[smallest_idx]:
+            smallest_idx = rchild
+
+        if smallest_idx != idx:
+            self._swap(idx, smallest_idx)
+            self.heapify_down(smallest_idx)
+
+    def remove_max(self) -> int:
+        last_elem = self.heap.pop()
+        if not self.heap:
+            return last_elem
+
+        elem = self.heap[0]
+        self.heap[0] = last_elem
+        self.heapify_down(0)
+
+        return elem
+
+
+class MaxHeap(Heap):
+    """
+    MaxHeap specialization - OOP style
+    """
+    def __init__(self, heap:list=None) -> None:
+        super(MaxHeap, self).__init__(heap)
+
+    def __repr__(self) -> str:
+        return 'MaxHeap(%s)' % str(self.heap)
+
+    def _compare(self, parent:int, child:int) -> bool:
+        return parent < child
+
+    def heapify_down(self, idx:int) -> None:
+        # Heapify from the root down
+        lchild = heap_left_child(idx)
+        rchild = heap_right_child(idx)
+
+        # bounds check children
+        if(lchild >= len(self.heap)) or (rchild >= len(self.heap)):
+            return
+
+        if self.heap[lchild] > self.heap[idx]:
+            largest_idx = lchild
+        else:
+            largest_idx = idx
+        if self.heap[rchild] > self.heap[largest_idx]:
+            largest_idx = rchild
+
+        if largest_idx != idx:
+            self._swap(idx, largest_idx)
+            self.heapify_down(largest_idx)
+
+    def remove_min(self) -> int:
+        last_elem = self.heap.pop()
+        if not self.heap:
+            return last_elem
+
+        elem = self.heap[0]
+        self.heap[0] = last_elem
+        self.heapify_down(0)
+
+        return elem
