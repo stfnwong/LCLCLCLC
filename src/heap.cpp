@@ -262,7 +262,13 @@ int MinHeap::getMax(void) const
  */
 int MinHeap::popMin(void)
 {
-    
+    int min = this->heap[0];
+    this->heap.front() = std::move(this->heap.back());
+    this->heap.pop_back();
+    // re-heapify
+    this->heapify_down(0);
+
+    return min;
 }
 
 /*
@@ -270,7 +276,8 @@ int MinHeap::popMin(void)
  */
 int MinHeap::popMax(void)
 {
-
+    // we need to not only find the max element, but remove it 
+    // from the heap and then re-heapify
 }
 
 
