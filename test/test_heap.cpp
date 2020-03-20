@@ -33,10 +33,8 @@ TEST_CASE("Test MinHeap insert", "[classic]")
         std::cout << "[after input " << i << "] : " << test_heap.toString() << std::endl;
     }
     std::cout << "MinHeap vec : " << test_heap.toString() << std::endl;
-
-    std::vector<int> vec_out = test_heap.getVec();
-    REQUIRE(vector_is_min_heap(vec_out, 0) == true);
-    REQUIRE(vector_is_max_heap(vec_out, 0) == false);
+    REQUIRE(test_heap.isMinHeap() == true);
+    REQUIRE(test_heap.isMaxHeap() == false);
 }
 
 
@@ -53,8 +51,38 @@ TEST_CASE("Test MaxHeap insert", "[classic]")
         std::cout << "[after input " << i << "] : " << test_heap.toString() << std::endl;
     }
     std::cout << "MaxHeap vec : " << test_heap.toString() << std::endl;
+    REQUIRE(test_heap.isMinHeap() == false);
+    REQUIRE(test_heap.isMaxHeap() == true);
+}
 
-    std::vector<int> vec_out = test_heap.getVec();
-    REQUIRE(vector_is_min_heap(vec_out, 0) == false);
-    REQUIRE(vector_is_max_heap(vec_out, 0) == true);
+
+TEST_CASE("Test MaxHeap get limits", "[classic]")
+{
+    MaxHeap test_heap;
+    REQUIRE(test_heap.empty() == true);
+
+    // construct the heap  
+    for(unsigned int i = 0; i < input_array.size(); ++i)
+        test_heap.insert(input_array[i]);
+
+    REQUIRE(test_heap.isMinHeap() == false);
+    REQUIRE(test_heap.isMaxHeap() == true);
+    REQUIRE(test_heap.getMin() == 1);
+    REQUIRE(test_heap.getMax() == 15);
+}
+
+
+TEST_CASE("Test MinHeap get limits", "[classic]")
+{
+    MinHeap test_heap;
+    REQUIRE(test_heap.empty() == true);
+
+    // construct the heap  
+    for(unsigned int i = 0; i < input_array.size(); ++i)
+        test_heap.insert(input_array[i]);
+
+    REQUIRE(test_heap.isMinHeap() == true);
+    REQUIRE(test_heap.isMaxHeap() == false);
+    REQUIRE(test_heap.getMin() == 1);
+    REQUIRE(test_heap.getMax() == 15);
 }

@@ -21,6 +21,7 @@ bool vector_is_min_heap(const std::vector<int>& vec, unsigned int idx);
 // Test if a vector has the max heap property
 bool vector_is_max_heap(const std::vector<int>& vec, unsigned int idx);
 
+
 /*
  * Heap 
  * New (simpler) heap implementation to get logic correct.
@@ -32,12 +33,16 @@ class Heap
 
     // internal manipulation
     protected:
+        virtual std::string repr(void) const = 0;
         virtual bool compare(int a, int b) const = 0;
         void swap(int idx_a, int idx_b);
 
     // Update heap
     protected:
-        void heapify(int idx);
+        // Heapify from the leaf towards the root 
+        void heapify_up(int idx);
+        // Heapify from the root towards the leaf
+        virtual void heapify_down(int idx) = 0;
 
     public:
         Heap();
@@ -45,18 +50,22 @@ class Heap
         Heap(const Heap&& that);
 
         // setters 
-        void         insert(int val);
+        void             insert(int val);
         // getters
-        unsigned int size(void) const;
-        int          getRoot(void) const;
-        int          getMin(void) const;
-        int          getMax(void) const;
-        bool         empty(void) const;
-        std::string  toString(void) const;
-        std::vector<int> getVec(void) const;    // TODO : this is bad API design, but leave it for now until internal implementation is sorted
-        // functions that modify heap
-        //int          popMin(void);
-        //int          popMax(void);
+        unsigned int     size(void) const;
+        int              getRoot(void) const;
+        bool             empty(void) const;
+        std::string      toString(void) const;
+        std::vector<int> getVec(void) const;    
+
+        bool             isMinHeap(void) const;
+        bool             isMaxHeap(void) const;
+
+        // TODO : should these just do nothing?
+        virtual int      popMin(void) = 0;
+        virtual int      popMax(void) = 0;
+        virtual int      getMin(void) const = 0;
+        virtual int      getMax(void) const = 0;
 };
 
 
@@ -67,7 +76,16 @@ class Heap
 class MinHeap : public Heap
 {
     protected:
+        std::string repr(void) const;
         bool compare(int parent, int child) const;
+        void heapify_down(int idx);
+        int  get_max(unsigned int idx) const;
+
+    public:
+        int getMin(void) const;
+        int getMax(void) const;
+        int popMin(void);
+        int popMax(void);
 
     // TODO : what about ctors?
 };
@@ -75,7 +93,16 @@ class MinHeap : public Heap
 class MaxHeap : public Heap
 {
     protected:
+        std::string repr(void) const;
         bool compare(int parent, int child) const;
+        void heapify_down(int idx);
+        int  get_min(unsigned int idx) const;
+
+    public:
+        int getMin(void) const;
+        int getMax(void) const;
+        int popMin(void);
+        int popMax(void);
 };
 
 #endif /*__LC_HEAP2_HPP*/

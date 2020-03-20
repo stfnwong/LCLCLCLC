@@ -7,6 +7,7 @@
  * Stefan Wong 2020
  */
 
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -14,11 +15,11 @@
 #include "heap.hpp"
 
 // NOTE: we assume zero-index arrays here
-int heap2_left_child(int idx)
+int heap_left_child(int idx)
 {
     return 2 * idx + 1;
 }
-int heap2_right_child(int idx)
+int heap_right_child(int idx)
 {
     return 2 * idx + 2;
 }
@@ -35,8 +36,8 @@ bool vector_is_min_heap(const std::vector<int>& vec, unsigned int idx)
 
     unsigned int lchild, rchild;
 
-    lchild = heap2_left_child(idx);
-    rchild = heap2_right_child(idx);
+    lchild = heap_left_child(idx);
+    rchild = heap_right_child(idx);
 
     // bounds check children
     if(lchild >= vec.size() || rchild >= vec.size())
@@ -56,8 +57,8 @@ bool vector_is_max_heap(const std::vector<int>& vec, unsigned int idx)
 
     unsigned int lchild, rchild;
 
-    lchild = heap2_left_child(idx);
-    rchild = heap2_right_child(idx);
+    lchild = heap_left_child(idx);
+    rchild = heap_right_child(idx);
 
     // bounds check children
     if(lchild >= vec.size() || rchild >= vec.size())
@@ -70,7 +71,8 @@ bool vector_is_max_heap(const std::vector<int>& vec, unsigned int idx)
 }
 
 
-// ======== HEAP2 base class ======== //
+
+// ======== HEAP base class ======== //
 Heap::Heap() {}
 
 // copy ctor
@@ -98,7 +100,7 @@ void Heap::swap(int idx_a, int idx_b)
 void Heap::insert(int val)
 {
     this->heap.push_back(val);
-    this->heapify(this->heap.size() - 1);
+    this->heapify_up(this->heap.size() - 1);
 }
 
 /*
@@ -124,7 +126,6 @@ std::string Heap::toString(void) const
 {
     std::ostringstream oss;
 
-    // FIXME  : for now just print the vector contents
     oss << "{";
     for(unsigned int i = 0; i < this->heap.size(); ++i)
         oss << this->heap[i] << " ";
@@ -142,9 +143,26 @@ std::vector<int> Heap::getVec(void) const
 }
 
 /*
- * heapify()
+ * isMinHeap()
  */
-void Heap::heapify(int idx)
+bool Heap::isMinHeap(void) const
+{
+    return vector_is_min_heap(this->heap, 0);
+}
+
+/*
+ * isMaxHeap()
+ */
+bool Heap::isMaxHeap(void) const
+{
+    return vector_is_max_heap(this->heap, 0);
+}
+
+
+/*
+ * heapify_up()
+ */
+void Heap::heapify_up(int idx)
 {
     unsigned int parent_idx;
 
@@ -153,8 +171,19 @@ void Heap::heapify(int idx)
     if(this->compare(this->heap[parent_idx], this->heap[idx]))
     {
         this->swap(idx, parent_idx);
-        this->heapify(parent_idx);  // check this nodes parent
+        this->heapify_up(parent_idx);  // check this nodes parent
     }
+}
+
+
+// =============== MIN HEAP  =============== 
+
+/*
+ * repr()
+ */
+std::string MinHeap::repr(void) const
+{
+    return "MinHeap";
 }
 
 /*
@@ -166,9 +195,192 @@ bool MinHeap::compare(int parent, int child) const
 }
 
 /*
+ * heapify_down()
+ * Perform heapify operation from the root down
+ */
+void MinHeap::heapify_down(int idx)
+{
+    unsigned int lchild, rchild;
+    unsigned int smallest_idx;
+
+    lchild = heap_left_child(idx);
+    rchild = heap_right_child(idx);
+
+    if(lchild >= this->heap.size() || rchild >= this->heap.size())
+        return;
+
+    if(this->heap[lchild] < this->heap[idx])
+        smallest_idx = lchild;
+    else
+        smallest_idx = idx;
+
+    if(this->heap[rchild] < this->heap[smallest_idx])
+        smallest_idx = rchild;
+
+    if(smallest_idx != idx)
+    {
+        this->swap(smallest_idx, idx);
+        this->heapify_down(smallest_idx);
+    }
+}
+
+/*
+ * get_max()
+ */
+int MinHeap::get_max(unsigned int idx) const
+{
+    int max_elem = this->heap[this->heap.size() / 2];
+    unsigned int N = this->heap.size();
+
+    for(unsigned int i = (N / 2); i < N; ++i)
+    {
+        //max_elem = std::max(this->heap[i], this->get_max(i));
+        max_elem = std::max(this->heap[i], max_elem);
+    }
+
+    return max_elem;
+}
+
+/*
+ * getMin()
+ */
+int MinHeap::getMin(void) const
+{
+    return this->heap[0];
+}
+
+/*
+ * getMin()
+ */
+int MinHeap::getMax(void) const
+{
+    return this->get_max(0);        // TODO : remove arg
+}
+
+/*
+ * popMin()
+ */
+int MinHeap::popMin(void)
+{
+    
+}
+
+/*
+ * popMax()
+ */
+int MinHeap::popMax(void)
+{
+
+}
+
+
+
+
+// =============== MAX HEAP  ===============  //
+
+std::string MaxHeap::repr(void) const
+{
+    return "MaxHeap";
+}
+
+/*
  * MaxHeap comparison
  */
 bool MaxHeap::compare(int parent, int child) const
 {
     return parent < child;
 }
+
+// NOTE: start at heap.size(), work backwards...
+int MaxHeap::get_min(unsigned int idx) const
+{
+    std::cout << "[" << __func__ << "] heap.size() = " << 
+        this->heap.size() << std::endl;
+    //int min_elem = this->heap[this->heap.size() / 2];
+    int min_elem = this->heap[(this->heap.size() - 1) / 2];
+    unsigned int N = this->heap.size();
+
+    for(unsigned int i = (N / 2); i < N; ++i)
+    {
+        //min_elem = std::min(this->heap[i], this->get_min(i));
+        min_elem = std::min(this->heap[i], min_elem);
+        std::cout << "[" << __func__ << "] element " << i 
+            << ", min_elem is " << min_elem << std::endl;
+    }
+
+    return min_elem;
+}
+
+/*
+ * heapify_down()
+ */
+void MaxHeap::heapify_down(int idx)
+{
+    unsigned int lchild, rchild;
+    unsigned int largest_idx;
+
+    lchild = heap_left_child(idx);
+    rchild = heap_right_child(idx);
+
+    if(lchild >= this->heap.size() || rchild >= this->heap.size())
+        return;
+
+    if(this->heap[lchild] > this->heap[idx])
+        largest_idx = lchild;
+    else
+        largest_idx = idx;
+
+    if(this->heap[rchild] > this->heap[largest_idx])
+        largest_idx = rchild;
+
+    if(largest_idx != idx)
+    {
+        this->swap(largest_idx, idx);
+        this->heapify_down(largest_idx);
+    }
+}
+
+/*
+ * getMin()
+ */
+int MaxHeap::getMin(void) const
+{
+    //return this->get_min(this->heap.size()-1);    // TODO : fix index
+    return this->get_min(0);
+}
+
+/*
+ * getMax()
+ */
+int MaxHeap::getMax(void) const
+{
+    return this->heap[0];
+}
+
+/*
+ * popMin()
+ */
+int MaxHeap::popMin(void) 
+{
+    // lets just search over the bottom 'half' of the array
+    unsigned int N = this->heap.size();
+
+
+}
+
+/*
+ * popMax()
+ */
+int MaxHeap::popMax(void)
+{
+    int root;
+
+    root = this->heap[0];
+    // max of max heap is root
+    this->heap.front() = std::move(this->heap.back());
+    this->heap.pop_back();
+    this->heapify_down(0);  // NOTE: when do we ever not heapify from the root? 
+
+    return root;
+}
+
