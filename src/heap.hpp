@@ -29,20 +29,20 @@ bool vector_is_max_heap(const std::vector<int>& vec, unsigned int idx);
 class Heap
 {
     protected:
-        std::vector<int> heap;
+        std::vector<int>    heap;
 
     // internal manipulation
     protected:
         virtual std::string repr(void) const = 0;
-        virtual bool compare(int a, int b) const = 0;
-        void swap(int idx_a, int idx_b);
+        virtual bool        compare(int a, int b) const = 0;
+        void                swap(int idx_a, int idx_b);
 
     // Update heap
     protected:
-        // Heapify from the leaf towards the root 
-        void heapify_up(int idx);
         // Heapify from the root towards the leaf
-        virtual void heapify_down(int idx) = 0;
+        virtual void        heapify_down(int idx) = 0;
+        // Heapify from the leaf towards the root 
+        void                heapify_up(int idx);
 
     public:
         Heap();
@@ -50,22 +50,22 @@ class Heap
         Heap(const Heap&& that);
 
         // setters 
-        void             insert(int val);
+        void               insert(int val);
         // getters
-        unsigned int     size(void) const;
-        int              getRoot(void) const;
-        bool             empty(void) const;
-        std::string      toString(void) const;
-        std::vector<int> getVec(void) const;    
+        unsigned int       size(void) const;
+        int                getRoot(void) const;
+        bool               empty(void) const;
+        std::string        toString(void) const;
+        std::vector<int>   getVec(void) const;    
 
-        bool             isMinHeap(void) const;
-        bool             isMaxHeap(void) const;
+        bool               isMinHeap(void) const;
+        bool               isMaxHeap(void) const;
 
         // TODO : should these just do nothing?
-        virtual int      popMin(void) = 0;
-        virtual int      popMax(void) = 0;
-        virtual int      getMin(void) const = 0;
-        virtual int      getMax(void) const = 0;
+        virtual int        popMin(void) = 0;
+        virtual int        popMax(void) = 0;
+        virtual int        getMin(void) const = 0;
+        virtual int        getMax(void) const = 0;
 };
 
 
@@ -77,15 +77,15 @@ class MinHeap : public Heap
 {
     protected:
         std::string repr(void) const;
-        bool compare(int parent, int child) const;
-        void heapify_down(int idx);
-        int  get_max(unsigned int idx) const;
+        bool        compare(int parent, int child) const;
+        void        heapify_down(int idx);
+        int         get_max(unsigned int idx) const;
 
     public:
-        int getMin(void) const;
-        int getMax(void) const;
-        int popMin(void);
-        int popMax(void);
+        int         getMin(void) const;
+        int         getMax(void) const;
+        int         popMin(void);
+        int         popMax(void);
 
     // TODO : what about ctors?
 };
@@ -94,15 +94,15 @@ class MaxHeap : public Heap
 {
     protected:
         std::string repr(void) const;
-        bool compare(int parent, int child) const;
-        void heapify_down(int idx);
-        int  get_min(unsigned int idx) const;
+        bool        compare(int parent, int child) const;
+        void        heapify_down(int idx);
+        int         get_min(unsigned int idx) const;
 
     public:
-        int getMin(void) const;
-        int getMax(void) const;
-        int popMin(void);
-        int popMax(void);
+        int         getMin(void) const;
+        int         getMax(void) const;
+        int         popMin(void);
+        int         popMax(void);
 };
 
 #endif /*__LC_HEAP2_HPP*/

@@ -126,7 +126,7 @@ std::string Heap::toString(void) const
 {
     std::ostringstream oss;
 
-    oss << "{";
+    oss << "<" << this->repr() << "> {";
     for(unsigned int i = 0; i < this->heap.size(); ++i)
         oss << this->heap[i] << " ";
     oss << "}";
@@ -233,10 +233,7 @@ int MinHeap::get_max(unsigned int idx) const
     unsigned int N = this->heap.size();
 
     for(unsigned int i = (N / 2); i < N; ++i)
-    {
-        //max_elem = std::max(this->heap[i], this->get_max(i));
         max_elem = std::max(this->heap[i], max_elem);
-    }
 
     return max_elem;
 }
@@ -254,7 +251,7 @@ int MinHeap::getMin(void) const
  */
 int MinHeap::getMax(void) const
 {
-    return this->get_max(0);        // TODO : remove arg
+    return this->get_max(0); 
 }
 
 /*
@@ -271,13 +268,30 @@ int MinHeap::popMin(void)
     return min;
 }
 
+// TODO : there should be scope for refactoring here...
 /*
  * popMax()
  */
 int MinHeap::popMax(void)
 {
-    // we need to not only find the max element, but remove it 
-    // from the heap and then re-heapify
+    int          max_elem = this->heap[(this->heap.size() - 1) / 2];
+    unsigned int N        = this->heap.size();
+    int          max_elem_idx = (this->heap.size() - 1) / 2;
+
+    for(unsigned int i = (N/2); i < N; ++i)
+    {
+        if(this->heap[i] > max_elem)
+        {
+            max_elem = this->heap[i];
+            max_elem_idx = i;
+        }
+    }
+
+    this->heap[max_elem_idx] = std::move(this->heap.back());
+    this->heap.pop_back();
+    this->heapify_down(0);
+
+    return max_elem;
 }
 
 
@@ -301,19 +315,11 @@ bool MaxHeap::compare(int parent, int child) const
 // NOTE: start at heap.size(), work backwards...
 int MaxHeap::get_min(unsigned int idx) const
 {
-    std::cout << "[" << __func__ << "] heap.size() = " << 
-        this->heap.size() << std::endl;
-    //int min_elem = this->heap[this->heap.size() / 2];
     int min_elem = this->heap[(this->heap.size() - 1) / 2];
     unsigned int N = this->heap.size();
 
     for(unsigned int i = (N / 2); i < N; ++i)
-    {
-        //min_elem = std::min(this->heap[i], this->get_min(i));
         min_elem = std::min(this->heap[i], min_elem);
-        std::cout << "[" << __func__ << "] element " << i 
-            << ", min_elem is " << min_elem << std::endl;
-    }
 
     return min_elem;
 }
@@ -321,7 +327,7 @@ int MaxHeap::get_min(unsigned int idx) const
 /*
  * heapify_down()
  */
-void MaxHeap::heapify_down(int idx)
+void MaxHeap::heapify_down(int idx) // TODO : unsigned int here
 {
     unsigned int lchild, rchild;
     unsigned int largest_idx;
@@ -352,7 +358,6 @@ void MaxHeap::heapify_down(int idx)
  */
 int MaxHeap::getMin(void) const
 {
-    //return this->get_min(this->heap.size()-1);    // TODO : fix index
     return this->get_min(0);
 }
 
@@ -370,9 +375,24 @@ int MaxHeap::getMax(void) const
 int MaxHeap::popMin(void) 
 {
     // lets just search over the bottom 'half' of the array
-    unsigned int N = this->heap.size();
+    int          min_elem = this->heap[(this->heap.size() - 1) / 2];
+    unsigned int N        = this->heap.size();
+    int          min_elem_idx = (this->heap.size() - 1) / 2;
 
+    for(unsigned int i = (N/2); i < N; ++i)
+    {
+        if(this->heap[i] < min_elem)
+        {
+            min_elem = this->heap[i];
+            min_elem_idx = i;
+        }
+    }
 
+    this->heap[min_elem_idx] = std::move(this->heap.back());
+    this->heap.pop_back();
+    this->heapify_down(0);
+
+    return min_elem;
 }
 
 /*
