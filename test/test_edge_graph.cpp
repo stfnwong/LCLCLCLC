@@ -3,49 +3,27 @@
  *
  * Stefan Wong 2020
  */
+#define CATCH_CONFIG_MAIN
+#include "catch/catch.hpp"
 
 #include <vector>
 #include <string>
-#include <gtest/gtest.h>
 #include "edge_graph.hpp"
 
-// TODO: the plan is to port all of this over to catch2
+const std::string tiny_graph_file = "data/tiny_ewd.txt";
 
-/*
- * Test just the DirectedEdge class
- */
-class TestDirectedEdge : public ::testing::Test
-{
-    virtual void SetUp() {}
-    virtual void TearDown() {}
-
-};
-
-TEST_F(TestDirectedEdge, test_init)
+TEST_CASE("TestDirectedEdge, test_init", "[classic]")
 {
     DirectedEdge test_edge;
-
 
     std::cout << "[" << __func__ << "] Generated default DirectedEdge (" << 
         test_edge.toString() << ")" << std::endl;
     
-    ASSERT_EQ(0, test_edge.getTo());
-    ASSERT_EQ(0, test_edge.getFrom());
-    EXPECT_FLOAT_EQ(0.0, test_edge.getWeight());
+    REQUIRE(0 == test_edge.getTo());
+    REQUIRE(0 == test_edge.getFrom());
+    REQUIRE(0.0 == Approx(test_edge.getWeight()));
 }
 
-
-/*
- * Tests for the Directed graph object
- */
-class TestEdgeGraph : public ::testing::Test
-{
-    virtual void SetUp() {}
-    virtual void TearDown() {}
-
-    public:
-        std::string tiny_graph_file = "data/tiny_ewd.txt";
-};
 
 /*
  * SOME GENERAL ASSUMPTIONS ABOUT GRAPHS BEING TESTED HERE
@@ -58,33 +36,21 @@ class TestEdgeGraph : public ::testing::Test
  *   - Parallel edges and self-loops may be present.
  */
 
-
-TEST_F(TestEdgeGraph, test_file_read)
+TEST_CASE("TestEdgeGraph, test_file_read", "[classic]")
 {
     std::string repr_text;
 
-    repr_text = repr_from_file(this->tiny_graph_file);
+    repr_text = repr_from_file(tiny_graph_file);
 
     std::cout << "[" << __func__ << "] repr output:" << std::endl;
     std::cout << repr_text << std::endl;
-
-
 }
 
-TEST_F(TestEdgeGraph, test_init)
+TEST_CASE("TestEdgeGraph, test_init", "[classic]")
 {
     // init a default graph
     EdgeWeightedDigraph default_graph;
 
-    ASSERT_EQ(0, default_graph.numVerticies());
-    ASSERT_EQ(0, default_graph.numEdges());
+    REQUIRE(0 == default_graph.numVerticies());
+    REQUIRE(0 == default_graph.numEdges());
 }
-
-
-
-int main(int argc, char *argv[])
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
-
