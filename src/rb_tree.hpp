@@ -20,7 +20,7 @@ std::string rb_color_to_string(const rb_color col);
  * RedBlackNode
  * Single node in an RBTree
  */
-class RedBlackNode
+struct RedBlackNode
 {
     rb_color      color;
     void*         item;

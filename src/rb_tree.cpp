@@ -52,7 +52,7 @@ RedBlackTree::RedBlackTree() {}
 // TODO : test this, then implement right rotate
 void RedBlackTree::leftRotate(RedBlackNode* node)
 {
-    RedBlackNode y;
+    RedBlackNode* y;
 
     y = node->right;
     // turn y's left subtree into the target node right subtree
