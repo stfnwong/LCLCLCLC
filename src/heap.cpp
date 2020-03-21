@@ -91,12 +91,14 @@ Heap::Heap(const Heap&& that)
 /*
  * swap()
  */
-void Heap::swap(int idx_a, int idx_b)
+void Heap::swap(unsigned int idx_a, unsigned int idx_b)
 {
     std::iter_swap(this->heap.begin() + idx_a, this->heap.begin() + idx_b);
 }
 
-// INSERTION 
+/*
+ * insert()
+ */
 void Heap::insert(int val)
 {
     this->heap.push_back(val);
@@ -162,7 +164,7 @@ bool Heap::isMaxHeap(void) const
 /*
  * heapify_up()
  */
-void Heap::heapify_up(int idx)
+void Heap::heapify_up(unsigned int idx)
 {
     unsigned int parent_idx;
 
@@ -198,7 +200,7 @@ bool MinHeap::compare(int parent, int child) const
  * heapify_down()
  * Perform heapify operation from the root down
  */
-void MinHeap::heapify_down(int idx)
+void MinHeap::heapify_down(unsigned int idx)
 {
     unsigned int lchild, rchild;
     unsigned int smallest_idx;
@@ -268,7 +270,8 @@ int MinHeap::popMin(void)
     return min;
 }
 
-// TODO : there should be scope for refactoring here...
+// TODO : there should be scope for refactoring here as there 
+// seems to be some amount of duplicated implementation...
 /*
  * popMax()
  */
@@ -294,7 +297,13 @@ int MinHeap::popMax(void)
     return max_elem;
 }
 
-
+/*
+ * pop()
+ */
+int MinHeap::pop(void)
+{
+    return this->popMin();
+}
 
 
 // =============== MAX HEAP  ===============  //
@@ -312,7 +321,9 @@ bool MaxHeap::compare(int parent, int child) const
     return parent < child;
 }
 
-// NOTE: start at heap.size(), work backwards...
+/*
+ * get_min()
+ */
 int MaxHeap::get_min(unsigned int idx) const
 {
     int min_elem = this->heap[(this->heap.size() - 1) / 2];
@@ -327,7 +338,7 @@ int MaxHeap::get_min(unsigned int idx) const
 /*
  * heapify_down()
  */
-void MaxHeap::heapify_down(int idx) // TODO : unsigned int here
+void MaxHeap::heapify_down(unsigned int idx) 
 {
     unsigned int lchild, rchild;
     unsigned int largest_idx;
@@ -406,8 +417,16 @@ int MaxHeap::popMax(void)
     // max of max heap is root
     this->heap.front() = std::move(this->heap.back());
     this->heap.pop_back();
-    this->heapify_down(0);  // NOTE: when do we ever not heapify from the root? 
+    this->heapify_down(0);  
 
     return root;
 }
 
+/*
+ * pop()
+ * Pop the root of the heap
+ */
+int MaxHeap::pop(void)
+{
+    return this->popMax();
+}

@@ -7,8 +7,8 @@
  * Stefan Wong 2020
  */
 
-#ifndef __LC_HEAP2_HPP
-#define __LC_HEAP2_HPP
+#ifndef __LC_HEAP_HPP
+#define __LC_HEAP_HPP
 
 #include <algorithm>
 #include <string>
@@ -35,14 +35,14 @@ class Heap
     protected:
         virtual std::string repr(void) const = 0;
         virtual bool        compare(int a, int b) const = 0;
-        void                swap(int idx_a, int idx_b);
+        void                swap(unsigned int idx_a, unsigned int idx_b);
 
     // Update heap
     protected:
         // Heapify from the root towards the leaf
-        virtual void        heapify_down(int idx) = 0;
+        virtual void        heapify_down(unsigned int idx) = 0;
         // Heapify from the leaf towards the root 
-        void                heapify_up(int idx);
+        void                heapify_up(unsigned int idx);
 
     public:
         Heap();
@@ -60,12 +60,11 @@ class Heap
 
         bool               isMinHeap(void) const;
         bool               isMaxHeap(void) const;
-
-        // TODO : should these just do nothing?
         virtual int        popMin(void) = 0;
         virtual int        popMax(void) = 0;
         virtual int        getMin(void) const = 0;
         virtual int        getMax(void) const = 0;
+        virtual int        pop(void) = 0;
 };
 
 
@@ -78,7 +77,7 @@ class MinHeap : public Heap
     protected:
         std::string repr(void) const;
         bool        compare(int parent, int child) const;
-        void        heapify_down(int idx);
+        void        heapify_down(unsigned int idx);
         int         get_max(unsigned int idx) const;
 
     public:
@@ -86,16 +85,19 @@ class MinHeap : public Heap
         int         getMax(void) const;
         int         popMin(void);
         int         popMax(void);
-
-    // TODO : what about ctors?
+        int         pop(void);
 };
 
+/*
+ * MaxHeap
+ * Implements a max heap
+ */
 class MaxHeap : public Heap
 {
     protected:
         std::string repr(void) const;
         bool        compare(int parent, int child) const;
-        void        heapify_down(int idx);
+        void        heapify_down(unsigned int idx);
         int         get_min(unsigned int idx) const;
 
     public:
@@ -103,6 +105,7 @@ class MaxHeap : public Heap
         int         getMax(void) const;
         int         popMin(void);
         int         popMax(void);
+        int         pop(void);
 };
 
-#endif /*__LC_HEAP2_HPP*/
+#endif /*__LC_HEAP_HPP*/
