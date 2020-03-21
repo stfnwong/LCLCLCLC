@@ -159,4 +159,38 @@ void adj_list_bfs(AdjList& list, std::vector<int>& traversal);
 
 
 
+
+
+// Adjacency Matrix 
+//class AdjMatrix
+//{
+//    private:
+//        unsigned int dim;
+//
+//    public:
+//        std::vector<std::vector<int>> adj_matrix;
+//
+//    public:
+//        AdjMatrix(unsigned int v);
+//        void init(void);
+//
+//        unsigned int get_dim(void) const;
+//        //void add_node(const std::vector<int>& link);
+//
+//        // Operators 
+//        bool operator==(const AdjMatrix& that) const;
+//        bool operator!=(const AdjMatrix& that) const;
+//};
+
+/*
+ * GraphEdge
+ * Typedef'd pair that represents an edge in a graph
+ * For the moment I will use negative values to indicate null/termination, and therefore the values 
+ * of the nodes in the graph must always be positive. Clearly this isn't going to scale for very large 
+ * graphs.
+ */
+//typedef std::pair<int, int> GraphEdge;
+
+
+
 #endif /*__LC_GRAPH_HPP*/
