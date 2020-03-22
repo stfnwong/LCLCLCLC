@@ -62,7 +62,7 @@ class GraphNode(object):
         else:
             return self.node_id > that
 
-    def __gt__(self, that:'GraphNode') -> bool:
+    def __ge__(self, that:'GraphNode') -> bool:
         if isinstance(that, GraphNode):
             return self.node_id >= that.node_id
         else:
@@ -174,6 +174,7 @@ class Graph(object):
 
     def _bfs_inner(self, src:GraphNode, dst:GraphNode, visited:set) -> list:
         pass
+
 
     # TODO : do we need to bother doing a check here? Doesn't
     # python3 do that already?
