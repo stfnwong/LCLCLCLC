@@ -12,7 +12,7 @@ from pylc import queue
 #from pudb import set_trace; set_trace()
 
 
-class GraphNode(object):
+class GraphNode:
     """
     GraphNode
     A single node in a graph.
@@ -21,7 +21,7 @@ class GraphNode(object):
         self.key:int = key
         self.val:int = val
         self.node_id:int = node_id
-        self.neighbours:list = []
+        self.neighbours:List[int] = []      # ids of neighbours
 
         # bookkeeping for iteration
         self.idx = 0
@@ -30,7 +30,14 @@ class GraphNode(object):
         return 'GraphNode'
 
     def __str__(self) -> None:
-        return '%s <%s> [%s]: %s' % (repr(self), str(self.node_id), str(self.key), str(self.val))
+        s = []
+        s.append('%s <%s> [%s]: %s\n' % (repr(self), str(self.node_id), str(self.key), str(self.val)))
+        if len(self.neighbours) > 0:
+            s.append(' adj to   ')
+            for n in self.neighbours:
+                s.append(' %d ' % n)
+
+        return ''.join(s)
 
     def __eq__(self, that:'GraphNode') -> bool:
         if isinstance(that, GraphNode):
@@ -80,7 +87,6 @@ class GraphNode(object):
         self.idx += 1
         if (self.idx-1) < len(self.neighbours):
             return self.neighbours[idx - 1]
-
         raise StopIteration
 
     def __getitem__(self, idx:int) -> 'GraphNode':
@@ -93,14 +99,14 @@ class GraphNode(object):
             raise IndexError
 
     def add_neighbour(self, n:'GraphNode') -> None:
-        self.neigbours.append(n)
+        self.neighbours.append(n)
 
     def remove_neighbour(self, idx:int) -> None:
         if (idx >= 0) and (idx < len(self.neighbours)):
             del self.neighbours[idx]
 
 
-class Graph(object):
+class Graph:
     """
     GRAPH
     Adjacency list graph. This object contains a set of GraphNodes that are
@@ -124,7 +130,6 @@ class Graph(object):
         return ''.join(s)
 
     def __len__(self) -> int:
-        #  The 'size' of the graph (number of nodes)
         return len(self.nodes)
 
     # Internal path finding methods
@@ -136,12 +141,10 @@ class Graph(object):
         # if the src and dst are the same, then a path exists
         if src == dst:
             return True
-
         # Now iterate over the children of src
         for child in src.neighbours:
             if self._path_dfs_inner(child, dst, visited):
                 return True
-
         # We tried all the children from here and found nothing,
         # therefore there is no path from this location to elsewhere
         return False
@@ -160,7 +163,6 @@ class Graph(object):
             # If we've seen this node before, then skip
             if node.node_id in visisted:
                 continue
-
             # Put all the children of this node into the queue
             visited.add(node)
             for child in node:
@@ -174,7 +176,6 @@ class Graph(object):
 
     def _bfs_inner(self, src:GraphNode, dst:GraphNode, visited:set) -> list:
         pass
-
 
     # TODO : do we need to bother doing a check here? Doesn't
     # python3 do that already?
@@ -199,7 +200,6 @@ class Graph(object):
         return self._path_dfs_inner(src, dst, visited)
 
     def has_path_bfs(self, src_id:int, dst_id:int) -> bool:
-        # TODO : need a queue here
         visited = set()
         return self._path_bfs_inner(src, dst, visited)
 
@@ -332,10 +332,9 @@ class GraphAdjDict:
 def repr_to_graph(graph_repr:str) -> Graph:
 
     if graph_repr == "{}":  # check for valid empty graph
-        return None
+        return Graph()
 
     # Check braces and strip
-    # TODO : could just return NULL so we can move on....?
     if graph_repr[0] != '{' or graph_repr[-1] != '}':
         raise ValueError('Invalid repr %s' % str(graph_repr))
 
@@ -344,11 +343,18 @@ def repr_to_graph(graph_repr:str) -> Graph:
     # tokenize the string along node boundaries
     token_list = graph_repr.split('#')
 
-    # TODO : need two passes through the data to do this
+    # Need two passes through the data to do this
     # first pass finds all the nodes,
     # second pass finds all the neighbours
+    graph_nodes = list()
     for n, tok in enumerate(token_list):
         nsplit = tok.split(',')     # split neighour string
-        cur_node = GraphNode(nsplit[0], 0)
+        cur_node = GraphNode(nsplit[0], 0, node_id=nsplit[0])
         for s in nsplit[1:]:
             cur_node.add_neighbour(int(s))
+
+        graph_nodes.append(cur_node)
+
+    return Graph(graph_nodes)
+
+# TODO : repr_to_graph_adj_dict

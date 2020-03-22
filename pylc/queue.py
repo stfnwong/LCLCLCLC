@@ -11,7 +11,7 @@ from typing import Any
 class Queue:
     def __init__(self, size:int=0) -> None:
         self.size = size
-        self.q = []
+        self.q:List[Any] = []
 
     def __repr__(self) -> str:
         return 'Queue'
@@ -25,13 +25,11 @@ class Queue:
     def full(self) -> bool:
         if (self.size > 0) and (len(self.q) == self.size):
             return True
-
         return False
 
     def empty(self) -> bool:
         if len(self.q) == 0:
             return True
-
         return False
 
     def max_size(self) -> int:

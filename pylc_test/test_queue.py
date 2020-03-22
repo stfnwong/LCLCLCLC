@@ -13,6 +13,7 @@ from pylc import queue
 class TestQueue(unittest.TestCase):
     def setUp(self) -> None:
         self.inp1 = [1, 2, 3, 4, 5, 6, 7, 8]
+        self.inp2 = [8, 7, 6, 5, 4, 3, 2, 1]
 
     def test_queue_enq_deq(self) -> None:
         test_queue = queue.Queue()
@@ -20,12 +21,25 @@ class TestQueue(unittest.TestCase):
         self.assertEqual(True, test_queue.empty())
         self.assertEqual(False, test_queue.full())
 
-        for n in self.inp1:
-            test_queue.enqueue(n)
+        for n, i in enumerate(self.inp1):
+            test_queue.enqueue(i)
+            self.assertEqual(n+1, len(test_queue))
 
         self.assertEqual(len(self.inp1), len(test_queue))
         # Dequeue and check order
         for n in self.inp1:
+            self.assertEqual(n, test_queue.dequeue())
+
+        self.assertEqual(True, test_queue.empty())
+        self.assertEqual(False, test_queue.full())
+
+        # Enqueue the other queue
+        for n in self.inp2:
+            test_queue.enqueue(n)
+            self.assertEqual(False, test_queue.empty())
+
+        # Dequeue and check order
+        for n in self.inp2:
             self.assertEqual(n, test_queue.dequeue())
 
         self.assertEqual(True, test_queue.empty())

@@ -56,18 +56,35 @@ class TestGraphNode(unittest.TestCase):
 class TestGraph(unittest.TestCase):
     def setUp(self) -> None:
         self.empty_repr = "{}"
+        self.repr1      = "{0,1,2#1,2#2,2}";
+        self.repr2      = "{0,1,2#1,2#2,2,4#3,1,0#4,2,3}";
         self.repr3      = "{0,1,4,5#1,4,3#2,1#3,2,4#4#5}"
+
         self.expected_graph3_bfs = [0, 1, 4, 5, 3, 2]
         self.expected_graph3_dfs = [0, 1, 3, 2, 4, 5]
 
-    def test_graph_dfs_path(self) -> None:
-        pass
+    def test_init_graph(self) -> None:
+        test_graph = graph.Graph()
+        print(test_graph)
+        self.assertEqual(0, len(test_graph))
 
-    #def test_init_graph_empty(self) -> None:
-    #    g = graph.Graph()
-    #    # This should be an empty graph
-    #    print(g)
-    #    self.assertEqual(0, len(g))
+        # enusre that the empty repr produces an empty graph
+        test_graph = graph.repr_to_graph(self.empty_repr)
+        self.assertEqual(0, len(test_graph))
+
+        # construct a graph from a non-empty repr
+        test_graph = graph.repr_to_graph(self.repr1)
+        print('created graph from repr %s' % self.repr1)
+        print(test_graph)
+        self.assertEqual(3, len(test_graph))
+
+        # construct a bigger graph
+        test_graph = graph.repr_to_graph(self.repr2)
+        print('created graph from repr %s' % self.repr2)
+        print(test_graph)
+        self.assertEqual(5, len(test_graph))
+
+
 
     #def test_init_graph_adj_list(self) -> None:
     #    # Make an adjacency list
