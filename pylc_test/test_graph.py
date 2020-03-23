@@ -10,7 +10,7 @@ import unittest
 import pylc.graph as graph
 
 # debug
-#from pudb import set_trace; set_trace()
+from pudb import set_trace; set_trace()
 
 
 class TestGraphNode(unittest.TestCase):
@@ -84,17 +84,27 @@ class TestGraph(unittest.TestCase):
         print(test_graph)
         self.assertEqual(5, len(test_graph))
 
+    def test_graph_paths(self) -> None:
+        test_graph = graph.repr_to_graph(self.repr1)
+        self.assertEqual(3, len(test_graph))
+
+        # There is not node 3, so any path that goes through node 3 will fail
+        self.assertEqual(False, test_graph.has_path_dfs(1, 3))
+        self.assertEqual(False, test_graph.has_path_bfs(3, 0))
+
+        # There should be a path from 0 to 1
+        self.assertEqual(True, test_graph.has_path_dfs(0, 1))
+        self.assertEqual(True, test_graph.has_path_bfs(0, 1))
+
+        # There is no path from 1 -> 0 or from 2-> 0
+        self.assertEqual(False, test_graph.has_path_dfs(1, 0))
+        self.assertEqual(False, test_graph.has_path_bfs(1, 0))
+        self.assertEqual(False, test_graph.has_path_dfs(2, 0))
+        self.assertEqual(False, test_graph.has_path_bfs(2, 0))
 
 
-    #def test_init_graph_adj_list(self) -> None:
-    #    # Make an adjacency list
-    #    adj_list = [[1,2], [0,2], [2,0]]
-    #    g = graph.Graph(adj_list)
-    #    self.assertEqual(3, len(g))
-    #    # TODO: walk along the graph
 
-    #def test_init_graph_from_repr(self) -> None:
-    #    pass
+
 
 
 class TestGraphAdjDict(unittest.TestCase):

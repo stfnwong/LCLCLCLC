@@ -86,7 +86,7 @@ class GraphNode:
     def __next__(self) -> 'GraphNode':
         self.idx += 1
         if (self.idx-1) < len(self.neighbours):
-            return self.neighbours[idx - 1]
+            return self.neighbours[self.idx - 1]
         raise StopIteration
 
     def __getitem__(self, idx:int) -> 'GraphNode':
@@ -137,13 +137,17 @@ class Graph:
         if src.node_id in visited:
             return False
 
+        if src.node_id in visited:
+            return False
+
         visited.add(src.node_id)
         # if the src and dst are the same, then a path exists
         if src == dst:
             return True
         # Now iterate over the children of src
         for child in src.neighbours:
-            if self._path_dfs_inner(child, dst, visited):
+            #if self._path_dfs_inner(child, dst, visited):
+            if self._path_dfs_inner(self.nodes[child], dst, visited):
                 return True
         # We tried all the children from here and found nothing,
         # therefore there is no path from this location to elsewhere
@@ -151,7 +155,7 @@ class Graph:
 
     def _path_bfs_inner(self, src:GraphNode, dst:GraphNode, visited:set) -> bool:
         bfs_q = queue.Queue()
-        visited.add(src)
+        #visited.add(src.node_id)
 
         bfs_q.enqueue(src)
         while(not bfs_q.empty()):
@@ -161,12 +165,12 @@ class Graph:
                 return True
 
             # If we've seen this node before, then skip
-            if node.node_id in visisted:
+            if node.node_id in visited:
                 continue
             # Put all the children of this node into the queue
-            visited.add(node)
+            visited.add(node.node_id)
             for child in node:
-                bfs_q.enqueue(child)
+                bfs_q.enqueue(self.nodes[child])
 
         return False
 
@@ -188,6 +192,16 @@ class Graph:
         else:
             return None
 
+    # External traversal API
+    def dfs(self, src_id:int, dst_id:int) -> List[GraphNode]:
+        traversal = list()
+        visited   = set()
+        src       = self.nodes[src_id]
+        dst       = self.nodes[dst_id]
+
+        return self._dfs_inner(src, dst, visited)
+
+
     # External path-finding API
     def has_path_dfs(self, src_id:int, dst_id:int) -> bool:
         if (src_id not in self.nodes) or (dst_id not in self.nodes):
@@ -200,7 +214,13 @@ class Graph:
         return self._path_dfs_inner(src, dst, visited)
 
     def has_path_bfs(self, src_id:int, dst_id:int) -> bool:
+        if (src_id not in self.nodes) or (dst_id not in self.nodes):
+            return False
+
+        src     = self.nodes[src_id]
+        dst     = self.nodes[dst_id]
         visited = set()
+
         return self._path_bfs_inner(src, dst, visited)
 
 
@@ -349,7 +369,7 @@ def repr_to_graph(graph_repr:str) -> Graph:
     graph_nodes = list()
     for n, tok in enumerate(token_list):
         nsplit = tok.split(',')     # split neighour string
-        cur_node = GraphNode(nsplit[0], 0, node_id=nsplit[0])
+        cur_node = GraphNode(nsplit[0], 0, node_id=int(nsplit[0]))
         for s in nsplit[1:]:
             cur_node.add_neighbour(int(s))
 
