@@ -20,8 +20,8 @@ TEST_CASE("test_shared_ptr_intrusive_init", "[classic]")
     int* some_val = new int(42);
     int* some_other_val = new int(42);
 
-    SharedPtrIntrusive<int> empty_ref();
-    //REQUIRE(empty_ref.empty() == true);     // non-class type error?
+    SharedPtrIntrusive<int> empty_ref;
+    REQUIRE(empty_ref.empty() == true);     // non-class type error?
 
     SharedPtrIntrusive<int> ref1(some_val);
     REQUIRE(ref1.empty() == false);
@@ -38,7 +38,21 @@ TEST_CASE("test_shared_ptr_intrusive_init", "[classic]")
     REQUIRE(*ref2 == 42);
 }
 
+// Move construction
+TEST_CASE("test_shared_ptr_intrusive move ctor", "[classic]")
+{
+    int* some_val = new int(42);
 
+    SharedPtrIntrusive<int> src_ref(some_val);
+    REQUIRE(src_ref.empty() == false);     // non-class type error?
+
+    // We will move construct into here...
+    //SharedPtrIntrusive<int> dest_ref(std::move(src_ref));       // <- TODO : segfault here
+    //REQUIRE(dest_ref.empty() == false);     // non-class type error?
+    //REQUIRE(src_ref.empty() == true);     // non-class type error?
+}
+
+// Copy construction
 TEST_CASE("test_shared_ptr_intrusive_share", "[classic]")
 {
     int* some_val = new int(24);

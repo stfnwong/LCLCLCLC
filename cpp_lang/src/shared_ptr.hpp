@@ -20,7 +20,7 @@ template <typename T> class SharedPtrIntrusive
         SharedPtrIntrusive();
         SharedPtrIntrusive(T* ref);
         SharedPtrIntrusive(const SharedPtrIntrusive<T>& that);    // copy ctor
-        // TODO : what about move ctor? 
+        SharedPtrIntrusive(SharedPtrIntrusive<T>&& that);  // move ctor
         ~SharedPtrIntrusive();
 
     // operators 
@@ -64,6 +64,15 @@ template <typename T> SharedPtrIntrusive<T>::SharedPtrIntrusive(const SharedPtrI
     this->raw_ptr   = that.raw_ptr;
     this->num_ref    = that.num_ref;
     (*this->num_ref)++; 
+}
+
+// move ctor
+template <typename T> SharedPtrIntrusive<T>::SharedPtrIntrusive(SharedPtrIntrusive<T>&& that)
+{
+    // TODO : is this sufficient?
+    this->raw_ptr = std::move(that.raw_ptr);
+    this->num_ref = std::move(that.num_ref);
+    that.raw_ptr = nullptr;
 }
 
 // dtor 
