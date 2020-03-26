@@ -43,7 +43,8 @@ TEST_F(TestTree, test_repr_to_tree)
     empty_tree = repr_to_tree(this->empty_repr);
     ASSERT_EQ(nullptr, empty_tree);
     
-    // How to test the actual content of the trees...?
+    // Since the traversals are tested seperately, we just test 
+    // the size here.
 
     // clean up
     destroy_tree(repr1_tree);

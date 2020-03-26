@@ -234,7 +234,6 @@ TEST_F(TestAdj, test_adj_list_init)
 }
 
 
-
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);

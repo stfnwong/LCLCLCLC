@@ -32,6 +32,7 @@ int tree_size(const TreeNode* root);
 
 // NOTE: see https://support.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation- for details about how this representation works.
 
+std::vector<std::string> repr_to_token_vec(const std::string& repr);
 TreeNode* create_tree(const std::vector<std::string>& token_repr);
 void      destroy_tree(TreeNode* tree);
 
@@ -50,6 +51,9 @@ void tree_inorder(const TreeNode* root, std::vector<int>& traversal);
 void tree_outorder(const TreeNode* root, std::vector<int>& traversal);
 void tree_postorder(const TreeNode* root, std::vector<int>& traversal);
 void tree_levelorder(const TreeNode* root, std::vector<int>& traversal);
+
+// Recursive methods with stacks
+void tree_preorder_stack(const TreeNode* root, std::vector<int>& traversal);
 
 // Iterative methods
 void tree_preorder_iter(TreeNode* root, std::vector<int>& traversal);
