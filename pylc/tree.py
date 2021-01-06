@@ -5,14 +5,14 @@ Implementations of various tree things
 Stefan Wong 2019
 """
 
-# debug 
-from pudb import set_trace; set_trace()
+# debug
+#from pudb import set_trace; set_trace()
 
 
-class BinaryTreeNode(object):
-    def __init__(self, 
-            val=None, 
-            left:'BinaryTreeNode'=None, 
+class BinaryTreeNode:
+    def __init__(self,
+            val=None,
+            left:'BinaryTreeNode'=None,
             right:'BinaryTreeNode'=None) -> None:
         self.left  :'BinaryTreeNode' = left
         self.right :'BinaryTreeNode' = right
@@ -21,24 +21,58 @@ class BinaryTreeNode(object):
     def __repr__(self) -> str:
         return 'BinaryTreeNode [%s]' % str(self.val)
 
+    def __str__(self) -> str:
+        s = []
+        # follow the nodes in order
+
+        return ''.join(s)
+
+    # Traverse from here in-order
+    def inorder(self) -> list:
+        traversal = []
+        stack = []
+
+        node = self
+        while True:
+            while root:
+                stack.append(node)
+                node = node.left
+            if not stack:
+                return stack
+            node = stack.pop()
+            traversal.append(node.val)
+            node = node.right
+
+        return traversal
+
+
+
+def binary_tree_to_str(root:BinaryTreeNode) -> str:
+    pass
 
 
 # ==== Create new Binary Tree objects ==== #
 def repr_to_tree(rstring:str) -> BinaryTreeNode:
-    rtokens = rstring.split(',')
-
-    node_q = list()
-    root = None
+    #rtokens    = [tok.lstrip() for tok in rstring.split(',')]
+    rtokens    = rstring.split(',')
+    node_q     = list()
+    root       = None
     check_left = True
+
     for n, token in enumerate(rtokens):
-        # Strip any leading or trailing square brackets 
+        # Strip any leading or trailing square brackets
+        token = token.lstrip()
+
+        # debug
+        print('Token [%d] : %s' % (n, str(token)))
+
         if n == 0:
             if token[0] == '[':
                 token = token[1:]
 
-            # If this is the first node, assign here and 
+            # If this is the first node, assign here and
             # then skip to the next iteration
-            # NOTE : for now the values in the tree are ints 
+            # NOTE : for now the values in the tree are ints
             root = BinaryTreeNode(val = int(token))
             continue
 
@@ -54,10 +88,11 @@ def repr_to_tree(rstring:str) -> BinaryTreeNode:
             node = BinaryTreeNode(val = int(token))
             node_q.append(node)
 
-        # Assign the left node 
+        # Assign the left node
         if check_left:
-            cur_node = node_q.pop(0)
-            cur_node.left = node
+            if len(node_q) > 0:
+                cur_node = node_q.pop(0)
+                cur_node.left = node
             check_left = False
 
         # Assign the right node
@@ -79,13 +114,13 @@ def tree_size(root:BinaryTreeNode) -> int:
         size = size + tree_size(root.left)
     if root.right is not None:
         size = size + tree_size(root.right)
-    
+
     return size
 
 
 #def tree_to_str(root:BinaryTreeNode) -> str:
 #    s = []
-#    
+#
 #    if root is None:
 #        return "[]"
 
@@ -104,7 +139,7 @@ def inorder(root:BinaryTreeNode, traversal:list) -> list:
 # ==== iterative traversal methods ==== #
 def inorder_iter(root:BinaryTreeNode, traversal:list) -> list:
     traversal = []
-    stack = [] 
+    stack = []
 
     while True:
         while root:
@@ -116,6 +151,6 @@ def inorder_iter(root:BinaryTreeNode, traversal:list) -> list:
         traversal.append(node.val)
         root = node.right
 
-    
+
     return traversal
 

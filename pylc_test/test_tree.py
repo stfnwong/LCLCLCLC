@@ -17,9 +17,9 @@ class TestTree(unittest.TestCase):
     #    pass
 
     def test_repr_to_tree(self):
-        tree          = tree.repr_to_tree(self.rstring)
+        test_tree          = tree.repr_to_tree(self.rstring)
         expected_size = 7
-        size          = tree.tree_size(tree)
+        size          = tree.tree_size(test_tree)
 
         self.assertEqual(expected_size, size)
 
@@ -32,15 +32,20 @@ class TestTreeTraverse(unittest.TestCase):
 
     def test_inorder_recur(self):
         # get a new tree
-       tree = tree.repr_to_tree(self.rstring)
-        self.assertEqual(self.expected_size, tree.tree_size(tree))
+        test_tree = tree.repr_to_tree(self.rstring)
+        print(test_tree.inorder())
+        self.assertEqual(self.expected_size, tree.tree_size(test_tree))
 
-        traversal = inorder(tree)
+        traversal = inorder(test_tree)
 
         # TODO : how to check the traversal?
 
     def test_inorder_iter(self):
-        tree = tree.repr_to_tree(self.rstring)
-        self.assertEqual(self.expected_size, tree.tree_size(tree))
+        test_tree = tree.repr_to_tree(self.rstring)
+        self.assertEqual(self.expected_size, tree.tree_size(test_tree))
 
-        traversal = inorder_iter(tree)
+        traversal = inorder_iter(test_tree)
+
+
+if __name__ == '__main__':
+    unittest.main()
