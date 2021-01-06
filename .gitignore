@@ -1,2 +1,7 @@
 # Ignore swap files 
 *.swp
+*.swo
+# Ignore object files 
+*.o
+# Ignore python compiled files 
+*.pyc

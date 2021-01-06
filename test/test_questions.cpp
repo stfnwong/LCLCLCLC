@@ -4,21 +4,17 @@
  * Stefan Wong 2019
  */
 
+#define CATCH_CONFIG_MAIN
+#include "catch/catch.hpp"
+
 #include <vector>
 #include <string>
-#include <gtest/gtest.h>
+
 #include "list.hpp"
 #include "questions.hpp"
 
-class TestQuestions : public ::testing::Test
-{
-    virtual void SetUp() {}
-    virtual void TearDown() {}
 
-};
-
-
-TEST_F(TestQuestions, test_question_1)  // two-sum
+TEST_CASE("test_question_1", "leetcode")  // two-sum
 {
     int target = 9;
     std::vector<int> inputs = {2, 7, 11, 15};
@@ -33,9 +29,9 @@ TEST_F(TestQuestions, test_question_1)  // two-sum
         std::cout << two_sum_out[i] << ", ";
     std::cout << "}" << std::endl;
 
-    ASSERT_EQ(expected_output.size(), two_sum_out.size());
+    REQUIRE(expected_output.size() == two_sum_out.size());
     for(unsigned int i = 0; i < two_sum_out.size(); ++i)
-        ASSERT_EQ(expected_output[i], two_sum_out[i]);
+        REQUIRE(expected_output[i] == two_sum_out[i]);
 
     // Also try another implementation (two pointers)
     std::vector<int> two_sum_pointer_out = two_sum_pointer(inputs, target);
@@ -44,16 +40,16 @@ TEST_F(TestQuestions, test_question_1)  // two-sum
         std::cout << two_sum_pointer_out[i] << ", ";
     std::cout << "}" << std::endl;
 
-    ASSERT_EQ(expected_output.size(), two_sum_pointer_out.size());
+    REQUIRE(expected_output.size() == two_sum_pointer_out.size());
     for(unsigned int i = 0; i < two_sum_pointer_out.size(); ++i)
-        ASSERT_EQ(expected_output[i], two_sum_pointer_out[i]);
+        REQUIRE(expected_output[i] == two_sum_pointer_out[i]);
 }
 
 
 /*
  * Question 2
  */
-TEST_F(TestQuestions, test_question_2)  // two-sum
+TEST_CASE("test_question_2", "leetcode")  // two-sum
 {
     std::vector<int> vec1 = {2, 4, 3};
     std::vector<int> vec2 = {5, 6, 4};
@@ -70,7 +66,7 @@ TEST_F(TestQuestions, test_question_2)  // two-sum
     lc_list::print_list_node(input2);
 
     lc_list::ListNode* output = add_two_numbers(input1, input2);
-    ASSERT_NE(nullptr, output);
+    REQUIRE(nullptr != output);
 
     std::vector<int> expected_out_vec = {7, 0, 8};
     lc_list::ListNode* expected_output = lc_list::list_from_vector(expected_out_vec);
@@ -80,7 +76,7 @@ TEST_F(TestQuestions, test_question_2)  // two-sum
     
     while(output != nullptr || expected_output != nullptr)
     {
-        ASSERT_EQ(expected_output, output);
+        REQUIRE(expected_output == output);
         //ASSERT_NE(nullptr, output);
         //ASSERT_NE(nullptr, expected_output);
         output = output->next;
@@ -88,7 +84,7 @@ TEST_F(TestQuestions, test_question_2)  // two-sum
         out_len++;
     }
 
-    ASSERT_EQ(exp_len, out_len);
+    REQUIRE(exp_len == out_len);
 
     //delete output;
     //delete expected_output;
@@ -97,7 +93,7 @@ TEST_F(TestQuestions, test_question_2)  // two-sum
 /*
  * Question 3
  */
-TEST_F(TestQuestions, test_question_3)  // longest substring
+TEST_CASE("test_question_3", "leetcode")  // longest substring
 {
     std::string input_1 = "abcabcbb";
     std::string input_2 = "bbbbb";
@@ -112,16 +108,16 @@ TEST_F(TestQuestions, test_question_3)  // longest substring
     out2 = length_of_longest_substring(input_2);
     out3 = length_of_longest_substring(input_3);
 
-    ASSERT_EQ(exp1, out1); 
-    ASSERT_EQ(exp2, out2); 
-    ASSERT_EQ(exp3, out3); 
+    REQUIRE(exp1 == out1); 
+    REQUIRE(exp2 == out2); 
+    REQUIRE(exp3 == out3); 
 }
 
 
 /*
  * Question 14
  */
-TEST_F(TestQuestions, test_question_14)
+TEST_CASE("test_question_14", "leetcode")
 {
     std::vector<std::string> inputs_1 = {"flower", "flow", "flight"};
     std::string expected_output_1 = "fl";
@@ -140,7 +136,7 @@ TEST_F(TestQuestions, test_question_14)
     std::cout << "} expected [" << expected_output_1 << "], got [" 
         << p1 << "]" << std::endl;
 
-    ASSERT_EQ(expected_output_1, p1);
+    REQUIRE(expected_output_1 == p1);
 
     p2 = longest_common_prefix(inputs_2);
     std::cout << "Input {";
@@ -151,13 +147,13 @@ TEST_F(TestQuestions, test_question_14)
     std::cout << "} expected [" << expected_output_2 << "], got [" 
         << p1 << "]" << std::endl;
 
-    ASSERT_EQ(expected_output_2, p2);
+    REQUIRE(expected_output_2 == p2);
 }
 
 /*
  * Question 14 again
  */
-TEST_F(TestQuestions, test_question_14_binary_search)
+TEST_CASE("test_question_14_binary_search", "leetcode")
 {
     std::vector<std::string> inputs_1 = {"flower", "flow", "flight"};
     std::string expected_output_1 = "fl";
@@ -176,7 +172,7 @@ TEST_F(TestQuestions, test_question_14_binary_search)
     std::cout << "} expected [" << expected_output_1 << "], got [" 
         << p1 << "]" << std::endl;
 
-    ASSERT_EQ(expected_output_1, p1);
+    REQUIRE(expected_output_1 == p1);
 
     p2 = longest_common_prefix_binary_search(inputs_2);
     std::cout << "Input {";
@@ -187,14 +183,14 @@ TEST_F(TestQuestions, test_question_14_binary_search)
     std::cout << "} expected [" << expected_output_2 << "], got [" 
         << p1 << "]" << std::endl;
 
-    ASSERT_EQ(expected_output_2, p2);
+    REQUIRE(expected_output_2 == p2);
 }
 
 
 /*
  * Question 17
  */
-TEST_F(TestQuestions, test_question_17)
+TEST_CASE("test_question_17", "leetcode")
 {
     std::string input = "23";
     std::vector<std::string> expected_output = {"ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"};
@@ -207,30 +203,27 @@ TEST_F(TestQuestions, test_question_17)
         std::cout << output[i] << ", ";
     std::cout << std::endl;
 
-    ASSERT_EQ(expected_output.size(), output.size());
+    REQUIRE(expected_output.size() == output.size());
     for(unsigned int i = 0; i < output.size(); ++i)
-        ASSERT_EQ(expected_output[i], output[i]);
+        REQUIRE(expected_output[i] == output[i]);
 }
 
 /*
  * Question 18
  */
-TEST_F(TestQuestions, test_question_18)
+TEST_CASE("test_question_18", "leetcode")
 {
     std::vector<int> input = {1, 0, -1, 0, -2, 2};
     int target = 0;
 
     // We need to find all combinations of unique 4-tuples that 
     // add up to target. There must not be any duplicate tuples.
-
-
-
 }
 
 /*
  * Question 55
  */
-TEST_F(TestQuestions, test_question_55)
+TEST_CASE("test_question_55", "leetcode")
 {
     std::vector<int> inp1 = {2, 3, 1, 1, 4};
     std::vector<int> inp2 = {3, 2, 1, 0, 4};
@@ -244,23 +237,23 @@ TEST_F(TestQuestions, test_question_55)
     bool exp4 = true;
 
     out1 = can_jump(inp1);
-    ASSERT_EQ(exp1, out1);
+    REQUIRE(exp1 == out1);
 
     out2 = can_jump(inp2);
-    ASSERT_EQ(exp2, out2);
+    REQUIRE(exp2 == out2);
 
     out3 = can_jump(inp3);
-    ASSERT_EQ(exp3, out3);
+    REQUIRE(exp3 == out3);
 
     out4 = can_jump(inp4);
-    ASSERT_EQ(exp4, out4);
+    REQUIRE(exp4 == out4);
 }
 
 
 /*
  * Question 1222
  */
-TEST_F(TestQuestions, test_question_1222)
+TEST_CASE("test_question_1222", "leetcode")
 {
     // inputs 
     std::vector<std::vector<int>> queen_input_1 = {{0,1},{1,0},{4,0},{0,4},{3,3},{2,4}};
@@ -291,13 +284,13 @@ TEST_F(TestQuestions, test_question_1222)
         std::cout << "(" << output1[o][0] << "," << output1[o][1] << "),";
     }
     std::cout << "}" << std::endl;
-    ASSERT_EQ(exp_output_1.size(), output1.size());
+    REQUIRE(exp_output_1.size() == output1.size());
 
     // Check each element of the output vector in turn
     for(unsigned int elem = 0; elem < output1.size(); ++elem)
     {
-        ASSERT_EQ(exp_output_1[elem][0], output1[elem][0]);
-        ASSERT_EQ(exp_output_1[elem][1], output1[elem][1]);
+        REQUIRE(exp_output_1[elem][0] == output1[elem][0]);
+        REQUIRE(exp_output_1[elem][1] == output1[elem][1]);
     }
 
     // ---- test 2
@@ -309,13 +302,13 @@ TEST_F(TestQuestions, test_question_1222)
         std::cout << "(" << output2[o][0] << "," << output2[o][1] << "),";
     }
     std::cout << "}" << std::endl;
-    ASSERT_EQ(exp_output_2.size(), output2.size());
+    REQUIRE(exp_output_2.size() == output2.size());
 
     // Check each element of the output vector in turn
     for(unsigned int elem = 0; elem < output2.size(); ++elem)
     {
-        ASSERT_EQ(exp_output_2[elem][0], output2[elem][0]);
-        ASSERT_EQ(exp_output_2[elem][1], output2[elem][1]);
+        REQUIRE(exp_output_2[elem][0] == output2[elem][0]);
+        REQUIRE(exp_output_2[elem][1] == output2[elem][1]);
     }
 
     // ---- test 3
@@ -327,20 +320,9 @@ TEST_F(TestQuestions, test_question_1222)
         std::cout << "(" << output3[o][0] << "," << output3[o][1] << "),";
     }
     std::cout << "}" << std::endl;
-    ASSERT_EQ(exp_output_3.size(), output3.size());
+    REQUIRE(exp_output_3.size() == output3.size());
 
     // Check each element of the output vector in turn
     for(unsigned int elem = 0; elem < output3.size(); ++elem)
-    {
-        ASSERT_EQ(exp_output_3[elem][0], output3[elem][0]);
-        ASSERT_EQ(exp_output_3[elem][1], output3[elem][1]);
-    }
-}
-
-
-
-int main(int argc, char *argv[])
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+        REQUIRE(exp_output_3[elem][1] == output3[elem][1]);
 }
