@@ -9,7 +9,7 @@
 
 #include <vector>
 #include <string>
-// NOTE: maybe put these together?
+
 #include "tree.hpp"
 
 // Test inputs

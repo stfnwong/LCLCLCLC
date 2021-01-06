@@ -23,27 +23,27 @@ constexpr const int tree2_size = 3;
 constexpr const int tree3_size = 4;
 
 
-//TEST_CASE("TestThreadedTree, test_repr_to_threaded_tree", "[classic]")
-//{
-//    TreeNode* repr1_tree;
-//    TreeNode* repr2_tree;
-//    TreeNode* repr3_tree;
-//    TreeNode* empty_tree;
-//
-//    repr1_tree = repr_to_threaded_tree(repr1);
-//    REQUIRE(nullptr != repr1_tree);
-//    repr2_tree = repr_to_threaded_tree(repr2);
-//    REQUIRE(nullptr != repr2_tree);
-//    repr3_tree = repr_to_threaded_tree(repr3);
-//    REQUIRE(nullptr != repr3_tree);
-//    empty_tree = repr_to_threaded_tree(empty_repr);
-//    REQUIRE(nullptr == empty_tree);
-//    
-//    // How to test the actual content of the trees...?
-//
-//    // clean up
-//    destroy_tree(repr1_tree);
-//    destroy_tree(repr2_tree);
-//    destroy_tree(repr3_tree);
-//    destroy_tree(empty_tree);
-//}
+TEST_CASE("TestThreadedTree, test_repr_to_threaded_tree", "[classic]")
+{
+    TreeNode* repr1_tree;
+    TreeNode* repr2_tree;
+    TreeNode* repr3_tree;
+    TreeNode* empty_tree;
+
+    repr1_tree = repr_to_threaded_tree(repr1);
+    REQUIRE(nullptr != repr1_tree);
+    repr2_tree = repr_to_threaded_tree(repr2);
+    REQUIRE(nullptr != repr2_tree);
+    repr3_tree = repr_to_threaded_tree(repr3);
+    REQUIRE(nullptr != repr3_tree);
+    empty_tree = repr_to_threaded_tree(empty_repr);
+    REQUIRE(nullptr == empty_tree);
+    
+    // How to test the actual content of the trees...?
+
+    // clean up
+    destroy_tree(repr1_tree);
+    destroy_tree(repr2_tree);
+    destroy_tree(repr3_tree);
+    destroy_tree(empty_tree);
+}
