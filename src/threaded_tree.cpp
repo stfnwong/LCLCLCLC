@@ -31,11 +31,11 @@ ThreadedTreeNode* create_threaded_tree(const std::vector<std::string>& token_vec
 }
 
 
-ThreadedTreeNode* repr_to_threaded_tree(const std::string& repr)
-{
-    // tokenize
-
-}
+//ThreadedTreeNode* repr_to_threaded_tree(const std::string& repr)
+//{
+//    // tokenize
+//
+//}
 
 /*
  * destroy_threaded_tree()

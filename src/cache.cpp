@@ -31,10 +31,7 @@ void destroy_cache_node(CacheNode* node)
 
 
 // ======== LRU CACHE ======== //
-LRUCache::LRUCache()
-{
-
-}
+LRUCache::LRUCache() {}
 
 
 /*
@@ -47,6 +44,8 @@ CacheNode* LRUCache::get(int key)
         return nullptr;         // TODO : double check this...
 
 	CacheNode* node = search->second;
+
+    return node;    // TODO: incomplete
 }
 
 /*

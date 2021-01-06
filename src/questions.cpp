@@ -267,7 +267,7 @@ void find_letter_combo(
         std::vector<std::string>& output,
         std::unordered_map<char, std::string> mapping,
         std::string cur_string,
-        int idx)
+        unsigned int idx)
 {
     if(idx == digits.size())
     {
@@ -311,10 +311,10 @@ std::vector<std::string> letter_combinations_17(std::string digits)
 /*
  * Question 18
  */
-std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target)
-{
-    
-}
+//std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target)
+//{
+//    
+//}
 
 /*
  * Question 55
