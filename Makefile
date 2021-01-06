@@ -14,11 +14,11 @@ PROGRAM_DIR=programs
 CXX=g++
 OPT=-O0
 #CXXFLAGS=-Wall -g2 -std=c++14 -D_REENTRANT -DLC_DEBUG $(OPT)
-CXXFLAGS=-Wall -g2 -std=c++14 -D_REENTRANT $(OPT)
-TESTFLAGS=-lgtest -lgtest_main
+CXXFLAGS=-Wall -g2 -std=c++17 -D_REENTRANT $(OPT)
+TESTFLAGS=
 LDFLAGS=
-LIBS = 
-TEST_LIBS = -lgtest -lgtest_main
+LIBS= 
+TEST_LIBS=
 
 # style for assembly output
 ASM_STYLE=intel
@@ -81,6 +81,7 @@ assem : $(ASSEM_OBJECTS)
 
 clean:
 	rm -rfv *.o $(OBJ_DIR)/*.o 
+	rm -rfv $(TEST_BIN_DIR)/test_*
 
 print-%:
 	@echo $* = $($*)
