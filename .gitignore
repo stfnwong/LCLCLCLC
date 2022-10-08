@@ -7,3 +7,6 @@
 *.pyc
 # Ignore tags file
 tags
+
+# Ignore other vim/lsp things 
+.ccls-cache/
