@@ -1,0 +1,39 @@
+TODOS :
+1) Finish the python graph re-write, get the methods working.
+2) Refactor the C++ implementation to match.
+
+
+================
+GRAPH NOTES
+
+Another way to implement a graph is by way of a Graph object that contains a collection of GraphNodes or similar.
+
+In the GLM/Hackerrank sample implementation, we create a Graph object that holds a lookup table for simplifying traversals. The Graph holds Nodes, and each node has an implementation something like[1]
+
+
+
+class Node
+{
+    int id;
+    std::list<Node> adjacent;
+
+    public:
+        Node(int id) : id(id) {}
+};
+
+The Graph object then does something like 
+
+class Graph
+{
+    std::unordered_map<int, Node> node_lookup;
+
+    public:
+        Graph() {} 
+};
+
+
+The Graph object then has methods for things like BFS and DFS traversal; I tend to think of these things as more like a collection of data (the nodes) and the seperately some functions which do transformations or analysis on the graphs.
+
+
+
+[1] Note that the original was Java, I am translating to C++

@@ -14,7 +14,7 @@
 #include "questions.hpp"
 
 
-TEST_CASE("question_1", "leetcode")  // two-sum
+TEST_CASE("q1_hash_map", "leetcode")  // two-sum
 {
     int target = 9;
     std::vector<int> inputs = {2, 7, 11, 15};
@@ -45,6 +45,33 @@ TEST_CASE("question_1", "leetcode")  // two-sum
         REQUIRE(expected_output[i] == two_sum_pointer_out[i]);
 }
 
+
+TEST_CASE("q1_sort_and_pointer", "leetcode")
+{
+    std::vector<int> targets = {9, 6, 6};
+    std::vector<std::vector<int>> inputs = {
+        {2, 7, 11, 15},
+        {3, 2, 4},
+        {3, 3}
+    };
+
+    std::vector<std::vector<int>> expected_outputs = {
+        {0, 1},
+        {1, 2},
+        {0, 1}
+    };
+
+    unsigned int num_test_cases = 3;
+
+    for(unsigned test_case = 0; test_case < num_test_cases; ++test_case)
+    {
+        actual_output = two_sum_sort_and_pointer(inputs[test_case], targets[test_case]);
+        REQUIRE(expected_outputs[test_case].size(), actual_output.size());
+
+        for(unsigned i = 0; i < actual_output.size(); ++i)
+            REQUIRE(actual_output[i] == expected_outputs[test_case][i]);
+    }
+}
 
 /*
  * Question 2

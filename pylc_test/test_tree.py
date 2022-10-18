@@ -32,7 +32,7 @@ class TestTreeTraverse(unittest.TestCase):
 
     def test_inorder_recur(self):
         # get a new tree
-       tree = tree.repr_to_tree(self.rstring)
+        tree = tree.repr_to_tree(self.rstring)
         self.assertEqual(self.expected_size, tree.tree_size(tree))
 
         traversal = inorder(tree)

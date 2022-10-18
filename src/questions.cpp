@@ -87,6 +87,55 @@ std::vector<int> two_sum_pointer(std::vector<int>& nums, int target)
     return output;
 }
 
+// two sum sorted pointer
+std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target)
+{
+    unsigned int n = nums.size();
+    std::vector<std::pair<int, int>> val_and_idx(n);
+
+    // since we plan to sort the array we need to remember what the original index was 
+    // create a vector of pairs that store a value and its position in the original array 
+    for(int i = 0; i < n; ++i)
+        val_and_idx[i] = std::make_pair(nums[i], i);
+
+    // now we can sort the input 
+    std::sort(val_and_idx.begin(), val_and_idx.end());
+    int left = 0;
+    int right = n-1;
+
+    while(left < right) 
+    {
+        int s = val_and_idx[left].first + val_and_idx[right].first;
+        if(s == target)
+            return std::vector<int>{left, right};
+        else if(s > target)
+            right--;    //  too large, deccrease 
+        else
+            left++;     // too small, increase
+    }
+
+    // cant find anything
+    return std::vector<int>{};
+
+}
+
+// two sum brute force 
+std::vector<int> two_sum_brute_force(std::vector<int>& nums, int target)
+{
+    for(int i = 0; i < nums.size(); ++i)
+    {
+        for(int j = i+1; j < nums.size(); ++j)
+        {
+            int s = nums[i] + nums[j];
+            if(s == target)
+                return std::vector<int>{i, j};
+        }
+    }
+
+    // in the real question I think we are guaranteed there is an answer 
+    return std::vector<int>{};  
+}
+
 /*
  * Question 2
  */
