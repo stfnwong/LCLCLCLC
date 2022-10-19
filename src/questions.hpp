@@ -18,6 +18,7 @@
 // https://leetcode.com/problems/two-sum/
 std::vector<int> two_sum_map(std::vector<int>& nums, int target);
 std::vector<int> two_sum_pointer(std::vector<int>& nums, int target);
+std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target);
 
 // ==== QUESTION 2
 // https://leetcode.com/problems/add-two-numbers/
