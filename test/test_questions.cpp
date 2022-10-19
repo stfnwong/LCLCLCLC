@@ -9,9 +9,29 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 
 #include "list.hpp"
 #include "questions.hpp"
+
+// helper to print vectors 
+void print_vec(const std::vector<int>& vec)
+{
+    for(auto& elem : vec)
+        std::cout << elem << " ";
+
+    std::cout << std::endl;
+}
+
+std::string vec_to_str(const std::vector<int>& vec)
+{
+    std::ostringstream oss;
+
+    for(auto& elem : vec)
+        oss << elem << " ";
+
+    return oss.str();
+}
 
 
 TEST_CASE("q1_hash_map", "leetcode")  // two-sum
@@ -65,17 +85,14 @@ TEST_CASE("q1_sort_and_pointer", "leetcode")
 
     for(unsigned test_case = 0; test_case < num_test_cases; ++test_case)
     {
-        std::vector<int> actual_output = two_sum_sort_and_pointer(inputs[test_case], targets[test_case]);
-        std::cout << "output: " << actual_output.size() << std::endl;
-        std::cout << "inputs: " << inputs[test_case].size() << std::endl;
-        std::cout << "exp_output: " << expected_outputs[test_case].size() << std::endl;
-        
-        //auto this_exp_output = expected_outputs[test_case];
-        //REQUIRE(this_exp_output.size(), actual_output.size());
-        ////REQUIRE(expected_outputs[test_case].size(), actual_output.size());
+        auto actual_output = two_sum_sort_and_pointer(inputs[test_case], targets[test_case]);
+        REQUIRE(expected_outputs[test_case].size() == actual_output.size());
 
-        //for(unsigned i = 0; i < actual_output.size(); ++i)
-        //    REQUIRE(actual_output[i] == expected_outputs[test_case][i]);
+        std::cout << "Got      : " << vec_to_str(actual_output) << std::endl;
+        std::cout << "Expected : " << vec_to_str(expected_outputs[test_case]) << std::endl;
+
+        for(unsigned i = 0; i < actual_output.size(); ++i)
+            REQUIRE(actual_output[i] == expected_outputs[test_case][i]);
     }
 }
 
