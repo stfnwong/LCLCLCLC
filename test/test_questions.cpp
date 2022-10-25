@@ -9,29 +9,10 @@
 
 #include <vector>
 #include <string>
-#include <sstream>
 
 #include "list.hpp"
+#include "util.hpp"
 #include "questions.hpp"
-
-// helper to print vectors 
-void print_vec(const std::vector<int>& vec)
-{
-    for(auto& elem : vec)
-        std::cout << elem << " ";
-
-    std::cout << std::endl;
-}
-
-std::string vec_to_str(const std::vector<int>& vec)
-{
-    std::ostringstream oss;
-
-    for(auto& elem : vec)
-        oss << elem << " ";
-
-    return oss.str();
-}
 
 
 TEST_CASE("q1_hash_map", "leetcode")  // two-sum
@@ -300,6 +281,9 @@ TEST_CASE("question_55", "leetcode")
     REQUIRE(exp4 == out4);
 }
 
+TEST_CASE("question_842", "leetcode")
+{
+}
 
 /*
  * Question 1222

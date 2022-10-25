@@ -489,6 +489,31 @@ void tree_postorder_iter(const TreeNode* root, std::vector<int>& traversal)
     }
 }
 
+/*
+ * Breadth-First Traversal
+ */
+
+void tree_bfs(TreeNode* root, std::vector<int>& traversal)
+{
+    std::queue<TreeNode*> q;
+
+    q.push(root);
+    while(!q.empty())
+    {
+        for(int i = 0; i < q.size(); ++i)
+        {
+            const TreeNode* cur_node = q.front();
+            traversal.push_back(cur_node->val);
+
+            if(cur_node->left != nullptr)
+                q.push(cur_node->left);
+            if(cur_node->right != nullptr)
+                q.push(cur_node->right);
+            q.pop();
+        }
+    }
+}
+
 
 
 // ---- LC-Style version---- //
@@ -555,10 +580,5 @@ std::vector<int> ObjTraverser::postorder(const TreeNode* root)
 
     return this->traversal;
 }
-
-
-
-
-
 
 

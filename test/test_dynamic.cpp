@@ -9,6 +9,7 @@
 
 #include <string>
 #include "dynamic.hpp"
+#include "util.hpp"
 
 const std::vector<int> expected_fib_numbers = {
     0,           1,    1,     2,     3,     5,     8,    13, 21, 
@@ -41,6 +42,24 @@ TEST_CASE("dynamic_test_memo", "dynamic")
     for(unsigned int f = 0; f < expected_fib_numbers.size(); ++f)
         fib_outputs.push_back(fibonacci_memo(f));
     REQUIRE(expected_fib_numbers.size() == fib_outputs.size());
+    std::cout << "fib_memo" << std::endl;
+
+    // Check
+    for(unsigned int f = 0; f < fib_outputs.size(); ++f)
+        REQUIRE(expected_fib_numbers[f] == fib_outputs[f]);
+}
+
+TEST_CASE("fib_iter", "dynamic")
+{
+    // Note - we only find the kth fib number 
+    std::vector<int> fib_outputs;
+
+    for(unsigned int f = 0; f < expected_fib_numbers.size(); ++f)
+        fib_outputs.push_back(fib_iter(f));
+    REQUIRE(expected_fib_numbers.size() == fib_outputs.size());
+
+    std::cout << "[" << __func__ << "]" << std::endl;
+    std::cout << vec_to_str(fib_outputs) << std::endl;
 
     // Check
     for(unsigned int f = 0; f < fib_outputs.size(); ++f)

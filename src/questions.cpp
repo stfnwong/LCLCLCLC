@@ -400,8 +400,56 @@ bool can_jump(std::vector<int>& nums)
     return can_jump_here_basic(0, nums);
 }
 
+/*
+Question 322
+https://leetcode.com/problems/coin-change/
+You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+
+Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+You may assume that you have an infinite number of each kind of coin
+ */
+int coin_change_vec_322(std::vector<int>& coins, int amount)
+{
+    // Time complexity: O(AC)
+    // Space complexity: O(A)
+
+    int MAX_COST = amount + 1;
+    std::vector<int> min_num_coins(amount+1);
+
+    min_num_coins[0] = 0;
+
+    for(int n = 1; n < min_num_coins.size(); ++n)
+        min_num_coins[n] = amount + 1;
+
+    // the nth element of min_num_coins represents the minimum number of coins to sum to n
+    for(int n = 1; n <= min_num_coins.size(); ++n)
+    {
+        for(int c = 0; c < coins.size(); ++c)
+        {
+            // If the difference between n and coins[c] is positive, it means that 
+            // coins[c] could be used as part of the solution.
+            if((n - coins[c]) >= 0)
+                min_num_coins[n] = std::min(min_num_coins[n], 1 + min_num_coins[n - coins[c]]);
+        }
+    }
+
+    if(min_num_coins[amount] < (amount + 1))
+        return min_num_coins[amount];
+
+    return -1;
+}
+
+// TODO: BFS solution with memo
 
 
+/*
+ * Question 842
+ * Split array into Fibonacci like sequence
+ */
+std::vector<int> split_into_fib_seq_842(int i)
+{
+}
 
 
 

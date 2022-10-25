@@ -5,8 +5,11 @@ Unit tests for LC questions
 Stefan Wong 2019
 """
 
+from typing import List
+
 import unittest
 from pylc import questions
+from utils import check_fib_property
 
 
 
@@ -89,6 +92,84 @@ class TestQuestion55(unittest.TestCase):
 
         jump4 = questions.jump_game_55(self.inp4)
         self.assertEqual(self.exp4, jump4)
+
+
+
+# Question 300
+# Longest increasing subsequence 
+# https://leetcode.com/problems/longest-increasing-subsequence/
+def test_lis_300():
+    inputs = [
+        [10, 9, 2, 5, 3, 7, 101, 18],
+        [0, 1, 0, 3, 2, 3],
+        [7, 7, 7, 7, 7, 7, 7],
+    ]
+
+    exp_outputs = [4, 4, 1]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.lis_300(inp)
+        assert out == exp_out
+
+
+# Question 322
+# https://leetcode.com/problems/coin-change/
+def test_coin_change_332():
+    inputs = [
+        [1, 2, 5],
+        [1, 3, 4, 5],
+        [2],
+        [1],
+    ]
+
+    amounts = [11, 7, 3, 0]
+    exp_outputs = [3, 2, -1, 0]
+
+    functions = [
+        questions.coin_change_322,
+        questions.coin_change_dfs_322,
+    ]
+
+    for func in functions:
+        for inp, amt, exp_out in zip(inputs, amounts, exp_outputs):
+            out = func(inp, amt)
+            assert out == exp_out
+
+
+
+
+# Question 714 
+# https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
+def test_time_to_buy_stock_714():
+    input_prices = [
+        [1, 3, 2, 8, 4, 9],
+        [1, 3, 7, 5, 10, 3],
+    ]
+    input_fees = [2, 3]
+
+    expected_outputs = [8, 6]
+
+    for price, fee, exp_profit in zip(input_prices, input_fees, expected_outputs):
+        max_profit = questions.time_to_buy_stock_714(
+            price, fee
+        )
+
+        assert max_profit == exp_profit
+
+
+
+# Question 842
+# https://leetcode.com/problems/split-array-into-fibonacci-sequence/
+def test_split_into_fib_842():
+    inputs = [
+        "1101111",
+        "112358130",
+        "0123"
+    ]
+
+    for inp in inputs:
+        output = questions.split_into_fib_seq_842(inp)
+        assert check_fib_property(output) == True
 
 
 if __name__ == '__main__':

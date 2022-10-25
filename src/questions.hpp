@@ -48,6 +48,15 @@ std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target);
 bool can_jump(std::vector<int>& nums);
 
 
+// Question 322
+// https://leetcode.com/problems/coin-change/
+int coin_change_vec_322(std::vector<int>& coins, int amount);
+
+
+// ==== QUESTION 842
+// https://leetcode.com/problems/split-array-into-fibonacci-sequence/
+std::vector<int> split_into_fib_seq_842(int i);
+
 // ==== QUESTION 1222
 // https://leetcode.com/problems/queens-that-can-attack-the-king/
 std::vector<std::vector<int>> queensAttackTheKing(std::vector<std::vector<int>>& queens, std::vector<int>& king);

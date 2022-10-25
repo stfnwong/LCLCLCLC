@@ -125,14 +125,40 @@ def jump_game_can_jump_basic(cur_pos:int, nums:list) -> bool:
 # jump from index zero and backtracking down
 
 
+
+# Question 64
+# Minimum path sum
+# https://leetcode.com/problems/minimum-path-sum/
+def min_path_sum_64(grid: List[List[int]]) -> int:
+    pass
+
+
+# Question 299
+# Longest increasing subsequence 
+# https://leetcode.com/problems/longest-increasing-subsequence/
+def lis_300(nums: List[int]) -> int:
+    pass
+
+
 # Question 322
 # https://leetcode.com/problems/coin-change/
-def coin_change_322(coins:list, amount:int) -> int:
-
-    MAX_COST = amount + 1
-    num_ways = [MAX_COST for _ in range(amount+1)]
+# You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+#
+# Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+#
+#You may assume that you have an infinite number of each kind of coin
+def coin_change_322(coins:List[int], amount:int) -> int:
+    # Time complexity here is  O(C * A) where C is the number of elements in coins
+    # and A is the amount.
+    # 
+    # Space complexity is O(A) as we are storing the min value for each value between 
+    # 0 -> amount in num_ways[].
+    # 
+    # In this case amount+1 is effectively MAX_INT
+    num_ways = [(amount+1) for _ in range(amount+1)]
     num_ways[0] = 0
 
+    # Find values for each element in the cache ways 
     for k in range(1, amount+1):
         for c in coins:
             if (k - c) >= 0:
@@ -144,6 +170,59 @@ def coin_change_322(coins:list, amount:int) -> int:
     return -1
 
 
+# question 322
+# https://leetcode.com/problems/coin-change/
+# 
+# an implementation using a depth-first search.
+def coin_change_dfs_322(coins: list[int], amount:int) -> int:
+    pass
+
 
 # Question 416
 # https://leetcode.com/problems/partition-equal-subset-sum/
+
+# Question 714 
+# https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
+def time_to_buy_stock_714(prices: List[int], fee: int) -> int:
+    pass
+
+
+# Question 842
+# https://leetcode.com/problems/split-array-into-fibonacci-sequence/
+def split_into_fib_seq_842(num:str) -> List[int]:
+   """
+   You are given a string of digits num, such as "123456579". We can split it into a Fibonacci-like sequence [123, 456, 579].
+
+Formally, a Fibonacci-like sequence is a list f of non-negative integers such that:
+
+    0 <= f[i] < 231, (that is, each integer fits in a 32-bit signed integer type),
+    f.length >= 3, and
+    f[i] + f[i + 1] == f[i + 2] for all 0 <= i < f.length - 2.
+
+Note that when splitting the string into pieces, each piece must not have extra leading zeroes, except if the piece is the number 0 itself.
+
+Return any Fibonacci-like sequence split from num, or return [] if it cannot be done.
+   """
+
+   #
+   # "1101111"
+   #  ^       <- pointer to left-most digit (i)
+   #   ^      <- pointer to current right-most digit (j)
+   #   ^      <- pointer to next digit (k)
+   #
+   # "1101111"
+   #  ^       <- pointer to left-most digit (i)
+   #   ^      <- pointer to current right-most digit (j)
+   #    ^     <- pointer to next digit (k)
+   #
+   #
+   # "1101111"
+   #  ^       <- pointer to left-most digit
+   #   ^      <- pointer to current right-most digit
+   #    ^     <- pointer to next digit.
+
+   # 1, 1, 0  <- fails
+   # 
+
+
+

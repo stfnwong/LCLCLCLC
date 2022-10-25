@@ -5,8 +5,7 @@ Implementations of various tree things
 Stefan Wong 2019
 """
 
-# debug
-from pudb import set_trace; set_trace()
+from typing import List
 
 
 class BinaryTreeNode(object):
@@ -125,3 +124,5 @@ def inorder_iter(root:BinaryTreeNode, traversal:list) -> list:
     return traversal
 
 
+def tree_bfs(root: BinaryTreeNode, traversal:List[int]) -> List[int]:
+    pass

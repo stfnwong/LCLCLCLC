@@ -13,20 +13,24 @@
 #include "tree.hpp"
 
 // Test inputs
+// These are the inputs using the leetcode notation. 
+// These all generate binary trees. The notation is the values of the nodes arranged 
+// in level-order traversal.
 const std::string repr1 = "[1,2,3]";
 const std::string repr2 = "[1,2,3,4,5]";
 const std::string repr3 = "[1,2,3,null,null,4,5]";
 const std::string repr4 = "[1,2,null,3,4,5,null]";
+const std::string repr5 = "[5, 1, 4, null, null, 3, 6, 7, 8]";
 
 
 void print_traversal(const std::vector<int>& traversal)
 {
     std::cout << "[" << __func__ << "] traversal contains "
-        << traversal.size() << " elements   :";
+        << traversal.size() << " elements   : ";
 
     std::cout << "[";
     for(unsigned int i = 0; i < traversal.size(); ++i)
-        std::cout << traversal[i];
+        std::cout << traversal[i] << " ";
     std::cout << "]" << std::endl;
 }
 
@@ -36,7 +40,7 @@ void print_traversal(const std::vector<int>& traversal)
 /*
  * PRE-ORDER
  */
-TEST_CASE("TestTraverseTree, test_preorder_traversal", "[classic]")
+TEST_CASE("TestTraverseTree, test_preorder_traversal", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -93,7 +97,7 @@ TEST_CASE("TestTraverseTree, test_preorder_traversal", "[classic]")
 /*
  * IN-ORDER
  */
-TEST_CASE("TestTraverseTree, test_inorder_traversal", "[classic]")
+TEST_CASE("TestTraverseTree, test_inorder_traversal", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -146,7 +150,7 @@ TEST_CASE("TestTraverseTree, test_inorder_traversal", "[classic]")
 /*
  * OUT-ORDER
  */
-TEST_CASE("TestTraverseTree, test_outorder_traversal", "[classic]")
+TEST_CASE("TestTraverseTree, test_outorder_traversal", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -203,7 +207,7 @@ TEST_CASE("TestTraverseTree, test_outorder_traversal", "[classic]")
 /*
  * POST-ORDER
  */
-TEST_CASE("TestTraverseTree, test_postorder_traversal", "[classic]")
+TEST_CASE("TestTraverseTree, test_postorder_traversal", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -260,7 +264,7 @@ TEST_CASE("TestTraverseTree, test_postorder_traversal", "[classic]")
 /*
  * LEVEL ORDER
  */
-TEST_CASE("TestTraverseTree, test_level_order_traverse", "[classic]")
+TEST_CASE("TestTraverseTree, test_level_order_traverse", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -314,7 +318,7 @@ TEST_CASE("TestTraverseTree, test_level_order_traverse", "[classic]")
 }
 
 // ======== RECURSIVE SOLUTIONS WITH STACKS ======== //
-TEST_CASE("TestTraverseTree, test_preorder_traversal_stack", "[classic]")
+TEST_CASE("TestTraverseTree, test_preorder_traversal_stack", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -368,7 +372,7 @@ TEST_CASE("TestTraverseTree, test_preorder_traversal_stack", "[classic]")
 }
 
 // ======== ITERATIVE SOLUTIONS ======== //
-TEST_CASE("TestTraverseTree, test_preorder_traversal_iter", "[classic]")
+TEST_CASE("TestTraverseTree, test_preorder_traversal_iter", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -406,7 +410,7 @@ TEST_CASE("TestTraverseTree, test_preorder_traversal_iter", "[classic]")
     //destroy_tree(tree3);
 }
 
-TEST_CASE("TestTraverseTree, test_inorder_traversal_iter", "[classic]")
+TEST_CASE("TestTraverseTree, test_inorder_traversal_iter", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -443,3 +447,95 @@ TEST_CASE("TestTraverseTree, test_inorder_traversal_iter", "[classic]")
     destroy_tree(tree2);
     //destroy_tree(tree3);
 }
+
+
+TEST_CASE("BFS tree1", "tree_traversal")
+{
+    std::vector<int> traversal1;
+    std::vector<int> expected_traversal1 = {1, 2, 3};
+    TreeNode* tree1 = nullptr;
+
+    tree1 = repr_to_tree(repr1);
+    REQUIRE(nullptr != tree1);
+
+    tree_bfs(tree1, traversal1);
+    std::cout << "[BFS] Tree 1 repr: " << repr1 << std::endl;
+    print_traversal(traversal1);
+
+    REQUIRE(expected_traversal1.size() == traversal1.size());
+    for(unsigned int i = 0; i < traversal1.size(); ++i)
+        REQUIRE(expected_traversal1[i] == traversal1[i]);
+}
+
+
+TEST_CASE("BFS tree2", "tree_traversal")
+{
+    std::vector<int> traversal;
+    std::vector<int> expected_traversal = {1, 2, 3 ,4, 5};
+
+    TreeNode* tree2 = repr_to_tree(repr2);
+    REQUIRE(nullptr != tree2);
+
+    tree_bfs(tree2, traversal);
+    std::cout << "[BFS] Tree 2 repr: " << repr2 << std::endl;
+    print_traversal(traversal);
+
+    REQUIRE(expected_traversal.size() == traversal.size());
+    for(unsigned int i = 0; i < traversal.size(); ++i)
+        REQUIRE(expected_traversal[i] == traversal[i]);
+}
+
+
+TEST_CASE("BFS tree3", "tree_traversal")
+{
+    std::vector<int> traversal;
+    std::vector<int> expected_traversal = {1, 2, 3, 4, 5};
+
+    TreeNode* tree3 = repr_to_tree(repr3);
+    REQUIRE(nullptr != tree3);
+
+    tree_bfs(tree3, traversal);
+    std::cout << "[BFS] Tree 3 repr: " << repr3 << std::endl;
+    print_traversal(traversal);
+
+    REQUIRE(expected_traversal.size() == traversal.size());
+    for(unsigned int i = 0; i < traversal.size(); ++i)
+        REQUIRE(expected_traversal[i] == traversal[i]);
+}
+
+
+
+TEST_CASE("BFS tree4", "tree_traversal")
+{
+    std::vector<int> traversal;
+    std::vector<int> expected_traversal = {1, 2, 3, 4, 5};
+
+    TreeNode* tree4 = repr_to_tree(repr4);
+    REQUIRE(nullptr != tree4);
+
+    tree_bfs(tree4, traversal);
+    std::cout << "[BFS] Tree 4 repr: " << repr4 << std::endl;
+    print_traversal(traversal);
+
+    REQUIRE(expected_traversal.size() == traversal.size());
+    for(unsigned int i = 0; i < traversal.size(); ++i)
+        REQUIRE(expected_traversal[i] == traversal[i]);
+}
+
+TEST_CASE("BFS tree5", "tree_traversal")
+{
+    std::vector<int> traversal;
+    std::vector<int> expected_traversal = {5, 1, 4, 3, 6, 7, 8};
+
+    TreeNode* tree5 = repr_to_tree(repr5);
+    REQUIRE(nullptr != tree5);
+
+    tree_bfs(tree5, traversal);
+    std::cout << "[BFS] Tree 5 repr: " << repr5 << std::endl;
+    print_traversal(traversal);
+
+    REQUIRE(expected_traversal.size() == traversal.size());
+    for(unsigned int i = 0; i < traversal.size(); ++i)
+        REQUIRE(expected_traversal[i] == traversal[i]);
+}
+
