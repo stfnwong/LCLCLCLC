@@ -125,7 +125,8 @@ def test_min_path_sum_64():
 
     exp_outputs = [7, 12]
     functions = [
-        questions.min_path_sum_64
+        questions.min_path_sum_64,
+        questions.min_path_sum_64_top_down
     ]
 
     for func in functions:

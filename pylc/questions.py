@@ -181,6 +181,9 @@ def unique_paths_62_memo(m:int, n:int) -> int:
 def min_path_sum_64(grid: List[List[int]]) -> int:
     """
     Tabulation solution.
+
+    Time complexity: O(N*M) where N and M are dimensions of grid.
+    Space Complexity = O(N*M) to store the cost array, O(N*M) to store the grid.
     """
 
     MAX_COST = 1000
@@ -192,7 +195,6 @@ def min_path_sum_64(grid: List[List[int]]) -> int:
 
     for row in range(num_rows):
         for col in range(num_cols):
-            # tbh, this can go outside the loop
             if row == 0 and col == 0:
                 cost[0][0] = grid[0][0]
                 continue
@@ -203,6 +205,42 @@ def min_path_sum_64(grid: List[List[int]]) -> int:
             cost[row][col] = grid[row][col] + min(row_cost, col_cost)
 
     return cost[num_rows-1][num_cols-1]
+
+
+
+def min_path_sum_64_top_down(grid: List[List[int]]) -> int:
+    """
+    For the sake of completness, here is a top-down solution to the same problem.
+    TODO: add memoization.
+
+    Time Complexity: O(2^(n+m))
+    Space Complexity: O(n+m)
+    """
+
+    MAX_COST = 1000
+
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+
+    def sp(grid:List[List[int]], row:int, col:int) -> int:
+        # re-use the grid size from the outer scope
+        if row == 0 and col == 0:
+            return grid[0][0]
+        if row >= num_rows or col >= num_cols:
+            return MAX_COST
+        #if row == (num_rows-1) and col == (num_cols-1):
+        #    return grid[row][col]
+
+        # Wrong index here....
+        row_cost = sp(grid, row-1, col) + grid[row][col] if row > 0 else MAX_COST
+        col_cost = sp(grid, row, col-1) + grid[row][col] if col > 0 else MAX_COST
+
+        return min(row_cost, col_cost)
+
+    return sp(grid, num_rows-1, num_cols-1)
+
+
+
 
 
 
