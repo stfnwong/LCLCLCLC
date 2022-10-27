@@ -9,7 +9,8 @@ from typing import List
 
 import unittest
 from pylc import questions
-from utils import check_fib_property
+from pylc.tree import TreeNode, repr_to_tree
+from pylc.utils import check_fib_property
 
 
 
@@ -94,6 +95,55 @@ class TestQuestion55(unittest.TestCase):
         self.assertEqual(self.exp4, jump4)
 
 
+# Question 62
+# Unique paths 
+# https://leetcode.com/problems/unique-paths/
+def test_unique_paths_62():
+    inputs = [
+        (3, 7),
+        (3, 2)
+    ]
+    exp_outputs = [28, 3]
+    functions = [
+        questions.unique_paths_62_brute_force
+    ]
+
+    for func in functions:
+        print(f"Testing {func.__name__}")
+        for inp, exp_out in zip(inputs, exp_outputs):
+            out = func(inp[0], inp[1])
+            assert out == exp_out
+
+# Question 64
+# Minimum path sum
+# https://leetcode.com/problems/minimum-path-sum/
+def test_min_path_sum_64():
+    inputs = [
+        [[1,3,1],[1,5,1],[4,2,1]],
+        [[1,2,3],[4,5,6]]
+    ]
+
+    exp_outputs = [7, 12]
+    functions = [
+        questions.min_path_sum_64
+    ]
+
+    for func in functions:
+        for inp, exp_out in zip(inputs, exp_outputs):
+            out = func(inp)
+            assert out == exp_out
+
+
+
+# Question 102 
+# Binary Tree Level Order Traversal
+# https://leetcode.com/problems/binary-tree-level-order-traversal/
+def test_level_order_traversal_102():
+    inputs = [
+        "[3, 9, 20, null, null, 15, 7]",
+        "[1]",
+        "[]"
+    ]
 
 # Question 300
 # Longest increasing subsequence 

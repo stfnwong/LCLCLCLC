@@ -20,7 +20,7 @@ CXXFLAGS=-Wall -Wshadow -g2 -std=c++14 -D_REENTRANT $(OPT)
 TESTFLAGS=-lgtest -lgtest_main
 LDFLAGS=-pthread
 LIBS = 
-TEST_LIBS = -lgtest -lgtest_main
+TEST_LIBS =
 
 # style for assembly output
 ASM_STYLE=intel

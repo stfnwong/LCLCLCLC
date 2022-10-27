@@ -1,7 +1,6 @@
 /*
  * UNIQUE_PTR
  * May as well try to implement the other major smart pointer 
- * as well.
  *
  * Stefan Wong 2020
  */

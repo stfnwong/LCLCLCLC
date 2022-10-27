@@ -6,7 +6,7 @@ Stefan Wong 2019
 """
 
 import unittest
-from pylc import tree
+from pylc.tree import repr_to_tree
 
 
 class TestTree(unittest.TestCase):
@@ -32,7 +32,7 @@ class TestTreeTraverse(unittest.TestCase):
 
     def test_inorder_recur(self):
         # get a new tree
-        tree = tree.repr_to_tree(self.rstring)
+        tree = repr_to_tree(self.rstring)
         self.assertEqual(self.expected_size, tree.tree_size(tree))
 
         traversal = inorder(tree)
@@ -40,7 +40,8 @@ class TestTreeTraverse(unittest.TestCase):
         # TODO : how to check the traversal?
 
     def test_inorder_iter(self):
-        tree = tree.repr_to_tree(self.rstring)
+        tree = repr_to_tree(self.rstring)
         self.assertEqual(self.expected_size, tree.tree_size(tree))
 
         traversal = inorder_iter(tree)
+        print(traversal)

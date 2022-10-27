@@ -5,7 +5,9 @@ Answers to specific Leetcode questions
 Stefan Wong 2019
 """
 
-from typing import List
+from typing import List, Optional
+
+from pylc.tree import TreeNode
 
 # debug
 #from pudb import set_trace; set_trace()
@@ -124,17 +126,95 @@ def jump_game_can_jump_basic(cur_pos:int, nums:list) -> bool:
 # The above solution is expensive, because we have to try every possible
 # jump from index zero and backtracking down
 
+# Question 62
+# Unique paths
+# https://leetcode.com/problems/unique-paths/
+def unique_paths_62_brute_force(m: int, n:int) -> int:
+    """
+    Worst implementation. Each call generates 2 calls where one of row or col
+    are decremented by one. Therefore, time complexity is O(2^(n+m)).
+    Space complexity is O(n+m) via implied stack space.
+    """
+
+    def unique_paths(m:int, n:int, row:int, col:int) -> int:
+        if row >= m or col >= n:
+            return 0
+        if row == m-1 and col == n-1:
+            return 1
+
+        return unique_paths(m, n, row+1, col) + unique_paths(m, n, row, col+1)
+
+    return unique_paths(m, n, 0, 0)
+
+
+# Question 62
+# Unique paths
+# https://leetcode.com/problems/unique-paths/
+def unique_paths_62_memo(m:int, n:int) -> int:
+    """
+    Same as above but we memoize. We only gain in time complexity as we don't
+    recalculate redundant values.
+
+    Time: O(m*n)
+    Space: O(m*n)   <- this is the final/worst case size of the cache.
+    """
+
+    cache = [[1 for _ in range(n)] for _ in range(m)]
+
+    def unique_paths(m:int, n:int, row:int, col:int, cache:List[List[int]]) -> int:
+        if row >= m or col >= n:
+            return 0
+        if row == m-1 and col == n-1:
+            return 1
+
+        cache[row][col] = unique_paths(m, n, row+1, col, cache) + unique_paths(m, n, row, col+1, cache)
+
+        return cache[row][col]
+
+    return unique_paths(m, n, 0, 0, cache)
+
 
 
 # Question 64
 # Minimum path sum
 # https://leetcode.com/problems/minimum-path-sum/
 def min_path_sum_64(grid: List[List[int]]) -> int:
+    """
+    Tabulation solution.
+    """
+
+    from pudb import set_trace; set_trace()
+    MAX_COST = 1000
+
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+    cost = [[0 for _ in range(num_cols)] for _ in range(num_rows)]
+
+    for row in range(num_rows):
+        for col in range(num_cols):
+            # tbh, this can go outside the loop
+            if row == 0 and col == 0:
+                cost[0][0] = grid[0][0]
+                continue
+
+            col_cost = cost[row][col-1] if col > 0 else MAX_COST
+            row_cost = cost[row-1][col] if row > 0 else MAX_COST
+
+            cost[row][col] = grid[row][col] + min(row_cost, col_cost)
+
+    return cost[num_rows-1][num_cols-1]
+
+
+
+
+# Question 102
+# Binary Tree Level Order Traversal
+# https://leetcode.com/problems/binary-tree-level-order-traversal/
+def level_order_traversal_102(root: Optional[TreeNode]) -> List[List[int]]:
     pass
 
-
 # Question 299
-# Longest increasing subsequence 
+# Longest increasing subsequence
 # https://leetcode.com/problems/longest-increasing-subsequence/
 def lis_300(nums: List[int]) -> int:
     pass
@@ -150,15 +230,15 @@ def lis_300(nums: List[int]) -> int:
 def coin_change_322(coins:List[int], amount:int) -> int:
     # Time complexity here is  O(C * A) where C is the number of elements in coins
     # and A is the amount.
-    # 
-    # Space complexity is O(A) as we are storing the min value for each value between 
+    #
+    # Space complexity is O(A) as we are storing the min value for each value between
     # 0 -> amount in num_ways[].
-    # 
+    #
     # In this case amount+1 is effectively MAX_INT
     num_ways = [(amount+1) for _ in range(amount+1)]
     num_ways[0] = 0
 
-    # Find values for each element in the cache ways 
+    # Find values for each element in the cache ways
     for k in range(1, amount+1):
         for c in coins:
             if (k - c) >= 0:
@@ -172,16 +252,16 @@ def coin_change_322(coins:List[int], amount:int) -> int:
 
 # question 322
 # https://leetcode.com/problems/coin-change/
-# 
+#
 # an implementation using a depth-first search.
-def coin_change_dfs_322(coins: list[int], amount:int) -> int:
+def coin_change_dfs_322(coins: List[int], amount:int) -> int:
     pass
 
 
 # Question 416
 # https://leetcode.com/problems/partition-equal-subset-sum/
 
-# Question 714 
+# Question 714
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
 def time_to_buy_stock_714(prices: List[int], fee: int) -> int:
     pass
@@ -222,7 +302,7 @@ Return any Fibonacci-like sequence split from num, or return [] if it cannot be 
    #    ^     <- pointer to next digit.
 
    # 1, 1, 0  <- fails
-   # 
+   #
 
 
 
