@@ -183,12 +183,12 @@ def min_path_sum_64(grid: List[List[int]]) -> int:
     Tabulation solution.
     """
 
-    from pudb import set_trace; set_trace()
     MAX_COST = 1000
 
     num_rows = len(grid)
     num_cols = len(grid[0])
     cost = [[0 for _ in range(num_cols)] for _ in range(num_rows)]
+    cost[0][0] = grid[0][0]
 
     for row in range(num_rows):
         for col in range(num_cols):
