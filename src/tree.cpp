@@ -381,7 +381,7 @@ void tree_preorder_iter(TreeNode* root, std::vector<int>& traversal)
                 tree_stack.pop();
                 root = root->right;
             }
-        }while(!tree_stack.empty() || (root != nullptr));
+        } while(!tree_stack.empty() || (root != nullptr));
     }
 }
 
@@ -416,7 +416,7 @@ void tree_inorder_iter(TreeNode* root, std::vector<int>& traversal)
                 root = root->right;
             }
 
-        }while(!tree_stack.empty() || (root != nullptr));
+        } while(!tree_stack.empty() || (root != nullptr));
     }
 }
 

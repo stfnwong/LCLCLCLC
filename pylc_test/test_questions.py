@@ -143,8 +143,22 @@ def test_level_order_traversal_102():
     inputs = [
         "[3, 9, 20, null, null, 15, 7]",
         "[1]",
-        "[]"
+        "[]",
+        "[1,2,3,4,null,null,5]",
     ]
+    exp_outputs = [
+        [[3], [9, 20], [15, 7]],
+        [[1]],
+        [],
+        [[1],[2,3],[4,5]]
+    ]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        print(f"Converting tree [{inp}]")
+        root = repr_to_tree(inp)
+        out = questions.level_order_traversal_102(root)
+        assert out == exp_out
+
 
 # Question 300
 # Longest increasing subsequence 

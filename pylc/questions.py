@@ -7,7 +7,7 @@ Stefan Wong 2019
 
 from typing import List, Optional
 
-from pylc.tree import TreeNode
+from pylc.tree import TreeNode, BinaryTreeNode
 
 # debug
 #from pudb import set_trace; set_trace()
@@ -248,8 +248,44 @@ def min_path_sum_64_top_down(grid: List[List[int]]) -> int:
 # Question 102
 # Binary Tree Level Order Traversal
 # https://leetcode.com/problems/binary-tree-level-order-traversal/
-def level_order_traversal_102(root: Optional[TreeNode]) -> List[List[int]]:
-    pass
+def level_order_traversal_102(root: Optional[BinaryTreeNode]) -> List[List[int]]:
+    """
+    Return a level-order traversal of some BinaryTreeNode. We want to the traversal
+    returned as a List, where each element is a List of all the values at a given level.
+    """
+
+    q = []   #
+    if not root:
+        return []
+
+    q.append(root)
+    traversal = []
+
+    from pudb import set_trace; set_trace()
+    while q:
+        # Get any nodes from the queue. The nodes will have been added in "level" order 
+        # since we add all children to the queue at the end of the loop. In other words
+        # we expect the length of the queue to double on each level, assuming that all
+        # nodes are populated.
+
+        level = []
+        for _ in range(len(q)):
+            # Add the value from this node to the traversal of this level
+            cur_node = q.pop(0)
+            level.append(cur_node.val)
+
+            # Add any children to the queue, on the subsequent loop we will visit them
+            # and their children in turn.
+            if cur_node.left:
+                q.append(cur_node.left)
+            if cur_node.right:
+                q.append(cur_node.right)
+
+        traversal.append(level)
+
+    return traversal
+
+
 
 # Question 299
 # Longest increasing subsequence

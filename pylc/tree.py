@@ -4,7 +4,7 @@ Implementations of various tree things
 
 """
 
-from typing import List
+from typing import List, Optional
 from collections import deque
 
 
@@ -14,6 +14,14 @@ class TreeNode:
         self.val = val
         self.left = left
         self.right = right
+
+
+
+#class NTree:
+#    def __init__(self, val:int=0, c:Optional[List[NTree]]=None):
+#        self.val = val
+#        self.children = c
+#
 
 
 # Some class I probably made up similar to the leetcode one
@@ -49,9 +57,55 @@ class BinaryTreeNode:
     def __str__(self) -> str:
         return self.__repr__()
 
+    #def __len__(self) -> int:
+    #    """
+    #    The len() for this object is the total number of nodes
+    #    """
+
+    #    n = 0
+    #    stack = []
+    #    cur_node = self
+
+    #    while stack or cur_node:
+    #        if cur_node:
+    #            n += 1
+    #            stack.append(cur_node)
+    #            cur_node = cur_node.left
+    #        else:
+    #            prev_node = stack.pop(-1)
+    #            cur_node = prev_node.right
+
+    #    return n
+
+
+
+def tree_size(tree:Optional[BinaryTreeNode]) -> int:
+    """
+    Return the number of nodes in a binary tree
+    """
+
+    if not tree:
+        return 0
+
+    n = 0
+    stack = []
+    cur_node = tree
+
+    while stack or cur_node:
+        if cur_node:
+            n = n + 1
+            stack.append(cur_node)
+            cur_node = cur_node.left
+        else:
+            prev_node = stack.pop(-1)
+            cur_node = prev_node.right
+
+    return n
+
+
 
 # ==== Create new Binary Tree objects ==== #
-def repr_to_tree(repr_string:str) -> BinaryTreeNode:
+def repr_to_tree_old(repr_string:str) -> BinaryTreeNode:
     """
     Convert a leetcode-style string repr into a tree
     """
@@ -73,49 +127,80 @@ def repr_to_tree(repr_string:str) -> BinaryTreeNode:
     check_left = True
 
     for token in rtokens[1:]:
-        #cur_node = node_q[-1]
-
         # check the next token in the sequence
+        token = "".join(token.split())      # This actually seems quite cumbersome for what I want to do
         null_node = (token == "None") or (token == "null")
-        #null_node = token in ('none', 'None', 'Null', 'null')
+
+        #print(f"cur_token: [{token}], null_node: {null_node}")
 
         if null_node:
             check_left = ~check_left
         else:
             cur_node = node_q.pop()
-            print(f"cur_token: {token}")
-
             new_node = BinaryTreeNode(int(token))
-            # Attach this node to the current node 
+
+            # Attach this node to the current node
             if check_left:
                 cur_node.left = new_node
                 node_q.append(cur_node.left)
             else:
                 cur_node.right = new_node
                 node_q.append(cur_node.right)
+
             check_left = ~check_left
+
+    return root
+
+
+
+def repr_to_tree(repr_string:str) -> BinaryTreeNode:
+    """
+    Convert a leetcode style tree repr string into a BinaryTreeNode. The repr string
+    is given as the level-order traversal of the tree.
+    """
+
+    # Strip outside square brackets
+    if repr_string[0] == "[" and repr_string[-1] == "]":
+        repr_string = repr_string[1:-1]
+
+    rtokens = repr_string.split(',')
+
+    if not rtokens:
+        return BinaryTreeNode()
+
+    # Create the root of the tree. The root node can't be null.
+    root = BinaryTreeNode(int(rtokens[0]))
+    #node_q = deque([root])
+    node_q = [root]
+
+    next_is_left = True
+
+
+    cur_node = node_q[0]
+    for n, token in enumerate(rtokens[1:]):
+        if n % 2 == 0:
+            cur_node = node_q.pop(0)
+
+        token = "".join(token.split())      # This actually seems quite cumbersome for what I want to do
+        null_node = (token == "None") or (token == "null")
+
+        if null_node:
+            next_is_left = ~next_is_left
+        else:
+            new_node = BinaryTreeNode(int(token))
+            if next_is_left:
+                cur_node.left = new_node
+            else:
+                cur_node.right = new_node
+
+            node_q.append(new_node)
+            next_is_left = ~next_is_left
 
 
     return root
 
 
 
-def tree_size(root:BinaryTreeNode) -> int:
-    """
-    tree_size()
-    Counts the number of non-empty nodes in a tree
-    """
-
-    size:int = 1
-
-    if root is None:
-        return 0
-    if root.left is not None:
-        size = size + tree_size(root.left)
-    if root.right is not None:
-        size = size + tree_size(root.right)
-
-    return size
 
 
 def tree_to_str(root:BinaryTreeNode) -> str:

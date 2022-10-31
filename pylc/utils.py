@@ -18,6 +18,18 @@ def check_fib_property(seq: List[int]) -> bool:
     return True
 
 
+
+def mul(a:int, b:int) -> int:
+    res = 0
+    while a > 0:
+        if a % 2 != 0:
+            res += b
+        b = b * 2
+        a = a // 2
+
+    return res
+
+
 def print_grid(grid:List[List[int]]) -> None:
     """
     Pretty print a grid of numbers, where the grid is represented by a list of lists.
@@ -44,3 +56,4 @@ def print_grid(grid:List[List[int]]) -> None:
 
         print("\n")
             #print(f"{grid[row][col]:{char_width}}")
+
