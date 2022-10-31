@@ -129,54 +129,6 @@ def tree_level_traversal(root:Optional[BinaryTreeNode]) -> List[List[int]]:
 
 
 # ==== Create new Binary Tree objects ==== #
-def repr_to_tree_old(repr_string:str) -> BinaryTreeNode:
-    """
-    Convert a leetcode-style string repr into a tree
-    """
-
-    # Strip outside square brackets
-    if repr_string[0] == "[" and repr_string[-1] == "]":
-        repr_string = repr_string[1:-1]
-
-    rtokens = repr_string.split(',')
-    #node_q = list()
-
-    if not rtokens:
-        return BinaryTreeNode()
-
-    # Create the root of the tree. The root node can't be null.
-    root = BinaryTreeNode(int(rtokens[0]))
-    node_q = deque([root])
-    #node_q.append(root)
-    check_left = True
-
-    for token in rtokens[1:]:
-        # check the next token in the sequence
-        token = "".join(token.split())      # This actually seems quite cumbersome for what I want to do
-        null_node = (token == "None") or (token == "null")
-
-        #print(f"cur_token: [{token}], null_node: {null_node}")
-
-        if null_node:
-            check_left = ~check_left
-        else:
-            cur_node = node_q.pop()
-            new_node = BinaryTreeNode(int(token))
-
-            # Attach this node to the current node
-            if check_left:
-                cur_node.left = new_node
-                node_q.append(cur_node.left)
-            else:
-                cur_node.right = new_node
-                node_q.append(cur_node.right)
-
-            check_left = ~check_left
-
-    return root
-
-
-
 def repr_to_tree(repr_string:str) -> BinaryTreeNode:
     """
     Convert a leetcode style tree repr string into a BinaryTreeNode. The repr string
@@ -194,31 +146,30 @@ def repr_to_tree(repr_string:str) -> BinaryTreeNode:
 
     # Create the root of the tree. The root node can't be null.
     root = BinaryTreeNode(int(rtokens[0]))
-    #node_q = deque([root])
-    node_q = [root]
+    node_q = []
+    next_is_left = False
+    is_root = True
 
-    next_is_left = True
-
-
-    cur_node = node_q[0]
-    for n, token in enumerate(rtokens[1:]):
-        if n % 2 == 0:
+    for token in rtokens:
+        if len(node_q) > 0:
             cur_node = node_q.pop(0)
+            next_is_left = ~next_is_left
+            is_root = False
 
         token = "".join(token.split())      # This actually seems quite cumbersome for what I want to do
         null_node = (token == "None") or (token == "null")
 
-        if null_node:
-            next_is_left = ~next_is_left
-        else:
+        if not null_node:
             new_node = BinaryTreeNode(int(token))
-            if next_is_left:
-                cur_node.left = new_node
-            else:
-                cur_node.right = new_node
-
             node_q.append(new_node)
-            next_is_left = ~next_is_left
+            node_q.append(new_node)
+            if is_root:
+                root = new_node
+            else:
+                if next_is_left:
+                    cur_node.left = new_node
+                else:
+                    cur_node.right = new_node
 
 
     return root
