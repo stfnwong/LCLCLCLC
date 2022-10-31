@@ -38,23 +38,6 @@ def test_repr_to_tree():
         assert exp_t == traversal
         assert len(tree) == exp_size
 
-    #tree          = repr_to_tree(rstring)
-    #assert len(tree) == expected_size
-    #size          = tree_size(tree)
-    #assert size == expected_size
-
-
-def test_inorder_traverse():
-    tree = repr_to_tree(rstring)
-    size = tree_size(tree)
-    assert size == expected_size
-
-    t_input = []
-    traversal = inorder(tree, t_input)
-    assert len(traversal) == expected_size
-
-        # TODO : how to check the traversal?
-
 
 def test_tree_size():
     tree_repr = "[1, 2, null, 3]"
