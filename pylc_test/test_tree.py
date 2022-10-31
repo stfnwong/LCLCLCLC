@@ -21,19 +21,18 @@ def test_repr_to_tree():
     repr_inputs = [
         "[1, 2, 3]",
         "[1, None, 3]",
-        "[1, 2, None, 3, 4, None, 5, 6, 7]",
-        "[1, None, 2, None, 3, 4]"
+        "[1, 2, 3, None, 4, 5, 6]",
+        "[1, None, 2, None, None, 4]"
     ]
-    exp_sizes = [3, 2, 7, 4]
     exp_traversals = [
         [[1], [2, 3]],
         [[1], [3]],
-        [[1], [2], [3, 4, 5], [6, 7]],
-        [[1], [2], [3], [4]]
+        [[1], [2, 3], [4, 5, 6]],
+        [[1], [2], [4]]
     ]
-    from pudb import set_trace; set_trace()
+    exp_sizes = [3, 2, 6, 3]
 
-    for inp, exp_size, exp_t in zip(repr_inputs, exp_sizes, exp_traversals):
+    for inp, exp_t, exp_size in zip(repr_inputs, exp_traversals, exp_sizes):
         tree = repr_to_tree(inp)
         traversal = tree_level_traversal(tree)
         assert exp_t == traversal

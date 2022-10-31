@@ -171,10 +171,7 @@ def repr_to_tree(repr_string:str) -> BinaryTreeNode:
                 else:
                     cur_node.right = new_node
 
-
     return root
-
-
 
 
 
