@@ -57,25 +57,25 @@ class BinaryTreeNode:
     def __str__(self) -> str:
         return self.__repr__()
 
-    #def __len__(self) -> int:
-    #    """
-    #    The len() for this object is the total number of nodes
-    #    """
+    def __len__(self) -> int:
+        """
+        The len() for this object is the total number of nodes
+        """
 
-    #    n = 0
-    #    stack = []
-    #    cur_node = self
+        n = 0
+        stack = []
+        cur_node = self
 
-    #    while stack or cur_node:
-    #        if cur_node:
-    #            n += 1
-    #            stack.append(cur_node)
-    #            cur_node = cur_node.left
-    #        else:
-    #            prev_node = stack.pop(-1)
-    #            cur_node = prev_node.right
+        while len(stack) > 0 or cur_node is not None:
+            if cur_node is not None:
+                n += 1
+                stack.append(cur_node)
+                cur_node = cur_node.left
+            else:
+                prev_node = stack.pop(-1)
+                cur_node = prev_node.right
 
-    #    return n
+        return n
 
 
 
@@ -84,15 +84,12 @@ def tree_size(tree:Optional[BinaryTreeNode]) -> int:
     Return the number of nodes in a binary tree
     """
 
-    if not tree:
-        return 0
-
     n = 0
     stack = []
     cur_node = tree
 
-    while stack or cur_node:
-        if cur_node:
+    while len(stack) > 0 or cur_node is not None:
+        if cur_node is not None:
             n = n + 1
             stack.append(cur_node)
             cur_node = cur_node.left
@@ -102,6 +99,33 @@ def tree_size(tree:Optional[BinaryTreeNode]) -> int:
 
     return n
 
+
+
+def tree_level_traversal(root:Optional[BinaryTreeNode]) -> List[List[int]]:
+    """
+    Return a level-order traversal of a binary tree. The traversal is represented
+    as a List where each Element is a list of the nodes on a given level.
+    """
+
+    traversal = []
+    q = []
+    q.append(root)
+
+    while len(q) > 0:
+        level = []
+
+        for _ in range(len(q)):
+            cur_node = q.pop(0)
+            level.append(cur_node.val)
+
+            if cur_node.left is not None:
+                q.append(cur_node.left)
+            if cur_node.right is not None:
+                q.append(cur_node.right)
+
+        traversal.append(level)
+
+    return traversal
 
 
 # ==== Create new Binary Tree objects ==== #

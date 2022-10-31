@@ -261,7 +261,7 @@ def level_order_traversal_102(root: Optional[BinaryTreeNode]) -> List[List[int]]
     q.append(root)
     traversal = []
 
-    from pudb import set_trace; set_trace()
+    #from pudb import set_trace; set_trace()
     while q:
         # Get any nodes from the queue. The nodes will have been added in "level" order 
         # since we add all children to the queue at the end of the loop. In other words
