@@ -51,19 +51,22 @@ def test_tree_size():
 
 
 
-def test_level_order_traversal():
+# ======== TRAVERSALS ======== #
+def test_inorder_traversal():
+    repr_strings = [
+        "[1, 2, 3]",
+        "[1, 2, None, 3, 4]",
+        "[1, 2, 3, None, 4, 5]",
+    ]
+    expected_traversals = [
+        [2, 1, 3],
+        [3, 2, 4, 1],
+        [2, 4, 1 , 5, 3],
+    ]
 
-    tree = repr_to_tree(rstring)
-    expected_traversal = [[1], [2], [3, 4, 5], [6, 7]]
+    for rstring, exp_traversal in zip(repr_strings, expected_traversals):
+        tree = repr_to_tree(rstring)
+        out_traversal = inorder(tree, [])
+        assert len(out_traversal) == len(exp_traversal)
+        assert out_traversal == exp_traversal
 
-    traversal = tree_level_traversal(tree)
-    assert len(traversal) == len(expected_traversal)
-
-
-
-#def test_inorder_iter_traverse():
-#    tree = repr_to_tree(rstring)
-#    assert size == expected_size
-#
-#    traversal = inorder_iter(tree)
-#    assert len(traversal) == expected_size

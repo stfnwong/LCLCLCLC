@@ -175,15 +175,6 @@ def repr_to_tree(repr_string:str) -> BinaryTreeNode:
 
 
 
-def tree_to_str(root:BinaryTreeNode) -> str:
-    s = []
-
-    if root is None:
-        return "[]"
-
-
-
-
 # ==== recursive traversal methods ==== #
 def inorder(root:BinaryTreeNode, traversal:List[int]) -> List[int]:
     if root is not None:
@@ -191,8 +182,7 @@ def inorder(root:BinaryTreeNode, traversal:List[int]) -> List[int]:
         traversal.append(root.val)
         inorder(root.right, traversal)
 
-        return
-        #return res
+    return traversal
 
 
 def levelorder(root:BinaryTreeNode, traversal:List[int]) -> List[int]:
