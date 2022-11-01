@@ -176,7 +176,36 @@ def repr_to_tree(repr_string:str) -> BinaryTreeNode:
 
 
 # ==== recursive traversal methods ==== #
+def preorder(root:BinaryTreeNode, traversal:List[int]) -> List[int]:
+    """
+    Recursively perform preorder traversal
+    """
+
+    if root is not None:
+        traversal.append(root.val)
+        preorder(root.left, traversal)
+        preorder(root.right, traversal)
+
+    return traversal
+
+def postorder(root:BinaryTreeNode, traversal:List[int]) -> List[int]:
+    """
+    Recursively perform postorder traversal
+    """
+
+    if root is not None:
+        postorder(root.left, traversal)
+        postorder(root.right, traversal)
+        traversal.append(root.val)
+
+    return traversal
+
+
 def inorder(root:BinaryTreeNode, traversal:List[int]) -> List[int]:
+    """
+    Recursively perform inorder traversal
+    """
+
     if root is not None:
         inorder(root.left, traversal)
         traversal.append(root.val)
