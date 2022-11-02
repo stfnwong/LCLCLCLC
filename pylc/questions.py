@@ -310,20 +310,16 @@ def level_order_zigzag_traversal_103(root:Optional[BinaryTreeNode]) -> List[List
             if cur_node:
                 level.append(cur_node.val)
 
-                # Append left to right, then right to left
                 if left_first:
-                    if cur_node.left:
-                        q.append(cur_node.left)
-                    if cur_node.right:
-                        q.append(cur_node.right)
+                    nodes = [cur_node.left, cur_node.right]
                 else:
-                    if cur_node.right:
-                        q.append(cur_node.right)
-                    if cur_node.left:
-                        q.append(cur_node.left)
+                    nodes = [cur_node.right, cur_node.left]
+
+                q.extend(nodes)
 
         left_first = ~left_first
-        traversal.append(level)
+        if level:
+            traversal.append(level)
 
     return traversal
 
