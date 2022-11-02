@@ -221,7 +221,7 @@ GraphNode* createGraph(const std::string& repr)
  */
 GraphNode* cloneGraph(GraphNode* node)
 {
-    GraphNode* out_graph;
+    GraphNode* out_graph = nullptr;
 
     return out_graph;
 }

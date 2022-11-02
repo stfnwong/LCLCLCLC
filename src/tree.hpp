@@ -22,6 +22,8 @@ struct TreeNode
 
     public:
         TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+        // copy constructor
+        TreeNode(const TreeNode& that) : val(that.val), left(that.left), right(that.right) {}
 };
 
 /*
@@ -29,6 +31,7 @@ struct TreeNode
  * Count the number of nodes in a tree
  */
 int tree_size(const TreeNode* root);
+int tree_size_iter(const TreeNode* root);   // same, but using a queue
 
 // NOTE: see https://support.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation- for details about how this representation works.
 

@@ -39,7 +39,7 @@ def longest_unique_substring_3(s:str) -> int:
 
 
 # leetcode 14
-#https://leetcode.com/problems/longest-common-prefix/
+# https://leetcode.com/problems/longest-common-prefix/
 def longest_common_prefix_14(strs:List[str]) -> str:
     # It turns out that scanning ahead to find the maximum length
     # the prefix could be is slightly faster on average. The reason

@@ -34,6 +34,33 @@ int tree_size(const TreeNode* root)
     return size;
 }
 
+// Finding the height of a tree is basically taking the level-order traversal
+int tree_size_iter(const TreeNode* root)
+{
+    int height = 0;
+
+    if(not root)
+        return 0;
+
+    TreeNode* cur_node = nullptr;
+    std::queue<TreeNode*> node_q;
+
+    node_q.push(new TreeNode(*root));
+
+    while(!node_q.empty())
+    {
+        cur_node = node_q.front();
+        height++;
+        if(cur_node->left != nullptr)
+            node_q.push(cur_node->left);
+        if(cur_node->right != nullptr)
+            node_q.push(cur_node->right);
+        node_q.pop();
+    }
+
+    return height;
+}
+
 
 /*
  * create_tree()

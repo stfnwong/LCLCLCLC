@@ -11,6 +11,7 @@
 #include <string>
 #include "tree.hpp"
 
+
 // Test variables
 const std::string empty_repr = "[]";
 const std::string repr1      = "[1,2,3]";
@@ -21,7 +22,7 @@ const int tree2_size = 3;
 const int tree3_size = 4;
 
 
-TEST_CASE("TestTree, test_repr_to_tree", "[classic]")
+TEST_CASE("test_repr_to_tree", "TreeNode")
 {
     TreeNode* repr1_tree;
     TreeNode* repr2_tree;
@@ -39,6 +40,10 @@ TEST_CASE("TestTree, test_repr_to_tree", "[classic]")
     
     // Since the traversals are tested seperately, we just test 
     // the size here.
+    REQUIRE(tree_size(repr1_tree) == 3);
+    REQUIRE(tree_size(repr2_tree) == 3);
+    REQUIRE(tree_size(repr3_tree) == 4);
+    REQUIRE(tree_size(empty_tree) == 0);
 
     // clean up
     destroy_tree(repr1_tree);
@@ -48,7 +53,7 @@ TEST_CASE("TestTree, test_repr_to_tree", "[classic]")
 }
 
 
-TEST_CASE("TestTree, test_tree_to_repr", "[classic]")
+TEST_CASE("test_tree_to_repr", "TreeNode")
 {
     // tree structurs
     TreeNode* empty_repr_tree;
@@ -97,7 +102,7 @@ TEST_CASE("TestTree, test_tree_to_repr", "[classic]")
 }
 
 
-TEST_CASE("TestTree, test_tree_size", "[classic]")
+TEST_CASE("test_tree_size", "TreeNode")
 {
     //TreeNode* tree;
     //std::string repr = "[1, 2, null, 3, 4, null, 5, 6, 7, null]";
@@ -123,6 +128,31 @@ TEST_CASE("TestTree, test_tree_size", "[classic]")
 
     empty_tree = repr_to_tree(empty_repr);
     REQUIRE(0 == tree_size(empty_tree));
+
+    destroy_tree(tree1);
+    destroy_tree(tree2);
+    destroy_tree(tree3);
+    destroy_tree(empty_tree);
+}
+
+TEST_CASE("test_tree_size_iter", "TreeNode")
+{
+    TreeNode* empty_tree;
+    TreeNode* tree1;
+    TreeNode* tree2;
+    TreeNode* tree3;
+
+    tree1 = repr_to_tree(repr1);
+    REQUIRE(tree1_size == tree_size_iter(tree1));
+    
+    tree2 = repr_to_tree(repr2);
+    REQUIRE(tree2_size == tree_size_iter(tree2));
+
+    tree3 = repr_to_tree(repr3);
+    REQUIRE(tree3_size == tree_size_iter(tree3));
+
+    empty_tree = repr_to_tree(empty_repr);
+    REQUIRE(0 == tree_size_iter(empty_tree));
 
     destroy_tree(tree1);
     destroy_tree(tree2);

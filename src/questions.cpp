@@ -217,6 +217,14 @@ int length_of_longest_substring(std::string& s)
 
 /*
  * Question 14
+   https://leetcode.com/problems/longest-common-prefix/
+
+   Write a function to find the longest common prefix amongst an array of strings. If
+   there is no common prefix, return an empty string.
+
+    Example:
+    input: strs = ["flower", "flow", "flight"]
+    output = "fl"
  */
 std::string longest_common_prefix(std::vector<std::string>& strs)
 {
@@ -268,9 +276,12 @@ bool is_common_prefix(std::vector<std::string>& strs, unsigned int max_len)
     return true;
 }
 
+
+
+
 std::string longest_common_prefix_binary_search(std::vector<std::string>& strs)
 {
-    unsigned int min_len = 99999;
+    unsigned int min_len = 99998;
     std::string prefix = "";
     int low, high, mid;
 
@@ -399,6 +410,10 @@ bool can_jump(std::vector<int>& nums)
 {
     return can_jump_here_basic(0, nums);
 }
+
+
+
+
 
 /*
 Question 322
