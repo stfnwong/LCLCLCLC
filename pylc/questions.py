@@ -304,22 +304,22 @@ def lis_300(nums: List[int]) -> int:
     d = [1 for _ in range(N)]
 
     # Construct the array that tells us
+    ans = d[0]
     for i in range(N):
         for j in range(i):
             if nums[j] < nums[i]:
                 d[i] = max(d[i], d[j]+1)
-
-    # Now the max element in d is the length of the longest subsequence
-    ans = d[0]
-    for elem in d:
-        ans = max(ans, elem)
+                ans = max(ans, d[i])
 
     return ans
 
 
 def lis_300_recursive(nums: List[int]) -> int:
     """
-    A recursive solution.
+    A recursive solution. This one looks at all pairs of elements in nums.
+
+    Time Complexity: O(n^2)
+    Space Complexity: O(n)  (stack)
     """
 
     MIN_VAL = int(-1e4)

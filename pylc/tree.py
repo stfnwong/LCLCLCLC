@@ -107,6 +107,9 @@ def tree_level_traversal(root:Optional[BinaryTreeNode]) -> List[List[int]]:
     as a List where each Element is a list of the nodes on a given level.
     """
 
+    if not root:
+        return []
+
     traversal = []
     q = []
     q.append(root)
@@ -129,23 +132,25 @@ def tree_level_traversal(root:Optional[BinaryTreeNode]) -> List[List[int]]:
 
 
 # ==== Create new Binary Tree objects ==== #
-def repr_to_tree(repr_string:str) -> BinaryTreeNode:
+def repr_to_tree(repr_string:str) -> Optional[BinaryTreeNode]:
     """
     Convert a leetcode style tree repr string into a BinaryTreeNode. The repr string
     is given as the level-order traversal of the tree.
     """
+
+    is_null_token = lambda token: token in ("None", "null", "")
+    strip_whitespace = lambda token: "".join(token.split())
 
     # Strip outside square brackets
     if repr_string[0] == "[" and repr_string[-1] == "]":
         repr_string = repr_string[1:-1]
 
     rtokens = repr_string.split(',')
-
-    if not rtokens:
-        return BinaryTreeNode()
+    if len(rtokens) == 1 and rtokens[0] == "":
+        return None
 
     # Create the root of the tree. The root node can't be null.
-    root = BinaryTreeNode(int(rtokens[0]))
+    root = None
     node_q = []
     next_is_left = False
     is_root = True
@@ -156,8 +161,7 @@ def repr_to_tree(repr_string:str) -> BinaryTreeNode:
             next_is_left = ~next_is_left
             is_root = False
 
-        token = "".join(token.split())      # This actually seems quite cumbersome for what I want to do
-        null_node = (token == "None") or (token == "null")
+        null_node = is_null_token(strip_whitespace(token))
 
         if not null_node:
             new_node = BinaryTreeNode(int(token))
@@ -176,54 +180,55 @@ def repr_to_tree(repr_string:str) -> BinaryTreeNode:
 
 
 # ==== recursive traversal methods ==== #
-def preorder(root:BinaryTreeNode, traversal:List[int]) -> List[int]:
+def preorder_rec(root:Optional[BinaryTreeNode], traversal:List[int]) -> List[int]:
     """
     Recursively perform preorder traversal
     """
 
     if root is not None:
         traversal.append(root.val)
-        preorder(root.left, traversal)
-        preorder(root.right, traversal)
+        preorder_rec(root.left, traversal)
+        preorder_rec(root.right, traversal)
 
     return traversal
 
-def postorder(root:BinaryTreeNode, traversal:List[int]) -> List[int]:
+def postorder_rec(root:Optional[BinaryTreeNode], traversal:List[int]) -> List[int]:
     """
     Recursively perform postorder traversal
     """
 
     if root is not None:
-        postorder(root.left, traversal)
-        postorder(root.right, traversal)
+        postorder_rec(root.left, traversal)
+        postorder_rec(root.right, traversal)
         traversal.append(root.val)
 
     return traversal
 
 
-def inorder(root:BinaryTreeNode, traversal:List[int]) -> List[int]:
+def inorder_rec(root:Optional[BinaryTreeNode], traversal:List[int]) -> List[int]:
     """
     Recursively perform inorder traversal
     """
 
     if root is not None:
-        inorder(root.left, traversal)
+        inorder_rec(root.left, traversal)
         traversal.append(root.val)
-        inorder(root.right, traversal)
+        inorder_rec(root.right, traversal)
 
     return traversal
 
 
-def levelorder(root:BinaryTreeNode, traversal:List[int]) -> List[int]:
+def levelorder_iter(root:Optional[BinaryTreeNode], traversal:List[int]) -> List[int]:
     q = deque([root])
 
     while q:
         cur_node = q.pop()
-        traversal.append(cur_node.val)
-        if cur_node.left:
-            q.append(cur_node.left)
-        if cur_node.right:
-            q.append(cur_node.right)
+        if cur_node:
+            traversal.append(cur_node.val)
+            if cur_node.left:
+                q.append(cur_node.left)
+            if cur_node.right:
+                q.append(cur_node.right)
 
     return traversal
 

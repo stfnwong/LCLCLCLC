@@ -155,9 +155,10 @@ def test_level_order_traversal_102():
     ]
 
     for inp, exp_out in zip(inputs, exp_outputs):
-        print(f"Converting tree [{inp}]")
+        print(f"Converting tree [{inp}]", end=" ")
         root = repr_to_tree(inp)
         out = questions.level_order_traversal_102(root)
+        print(f" ...traversal was {out}")
         assert out == exp_out
 
 
