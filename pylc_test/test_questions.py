@@ -114,6 +114,7 @@ def test_unique_paths_62():
             out = func(inp[0], inp[1])
             assert out == exp_out
 
+
 # Question 64
 # Minimum path sum
 # https://leetcode.com/problems/minimum-path-sum/
@@ -165,16 +166,25 @@ def test_level_order_traversal_102():
 # https://leetcode.com/problems/longest-increasing-subsequence/
 def test_lis_300():
     inputs = [
-        [10, 9, 2, 5, 3, 7, 101, 18],
+        [1, 2, 3, 4, 1],
         [0, 1, 0, 3, 2, 3],
         [7, 7, 7, 7, 7, 7, 7],
+        [10, 9, 2, 5, 3, 7, 101, 18],
     ]
 
-    exp_outputs = [4, 4, 1]
+    exp_outputs = [4, 4, 1, 4]
+    functions = [
+        questions.lis_300_recursive,
+        questions.lis_300,
+        #questions.lis_300_alt
+    ]
 
-    for inp, exp_out in zip(inputs, exp_outputs):
-        out = questions.lis_300(inp)
-        assert out == exp_out
+    for func in functions:
+        for inp, exp_out in zip(inputs, exp_outputs):
+            print(f"Checking sequence {inp}", end=" ")
+            out = func(inp)
+            assert out == exp_out
+            print("....[OK]")
 
 
 # Question 322

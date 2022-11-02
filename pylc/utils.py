@@ -8,6 +8,9 @@ def check_fib_property(seq: List[int]) -> bool:
     seq[n] = seq[n-1] + seq[n-2]
     """
 
+    if not seq:
+        return True
+
     if len(seq) <= 2:
         return True
 

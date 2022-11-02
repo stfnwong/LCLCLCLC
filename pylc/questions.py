@@ -263,7 +263,7 @@ def level_order_traversal_102(root: Optional[BinaryTreeNode]) -> List[List[int]]
 
     #from pudb import set_trace; set_trace()
     while q:
-        # Get any nodes from the queue. The nodes will have been added in "level" order 
+        # Get any nodes from the queue. The nodes will have been added in "level" order
         # since we add all children to the queue at the end of the loop. In other words
         # we expect the length of the queue to double on each level, assuming that all
         # nodes are populated.
@@ -287,11 +287,83 @@ def level_order_traversal_102(root: Optional[BinaryTreeNode]) -> List[List[int]]
 
 
 
-# Question 299
+# Question 300
 # Longest increasing subsequence
 # https://leetcode.com/problems/longest-increasing-subsequence/
 def lis_300(nums: List[int]) -> int:
-    pass
+    """
+    This is the shitty solution
+
+    Time complexity: O(n^2)
+    Space complexity: O(n)   (for d array)
+    """
+
+    N = len(nums)
+    # This is the array that tells us how long each subsequence is. The element d[i]
+    # represents the length of the longest subsequence ENDING at nums[i].
+    d = [1 for _ in range(N)]
+
+    # Construct the array that tells us
+    for i in range(N):
+        for j in range(i):
+            if nums[j] < nums[i]:
+                d[i] = max(d[i], d[j]+1)
+
+    # Now the max element in d is the length of the longest subsequence
+    ans = d[0]
+    for elem in d:
+        ans = max(ans, elem)
+
+    return ans
+
+
+def lis_300_recursive(nums: List[int]) -> int:
+    """
+    A recursive solution.
+    """
+
+    MIN_VAL = int(-1e4)
+
+    def solve(nums: List[int], idx: int, prev: int) -> int:
+        # Base case - there are no more numbers to pick
+        if idx >= len(nums):
+            return 0
+        dont_take = solve(nums, idx+1, prev) # value if we don't include this value in the subsequence 
+        if nums[idx] > prev:
+            take = 1 + solve(nums, idx+1, nums[idx])   # value if we include this value in the subsequence
+        else:
+            take = 0
+
+        return max(take, dont_take)
+
+    return solve(nums, 0, MIN_VAL)
+
+
+# TODO: do a proper DP version
+def lis_300_alt(nums: List[int]) -> int:
+    """
+    This is version where the d array holds the element at which a subsequence of length
+    i terminates. This version still has a runtime complexity of O(n^2).
+    """
+
+    from pudb import set_trace; set_trace()
+    MAX = 100000
+    N = len(nums)
+    d = [MAX for _ in range(N+1)]
+    d[0] = -MAX
+
+    for i in range(N):
+        for j in range(1, N+1):
+            if (d[j-1] < nums[i]) and (nums[i] < d[j]):
+                d[j] = nums[i]
+
+    ans = 0
+    for elem in d:
+        if elem < MAX:
+            ans = elem
+
+    return ans
+
 
 
 # Question 322
