@@ -254,11 +254,10 @@ def level_order_traversal_102(root: Optional[BinaryTreeNode]) -> List[List[int]]
     returned as a List, where each element is a List of all the values at a given level.
     """
 
-    q = []   #
     if not root:
         return []
 
-    q.append(root)
+    q = [root]
     traversal = []
 
     #from pudb import set_trace; set_trace()
@@ -272,19 +271,61 @@ def level_order_traversal_102(root: Optional[BinaryTreeNode]) -> List[List[int]]
         for _ in range(len(q)):
             # Add the value from this node to the traversal of this level
             cur_node = q.pop(0)
-            level.append(cur_node.val)
+            if cur_node:
+                level.append(cur_node.val)
 
-            # Add any children to the queue, on the subsequent loop we will visit them
-            # and their children in turn.
-            if cur_node.left:
-                q.append(cur_node.left)
-            if cur_node.right:
-                q.append(cur_node.right)
+                # Add any children to the queue, on the subsequent loop we will visit them
+                # and their children in turn.
+                if cur_node.left:
+                    q.append(cur_node.left)
+                if cur_node.right:
+                    q.append(cur_node.right)
 
         traversal.append(level)
 
     return traversal
 
+
+# Question 103
+# Binary Tree ZigZag Level Order Traversal
+# https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
+def level_order_zigzag_traversal_103(root:Optional[BinaryTreeNode]) -> List[List[int]]:
+    """
+    The zig-zag level order traversal is the traversal that goes in level order
+    from left to right, then on the subsequent level right-to-left, then left-to-right
+    and so on.
+    """
+
+    if not root:
+        return []
+
+    left_first = False
+    q = [root]
+    traversal = []
+
+    while q:
+        level = []
+        for _ in range(len(q)):
+            cur_node =  q.pop(0)
+            if cur_node:
+                level.append(cur_node.val)
+
+                # Append left to right, then right to left
+                if left_first:
+                    if cur_node.left:
+                        q.append(cur_node.left)
+                    if cur_node.right:
+                        q.append(cur_node.right)
+                else:
+                    if cur_node.right:
+                        q.append(cur_node.right)
+                    if cur_node.left:
+                        q.append(cur_node.left)
+
+        left_first = ~left_first
+        traversal.append(level)
+
+    return traversal
 
 
 # Question 300
@@ -303,7 +344,8 @@ def lis_300(nums: List[int]) -> int:
     # represents the length of the longest subsequence ENDING at nums[i].
     d = [1 for _ in range(N)]
 
-    # Construct the array that tells us
+    # Construct d
+    #from pudb import set_trace; set_trace()
     ans = d[0]
     for i in range(N):
         for j in range(i):
@@ -328,7 +370,7 @@ def lis_300_recursive(nums: List[int]) -> int:
         # Base case - there are no more numbers to pick
         if idx >= len(nums):
             return 0
-        dont_take = solve(nums, idx+1, prev) # value if we don't include this value in the subsequence 
+        dont_take = solve(nums, idx+1, prev) # value if we don't include this value in the subsequence
         if nums[idx] > prev:
             take = 1 + solve(nums, idx+1, nums[idx])   # value if we include this value in the subsequence
         else:
