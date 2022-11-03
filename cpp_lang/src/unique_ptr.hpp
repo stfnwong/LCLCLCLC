@@ -9,6 +9,8 @@
 #ifndef __LC_UNIQUE_PTR
 #define __LC_UNIQUE_PTR
 
+#include <algorithm>
+
 /*
  * UniquePtr
  * A basic implementation of a unique_ptr. It goes
@@ -38,6 +40,7 @@ template <typename T> class UniquePtr
         // getters 
         bool empty(void) const noexcept;
 };
+
 
 // dtor
 template <typename T> UniquePtr<T>::~UniquePtr()

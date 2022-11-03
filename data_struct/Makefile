@@ -16,7 +16,7 @@ TEST_BIN_DIR=$(BIN_DIR)/test
 # Tool options
 CXX=g++
 OPT=-O0
-CXXFLAGS=-Wall -Wshadow -g2 -std=c++14 -D_REENTRANT $(OPT) 
+CXXFLAGS=-Wall -Wshadow -g2 -std=c++17 -D_REENTRANT $(OPT) 
 TESTFLAGS=-lgtest -lgtest_main
 LDFLAGS=-pthread
 LIBS = 
@@ -51,7 +51,7 @@ $(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@ 
 
 # ==== TEST TARGETS ==== #
-TESTS=test_heap test_tree test_binary_tree
+TESTS=test_heap test_tree test_binary_tree test_list
 $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(OBJECTS) $(OBJ_DIR)/$@.o\
 		-o $(TEST_BIN_DIR)/$@ $(LIBS) $(TEST_LIBS)
