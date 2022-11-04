@@ -7,11 +7,20 @@
 
 #include <algorithm>
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
+#include <queue>
+
+#include "tree.hpp"
 #include "questions.hpp"
 
 /*
  * Question 1
+ * https://leetcode.com/problems/two-sum/
+ *
+ * Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
  */
 std::vector<int> two_sum_map(std::vector<int>& nums, int target)
 {
@@ -101,13 +110,17 @@ std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target)
     // now we can sort the input 
     std::sort(val_and_idx.begin(), val_and_idx.end());
     int left = 0;
-    int right = n-1;
+    int right = val_and_idx.size()-1;
+    //int right = n-1;
 
     while(left < right) 
     {
         int s = val_and_idx[left].first + val_and_idx[right].first;
+        std::cout << "[" << __func__ << "] left  (" << left << "): " << val_and_idx[left].first << std::endl;
+        std::cout << "[" << __func__ << "] right (" << right << "): " << val_and_idx[right].first << std::endl;
+        std::cout << "[" << __func__ << "] s: " << std::left << std::setw(4) << s << std::endl;
         if(s == target)
-            return std::vector<int>{left, right};
+            return std::vector<int>{val_and_idx[left].second, val_and_idx[right].second};
         else if(s > target)
             right--;    //  too large, deccrease 
         else

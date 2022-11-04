@@ -15,6 +15,14 @@
 #include "questions.hpp"
 
 
+/*
+ * Question 1
+ * https://leetcode.com/problems/two-sum/
+ *
+ * Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+ */
 TEST_CASE("q1_hash_map", "leetcode")  // two-sum
 {
     int target = 9;
@@ -33,6 +41,14 @@ TEST_CASE("q1_hash_map", "leetcode")  // two-sum
     REQUIRE(expected_output.size() == two_sum_out.size());
     for(unsigned int i = 0; i < two_sum_out.size(); ++i)
         REQUIRE(expected_output[i] == two_sum_out[i]);
+}
+
+
+TEST_CASE("q1_two_sum_pointer", "leetcode")
+{
+    int target = 9;
+    std::vector<int> inputs = {2, 7, 11, 15};
+    std::vector<int> expected_output = {0, 1};
 
     // Also try another implementation (two pointers)
     std::vector<int> two_sum_pointer_out = two_sum_pointer(inputs, target);
