@@ -33,6 +33,7 @@ TEST_CASE("q1_two_sum", "leetcode")
     std::vector<std::pair<two_sum_function, std::string>> functions = {
         {(*two_sum_map), "two_sum_map()"},
         {(*two_sum_sort_and_pointer), "two_sum_sort_and_pointer()"},
+        {(*two_sum_brute_force), "two_sum_brute_force()"},
     };
 
     std::vector<int> targets = {9, 6, 6};
