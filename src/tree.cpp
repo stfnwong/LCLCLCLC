@@ -67,12 +67,12 @@ int tree_size_iter(const TreeNode* root)
  */
 TreeNode* create_tree(const std::vector<std::string>& token_vec)
 {
-    TreeNode* root = nullptr;
 
     int node_val;
     // maintain a queue of nodes
     std::queue <TreeNode*> node_q;
     TreeNode* cur_node = nullptr;
+    TreeNode* root = nullptr;
 
     // Create the base of the tree
     root = new TreeNode(std::stoi(token_vec[0]));
@@ -333,6 +333,9 @@ void tree_postorder(const TreeNode* root, std::vector<int>& traversal)
  */
 void tree_levelorder(const TreeNode* root, std::vector<int>& traversal)
 {
+    if(!root)
+        return;
+
     std::queue <const TreeNode*> tree_queue;
 
     tree_queue.push(root);
@@ -353,6 +356,9 @@ void tree_levelorder(const TreeNode* root, std::vector<int>& traversal)
 // ---- Recursive solutions with stacks ---- //
 void tree_preorder_stack(const TreeNode* root, std::vector<int>& traversal)
 {
+    if(!root)
+        return;
+
     std::stack <const TreeNode*> tree_stack;
 
     tree_stack.push(root);
@@ -514,7 +520,7 @@ void tree_postorder_iter(const TreeNode* root, std::vector<int>& traversal)
                 root = root->right;
             }
 
-        }while(!tree_stack.empty() || (root != nullptr));
+        } while(!tree_stack.empty() || (root != nullptr));
     }
 }
 
@@ -524,6 +530,9 @@ void tree_postorder_iter(const TreeNode* root, std::vector<int>& traversal)
 
 void tree_bfs(TreeNode* root, std::vector<int>& traversal)
 {
+    if(!root)
+        return;
+
     std::queue<TreeNode*> q;
 
     q.push(root);
@@ -541,5 +550,40 @@ void tree_bfs(TreeNode* root, std::vector<int>& traversal)
             q.pop();
         }
     }
+}
+
+/*
+ * Produce a level-wise solution
+ */
+std::vector<std::vector<int>> tree_level_order_level_wise(const TreeNode* root)
+{
+    std::vector<std::vector<int>> traversal;
+    std::queue<const TreeNode*> node_q;
+    std::vector<int> level;
+
+    if(!root)
+        return traversal;
+
+    node_q.push(root);
+    while(!node_q.empty())
+    {
+        unsigned level_size = node_q.size();
+        level.clear();
+
+        for(unsigned n = 0; n < level_size; ++n)
+        {
+            const TreeNode* cur_node = node_q.front();
+            if(cur_node->left)
+                node_q.push(cur_node->left);
+            if(cur_node->right)
+                node_q.push(cur_node->right);
+            level.push_back(cur_node->val);
+            node_q.pop();
+        }
+
+        traversal.push_back(level);
+    }
+
+    return traversal;
 }
 

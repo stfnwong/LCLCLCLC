@@ -102,35 +102,42 @@ TEST_CASE("test_tree_to_repr", "TreeNode")
 }
 
 
-TEST_CASE("test_repr_to_tree_and_traverse", "TreeNode")
+TEST_CASE("test_repr_to_tree_and_levelorder_traverse", "TreeNode")
 {
     std::vector<std::string> reprs = {
         "[]",
         "[1, 2, 3]",
         "[1, null, 3]",
         "[1, 2, 3, null, 4, 5, 6]",
-        "[1, null, 2, null, null, 4]"
+        //"[1, null, 2, null, null, 4]"
     };
 
     std::vector<std::vector<std::vector<int>>> exp_traversals = {
-        {{}},
+        //{{}},
+        {},
         {{1}, {2, 3}},
         {{1}, {3}},
         {{1}, {2, 3}, {4, 5, 6}},
-        {{1}, {2}, {4}}
+        //{{1}, {2}, {4}}
     };
-    std::vector<int> exp_sizes = {0, 3, 2, 6, 3};
+    std::vector<std::vector<int>> traversal_out;
+
+    // What sizes are the vectors in exp_traversals collection?
+    for(unsigned n = 0; n < exp_traversals.size(); ++n)
+    {
+        std::cout << n << ":" << exp_traversals[n].size() << std::endl;
+    }
+    std::cout << std::endl;
 
     TreeNode* tree;
     
-    for(unsigned test_case = 0; test_case < exp_sizes.size(); ++test_case)
+    for(unsigned test_case = 0; test_case < exp_traversals.size(); ++test_case)
     {
-        std::vector<int> traversal;
-        traversal.clear();
         tree = repr_to_tree(reprs[test_case]);
-        tree_levelorder(tree, traversal);
+        traversal_out = tree_level_order_level_wise(tree);
+        std::cout << "Traversal length:" << traversal_out.size() << std::endl;
 
-        REQUIRE(traversal.size() == exp_traversals[test_case].size());
+        REQUIRE(traversal_out.size() == exp_traversals[test_case].size());
     }
 
 }

@@ -68,6 +68,9 @@ void tree_postorder_iter(TreeNode* root, std::vector<int>& traversal);
 void tree_bfs(TreeNode* root, std::vector<int>& traversal);
 
 
+// Traversals where we have one element per level
+std::vector<std::vector<int>> tree_level_order_level_wise(const TreeNode* root);
+
 /*
  * Traversal object
  */
