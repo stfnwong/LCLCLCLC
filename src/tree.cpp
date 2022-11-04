@@ -62,14 +62,60 @@ int tree_size_iter(const TreeNode* root)
 }
 
 
+bool is_null_node(const std::string& token)
+{
+    if(token == "None" || token == "null" || token == "none" || token == "")
+        return true;
+
+    return false;
+}
+
 /*
  * create_tree()
  */
 TreeNode* create_tree(const std::vector<std::string>& token_vec)
 {
+    std::queue<TreeNode*> node_q;
+    TreeNode* cur_node;
+    TreeNode* root;
 
+    bool check_left = false;
+    bool is_root = true;
+
+    for(unsigned tok_idx = 0; tok_idx < token_vec.size(); ++tok_idx)
+    {
+        if(node_q.size() > 0)
+        {
+            cur_node = new TreeNode(std::stoi(token_vec[tok_idx]));
+        }
+
+        bool null_node = is_null_node(token_vec[tok_idx]);
+        if(!null_node)
+        {
+            TreeNode* new_node = new TreeNode(std::stoi(token_vec[tok_idx]));
+            node_q.push(new_node);
+            node_q.push(new_node);       // not sure this works quite the way I expect...
+            if(is_root)
+                root = new_node;
+            else
+            {
+                if(check_left)
+                    cur_node->left = new_node;
+                else
+                    cur_node->right = new_node;
+            }
+        }
+    }
+
+    return root;
+}
+
+
+
+
+TreeNode* create_tree_old(const std::vector<std::string>& token_vec)
+{
     int node_val;
-    // maintain a queue of nodes
     std::queue <TreeNode*> node_q;
     TreeNode* cur_node = nullptr;
     TreeNode* root = nullptr;
@@ -527,7 +573,6 @@ void tree_postorder_iter(const TreeNode* root, std::vector<int>& traversal)
 /*
  * Breadth-First Traversal
  */
-
 void tree_bfs(TreeNode* root, std::vector<int>& traversal)
 {
     if(!root)

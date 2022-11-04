@@ -188,6 +188,36 @@ def test_level_order_zigzag_traversal_103():
 
 
 
+# Question 199
+# Binary Tree Right Side View
+# https://leetcode.com/problems/binary-tree-right-side-view/
+def test_binary_tree_right_side_199():
+    inputs = [
+        "[1,2,3,null,5,null,4]",
+        "[1,null,3]",
+        "[]",
+        "[1,2]"
+    ]
+    exp_outputs = [
+        [1,3,4],
+        [1,3],
+        [],
+        [1,2]
+    ]
+    functions = [
+        questions.bt_right_side_199,
+        questions.bt_right_side_199_rec,
+    ]
+
+    for func in functions:
+        for inp, exp_out in zip(inputs, exp_outputs):
+            print(f"Converting tree [{inp}]", end=" ")
+            root = repr_to_tree(inp)
+            out = func(root)
+            print(f" ...traversal was {out}")
+            assert out == exp_out
+
+
 
 # Question 300
 # Longest increasing subsequence 

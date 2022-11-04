@@ -322,6 +322,65 @@ def level_order_zigzag_traversal_103(root:Optional[BinaryTreeNode]) -> List[List
     return traversal
 
 
+# Question 199
+# Binary Tree Right Side View
+# https://leetcode.com/problems/binary-tree-right-side-view/
+def bt_right_side_199(root: Optional[BinaryTreeNode]) -> List[int]:
+    """
+    Given the root of a binary tree, return the values ordered from top to bottom on
+    the right side only.
+    """
+
+    if not root:
+        return []
+
+    traversal = []
+    q = [root]
+    level = 0
+    #from pudb import set_trace; set_trace()
+
+    while q:
+        num_nodes = len(q)
+        # I always put the right node first in this queue
+        traversal.append(q[0].val)
+        for _ in range(num_nodes):
+            cur_node = q.pop(0)
+            if cur_node:
+                if cur_node.right:
+                    q.append(cur_node.right)
+                if cur_node.left:
+                    q.append(cur_node.left)
+
+        level += 1
+
+    return traversal
+
+
+# Question 199
+# Binary Tree Right Side View
+# https://leetcode.com/problems/binary-tree-right-side-view/
+def bt_right_side_199_rec(root: Optional[BinaryTreeNode]) -> List[int]:
+
+    def solve(root:Optional[BinaryTreeNode], level:int, traversal:List[int]) -> None:
+        if not root:
+            return
+
+        if len(traversal) == level:
+            traversal.append(root.val)
+
+        # go right first
+        solve(root.right, level+1, traversal)
+        # Then try to go left
+        solve(root.left, level+1, traversal)
+
+    t = []
+    solve(root, 0, t)
+
+    return t
+
+
+
+
 # Question 300
 # Longest increasing subsequence
 # https://leetcode.com/problems/longest-increasing-subsequence/
