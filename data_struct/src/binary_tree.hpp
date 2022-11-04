@@ -66,6 +66,7 @@ std::vector<std::string> repr_tokenize(const std::string& repr)
 
 /*
  * Binary Tree Node with raw pointers
+ * I can't seem to move smart pointers to a stack or queue....
  */
 
 
@@ -81,26 +82,8 @@ template <typename T> struct BinaryTreeNode
 
     public:
         explicit BinaryTreeNode(const T& val) : value(val), left(nullptr), right(nullptr) {} 
-        //BinaryTreeNode(const BinaryTreeNode& that) : value(that.value), left(that.left), right(that.right) {} 
 
-        //bool operator==(const BinaryTreeNode& that) const
-        //{
-        //    if(this->value != that.value)
-        //        return false;
-        //    if(this->left != that.left)
-        //        return false;
-        //    if(this->right != that.right)
-        //        return false;
-
-        //    return true;
-        //}
-
-        //bool operator!=(const BinaryTreeNode& that) const
-        //{
-        //    return !(*this == that);
-        //}
 };
-
 
 
 /*
@@ -185,27 +168,23 @@ template <typename T> class BinaryTree
             return this->remove(this->root, value);
         }
 
-        // This is meant to give the total number of nodes
         unsigned size(void) const
         {
             unsigned size = 0;
+            std::queue<BinaryTreeNode<T>*> node_q;
 
-            //std::queue<std::unique_ptr<BinaryTreeNode<T>>> node_q;
-            std::queue<BinaryTreeNode<T>> node_q;
-            node_q.push(std::make_unique<BinaryTreeNode<T>>(this->root));
-            //node_q.push(std::move(this->root));
-
+            node_q.push(this->root.get());
             while(!node_q.empty())
             {
-                //std::unique_ptr<BinaryTreeNode<T>> cur_node = std::move(node_q.front());
                 auto cur_node = node_q.front();
 
-                if(cur_node != nullptr)
+                if(cur_node)
                 {
-                    if(cur_node->left != nullptr)
-                        node_q.push(cur_node->left);
-                    if(cur_node->right != nullptr)
-                        node_q.push(cur_node->right);
+                    size++;
+                    if(cur_node->left)
+                        node_q.push(cur_node->left.get());
+                    if(cur_node->right)
+                        node_q.push(cur_node->right.get());
                 }
 
                 node_q.pop();
@@ -213,6 +192,33 @@ template <typename T> class BinaryTree
 
             return size;
         }
+
+        // This is meant to give the total number of nodes
+        //unsigned size(void) const
+        //{
+        //    unsigned size = 0;
+
+        //    std::queue<const std::unique_ptr<BinaryTreeNode<T>>*> node_q;
+        //    node_q.push(&this->root);
+
+        //    while(!node_q.empty())
+        //    {
+        //        //std::unique_ptr<BinaryTreeNode<T>> cur_node = std::move(node_q.front());
+        //        auto cur_node = node_q.front();
+
+        //        if(cur_node)
+        //        {
+        //            if((*cur_node)->left != nullptr)
+        //                node_q.push(&(*cur_node)->left);
+        //            if((*cur_node)->right != nullptr)
+        //                node_q.push(&(*cur_node)->right);
+        //        }
+
+        //        node_q.pop();
+        //    }
+
+        //    return size;
+        //}
 
         //// Just the height
         //unsigned height(void) const 
