@@ -46,56 +46,7 @@ std::vector<int> two_sum_map(std::vector<int>& nums, int target)
     return output;
 }
 
-// version where we move two pointers in a sorted array
-std::vector<int> two_sum_pointer(std::vector<int>& nums, int target)
-{
-    unsigned int start, end;
-    std::vector<int> output(2);
-
-    start = 0;
-    end = nums.size() - 1;
-
-    // The idea here is that we have two pointers, one at the start and 
-    // one at the end which we move closer towards each other.
-    // This only works if the array is sorted.
-    // TODO: if we want to return the index in the original unsorted array then we 
-    // need to make a copy here.
-    std::sort(nums.begin(), nums.end());     // default comparison is <
-
-    // Now we test the start and end pointers in turn.
-    while(start <= end)
-    {
-        int sum = nums[start] + nums[end];
-        if(sum > target)
-            end--;
-        if(sum < target)
-            start++;
-        if(sum == target)
-            break;
-    }
-
-    // Start and end are now the positions in the sorted array that 
-    // contain the two elements that sum correctly. Now we need to map
-    // these back to the positions in the original array
-    ///int start_unsorted = -1;
-    ///int end_unsorted = -1;
-    ///for(unsigned int n = 0; n < nums.size(); ++n)
-    ///{
-    ///    // map the sorted index back to the unsorted index
-    ///    if(start == nums[n])
-    ///        start_unsorted = n;
-    ///    if(end == nums[n])
-    ///        end_unsorted = n;
-    ///    std::cout << "[" << __func__ << "] idx : " << n 
-    ///        << " start unsorted " << start_unsorted << ", end unsorted " << end_unsorted 
-    ///        << " nums[" << n << "] : " << nums[n] << std::endl;
-    ///}
-    output[0] = start;
-    output[1] = end;
-
-    return output;
-}
-
+//
 // two sum sorted pointer
 std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target)
 {

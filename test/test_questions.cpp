@@ -7,8 +7,10 @@
 #define CATCH_CONFIG_MAIN
 #include "catch/catch.hpp"
 
-#include <vector>
+#include <functional>
 #include <string>
+#include <vector>
+#include <utility>
 
 #include "list.hpp"
 #include "util.hpp"
@@ -23,48 +25,16 @@
 
 You may assume that each input would have exactly one solution, and you may not use the same element twice.
  */
-TEST_CASE("q1_hash_map", "leetcode")  // two-sum
+// TODO: we should be able to simplify this by placing function pointers into a vector 
+// and passing the same args to each function in a loop (probably while printing the function name)?
+TEST_CASE("q1_two_sum", "leetcode")
 {
-    int target = 9;
-    std::vector<int> inputs = {2, 7, 11, 15};
-    std::vector<int> expected_output = {0, 1};
+    using two_sum_function = std::function<std::vector<int>(std::vector<int>&, int)>;
+    std::vector<std::pair<two_sum_function, std::string>> functions = {
+        {(*two_sum_map), "two_sum_map()"},
+        {(*two_sum_sort_and_pointer), "two_sum_sort_and_pointer()"},
+    };
 
-    std::vector<int> two_sum_out;
-
-    two_sum_out = two_sum_map(inputs, target);
-
-    std::cout << "{";
-    for(unsigned int i = 0; i < two_sum_out.size(); ++i)
-        std::cout << two_sum_out[i] << ", ";
-    std::cout << "}" << std::endl;
-
-    REQUIRE(expected_output.size() == two_sum_out.size());
-    for(unsigned int i = 0; i < two_sum_out.size(); ++i)
-        REQUIRE(expected_output[i] == two_sum_out[i]);
-}
-
-
-TEST_CASE("q1_two_sum_pointer", "leetcode")
-{
-    int target = 9;
-    std::vector<int> inputs = {2, 7, 11, 15};
-    std::vector<int> expected_output = {0, 1};
-
-    // Also try another implementation (two pointers)
-    std::vector<int> two_sum_pointer_out = two_sum_pointer(inputs, target);
-    std::cout << "{";
-    for(unsigned int i = 0; i < two_sum_pointer_out.size(); ++i)
-        std::cout << two_sum_pointer_out[i] << ", ";
-    std::cout << "}" << std::endl;
-
-    REQUIRE(expected_output.size() == two_sum_pointer_out.size());
-    for(unsigned int i = 0; i < two_sum_pointer_out.size(); ++i)
-        REQUIRE(expected_output[i] == two_sum_pointer_out[i]);
-}
-
-
-TEST_CASE("q1_sort_and_pointer", "leetcode")
-{
     std::vector<int> targets = {9, 6, 6};
     std::vector<std::vector<int>> inputs = {
         {2, 7, 11, 15},
@@ -78,21 +48,27 @@ TEST_CASE("q1_sort_and_pointer", "leetcode")
         {0, 1}
     };
 
-    unsigned int num_test_cases = 3;
+    unsigned num_test_cases = targets.size();
 
-    for(unsigned test_case = 0; test_case < num_test_cases; ++test_case)
+    for(auto& func: functions)
     {
-        auto actual_output = two_sum_sort_and_pointer(inputs[test_case], targets[test_case]);
-        REQUIRE(expected_outputs[test_case].size() == actual_output.size());
+        std::cout << "Running function [" << func.second << "]" << std::endl;
+        for(unsigned test_case = 0; test_case < num_test_cases; ++test_case)
+        {
+            std::vector<int> out = func.first(
+                    inputs[test_case],
+                    targets[test_case]
+            );
+            REQUIRE(out.size() == expected_outputs[test_case].size());
 
-        std::cout << "Got      : " << vec_to_str(actual_output) << std::endl;
-        std::cout << "Expected : " << vec_to_str(expected_outputs[test_case]) << std::endl;
+            std::cout << "Got      : " << vec_to_str(out) << std::endl;
+            std::cout << "Expected : " << vec_to_str(expected_outputs[test_case]) << std::endl;
 
-        for(unsigned i = 0; i < actual_output.size(); ++i)
-            REQUIRE(actual_output[i] == expected_outputs[test_case][i]);
+            for(unsigned elem = 0; elem < out.size(); ++elem)
+                REQUIRE(out[elem] == expected_outputs[test_case][elem]);
+        }
     }
 }
-
 /*
  * Question 2
  * TODO: fix this in other branch
