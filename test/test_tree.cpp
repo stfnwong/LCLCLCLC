@@ -102,6 +102,40 @@ TEST_CASE("test_tree_to_repr", "TreeNode")
 }
 
 
+TEST_CASE("test_repr_to_tree_and_traverse", "TreeNode")
+{
+    std::vector<std::string> reprs = {
+        "[]",
+        "[1, 2, 3]",
+        "[1, null, 3]",
+        "[1, 2, 3, null, 4, 5, 6]",
+        "[1, null, 2, null, null, 4]"
+    };
+
+    std::vector<std::vector<std::vector<int>>> exp_traversals = {
+        {{}},
+        {{1}, {2, 3}},
+        {{1}, {3}},
+        {{1}, {2, 3}, {4, 5, 6}},
+        {{1}, {2}, {4}}
+    };
+    std::vector<int> exp_sizes = {0, 3, 2, 6, 3};
+
+    TreeNode* tree;
+    
+    for(unsigned test_case = 0; test_case < exp_sizes.size(); ++test_case)
+    {
+        std::vector<int> traversal;
+        traversal.clear();
+        tree = repr_to_tree(reprs[test_case]);
+        tree_levelorder(tree, traversal);
+
+        REQUIRE(traversal.size() == exp_traversals[test_case].size());
+    }
+
+}
+
+
 TEST_CASE("test_tree_size", "TreeNode")
 {
     //TreeNode* tree;

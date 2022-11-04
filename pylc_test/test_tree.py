@@ -8,6 +8,7 @@ Stefan Wong 2019
 from pylc.tree import (
     repr_to_tree,
     tree_size,
+    tree_height,
     preorder_rec,
     postorder_rec,
     inorder_rec,
@@ -53,6 +54,21 @@ def test_tree_size():
 
     assert out == expected_size
 
+
+
+def test_tree_height():
+    repr_strings = [
+        "[]",
+        "[1, 2, 3]",
+        "[1, 2, None, 3, 4]",
+        "[1, 2, 3, None, 4, 5]",
+    ]
+    expected_heights = [0,2, 3, 3]
+
+    for rstring, exp_height in zip(repr_strings, expected_heights):
+        tree = repr_to_tree(rstring)
+        height = tree_height(tree)
+        assert height == exp_height
 
 
 # ======== TRAVERSALS ======== #

@@ -243,8 +243,6 @@ def min_path_sum_64_top_down(grid: List[List[int]]) -> int:
 
 
 
-
-
 # Question 102
 # Binary Tree Level Order Traversal
 # https://leetcode.com/problems/binary-tree-level-order-traversal/

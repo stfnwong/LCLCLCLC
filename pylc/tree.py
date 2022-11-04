@@ -100,6 +100,33 @@ def tree_size(tree:Optional[BinaryTreeNode]) -> int:
     return n
 
 
+def tree_height(tree:Optional[BinaryTreeNode]) -> int:
+    """
+    Iteratively finds the height of some Binary Tree
+    """
+
+    if not tree:
+        return 0
+
+    height = 0
+    q = [tree]
+
+    while q:
+        level = len(q)          # number of nodes at this level - bounded by O(2^l)
+        for _ in range(level):
+            cur_node = q.pop(0)     # queue reduces by one here
+
+            if cur_node:
+                if cur_node.left:
+                    q.append(cur_node.left)
+                if cur_node.right:
+                    q.append(cur_node.right)
+
+        height += 1
+
+    return height
+
+
 
 def tree_level_traversal(root:Optional[BinaryTreeNode]) -> List[List[int]]:
     """

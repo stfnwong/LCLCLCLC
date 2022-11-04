@@ -228,6 +228,8 @@ std::vector<std::string> repr_to_token_vec(const std::string& repr)
 // Effectively this is a create_tree() sort of function
 /*
  * repr_to_tree()
+ * Take a leetcode-style tree representation and transform it into a TreeNode pointer.
+ * The representation is given in level-order.
  */
 TreeNode* repr_to_tree(const std::string& repr)
 {

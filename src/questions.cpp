@@ -412,6 +412,29 @@ bool can_jump(std::vector<int>& nums)
 }
 
 
+/*
+ * Question 102
+ * Binary Tree Level Order Traversal
+ * https://leetcode.com/problems/binary-tree-level-order-traversal/
+ */
+std::vector<std::vector<int>> level_order_traversal_102(const TreeNode* root)
+{
+    if(not root)
+        return std::vector<std::vector<int>>();
+
+    std::queue<TreeNode*> node_q;
+    std::vector<std::vector<int>> traversal;
+
+    node_q.push(new TreeNode(*root));
+    while(!node_q.empty())
+    {
+        std::vector<int> level;
+    }
+
+
+    return traversal;
+}
+
 
 
 
