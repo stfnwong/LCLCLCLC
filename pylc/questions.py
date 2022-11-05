@@ -284,6 +284,15 @@ def level_order_traversal_102(root: Optional[BinaryTreeNode]) -> List[List[int]]
     return traversal
 
 
+# Question 116
+# Populating Next Right Pointers in Each Node
+# https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+#
+# In this problem, imagine a perfect binary tree. ALl the 
+def populate_next_right_pointers_116(root:Optional[RPTreeNode]) -> Optional[RPTreeNode]:
+    pass
+
+
 # Question 103
 # Binary Tree ZigZag Level Order Traversal
 # https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
@@ -336,8 +345,6 @@ def bt_right_side_199(root: Optional[BinaryTreeNode]) -> List[int]:
 
     traversal = []
     q = [root]
-    level = 0
-    #from pudb import set_trace; set_trace()
 
     while q:
         num_nodes = len(q)
@@ -345,13 +352,12 @@ def bt_right_side_199(root: Optional[BinaryTreeNode]) -> List[int]:
         traversal.append(q[0].val)
         for _ in range(num_nodes):
             cur_node = q.pop(0)
+            # note that this check makes the function run way faster on leetcode
             if cur_node:
                 if cur_node.right:
                     q.append(cur_node.right)
                 if cur_node.left:
                     q.append(cur_node.left)
-
-        level += 1
 
     return traversal
 

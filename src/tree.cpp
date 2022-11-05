@@ -84,9 +84,12 @@ TreeNode* create_tree(const std::vector<std::string>& token_vec)
 
     for(unsigned tok_idx = 0; tok_idx < token_vec.size(); ++tok_idx)
     {
-        if(node_q.size() > 0)
+        if(!node_q.empty())
         {
-            cur_node = new TreeNode(std::stoi(token_vec[tok_idx]));
+            cur_node = node_q.front();
+            node_q.pop();
+            check_left = !check_left;
+            is_root = false;
         }
 
         bool null_node = is_null_node(token_vec[tok_idx]);
@@ -111,57 +114,6 @@ TreeNode* create_tree(const std::vector<std::string>& token_vec)
 }
 
 
-
-
-TreeNode* create_tree_old(const std::vector<std::string>& token_vec)
-{
-    int node_val;
-    std::queue <TreeNode*> node_q;
-    TreeNode* cur_node = nullptr;
-    TreeNode* root = nullptr;
-
-    // Create the base of the tree
-    root = new TreeNode(std::stoi(token_vec[0]));
-    node_q.push(root);
-    bool check_left = true;
-
-    // walk the rest of the token vector
-    for(unsigned int n = 1; n < token_vec.size(); ++n)
-    {
-        TreeNode* node = nullptr;
-        // TODO : this might not be handling null left-pointers correctly...
-        // A better implementation would be to check how many tokens there are, 
-        // and perhaps even pad the string automatically (so that omitted trailing
-        // tokens are explicitly turned into <null>)
-        if(token_vec[n] != "null")
-        {
-            node_val = std::stoi(token_vec[n]);
-            node = new TreeNode(node_val);
-            node_q.push(node);
-            lc_log("Added Node (" + std::to_string(node->val) + ")");
-        }
-
-        // assign the left node 
-        if(check_left)
-        {
-            cur_node = node_q.front();
-            lc_log("Assigning left node (" + std::to_string(cur_node->val) + ")");
-            node_q.pop();
-            cur_node->left = node;
-            check_left = false;
-        }
-        // assign the right node 
-        else
-        {
-            lc_log("Assigning right node (" + std::to_string(cur_node->val) + ")");
-            cur_node->right = node;
-            check_left = true;
-        }
-    }
-
-    return root;
-}
-
 /*
  * destroy_tree()
  */
@@ -174,6 +126,19 @@ void destroy_tree(TreeNode* tree)
     if(tree->right != nullptr)
         destroy_tree(tree->right);
     delete tree;
+}
+
+
+bool compare_tree_rec(const TreeNode* a, const TreeNode* b)
+{
+    if(!a && !b)
+        return true;
+    if((!a && b) || (a && !b))
+        return false;
+    if(a->val != b->val)
+        return false;
+
+    return compare_tree_rec(a->left, b->left) && compare_tree_rec(a->right, b->right);
 }
 
 

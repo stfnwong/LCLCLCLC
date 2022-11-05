@@ -7,6 +7,8 @@ Stefan Wong 2019
 
 from pylc.tree import (
     repr_to_tree,
+    compare_tree_rec,
+    copy_tree_rec,
     tree_size,
     tree_height,
     preorder_rec,
@@ -17,6 +19,7 @@ from pylc.tree import (
 
 rstring = "[1, 2, None, 3, 4, None, 5, 6, 7]"
 expected_size = 7
+
 
 def test_repr_to_tree():
 
@@ -42,6 +45,42 @@ def test_repr_to_tree():
         assert exp_t == traversal
         if tree:
             assert len(tree) == exp_size
+
+
+def test_compare_tree_rec():
+    repr_inputs = [
+        "[1, 2, 3]",
+        "[1, None, 3]",
+        "[1, 2, 3, None, 4, 5, 6]",
+        "[1, None, 2, None, None, 4]",
+    ]
+
+    for inp in repr_inputs:
+        print(f"Comparing trees with repr {inp}", end=" ")
+        tree_a = repr_to_tree(inp)
+        tree_b = repr_to_tree(inp)
+        assert id(tree_a) != id(tree_b)   # just to make sure these are distinct objects
+        assert compare_tree_rec(tree_a, tree_b)
+        print("....OK")
+
+    # Also test that the empty case 
+    assert compare_tree_rec(repr_to_tree("[]"), repr_to_tree("[]"))
+
+
+def test_copy_tree_rec():
+    repr_inputs = [
+        "[]",
+        "[1, 2, 3]",
+        "[1, None, 3]",
+        "[1, 2, 3, None, 4, 5, 6]",
+        "[1, None, 2, None, None, 4]",
+    ]
+
+    for inp in repr_inputs:
+        src_tree = repr_to_tree(inp)
+        dst_tree = copy_tree_rec(src_tree)
+        assert compare_tree_rec(src_tree, dst_tree)
+
 
 
 def test_tree_size():

@@ -39,6 +39,11 @@ std::vector<std::string> repr_to_token_vec(const std::string& repr);
 TreeNode* create_tree(const std::vector<std::string>& token_repr);
 void      destroy_tree(TreeNode* tree);
 
+// Comparison
+bool compare_tree_rec(const TreeNode* a, const TreeNode* b);
+
+// Copy
+
 // Convert a string like [1, 2, 3] into a Tree
 std::string tree_to_repr(TreeNode* root);
 

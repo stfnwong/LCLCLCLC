@@ -176,6 +176,7 @@ TEST_CASE("test_tree_size", "TreeNode")
     destroy_tree(empty_tree);
 }
 
+
 TEST_CASE("test_tree_size_iter", "TreeNode")
 {
     TreeNode* empty_tree;
@@ -199,4 +200,25 @@ TEST_CASE("test_tree_size_iter", "TreeNode")
     destroy_tree(tree2);
     destroy_tree(tree3);
     destroy_tree(empty_tree);
+}
+
+
+TEST_CASE("test_tree_compare_rec", "TreeNode")
+{
+    TreeNode* src;
+    TreeNode* dst;
+
+    std::vector<std::string> tree_reprs = {
+        empty_repr,
+        repr1,
+        repr2,
+        repr3,
+    };
+
+    for(unsigned test_case = 0; test_case < tree_reprs.size(); ++test_case)
+    {
+        src = repr_to_tree(tree_reprs[test_case]);
+        dst = repr_to_tree(tree_reprs[test_case]);
+        REQUIRE(compare_tree_rec(src, dst) == true);
+    }
 }

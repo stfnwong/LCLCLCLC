@@ -17,6 +17,8 @@ class TreeNode:
 
 
 
+
+
 #class NTree:
 #    def __init__(self, val:int=0, c:Optional[List[NTree]]=None):
 #        self.val = val
@@ -76,6 +78,89 @@ class BinaryTreeNode:
                 cur_node = prev_node.right
 
         return n
+
+
+# This is the Node for question 116
+# https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+class RPTreeNode:
+    def __init__(
+        self,
+        val:int=0,
+        left:Optional["RPTreeNode"]=None,
+        right:Optional["RPTreeNode"]=None,
+        next_node:Optional["RPTreeNode"]=None,
+        other_tree:Optional[BinaryTreeNode]=None,
+    ):
+        if other_tree:
+            self._fill_from_tree(other_tree)
+        else:
+            self.val = val
+            self.left = left
+            self.right = right
+            self.next_node = next_node
+
+    def _fill_from_tree(self, root:BinaryTreeNode) -> None:
+        # traverse in level order and create a new tree that follows the
+        # structure of the existing tree
+        if not root:
+            return
+
+        src_q = [root]
+
+        while src_q:
+            num_nodes = len(src_q)
+            for _ in range(num_nodes):
+                src_cur_node = src_q.pop(0)
+
+                if src_cur_node.left:
+                    src_q.append(src_cur_node.left)
+                if src_cur_node.right:
+                    src_q.append(src_cur_node.right)
+
+
+
+def compare_tree_rec(a:Optional[BinaryTreeNode], b:Optional[BinaryTreeNode]) -> bool:
+    """
+    Recursively compare two trees for equality.
+    """
+
+    if a is None and b is None:
+        return True
+    if (a is None and b is not None) or (a is not None and b is None):
+        return False
+    if a.val != b.val:
+        return False
+
+    return compare_tree_rec(a.left, b.left) and compare_tree_rec(a.right, b.right)
+
+
+def copy_tree_rec(src_root:BinaryTreeNode) -> BinaryTreeNode:
+    """
+    Recursively copy a tree.
+    """
+
+    if not src_root:
+        return None
+    else:
+        new_node = BinaryTreeNode(src_root.val)
+        new_node.left = copy_tree_rec(src_root.left)
+        new_node.right = copy_tree_rec(src_root.right)
+        return new_node
+
+
+def copy_tree_iter(src_root:BinaryTreeNode) -> BinaryTreeNode:
+
+    src_node_q = [src_root]
+    dst_node_q = []
+
+    while src_node_q:
+        num_src_nodes = len(src_node_q)
+        for _ in range(num_src_nodes):
+            cur_src_node = src_node_q.pop(0)
+            if cur_src_node:
+                cur_dst_node = BinaryTreeNode(cur_src_node.val)
+
+
 
 
 
@@ -218,6 +303,7 @@ def preorder_rec(root:Optional[BinaryTreeNode], traversal:List[int]) -> List[int
         preorder_rec(root.right, traversal)
 
     return traversal
+
 
 def postorder_rec(root:Optional[BinaryTreeNode], traversal:List[int]) -> List[int]:
     """
