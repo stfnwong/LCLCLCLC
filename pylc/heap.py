@@ -76,12 +76,12 @@ class Heap:
     def _swap(self, a_idx:int, b_idx:int) -> None:
         self.heap[a_idx], self.heap[b_idx] = self.heap[b_idx], self.heap[a_idx]
 
+    def clear(self) -> None:
+        self.heap = []
+
     def heapify_up(self, idx:int) -> None:
         # heapify from the leaf up
         parent_idx = heap_parent(idx)
-        # TODO: debug only, remove
-        #print(f"{__name__}:{self.__class__}, heap: {self.heap}")
-        print(f"{__name__}:{self.__class__}, idx: {idx}, parent_idx: {parent_idx}")
 
         if self._compare(self.heap[parent_idx], self.heap[idx]):
             self._swap(parent_idx, idx)
