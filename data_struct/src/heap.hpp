@@ -6,6 +6,9 @@
 #ifndef __LC_HEAP_HPP
 #define __LC_HEAP_HPP
 
+// TODO: debug only, remove
+#include <iostream>
+#include "util.hpp"
 
 #include <algorithm>
 #include <stack>
@@ -128,27 +131,32 @@ template <typename T> struct HeapArray
 };
 
 // ======== MAX HEAPS USING ARRAYS ========= //
-template <typename T> void max_heapify_array(std::vector<T>& items, unsigned idx)
+template <typename T> void max_heapify_array(std::vector<T>& items, unsigned i)
 {
-    unsigned l = max_heap_left(idx);
-    unsigned r = max_heap_right(idx);
+    unsigned l = max_heap_left(i);
+    unsigned r = max_heap_right(i);
     T largest;
 
     // Check which is largest of this and left 
-    if((l < items.size()) && (items[l] > items[idx]))
+    if((l < items.size()) && (items[l] > items[i]))
         largest = l;
     else
-        largest = idx;
+        largest = i;
 
     // Check which is largest of previous largest or right
     if((r < items.size()) && (items[r] > items[largest]))
         largest = r;
 
-    if(largest != idx)
+    std::cout << "[" << __func__ << "] largest [" << largest << "], i [" 
+        << i << "], items[largest]: " << items[largest] << ", items[l]: " 
+        << items[l] << ", items[r]: " << items[r] << "" << std::endl;
+    std::cout << vec_to_str(items) << std::endl;
+
+    if(largest != i)
     {
-        T temp = items[idx];
-        items[largest] = items[idx];
-        items[idx] = temp;
+        T temp = items[largest];
+        items[largest] = items[i];
+        items[i] = temp;
         max_heapify_array(items, largest);
     }
 }
