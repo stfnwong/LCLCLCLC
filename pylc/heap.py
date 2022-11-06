@@ -2,11 +2,12 @@
 HEAP
 A binary heap
 
-Stefan Wong 2020
 """
 
-from copy import copy
-from typing import Union
+from typing import List, Optional, Union
+
+Numeric = Union[int, float]
+
 
 # Get the children or parents of a zero-indexed heap array
 def heap_left_child(idx:int) -> int:
@@ -20,7 +21,7 @@ def heap_parent(idx:int) -> int:
 
 
 # ---- Functions to test heap property ----
-def has_min_heap_property(array:list, idx:int=0) -> bool:
+def has_min_heap_property(array:List[Numeric], idx:int=0) -> bool:
     if idx >= len(array):
         return True
 
@@ -36,7 +37,7 @@ def has_min_heap_property(array:list, idx:int=0) -> bool:
     return False
 
 
-def has_max_heap_property(array:list, idx:int=0) -> bool:
+def has_max_heap_property(array:List[Numeric], idx:int=0) -> bool:
     if idx >= len(array):
         return True
 
@@ -54,11 +55,11 @@ def has_max_heap_property(array:list, idx:int=0) -> bool:
 
 # New (simpler) heap class
 class Heap:
-    def __init__(self, heap:list=None) -> None:
-        if heap is None:
-            self.heap = []
-        else:
-            self.heap = heap
+    def __init__(self, heap:Optional[List[Numeric]]=None) -> None:
+        self.heap = []
+        if heap is not None:
+            for elem in heap:
+                self.insert(elem)
 
     def __repr__(self) -> str:
         return 'Heap(%s)' % str(self.heap)
@@ -69,7 +70,7 @@ class Heap:
     def __len__(self) -> int:
         return len(self.heap)
 
-    def _compare(self, parent_idx:int, child_idx:int) -> bool:
+    def _compare(self, parent_idx:Numeric, child_idx:Numeric) -> bool:
         raise NotImplementedError('_compare() should be implementd in derived class')
 
     def _swap(self, a_idx:int, b_idx:int) -> None:
@@ -78,6 +79,9 @@ class Heap:
     def heapify_up(self, idx:int) -> None:
         # heapify from the leaf up
         parent_idx = heap_parent(idx)
+        # TODO: debug only, remove
+        #print(f"{__name__}:{self.__class__}, heap: {self.heap}")
+        print(f"{__name__}:{self.__class__}, idx: {idx}, parent_idx: {parent_idx}")
 
         if self._compare(self.heap[parent_idx], self.heap[idx]):
             self._swap(parent_idx, idx)
@@ -87,12 +91,12 @@ class Heap:
         # heapify from the root down
         raise NotImplemented('_heapify_down() should be implemented in derived class')
 
-    def get_root(self) -> Union[None, int]:
+    def get_root(self) -> Union[None, Numeric]:
         if not self.heap:
             return None
         return self.heap[0]
 
-    def insert(self, element:int) -> None:
+    def insert(self, element:Numeric) -> None:
         self.heap.append(element)
         self.heapify_up(len(self.heap) - 1)
 
@@ -146,7 +150,7 @@ class MaxHeap(Heap):
     """
     MaxHeap specialization - OOP style
     """
-    def __init__(self, heap:list=None) -> None:
+    def __init__(self, heap:Optional[List[Numeric]]=None) -> None:
         super(MaxHeap, self).__init__(heap)
 
     def __repr__(self) -> str:

@@ -149,6 +149,9 @@ def copy_tree_rec(src_root:BinaryTreeNode) -> BinaryTreeNode:
 
 
 def copy_tree_iter(src_root:BinaryTreeNode) -> BinaryTreeNode:
+    """
+    Copy a tree iteratively.
+    """
 
     src_node_q = [src_root]
     dst_node_q = []
@@ -159,6 +162,11 @@ def copy_tree_iter(src_root:BinaryTreeNode) -> BinaryTreeNode:
             cur_src_node = src_node_q.pop(0)
             if cur_src_node:
                 cur_dst_node = BinaryTreeNode(cur_src_node.val)
+
+                if cur_src_node.left:
+                    src_node_q.append(cur_src_node.left)
+                if cur_src_node.right:
+                    src_node_q.append(cur_src_node.right)
 
 
 

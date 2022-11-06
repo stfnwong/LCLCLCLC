@@ -83,6 +83,8 @@ clean:
 	rm -fv *.o $(OBJ_DIR)/*.o 
 	# Clean test programs
 	rm -fv $(TEST_BIN_DIR)/test_*
+	# Also clean pycache files
+	find . -name __pycache__ | xargs rm -rf
 
 print-%:
 	@echo $* = $($*)
