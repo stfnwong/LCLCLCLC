@@ -60,37 +60,64 @@ def max_heapify(array:List[Numeric], i:int) -> None:
     Max-heapify a list of numbers in place.
     """
 
-    def left(i:int) -> int:
-        return 2 * i
-
-    def right(i:int) -> int:
-        return 2 * i + 1
-
     l = heap_left_child(i)
     r = heap_right_child(i)
-    #l = left(i)
-    #r = right(i)
-
-    # TODO: debug only, remove 
-    print(f"(i, l, r) : {(i, l, r)}")
-    try:
-        print(f"(array[i], array[l], array[r]) : {(array[i], array[l], array[r])}")
-    except IndexError:
-        print("Some elements out of range")
 
     # Is A[i] larger than its left child?
-    if (l < len(array)-1) and (array[l] > array[i]):
+    if (l < len(array)) and (array[l] > array[i]):
         largest = l
     else:
         largest = i
     # Is A[largest] larger than A[i]'s right child
-    if (r < len(array)-1) and (array[r] > array[largest]):
+    if (r < len(array)) and (array[r] > array[largest]):
         largest = r
     # Is A[i] actually the largest? If not, swap
     if largest != i:
         array[largest], array[i] = array[i], array[largest]
         max_heapify(array, largest)
 
+
+def build_max_heap(array:List[Numeric]) -> None:
+    """
+    Construct a max heap from an array
+    """
+
+    size = len(array)
+    for idx in range(size // 2, -1, -1):
+        max_heapify(array, idx)
+
+
+
+def min_heapify(array:List[Numeric], i:int) -> None:
+    """
+    Min-heapify a list of numbers in place.
+    """
+
+    l = heap_left_child(i)
+    r = heap_right_child(i)
+
+    # Is A[i] smaller than left child?
+    if (l < len(array)) and (array[l] < array[i]):
+        smallest = l
+    else:
+        smallest = i
+    # Is A[smallest] less than A[i]'s right child?
+    if (r < len(array)) and (array[r] < array[smallest]):
+        smallest = r
+
+    if smallest != i:
+        array[smallest], array[i] = array[i], array[smallest]
+        min_heapify(array, smallest)
+
+
+def build_min_heap(array:List[Numeric]) -> None:
+    """
+    Construct a min heap from an array
+    """
+
+    size = len(array)
+    for idx in range(size // 2, -1, -1):
+        min_heapify(array, idx)
 
 
 # ==== HEAP OBJECTS ==== #
@@ -119,6 +146,32 @@ class Heap:
 
     def clear(self) -> None:
         self.heap = []
+
+    def height(self) -> int:
+        """
+        Return the height of this heap.
+        """
+
+        if not self.heap:
+            return 0
+
+        q:List[int] = [0]
+        height = 0
+
+        while q:
+            level = len(q)
+            for _ in range(level):
+                cur_idx = q.pop(0)
+                l = heap_left_child(cur_idx)
+                r = heap_right_child(cur_idx)
+
+                if l < len(self):
+                    q.append(l)
+                if r < len(self):
+                    q.append(r)
+            height += 1
+
+        return height
 
     def heapify_up(self, idx:int) -> None:
         # heapify from the leaf up
