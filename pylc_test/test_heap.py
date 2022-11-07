@@ -32,10 +32,17 @@ def test_max_heapify_on_array():
     assert heap.has_max_heap_property(inp_array)
 
 
+#def test_min_heapify_on_array():
+#    inp_array = copy(heapify_inp_array)
+#    assert not heap.has_min_heap_property(inp_array)
+#    heap.min_heapify(inp_array, 0)
+#
+#    assert heap.has_min_heap_property(inp_array)
+#
+
 def test_build_max_heap():
     inp_array = copy(heap_inp_array_2)  # Need a copy since we modify in-place
     print(f"Original array : {inp_array}, max heap: {heap.has_max_heap_property(inp_array)}")
-    #from pudb import set_trace; set_trace()
     heap.build_max_heap(inp_array)
     print(f"Max heap       : {inp_array}")
     assert heap.has_max_heap_property(inp_array)
@@ -47,37 +54,6 @@ def test_build_min_heap():
     heap.build_min_heap(inp_array)
     print(f"Max heap       : {inp_array}")
     assert heap.has_min_heap_property(inp_array)
-
-
-
-#def test_min_heapify_on_array():
-#    inp_array = copy(heapify_inp_array)
-#    heap.min_heapify(inp_array, len(inp_array) // 2)
-#    #heap.min_heapify(inp_array, len(inp_array)-3)
-#
-#    print(f"Min heapified array: {inp_array}")
-#
-#    assert heap.has_min_heap_property(inp_array)
-#
-
-def test_max_heapify_from_leaf():
-    #leaf_idx = len(heapify_inp_array)-3
-    leaf_idx = 2
-    inp_array = copy(heapify_inp_array)
-
-    print(f"Original array: {heapify_inp_array}")
-    for leaf_idx in range(len(heapify_inp_array)):
-        inp_array = copy(heapify_inp_array)
-        print(f"Heapifying from [{leaf_idx}]: {inp_array[leaf_idx]}")
-        heap.max_heapify(inp_array, leaf_idx)
-
-        print(f"Heapified: {inp_array}")
-
-    #heap.max_heapify(inp_array, leaf_idx)
-    #for inp, exp, in zip(inp_array, max_heapify_exp_array):
-    #    assert inp == exp
-
-
 
 
 # ======== MAX HEAP ======== #
