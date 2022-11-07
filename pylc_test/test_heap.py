@@ -11,6 +11,19 @@ from pylc import heap      # Once this is alright, factor back into main heap
 heap_inp_array_1 = [1, 2, 7, 3, 17, 36, 25, 19, 100]
 heap_inp_array_2 = [1, 25, 36, 100, 7, 17, 19, 2, 3]
 
+
+# ======== HEAP PROPERTIES ON ARRAYS ======== #
+def test_max_heapify_on_array():
+    inp_array = [16, 4, 10, 14, 7, 9, 3, 2, 8 ,1]
+    exp_array = [16, 14, 10, 8, 7, 9, 3, 2, 4, 1]
+
+    # in the book we start at i = 2, but this is in 1-indexed array so should be 1 here 
+    heap.max_heapify(inp_array, 1)
+
+    for inp, exp, in zip(inp_array, exp_array):
+        assert inp == exp
+
+
 # ======== MAX HEAP ======== #
 def test_max_heap_init():
     test_heap = heap.MaxHeap()

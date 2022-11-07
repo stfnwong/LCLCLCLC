@@ -53,6 +53,47 @@ def has_max_heap_property(array:List[Numeric], idx:int=0) -> bool:
     return False
 
 
+# ==== HEAP PROPERTY ON ARRAYS ==== #
+# How to enforce the heap property on just an array?
+def max_heapify(array:List[Numeric], i:int) -> None:
+    """
+    Max-heapify a list of numbers in place.
+    """
+
+    def left(i:int) -> int:
+        return 2 * i
+
+    def right(i:int) -> int:
+        return 2 * i + 1
+
+    l = heap_left_child(i)
+    r = heap_right_child(i)
+    #l = left(i)
+    #r = right(i)
+
+    # TODO: debug only, remove 
+    print(f"(i, l, r) : {(i, l, r)}")
+    try:
+        print(f"(array[i], array[l], array[r]) : {(array[i], array[l], array[r])}")
+    except IndexError:
+        print("Some elements out of range")
+
+    # Is A[i] larger than its left child?
+    if (l < len(array)-1) and (array[l] > array[i]):
+        largest = l
+    else:
+        largest = i
+    # Is A[largest] larger than A[i]'s right child
+    if (r < len(array)-1) and (array[r] > array[largest]):
+        largest = r
+    # Is A[i] actually the largest? If not, swap
+    if largest != i:
+        array[largest], array[i] = array[i], array[largest]
+        max_heapify(array, largest)
+
+
+
+# ==== HEAP OBJECTS ==== #
 # New (simpler) heap class
 class Heap:
     def __init__(self, heap:Optional[List[Numeric]]=None) -> None:
@@ -111,7 +152,7 @@ class MinHeap(Heap):
     def __repr__(self) -> str:
         return 'MinHeap(%s)' % str(self.heap)
 
-    def _compare(self, parent:int, child:int) -> bool:
+    def _compare(self, parent:Numeric, child:Numeric) -> bool:
         return parent > child
 
     def heapify_down(self, idx:int) -> None:
@@ -156,7 +197,7 @@ class MaxHeap(Heap):
     def __repr__(self) -> str:
         return 'MaxHeap(%s)' % str(self.heap)
 
-    def _compare(self, parent:int, child:int) -> bool:
+    def _compare(self, parent:Numeric, child:Numeric) -> bool:
         return parent < child
 
     def heapify_down(self, idx:int) -> None:
