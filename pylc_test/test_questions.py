@@ -210,13 +210,13 @@ def test_min_depth_binary_tree_111():
 # Question 116
 # Populating Next Right Pointers in Each Node
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
-def test_populate_next_right_pointers_116():
-    inputs = [
-        "[1,2,3,4,5,6,7]",
-        "[]"
-    ]
-    exp_output = []
-
+#def test_populate_next_right_pointers_116():
+#    inputs = [
+#        "[1,2,3,4,5,6,7]",
+#        "[]"
+#    ]
+#    exp_output = []
+#
 
 
 # Question 199

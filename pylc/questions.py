@@ -5,7 +5,7 @@ Answers to specific Leetcode questions
 Stefan Wong 2019
 """
 
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from pylc.tree import TreeNode, BinaryTreeNode, RPTreeNode
 
@@ -324,10 +324,14 @@ def min_depth_111(root:Optional[BinaryTreeNode]) -> int:
 # to the first node on the right. Create pointers to the next right-most node in the tree
 def populate_next_right_pointers_116(root:Optional[RPTreeNode]) -> Optional[RPTreeNode]:
     """
+    Note that we have a perfect binary tree.
+
+    Time: O(n)
+    Space: O(n)
     """
 
-    # Idea 1: Traverse level wise, left to right. In each level make a left-to-right 
-    # list of nodes and assign pointer "backwards" (or a right-to-left and assign 
+    # Idea 1: Traverse level wise, left to right. In each level make a left-to-right
+    # list of nodes and assign pointer "backwards" (or a right-to-left and assign
     # forwards).
 
     if not root:
@@ -337,12 +341,12 @@ def populate_next_right_pointers_116(root:Optional[RPTreeNode]) -> Optional[RPTr
 
     while q:
         num_nodes = len(q)
-        next_node = None  # initially there are no next nodes 
+        next_node = None  # initially there are no next nodes
         for _ in range(num_nodes):
             cur_node = q.pop(0)
             cur_node.next_node = next_node
             next_node = cur_node
-            # Append any children for traversal, but add to Q in right->left 
+            # Append any children for traversal, but add to Q in right->left
             if cur_node.right:
                 q.append(cur_node.right)
             if cur_node.left:
@@ -350,6 +354,43 @@ def populate_next_right_pointers_116(root:Optional[RPTreeNode]) -> Optional[RPTr
 
     return root
 
+
+# Question 116
+# Populating Next Right Pointers in Each Node
+# https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+def populate_next_right_pointers_116_perfect_tree(root:Optional[RPTreeNode]) -> Optional[RPTreeNode]:
+    """
+    Note that in the problem we are told that we are given a perfect tree. This means
+    that any left node is assured to have a corresponding right node.
+    """
+
+    if not root:
+        return root
+
+    q:List[Tuple[Optional[RPTreeNode], int]] = [(root, 1)]
+    prev_node:Optional[RPTreeNode] = None
+    prev_level = 0     # what level was above this one
+    cur_level = 1
+
+    while q:
+        cur_node, cur_level = q.pop(0)
+
+        if cur_level == prev_level:
+            # This level equal to previous level - we've seen this level before, 
+            # therefore this isn't the first node in this level.
+            prev_node.next = cur_node
+            prev_node = cur_node
+        else:
+            # Not equal, we are on a new level. The current nodes do not need updating 
+            prev_level = cur_level
+            prev_node = cur_node
+
+        # Because we are told this is a perfect binary tree, we can assume there is
+        # a left and right node
+        q.append((cur_node.left, cur_level+1))
+        q.append((cur_node.right, cur_level+1))
+
+    return root
 
 
 # Question 103
