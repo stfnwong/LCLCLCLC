@@ -4,7 +4,7 @@ Implementations of various tree things
 
 """
 
-from typing import List, Optional
+from typing import List, Optional, Union
 from collections import deque
 
 
@@ -14,9 +14,6 @@ class TreeNode:
         self.val = val
         self.left = left
         self.right = right
-
-
-
 
 
 #class NTree:
@@ -39,22 +36,24 @@ class BinaryTreeNode:
         self.val:int = val
 
     def __repr__(self) -> str:
-        s = []
-        q = deque([self])
+        return str(self.val)
 
-        while q:
-            cur_node = q.pop()
-            if cur_node.val:
-                s.append(str(cur_node.val))
-            else:
-                s.append("null")
+        #s = []
+        #q = deque([self])
 
-            if cur_node.left:
-                q.append(cur_node.left)
-            if cur_node.right:
-                q.append(cur_node.right)
+        #while q:
+        #    cur_node = q.pop()
+        #    if cur_node.val:
+        #        s.append(str(cur_node.val))
+        #    else:
+        #        s.append("null")
 
-        return ",".join(s)
+        #    if cur_node.left:
+        #        q.append(cur_node.left)
+        #    if cur_node.right:
+        #        q.append(cur_node.right)
+
+        #return ",".join(s)
 
     def __str__(self) -> str:
         return self.__repr__()
@@ -119,6 +118,9 @@ class RPTreeNode:
 
 
 
+# Type for any tree
+TreeType = Union[BinaryTreeNode, RPTreeNode, TreeNode]
+
 def compare_tree_rec(a:Optional[BinaryTreeNode], b:Optional[BinaryTreeNode]) -> bool:
     """
     Recursively compare two trees for equality.
@@ -148,10 +150,13 @@ def copy_tree_rec(src_root:BinaryTreeNode) -> BinaryTreeNode:
         return new_node
 
 
-def copy_tree_iter(src_root:BinaryTreeNode) -> BinaryTreeNode:
+def copy_tree_iter(src_root:BinaryTreeNode) -> Optional[BinaryTreeNode]:
     """
     Copy a tree iteratively.
     """
+
+    if not src_root:
+        return src_root
 
     src_node_q = [src_root]
     dst_node_q = []
@@ -296,6 +301,43 @@ def repr_to_tree(repr_string:str) -> Optional[BinaryTreeNode]:
                     cur_node.right = new_node
 
     return root
+
+
+def tree_to_repr(root:Optional[TreeType], null_str:str="None") -> str:
+    """
+    Convert a tree to its corresponding leet-code style repr
+    """
+
+    # TODO: traverse the tree in level order, appending "null" to the string
+    # when there are empty leaf nodes
+    if not root:
+        return "[]"
+
+    node_strings = []
+    q = [root]
+
+    while q:
+        num_nodes = len(q)
+        for _  in range(num_nodes):
+            cur_node = q.pop(0)
+            if cur_node:
+                node_strings.append(str(cur_node.val))
+                q.append(cur_node.left)
+                q.append(cur_node.right)
+                #if cur_node.left:
+                #    q.append(cur_node.left)
+                #if cur_node.right:
+                #    q.append(cur_node.right)
+            else:
+                node_strings.append(null_str)
+
+    # Shit implementation - strip trailing None's
+    idx = len(node_strings)-1
+    while node_strings[idx] == null_str:
+        node_strings.pop(idx)
+        idx = idx - 1
+
+    return "[" + ", ".join(node_strings) + "]"
 
 
 

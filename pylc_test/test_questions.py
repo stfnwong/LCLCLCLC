@@ -187,13 +187,36 @@ def test_level_order_zigzag_traversal_103():
         assert out == exp_out
 
 
+
+
+# Question 111 
+# https://leetcode.com/problems/minimum-depth-of-binary-tree/
+# Minimum depth of binary tree
+def test_min_depth_binary_tree_111():
+    inputs = [
+        "[3,9,20,null,null,15,7]",
+        "[2,null,3,null,4,null,5,null,6]"
+    ]
+    exp_outputs = [2, 5]
+    functions = [questions.min_depth_111]
+
+    for func in functions:
+        for inp, exp_out in zip(inputs, exp_outputs):
+            tree = repr_to_tree(inp)
+            depth = func(tree)
+            assert depth == exp_out
+
+
 # Question 116
 # Populating Next Right Pointers in Each Node
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
 def test_populate_next_right_pointers_116():
     inputs = [
         "[1,2,3,4,5,6,7]",
+        "[]"
     ]
+    exp_output = []
+
 
 
 # Question 199

@@ -7,7 +7,7 @@ Stefan Wong 2019
 
 from typing import List, Optional
 
-from pylc.tree import TreeNode, BinaryTreeNode
+from pylc.tree import TreeNode, BinaryTreeNode, RPTreeNode
 
 # debug
 #from pudb import set_trace; set_trace()
@@ -283,14 +283,73 @@ def level_order_traversal_102(root: Optional[BinaryTreeNode]) -> List[List[int]]
 
     return traversal
 
+# Question 111
+# https://leetcode.com/problems/minimum-depth-of-binary-tree/
+# Minimum depth of binary tree
+def min_depth_111(root:Optional[BinaryTreeNode]) -> int:
+    """
+    Return the minimum depth of a binary tree.
+    """
+    # Idea 1 - traverse depth first, when you find a node with no children
+    # return the depth of that node
+
+    if not root:
+        return 0
+
+    height = 0
+    q = [root]
+
+    while q:
+        num_nodes = len(q)
+        height += 1
+        for _ in range(num_nodes):
+            cur_node = q.pop(0)
+            # NOTE: putting a check here on cur_node is actually slower on LC
+            if not cur_node.left and not cur_node.right:
+                return height
+
+            if cur_node.left:
+                q.append(cur_node.left)
+            if cur_node.right:
+                q.append(cur_node.right)
+
+    return height
+
 
 # Question 116
 # Populating Next Right Pointers in Each Node
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
 #
-# In this problem, imagine a perfect binary tree. ALl the 
+# In this problem, imagine a perfect binary tree. Cast a line from the nodes on the left
+# to the first node on the right. Create pointers to the next right-most node in the tree
 def populate_next_right_pointers_116(root:Optional[RPTreeNode]) -> Optional[RPTreeNode]:
-    pass
+    """
+    """
+
+    # Idea 1: Traverse level wise, left to right. In each level make a left-to-right 
+    # list of nodes and assign pointer "backwards" (or a right-to-left and assign 
+    # forwards).
+
+    if not root:
+        return root
+
+    q = [root]
+
+    while q:
+        num_nodes = len(q)
+        next_node = None  # initially there are no next nodes 
+        for _ in range(num_nodes):
+            cur_node = q.pop(0)
+            cur_node.next_node = next_node
+            next_node = cur_node
+            # Append any children for traversal, but add to Q in right->left 
+            if cur_node.right:
+                q.append(cur_node.right)
+            if cur_node.left:
+                q.append(cur_node.left)
+
+    return root
+
 
 
 # Question 103

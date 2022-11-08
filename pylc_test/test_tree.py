@@ -7,6 +7,7 @@ Stefan Wong 2019
 
 from pylc.tree import (
     repr_to_tree,
+    tree_to_repr,
     compare_tree_rec,
     copy_tree_rec,
     tree_size,
@@ -47,6 +48,22 @@ def test_repr_to_tree():
             assert len(tree) == exp_size
 
 
+#def test_tree_to_repr():
+#    repr_inputs = [
+#        #"[1, None, 3]",
+#        #"[1, 2, 3]",
+#        #"[1, 2, 3, None, 4, 5, 6]",
+#        "[1, None, 2, None, None, 4]",
+#    ]
+#
+#    for inp in repr_inputs:
+#        print(f"Input repr: {inp}")
+#        tree = repr_to_tree(inp)
+#        out_repr = tree_to_repr(tree)
+#        print(f"Output repr: {out_repr}")
+#        assert out_repr == inp
+
+
 def test_compare_tree_rec():
     repr_inputs = [
         "[1, 2, 3]",
@@ -63,7 +80,7 @@ def test_compare_tree_rec():
         assert compare_tree_rec(tree_a, tree_b)
         print("....OK")
 
-    # Also test that the empty case 
+    # Also test that the empty case
     assert compare_tree_rec(repr_to_tree("[]"), repr_to_tree("[]"))
 
 
