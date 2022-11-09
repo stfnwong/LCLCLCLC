@@ -12,6 +12,7 @@
 #include <vector>
 #include <unordered_map>
 #include "list.hpp"
+#include "tree.hpp"
 
 
 // ==== QUESTION 1
@@ -48,6 +49,19 @@ std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target);
 // https://leetcode.com/problems/jump-game/
 bool can_jump(std::vector<int>& nums);
 
+/*
+ * Question 102
+ * Binary Tree Level Order Traversal
+ * https://leetcode.com/problems/binary-tree-level-order-traversal/
+ */
+std::vector<std::vector<int>> level_order_traversal_102(const TreeNode* root);
+
+/*
+ * Question 111 
+https://leetcode.com/problems/minimum-depth-of-binary-tree/
+Minimum depth of binary tree
+*/
+int min_depth_of_binary_tree_111(const TreeNode* root);
 
 // Question 322
 // https://leetcode.com/problems/coin-change/

@@ -13,6 +13,7 @@
 #include <utility>
 
 #include "list.hpp"
+#include "tree.hpp"
 #include "util.hpp"
 #include "questions.hpp"
 
@@ -274,6 +275,47 @@ TEST_CASE("question_55", "leetcode")
 
     out4 = can_jump(inp4);
     REQUIRE(exp4 == out4);
+}
+
+/*
+ * Question 102
+ * Binary Tree Level Order Traversal
+ * https://leetcode.com/problems/binary-tree-level-order-traversal/
+ */
+TEST_CASE("question_102", "leetcode")
+{
+    std::string inp_repr = "[3,9,20,null,null,15,7]";
+    std::vector<std::vector<int>> exp_traversal = {
+        {{3}, {9, 20}, {15, 7}}
+    };
+
+    TreeNode* root = repr_to_tree(inp_repr);
+    std::vector<std::vector<int>> traversal = level_order_traversal_102(root);
+
+    REQUIRE(traversal.size() == exp_traversal.size());
+    for(unsigned i = 0; i < traversal.size(); ++i)
+        REQUIRE(traversal[i] == exp_traversal[i]);
+}
+
+/*
+ * Question 111 
+https://leetcode.com/problems/minimum-depth-of-binary-tree/
+Minimum depth of binary tree
+*/
+TEST_CASE("question_111", "leetcode")
+{
+    std::vector<std::string> tree_reprs = {
+        "[3,9,20,null,null,15,7]",
+        "[2,null,3,null,4,null,5,null,6]"
+    };
+    std::vector<int> exp_min_height = {2, 5};
+
+    for(unsigned i = 0; i < tree_reprs.size(); ++i)
+    {
+        TreeNode* tree = repr_to_tree(tree_reprs[i]);
+        int min_height = min_depth_of_binary_tree_111(tree);
+        REQUIRE(min_height == exp_min_height[i]);
+    }
 }
 
 TEST_CASE("question_842", "leetcode")

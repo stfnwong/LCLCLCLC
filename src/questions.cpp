@@ -11,7 +11,6 @@
 #include <iostream>
 #include <queue>
 
-#include "tree.hpp"
 #include "questions.hpp"
 
 /*
@@ -393,13 +392,81 @@ std::vector<std::vector<int>> level_order_traversal_102(const TreeNode* root)
     while(!node_q.empty())
     {
         std::vector<int> level;
-    }
+        unsigned num_nodes = node_q.size();
+        for(unsigned i = 0; i < num_nodes; ++i)
+        {
+            TreeNode* cur_node = node_q.front();
+            level.push_back(cur_node->val);
+            if(cur_node->left)
+                node_q.push(cur_node->left);
+            if(cur_node->right)
+                node_q.push(cur_node->right);
 
+            node_q.pop();
+        }
+
+        traversal.push_back(level);
+    }
 
     return traversal;
 }
 
 
+/*
+ * Question 111 
+https://leetcode.com/problems/minimum-depth-of-binary-tree/
+Minimum depth of binary tree
+*/
+int min_depth_of_binary_tree_111(const TreeNode* root)
+{
+    if(!root)
+        return 0;
+
+    unsigned height = 0;
+
+    std::queue<const TreeNode*> node_q;
+    node_q.push(root);
+
+    while(!node_q.empty())
+    {
+        unsigned num_nodes = node_q.size();
+        height++;
+
+        for(unsigned i = 0; i < num_nodes; ++i)
+        {
+            const TreeNode* cur_node = node_q.front();
+            if(!cur_node)
+                return height;
+
+            if(!cur_node->left && !cur_node->right)
+                return height;
+
+            if(cur_node->left)
+                node_q.push(cur_node->left);
+            if(cur_node->right)
+                node_q.push(cur_node->right);
+
+            node_q.pop();
+        }
+    }
+
+    return height;
+}
+
+//def test_min_depth_binary_tree_111():
+//    inputs = [
+//        "[3,9,20,null,null,15,7]",
+//        "[2,null,3,null,4,null,5,null,6]"
+//    ]
+//    exp_outputs = [2, 5]
+//    functions = [questions.min_depth_111]
+//
+//    for func in functions:
+//        for inp, exp_out in zip(inputs, exp_outputs):
+//            tree = repr_to_tree(inp)
+//            depth = func(tree)
+//            assert depth == exp_out
+//
 
 
 /*
