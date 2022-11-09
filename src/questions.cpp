@@ -435,10 +435,7 @@ int min_depth_of_binary_tree_111(const TreeNode* root)
         for(unsigned i = 0; i < num_nodes; ++i)
         {
             const TreeNode* cur_node = node_q.front();
-            if(!cur_node)
-                return height;
-
-            if(!cur_node->left && !cur_node->right)
+            if(!cur_node || (!cur_node->left && !cur_node->right))
                 return height;
 
             if(cur_node->left)
