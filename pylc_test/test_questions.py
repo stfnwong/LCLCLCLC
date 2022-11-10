@@ -357,9 +357,10 @@ def min_falling_path_sum_931(matrix:List[List[int]]) -> int:
 def test_last_stone_weight_1046():
     inputs = [
         [2, 7, 4, 1, 8, 1],
-        [1]
+        [1],
+        [3, 7, 2]
     ]
-    exp_outputs = [1, 1]
+    exp_outputs = [1, 1, 2]
 
     for inp, exp_out in zip(inputs, exp_outputs):
         out = questions.last_stone_weight_1046(inp)

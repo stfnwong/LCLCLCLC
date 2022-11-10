@@ -377,12 +377,12 @@ def populate_next_right_pointers_116_perfect_tree(root:Optional[RPTreeNode]) -> 
         cur_node, cur_level = q.pop(0)
 
         if cur_level == prev_level:
-            # This level equal to previous level - we've seen this level before, 
+            # This level equal to previous level - we've seen this level before,
             # therefore this isn't the first node in this level.
             prev_node.next = cur_node
             prev_node = cur_node
         else:
-            # Not equal, we are on a new level. The current nodes do not need updating 
+            # Not equal, we are on a new level. The current nodes do not need updating
             prev_level = cur_level
             prev_node = cur_node
 
@@ -656,18 +656,18 @@ Return any Fibonacci-like sequence split from num, or return [] if it cannot be 
 # Question 931
 # https://leetcode.com/problems/minimum-falling-path-sum/_931
 #
-# Given an n x n array of integers matrix, return the minimum sum of any falling 
+# Given an n x n array of integers matrix, return the minimum sum of any falling
 # path through matrix.
 def min_falling_path_sum_931(matrix:List[List[int]]) -> int:
     pass
 
 # Question 1046
-# Last Stone Weight 
+# Last Stone Weight
 # https://leetcode.com/problems/last-stone-weight/
 def last_stone_weight_1046(stones:List[int]) -> int:
     # One idea - because we always take the heaviest stone use a heap and sort the stones
-    # turns out the heap in python is a min heap, so we invert the values here to get 
-    # a structure that is effectively a max heap 
+    # turns out the heap in python is a min heap, so we invert the values here to get
+    # a structure that is effectively a max heap
     stones = [-s for s in stones]
     heapq.heapify(stones)           # O(log N)
 
@@ -676,7 +676,8 @@ def last_stone_weight_1046(stones:List[int]) -> int:
         second = heapq.heappop(stones)
 
         if second != first:
-            new_stone = second - first  # because all numbers are negative 
+            # this is the reverse of the "real" conditional because all numbers are negative
+            new_stone = abs(second) - abs(first)
             heapq.heappush(stones, new_stone)
 
     if not stones:
