@@ -4,9 +4,16 @@ A binary heap
 
 """
 
-from typing import List, Optional, Union
+from typing import Callable, List, Optional, Union
 
 Numeric = Union[int, float]
+
+
+def comp_lt(a:Numeric, b:Numeric) -> bool:
+    return a < b
+
+def comp_gt(a:Numeric, b:Numeric) -> bool:
+    return a > b
 
 
 # Get the children or parents of a zero-indexed heap array
@@ -53,6 +60,33 @@ def has_max_heap_property(array:List[Numeric], idx:int=0) -> bool:
     return False
 
 
+def has_heap_property_iter(array:List[Numeric], idx:int=0, compare_func:Callable=comp_lt) -> bool:
+    q = [idx]
+
+    while q:
+        num_nodes = len(q)
+        for _ in range(num_nodes):
+            cur_idx = q.pop(0)
+            left = heap_left_child(cur_idx)
+            right = heap_right_child(cur_idx)
+
+            if left >= len(array) or right >= len(array):
+                return True
+
+            # reject any parent child combos that don't obey the heap property
+            if not compare_func(array[left], array[cur_idx]) or not compare_func(array[right], array[cur_idx]):
+
+                return False
+
+            # Otherwise, check the children of these nodes
+            if left < len(array):
+                q.append(left)
+            if right < len(array):
+                q.append(right)
+
+    return True
+
+
 # ==== HEAP PROPERTY ON ARRAYS ==== #
 # How to enforce the heap property on just an array?
 def max_heapify(array:List[Numeric], i:int) -> None:
@@ -83,7 +117,7 @@ def build_max_heap(array:List[Numeric]) -> None:
     """
 
     size = len(array)
-    for idx in range(size // 2, -1, -1):
+    for idx in range((size // 2)-1, -1, -1):
         max_heapify(array, idx)
 
 
@@ -101,6 +135,7 @@ def min_heapify(array:List[Numeric], i:int) -> None:
         smallest = l
     else:
         smallest = i
+
     # Is A[smallest] less than A[i]'s right child?
     if (r < len(array)) and (array[r] < array[smallest]):
         smallest = r
@@ -116,7 +151,7 @@ def build_min_heap(array:List[Numeric]) -> None:
     """
 
     size = len(array)
-    for idx in range(size // 2, -1, -1):
+    for idx in range((size // 2)-1, -1, -1):
         min_heapify(array, idx)
 
 
@@ -199,7 +234,7 @@ class MinHeap(Heap):
     """
     MinHeap specialization - OOP style
     """
-    def __init__(self, heap:list=None) -> None:
+    def __init__(self, heap:Optional[List[Numeric]]=None) -> None:
         super(MinHeap, self).__init__(heap)
 
     def __repr__(self) -> str:
