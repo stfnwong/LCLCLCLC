@@ -6,6 +6,7 @@ Stefan Wong 2019
 """
 
 from typing import List, Optional, Tuple
+import heapq        # can also use the internal heap structure, but its much slower
 
 from pylc.tree import TreeNode, BinaryTreeNode, RPTreeNode
 
@@ -547,7 +548,6 @@ def lis_300_alt(nums: List[int]) -> int:
     i terminates. This version still has a runtime complexity of O(n^2).
     """
 
-    from pudb import set_trace; set_trace()
     MAX = 100000
     N = len(nums)
     d = [MAX for _ in range(N+1)]
@@ -653,3 +653,43 @@ Return any Fibonacci-like sequence split from num, or return [] if it cannot be 
 
 
 
+# Question 931
+# https://leetcode.com/problems/minimum-falling-path-sum/_931
+#
+# Given an n x n array of integers matrix, return the minimum sum of any falling 
+# path through matrix.
+def min_falling_path_sum_931(matrix:List[List[int]]) -> int:
+    pass
+
+# Question 1046
+# Last Stone Weight 
+# https://leetcode.com/problems/last-stone-weight/
+def last_stone_weight_1046(stones:List[int]) -> int:
+    # One idea - because we always take the heaviest stone use a heap and sort the stones
+    # turns out the heap in python is a min heap, so we invert the values here to get 
+    # a structure that is effectively a max heap 
+    stones = [-s for s in stones]
+    heapq.heapify(stones)           # O(log N)
+
+    while len(stones) > 1:     #O(N)
+        first = heapq.heappop(stones)
+        second = heapq.heappop(stones)
+
+        if second != first:
+            new_stone = second - first  # because all numbers are negative 
+            heapq.heappush(stones, new_stone)
+
+    if not stones:
+        return 0
+
+    return abs(stones[0])
+
+
+
+
+
+# Question 1049
+# Last Stone Weight II
+# https://leetcode.com/problems/last-stone-weight-ii/
+def last_stone_weight_ii_1049(stones:List[int]) -> int:
+    pass

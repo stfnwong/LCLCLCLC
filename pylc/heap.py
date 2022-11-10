@@ -70,8 +70,9 @@ def has_heap_property_iter(array:List[Numeric], idx:int=0, compare_func:Callable
             left = heap_left_child(cur_idx)
             right = heap_right_child(cur_idx)
 
+            # Nothing more to check here
             if left >= len(array) or right >= len(array):
-                return True
+                continue
 
             # reject any parent child combos that don't obey the heap property
             if not compare_func(array[left], array[cur_idx]) or not compare_func(array[right], array[cur_idx]):
