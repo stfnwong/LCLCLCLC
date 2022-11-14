@@ -12,6 +12,13 @@
 #include <vector>
 
 
+template <typename T> void swp(T& a, T& b)
+{
+    T temp = a;
+    a = b;
+    b = temp;
+}
+
 
 template <typename T> std::string vec_to_str(const std::vector<T>& vec)
 {
@@ -21,9 +28,7 @@ template <typename T> std::string vec_to_str(const std::vector<T>& vec)
     for(unsigned i = 0; i < vec.size(); ++i)
     {
         oss << vec[i];
-        if(i == vec.size()-1)
-            oss << " ";
-        else
+        if(i < vec.size()-1)
             oss << ",";
     }
     oss << "]";

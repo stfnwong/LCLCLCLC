@@ -205,4 +205,51 @@ BinaryTree<int> create_tree_from_repr(const std::string& repr);
  */
 
 
+
+
+
+/*
+ * BALANCED BINARY TREE
+ * Implemented with an array
+ */
+template <typename T> struct BalancedBinaryTree
+{
+    struct BalancedBinaryTreeNode
+    {
+        BalancedBinaryTreeNode(const T& v) : value(v) {} 
+
+        T value;
+    };
+
+    unsigned left_child(unsigned idx) 
+    {
+        return 2 * idx + 1;
+    }
+    unsigned right_child(unsigned idx)
+    {
+        return 2 * idx + 2;
+    }
+
+
+    //std::vector<BalancedBinaryTreeNode*> children;
+    std::vector<std::unique_ptr<BalancedBinaryTreeNode>> children;
+
+    public:
+        BalancedBinaryTree() {} 
+
+        // For this I will push to back and then heapify from the bottom up
+        void insert(const T& v)
+        {
+            this->children.push_back(
+                    std::make_unique<BalancedBinaryTreeNode>(v)
+            );
+            // ensure that the resulting tree is balanced
+        }
+
+
+
+};
+
+
+
 #endif /*__LC_BINARY_TREE_HPP*/
