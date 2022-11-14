@@ -186,3 +186,22 @@ def test_inorder_traversal():
         assert out_traversal == exp_traversal
 
 
+
+def test_preorder_traversal_iter():
+    repr_strings = [
+        "[1, 2, 3]",
+        "[1, 2, None, 3, 4]",
+        "[1, 2, 3, None, 4, 5]",
+    ]
+    expected_traversals = [
+        [1, 2, 3],
+        [1, 2, 3, 4],
+        [1, 2, 4, 3, 5],
+    ]
+
+    for rstring, exp_traversal in zip(repr_strings, expected_traversals):
+        tree = repr_to_tree(rstring)
+        out_traversal = preorder_rec(tree, [])
+        assert len(out_traversal) == len(exp_traversal)
+        assert out_traversal == exp_traversal
+

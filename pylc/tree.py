@@ -381,6 +381,22 @@ def inorder_rec(root:Optional[BinaryTreeNode], traversal:List[int]) -> List[int]
     return traversal
 
 
+def preorder_iter(root:Optional[BinaryTreeNode], traversal:List[int]) -> List[int]:
+    if not root:
+        return []
+
+    stack = [root]
+    while stack:
+        cur_node = stack.pop()
+        traversal.append(cur_node.val)
+        if cur_node.right:
+            stack.append(cur_node.right)
+        if cur_node.left:
+            stack.append(cur_node.left)
+
+    return traversal
+
+
 def levelorder_iter(root:Optional[BinaryTreeNode], traversal:List[int]) -> List[int]:
     q = deque([root])
 

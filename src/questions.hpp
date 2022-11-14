@@ -72,6 +72,21 @@ int coin_change_vec_322(std::vector<int>& coins, int amount);
 // https://leetcode.com/problems/split-array-into-fibonacci-sequence/
 std::vector<int> split_into_fib_seq_842(int i);
 
+
+/*
+ Question 1046
+ Last Stone Weight
+ https://leetcode.com/problems/last-stone-weight/
+*/
+int last_stone_weight_1046(std::vector<int>& stones);
+
+/*
+Question 1049
+Last Stone Weight II
+https://leetcode.com/problems/last-stone-weight-ii/
+*/
+int last_stone_weight_ii_1049(std::vector<int>& stones);
+
 // ==== QUESTION 1222
 // https://leetcode.com/problems/queens-that-can-attack-the-king/
 std::vector<std::vector<int>> queensAttackTheKing(std::vector<std::vector<int>>& queens, std::vector<int>& king);

@@ -519,6 +519,53 @@ std::vector<int> split_into_fib_seq_842(int i)
 
 
 
+/*
+ Question 1046
+ Last Stone Weight
+ https://leetcode.com/problems/last-stone-weight/
+*/
+int last_stone_weight_1046(std::vector<int>& stones)
+{
+    std::priority_queue<int> s(stones.begin(), stones.end());
+
+    while(s.size() > 1)
+    {
+        int y = s.top();
+        s.pop();
+        int x = s.top();
+        s.pop();
+
+        if(x != y)
+            s.push(y - x);
+    }
+
+    return s.size() > 0 ? s.top() : 0;
+}
+
+/*
+ Question 1049
+ Last Stone Weight II
+ https://leetcode.com/problems/last-stone-weight-ii/
+*/
+int last_stone_weight_ii_1049(std::vector<int>& stones)
+{
+    if(stones.size() == 1)
+        return  stones[0];
+
+    std::priority_queue<int> s(stones.begin(), stones.end());
+
+    while(s.size() > 1)
+    {
+        int y = s.top();
+        s.pop();
+        int x = s.top();
+        s.pop();
+        if(x != y)
+            s.push(y - x);
+    }
+
+    return s.size() > 0 ? s.top() : 0;
+}
 
 /*
  * Question 1222

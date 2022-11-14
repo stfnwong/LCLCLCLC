@@ -432,6 +432,48 @@ def level_order_zigzag_traversal_103(root:Optional[BinaryTreeNode]) -> List[List
     return traversal
 
 
+# Question 114
+# https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+def flatten_binary_tree_to_linked_list_114(root:Optional[BinaryTreeNode]) -> None:
+    """
+    Given the root of a binary tree, flatten the tree into a "linked list":
+
+    The "linked list" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.
+    The "linked list" should be in the same order as a pre-order traversal of the binary tree.
+
+    """
+    if not root:
+        return root
+
+    stack = [root]
+    while stack:
+        cur_node = stack.pop(-1)
+        # we want to flatten L->R, so push R->L
+        if cur_node.right:
+            stack.append(cur_node.right)
+        if cur_node.left:
+            stack.append(cur_node.left)
+        # the current top of the stack is now the next node, so
+        # we can set the pointers directly.
+        cur_node.right = stack[-1]
+
+
+
+# Question 114
+# https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+# Turns out we can use the Morris Traversal here
+# https://www.educative.io/answers/what-is-morris-traversal
+def flatten_binary_tree_to_linked_list_114_morris(root:Optional[BinaryTreeNode]) -> None:
+    pass
+
+
+# Question 131
+# https://leetcode.com/problems/palindrome-partitioning/
+# Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
+def palindrome_partitioning_131(s:str) -> List[List[str]]:
+    pass
+
+
 # Question 199
 # Binary Tree Right Side View
 # https://leetcode.com/problems/binary-tree-right-side-view/
@@ -485,6 +527,11 @@ def bt_right_side_199_rec(root: Optional[BinaryTreeNode]) -> List[int]:
 
     return t
 
+# Question 200
+# https://leetcode.com/problems/number-of-islands/
+# Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+def number_of_islands_200(grid:List[List[str]]) -> int:
+    pass
 
 
 
@@ -659,7 +706,61 @@ Return any Fibonacci-like sequence split from num, or return [] if it cannot be 
 # Given an n x n array of integers matrix, return the minimum sum of any falling
 # path through matrix.
 def min_falling_path_sum_931(matrix:List[List[int]]) -> int:
-    pass
+    """
+    Do DFS through the list as if it were a graph.
+    The terminating conditions are
+
+    - out of bounds
+    - last row
+    """
+
+    ROW_MAX = len(matrix)
+    COL_MAX = len(matrix[0])
+    LARGE_NUMBER = int(10e6)
+
+    def dfs(row:int, col:int) -> int:
+        if row < 0 or row > ROW_MAX:
+            return LARGE_NUMBER
+
+
+def min_falling_path_sum_931_tab(matrix:List[List[int]]) -> int:
+    """
+    Compute the cost of every cell in the matrix.
+    """
+
+    LARGE_NUMBER = int(1e9)
+    dp = [[-1 for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
+    num_rows = len(matrix)
+    num_cols = len(matrix[0])
+
+    # Set the "top" row of dp to just be the values of the matrix.
+    # We then walk down the matrix and compute the min value for each position
+    for col in range(num_cols):
+        dp[0][col] = matrix[0][col]
+
+    # Now walk along the matrix from the next row down and find the min value for
+    # each element in DP
+    for row in range(1, num_rows):
+        for col in range(num_cols):
+            # now compute dp[row][col]
+            if (col-1) >= 0:
+                left = dp[row-1][col-1] + matrix[row][col]
+            else:
+                left = LARGE_NUMBER
+
+            if col+1 < num_cols:
+                right = dp[row-1][col+1] + matrix[row][col]
+            else:
+                right = LARGE_NUMBER
+
+            up = dp[row-1][col] + matrix[row][col]
+            dp[row][col] = min(up, left, right)
+
+    return min(dp[num_rows-1])
+
+
+
+
 
 # Question 1046
 # Last Stone Weight
@@ -668,6 +769,10 @@ def last_stone_weight_1046(stones:List[int]) -> int:
     # One idea - because we always take the heaviest stone use a heap and sort the stones
     # turns out the heap in python is a min heap, so we invert the values here to get
     # a structure that is effectively a max heap
+    #
+    # The key thing to note here is that we always take the two largest stones, which
+    # implies that the array should be sorted.
+
     stones = [-s for s in stones]
     heapq.heapify(stones)           # O(log N)
 
@@ -693,4 +798,40 @@ def last_stone_weight_1046(stones:List[int]) -> int:
 # Last Stone Weight II
 # https://leetcode.com/problems/last-stone-weight-ii/
 def last_stone_weight_ii_1049(stones:List[int]) -> int:
+    # In this case, the problem isn't bounded by the requirement to take the two largest
+    # stones. This means that its actually more like a knapsack problem.
     pass
+
+
+# Question 1584
+# https://leetcode.com/problems/min-cost-to-connect-all-points/
+def min_cost_to_connect_all_points_1584(points:List[List[int]]) -> int:
+    LARGE_NUMBER = int(10e6)
+
+    def find_cost(p1:List[int], p2:List[int]) -> int:
+        return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+
+    N = len(points)
+    min_cost = [LARGE_NUMBER for _ in range(N)]
+    cost = 0
+    idx = 0
+
+    # THIS IS WRONG
+    for _ in range(N):
+        min_idx = idx
+        for n, point in enumerate(points):
+            if n == min_idx:
+                continue
+
+            min_cost[n] = min(min_cost[n], find_cost(point, points[min_idx]))
+            min_idx = n if (min_cost[n] < min_cost[min_idx]) else min_idx
+
+        cost += min_cost[min_idx]
+        idx = min_idx
+
+    return cost
+
+
+# Question 1971
+# https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/
+#def find_if_path_exists_in_graph_1971(

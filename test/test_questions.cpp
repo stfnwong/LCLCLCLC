@@ -322,6 +322,53 @@ TEST_CASE("question_842", "leetcode")
 {
 }
 
+
+
+/*
+ Question 1046
+ Last Stone Weight
+ https://leetcode.com/problems/last-stone-weight/
+*/
+TEST_CASE("question_1046", "leetcode")
+{
+    std::vector<std::vector<int>> inputs = {
+        {2, 7, 4, 1, 8, 1},
+        {1},
+        {3, 7, 2}
+    };
+
+    std::vector<int> exp_output = {1, 1, 2};
+
+    for(unsigned test_case = 0; test_case < exp_output.size(); ++test_case)
+    {
+        int out = last_stone_weight_1046(inputs[test_case]);
+        REQUIRE(out == exp_output[test_case]);
+    }
+}
+
+
+/*
+ Question 1049
+ Last Stone Weight II
+ https://leetcode.com/problems/last-stone-weight-ii/
+*/
+TEST_CASE("question_1049", "leetcode")
+{
+    std::vector<std::vector<int>> inputs = {
+        {2, 7, 4, 1, 8, 1},
+        {31, 26, 33, 21 ,40},
+    };
+    std::vector<int> exp_outputs = {1, 5};
+
+    for(unsigned test_case = 0; test_case < exp_outputs.size(); ++test_case)
+    {
+        int out = last_stone_weight_ii_1049(inputs[test_case]);
+        REQUIRE(out == exp_outputs[test_case]);
+    }
+}
+
+
+
 /*
  * Question 1222
  */
