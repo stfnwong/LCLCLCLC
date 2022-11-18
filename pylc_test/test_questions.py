@@ -315,6 +315,21 @@ def test_number_of_islands_200():
         assert out == exp_out
 
 
+# Question 206
+# https://leetcode.com/problems/course-schedule/
+def test_course_schedule_206():
+    graph_inputs = [
+        [[1, 0]],
+        [[1,0], [0,1]]
+    ]
+    nc_inputs = [2, 2]
+    exp_outputs = [True, False]
+
+    for nc, graph, exp_out in zip(nc_inputs, graph_inputs, exp_outputs):
+        out = questions.course_schedule_206(nc, graph)
+        assert out == exp_out
+
+
 # Question 300
 # Longest increasing subsequence
 # https://leetcode.com/problems/longest-increasing-subsequence/

@@ -474,6 +474,9 @@ def palindrome_partitioning_131(s:str) -> List[List[str]]:
     pass
 
 
+# Question 146
+# https://leetcode.com/problems/lru-cache/
+
 # Question 199
 # Binary Tree Right Side View
 # https://leetcode.com/problems/binary-tree-right-side-view/
@@ -533,6 +536,34 @@ def bt_right_side_199_rec(root: Optional[BinaryTreeNode]) -> List[int]:
 def number_of_islands_200(grid:List[List[str]]) -> int:
     pass
 
+
+# Question 206
+# https://leetcode.com/problems/course-schedule/
+def course_schedule_206(num_courses:int, prereqs:List[List[int]]) -> bool:
+    """
+    This is a graph traversal where we want to find if there are any cycles in the graph.
+    We don't know that it is a complete graph. If we DFS the graph and visit the same node 
+    twice we can tell there is a cycle and that its impossible to take all the courses.
+    """
+
+    # adj list of graph
+    graph = {i:[] for i in range(num_courses)}
+    for vert, edge in prereqs:
+        graph[vert].append(edge)
+
+    # keep track of which nodes have been visited 
+    visited = set()
+
+    def dfs(vert):
+        if vert in visited:    # seen before 
+            return False
+        if graph[vert] == []:   # this vert has no prereqs
+            return True
+
+        visited.add(vert)
+        for edge in graph[vert]:
+            if not dfs(edge):
+                return False
 
 
 # Question 300
