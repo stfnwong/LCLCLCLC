@@ -8,5 +8,8 @@
 # Ignore tags file
 tags
 
+# Also ignore these directories 
+other/
+
 # Ignore other vim/lsp things 
 .ccls-cache/
