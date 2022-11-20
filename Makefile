@@ -12,7 +12,7 @@ PROGRAM_DIR=programs
 # Tool options
 CXX=g++
 OPT=-O0
-CXXFLAGS=-Wall -g2 -std=c++17 -D_REENTRANT $(OPT) 
+CXXFLAGS=-Wall -g2 -std=c++17 -D_REENTRANT $(OPT) -fPIC -shared
 TESTFLAGS=
 LDFLAGS=-pthread
 LIBS= 
@@ -84,7 +84,6 @@ clean:
 	# Clean test programs
 	rm -fv $(TEST_BIN_DIR)/test_*
 
-
 # ==== DOCKER TARGETS ==== #
 DOCKER_DEST_DIR=/usr/local/lc
 DOCKER_IMAGE_NAME=lc_cpp
@@ -102,14 +101,21 @@ run-dev:
 		$(DOCKER_IMAGE_NAME) \
 		bash 
 
+run-test:
+	docker run -it \
+		-v $(CURRENT_DIR):$(DOCKER_DEST_DIR) \
+		-w $(DOCKER_DEST_DIR) \
+		$(DOCKER_IMAGE_NAME) \
+		make clean && make all && ./test/run_tests.sh
 
-#run-dev:
-#	docker exec \
-#		--mount src=.,target=$(DOCKER_DEST_DIR) \
-#		-i \
-#		-t $(DOCKER_IMAGE_NAME) \
-#		bash 
+#run-pytest:
+#	docker run -it \
+#		-v $(CURRENT_DIR):$(DOCKER_DEST_DIR) \
+#		-w $(DOCKER_DEST_DIR) \
+#		$(DOCKER_IMAGE_NAME) \
+#		pytest -svv pylc_test
 #
+
 
 print-%:
 	@echo $* = $($*)

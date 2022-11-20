@@ -7,6 +7,10 @@ RUN apt-get -y install g++ make && mkdir -pv /usr/local/lc
 
 # Copy the src and test dirs 
 COPY . /usr/local/lc
+WORKDIR /usr/local/lc
+
+# Make a new poetry env?
 
 # Where should we enter the container?
-CMD ["make all", "./test/run_tests"]
+CMD ["make clean", "make all", "./test/run_tests.sh"]
+
