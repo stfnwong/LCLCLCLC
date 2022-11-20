@@ -29,7 +29,7 @@ int fib_iter(int i)
 
     fib_now = fib_1 + fib_2;
 
-    for(unsigned n = 2; n <= i; ++n)
+    for(int n = 2; n <= i; ++n)
     {
         fib_then = fib_1 + fib_2;
         fib_now = fib_1 + fib_2;

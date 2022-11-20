@@ -95,7 +95,7 @@ std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target)
 
     // since we plan to sort the array we need to remember what the original index was 
     // create a vector of pairs that store a value and its position in the original array 
-    for(int i = 0; i < n; ++i)
+    for(unsigned i = 0; i < n; ++i)
         val_and_idx[i] = std::make_pair(nums[i], i);
 
     // now we can sort the input 
@@ -122,13 +122,13 @@ std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target)
 // two sum brute force 
 std::vector<int> two_sum_brute_force(std::vector<int>& nums, int target)
 {
-    for(int i = 0; i < nums.size(); ++i)
+    for(unsigned i = 0; i < nums.size(); ++i)
     {
-        for(int j = i+1; j < nums.size(); ++j)
+        for(unsigned j = i+1; j < nums.size(); ++j)
         {
             int s = nums[i] + nums[j];
             if(s == target)
-                return std::vector<int>{i, j};
+                return std::vector<int>{int(i), int(j)};   // TODO: add convertion to shut linter up?
         }
     }
 
@@ -419,13 +419,13 @@ int coin_change_vec_322(std::vector<int>& coins, int amount)
 
     min_num_coins[0] = 0;
 
-    for(int n = 1; n < min_num_coins.size(); ++n)
+    for(unsigned n = 1; n < min_num_coins.size(); ++n)
         min_num_coins[n] = amount + 1;
 
     // the nth element of min_num_coins represents the minimum number of coins to sum to n
-    for(int n = 1; n <= min_num_coins.size(); ++n)
+    for(unsigned n = 1; n <= min_num_coins.size(); ++n)
     {
-        for(int c = 0; c < coins.size(); ++c)
+        for(unsigned c = 0; c < coins.size(); ++c)
         {
             // If the difference between n and coins[c] is positive, it means that 
             // coins[c] could be used as part of the solution.

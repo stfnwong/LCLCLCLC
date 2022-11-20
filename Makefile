@@ -84,5 +84,32 @@ clean:
 	# Clean test programs
 	rm -fv $(TEST_BIN_DIR)/test_*
 
+
+# ==== DOCKER TARGETS ==== #
+DOCKER_DEST_DIR=/usr/local/lc
+DOCKER_IMAGE_NAME=lc_cpp
+DOCKER_CONTAINER_NAME=lclclc
+CURRENT_DIR=$(shell pwd)
+
+image:
+	docker build -t $(DOCKER_IMAGE_NAME) .
+
+
+run-dev:
+	docker run -it \
+		-v $(CURRENT_DIR):$(DOCKER_DEST_DIR) \
+		-w $(DOCKER_DEST_DIR) \
+		$(DOCKER_IMAGE_NAME) \
+		bash 
+
+
+#run-dev:
+#	docker exec \
+#		--mount src=.,target=$(DOCKER_DEST_DIR) \
+#		-i \
+#		-t $(DOCKER_IMAGE_NAME) \
+#		bash 
+#
+
 print-%:
 	@echo $* = $($*)
