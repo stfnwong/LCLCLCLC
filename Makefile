@@ -90,7 +90,7 @@ DOCKER_IMAGE_NAME=lc_cpp
 DOCKER_CONTAINER_NAME=lclclc
 CURRENT_DIR=$(shell pwd)
 
-image:
+build-image:
 	docker build -t $(DOCKER_IMAGE_NAME) .
 
 
@@ -107,15 +107,6 @@ run-test:
 		-w $(DOCKER_DEST_DIR) \
 		$(DOCKER_IMAGE_NAME) \
 		make clean && make all && ./test/run_tests.sh
-
-#run-pytest:
-#	docker run -it \
-#		-v $(CURRENT_DIR):$(DOCKER_DEST_DIR) \
-#		-w $(DOCKER_DEST_DIR) \
-#		$(DOCKER_IMAGE_NAME) \
-#		pytest -svv pylc_test
-#
-
 
 print-%:
 	@echo $* = $($*)
