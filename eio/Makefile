@@ -7,7 +7,7 @@ OBJ_DIR=obj
 SRC_DIR=src
 TEST_DIR=test
 ASM_DIR=asm
-TEST_BIN_DIR=$(BIN_DIR)/test
+TEST_BIN_DIR=$(BIN_DIR)
 #PROGRAM_DIR=programs		# NOTE: no programs yet
 
 # Tool options
@@ -48,7 +48,7 @@ $(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@ 
 
 # ==== TEST TARGETS ==== #
-TESTS=
+TESTS=test_arrays
 $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(OBJECTS) $(OBJ_DIR)/$@.o\
 		-o $(TEST_BIN_DIR)/$@ $(LIBS) $(TEST_LIBS)
