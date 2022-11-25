@@ -3,6 +3,7 @@
  * Header for the arrays section of the datastructures module
  */
 
+#include <algorithm>
 #include <deque>
 #include "arrays.hpp"
 
@@ -70,9 +71,10 @@ std::vector<int> find_max_sliding_window(const std::vector<int>& nums, unsigned 
 bool is_palindrome(const std::string& input_string)
 {
     int start = 0;
-    int end = input_string.length();
+    int end = input_string.length()-1;
+    //int end = std::max(0, input_string.length()-1);
 
-    while(start != end)
+    while(start < end)
     {
         if(input_string[start] != input_string[end])
             return false;
