@@ -566,6 +566,20 @@ def course_schedule_206(num_courses:int, prereqs:List[List[int]]) -> bool:
                 return False
 
 
+# Question 239
+# https://leetcode.com/problems/sliding-window-maximum/
+def max_sliding_window_239_brute(nums:List[int], k:int) -> List[int]:
+    """
+    The shit implementation - this is an O(N^2) version with two loops.
+    """
+    n = len(nums)
+    if n * k == 0:
+        return []
+
+    return [max(nums[i:i+k]) for i in range(n-k+1)]
+
+
+
 # Question 300
 # Longest increasing subsequence
 # https://leetcode.com/problems/longest-increasing-subsequence/

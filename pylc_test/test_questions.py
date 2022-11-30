@@ -330,6 +330,30 @@ def test_course_schedule_206():
         assert out == exp_out
 
 
+
+# Question 239
+# https://leetcode.com/problems/sliding-window-maximum/
+def test_max_sliding_window_239():
+    inputs = [
+        # Tuple of (nums, wsize)
+        ([1,3,-1,-3,5,3,6,7], 3),
+        ([1], 1)
+    ]
+
+    exp_outputs = [
+        [3,3,5,5,6,7],
+        [1]
+    ]
+    functions = [
+        questions.max_sliding_window_239_brute
+    ]
+
+    for func in functions:
+        for inp, exp_out in zip(inputs, exp_outputs):
+            out = func(inp[0], inp[1])
+            assert out == exp_out
+
+
 # Question 300
 # Longest increasing subsequence
 # https://leetcode.com/problems/longest-increasing-subsequence/
