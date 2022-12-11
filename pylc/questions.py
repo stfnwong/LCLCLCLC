@@ -6,6 +6,7 @@ Stefan Wong 2019
 """
 
 from typing import List, Optional, Tuple
+import copy
 import heapq        # can also use the internal heap structure, but its much slower
 from collections import deque
 
@@ -330,25 +331,21 @@ def path_sum_ii_113(root: Optional[BinaryTreeNode], target_sum:int) -> List[List
     A root-to-leaf path is a path starting from the root and ending at any leaf node. A leaf is a node with no children.
     """
 
-    def dfs(node:Optional[BinaryTreeNode], path:List[int], all_paths:List[List[int]], cur_sum:int) -> None:
-        if not node:
-            return
+    def dfs(node:Optional[BinaryTreeNode], path:List[int], valid_paths:List[List[int]], cur_sum:int) -> None:
 
-        cur_sum += node.val
-        if cur_sum > target_sum:
-            return
+        if node:
+            path.append(node.val)
+            cur_sum += node.val
 
-        path.append(node.val)   # This is wrong because we don't reset the path when we get back to the top
+            if node.right is None and node.left is None:
+                if cur_sum == target_sum:
+                    valid_paths.append(copy.copy(path))
+            else:
+                dfs(node.left, path, valid_paths, cur_sum)
+                dfs(node.right, path, valid_paths, cur_sum)
 
-        # We only care about paths that are root to leaf, so even if we have the target
-        # sum we only want to accept if we are at a leaf node
-        if cur_sum == target_sum and node.left is None and node.right is None:
-            all_paths.append(path)
-            path.pop(-1)
-            return
-
-        dfs(node.left, path, all_paths, cur_sum)
-        dfs(node.right, path, all_paths, cur_sum)
+            cur_sum -= node.val
+            path.pop()
 
 
     results  = []
