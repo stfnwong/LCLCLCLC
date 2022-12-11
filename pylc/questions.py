@@ -7,6 +7,7 @@ Stefan Wong 2019
 
 from typing import List, Optional, Tuple
 import heapq        # can also use the internal heap structure, but its much slower
+from collections import deque
 
 from pylc.tree import TreeNode, BinaryTreeNode, RPTreeNode
 
@@ -317,6 +318,56 @@ def min_depth_111(root:Optional[BinaryTreeNode]) -> int:
     return height
 
 
+
+# Question 113
+# https://leetcode.com/problems/path-sum-ii/description/
+def path_sum_ii_113(root: Optional[BinaryTreeNode], target_sum:int) -> List[List[int]]:
+    """
+    Given the root of a binary tree and an integer targetSum, return all root-to-leaf
+    paths where the sum of the node values in the path equals targetSum. Each path
+    should be returned as a list of the node values, not node references.
+
+    A root-to-leaf path is a path starting from the root and ending at any leaf node. A leaf is a node with no children.
+    """
+
+    def dfs(node:Optional[BinaryTreeNode], path:List[int], all_paths:List[List[int]], cur_sum:int) -> None:
+        if not node:
+            return
+
+        cur_sum += node.val
+        if cur_sum > target_sum:
+            return
+
+        path.append(node.val)   # This is wrong because we don't reset the path when we get back to the top
+
+        # We only care about paths that are root to leaf, so even if we have the target
+        # sum we only want to accept if we are at a leaf node
+        if cur_sum == target_sum and node.left is None and node.right is None:
+            all_paths.append(path)
+            path.pop(-1)
+            return
+
+        dfs(node.left, path, all_paths, cur_sum)
+        dfs(node.right, path, all_paths, cur_sum)
+
+
+    results  = []
+    if not root:
+        return results
+
+    dfs(root, [], results, 0)
+
+    return results
+
+
+
+
+# TODO: do an iterative version of above
+
+
+
+
+
 # Question 116
 # Populating Next Right Pointers in Each Node
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
@@ -542,7 +593,7 @@ def number_of_islands_200(grid:List[List[str]]) -> int:
 def course_schedule_206(num_courses:int, prereqs:List[List[int]]) -> bool:
     """
     This is a graph traversal where we want to find if there are any cycles in the graph.
-    We don't know that it is a complete graph. If we DFS the graph and visit the same node 
+    We don't know that it is a complete graph. If we DFS the graph and visit the same node
     twice we can tell there is a cycle and that its impossible to take all the courses.
     """
 
@@ -551,11 +602,11 @@ def course_schedule_206(num_courses:int, prereqs:List[List[int]]) -> bool:
     for vert, edge in prereqs:
         graph[vert].append(edge)
 
-    # keep track of which nodes have been visited 
+    # keep track of which nodes have been visited
     visited = set()
 
     def dfs(vert):
-        if vert in visited:    # seen before 
+        if vert in visited:    # seen before
             return False
         if graph[vert] == []:   # this vert has no prereqs
             return True
@@ -571,13 +622,46 @@ def course_schedule_206(num_courses:int, prereqs:List[List[int]]) -> bool:
 def max_sliding_window_239_brute(nums:List[int], k:int) -> List[int]:
     """
     The shit implementation - this is an O(N^2) version with two loops.
+    This one has Time Complexity O(N*K)
+    We also need O(N-K+1) space to store the window
     """
     n = len(nums)
     if n * k == 0:
         return []
 
+    # This is equivalent to
+    #max_win = []
+    #for i in range(len(nums)-k+1):
+    #    max_win.append(nums[i:i+k])
+    #return max_win
+
     return [max(nums[i:i+k]) for i in range(n-k+1)]
 
+
+#def max_sliding_window_239_heap(nums:List[int], k:int) -> List[int]:
+#    """
+#    The brute force solution fails when N (or even K) is large. One alternative is
+#    to use a heap. The idea is that the heap will allow fast access to the max within
+#    the window. By removing the minimum elements from the heap we can track the maximum
+#    without needing a nested loop.
+#
+#    Some ideas:
+#    https://leetcode.com/problems/sliding-window-maximum/discuss/2193922/Python-Heap
+#    https://leetcode.com/problems/sliding-window-maximum/discuss/871317/Clear-thinking-process-with-PICTURE-brute-force-to-mono-deque-pythonjavajavascript
+#    """
+
+def max_sliding_window_239_deque(nums:List[int], k:int) -> List[int]:
+    """
+    The brute approach is very slow when N (or K) is large. One approach is to use a
+    monotonic queue. This is a queue where the elements are sorted in some monotonically
+    increasing or decreasing order. In this data structure the elements from head to
+    tail are in decreasing order.
+
+    To make this possible we adjust the push operation so that before we push an
+    element into the deque we first pop everything smaller than that element out of
+    the deque.
+    """
+    q = deqeue()
 
 
 # Question 300
@@ -846,6 +930,40 @@ def last_stone_weight_ii_1049(stones:List[int]) -> int:
     # In this case, the problem isn't bounded by the requirement to take the two largest
     # stones. This means that its actually more like a knapsack problem.
     pass
+
+# Question 1091
+# https://leetcode.com/problems/shortest-path-in-binary-matrix/
+def shortest_path_in_binary_matrix_1091(grid: List[List[int]]) -> int:
+    """
+    Given an n x n binary matrix grid, return the length of the shortest clear path
+    in the matrix. If there is no clear path, return -1.
+
+    A clear path in a binary matrix is a path from the top-left cell (i.e., (0, 0))
+    to the bottom-right cell (i.e., (n - 1, n - 1)) such that:
+
+    - All the visited cells of the path are 0.
+    - All the adjacent cells of the path are 8-directionally connected (i.e., they are
+        different and they share an edge or a corner).
+
+    The length of a clear path is the number of visited cells of this path.
+    """
+
+
+# Question 1293
+# https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination/description/
+def shortest_path_in_grid_with_obstacle_1293(grid: List[List[int]], k:int) -> int:
+    """
+    You are given an m x n integer matrix grid where each cell is either 0 (empty) or 1
+    (obstacle). You can move up, down, left, or right from and to an empty cell in one
+    step.
+
+    Return the minimum number of steps to walk from the upper left corner (0, 0) to the
+    lower right corner (m - 1, n - 1) given that you can eliminate at most k obstacles.
+    If it is not possible to find such walk return -1.
+    """
+
+
+
 
 
 # Question 1584

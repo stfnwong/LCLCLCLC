@@ -318,6 +318,28 @@ TEST_CASE("question_111", "leetcode")
     }
 }
 
+
+/*
+ * Question 239
+ * https://leetcode.com/problems/sliding-window-maximum/
+ * Max in sliding window 
+ */
+TEST_CASE("question_239", "leetcode")
+{
+    std::vector<std::vector<int>> input_arrays = {
+        {1, 3, -1, -3, 5, 3, 6, 7},
+        {1}
+    };
+    std::vector<int> input_wsize = {3, 1};
+
+    std::vector<std::vector<int>> exp_outputs = {
+        {3, 3, 5, 5, 6, 7},
+        {1}
+    };
+
+
+}
+
 TEST_CASE("question_842", "leetcode")
 {
 }

@@ -12,7 +12,7 @@ PROGRAM_DIR=programs
 # Tool options
 CXX=g++
 OPT=-O0
-CXXFLAGS=-Wall -g2 -std=c++17 -D_REENTRANT $(OPT) 
+CXXFLAGS=-Wall -g2 -std=c++17 -D_REENTRANT $(OPT) -fPIC -shared
 TESTFLAGS=
 LDFLAGS=-pthread
 LIBS= 
@@ -83,8 +83,30 @@ clean:
 	rm -fv *.o $(OBJ_DIR)/*.o 
 	# Clean test programs
 	rm -fv $(TEST_BIN_DIR)/test_*
-	# Also clean pycache files
-	find . -name __pycache__ | xargs rm -rf
+
+# ==== DOCKER TARGETS ==== #
+DOCKER_DEST_DIR=/usr/local/lc
+DOCKER_IMAGE_NAME=lc_cpp
+DOCKER_CONTAINER_NAME=lclclc
+CURRENT_DIR=$(shell pwd)
+
+build-image:
+	docker build -t $(DOCKER_IMAGE_NAME) .
+
+
+run-dev:
+	docker run -it \
+		-v $(CURRENT_DIR):$(DOCKER_DEST_DIR) \
+		-w $(DOCKER_DEST_DIR) \
+		$(DOCKER_IMAGE_NAME) \
+		bash 
+
+run-test:
+	docker run -it \
+		-v $(CURRENT_DIR):$(DOCKER_DEST_DIR) \
+		-w $(DOCKER_DEST_DIR) \
+		$(DOCKER_IMAGE_NAME) \
+		make clean && make all && ./test/run_tests.sh
 
 print-%:
 	@echo $* = $($*)

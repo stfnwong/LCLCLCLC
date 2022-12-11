@@ -465,6 +465,44 @@ int min_depth_of_binary_tree_111(const TreeNode* root)
 //            assert depth == exp_out
 //
 
+/*
+ Question 239
+ https://leetcode.com/problems/sliding-window-maximum/
+       //Maximum in sliding window 
+*/
+std::vector<int> max_sliding_window_239_deque(const std::vector<int>& nums, int wsize) 
+{
+    std::vector<int> result;
+    if(nums.size() == 0)
+        return result;
+
+    // Deque to store indicies into the input array, sorted by value. 
+    // Specifically - the value at the front of the deque is the index of the value in 
+    // nums which is the largest in the current window.
+    //
+    // To main this order without "sorting" we check the value of each element as we
+    // place it into the deque. We do this by checking each new element we visit in
+    // nums. Note that the order we want to preserve is 
+    //
+    // [idx_of_largest_value, idx_of_next_smallest_value, ..., idx_of_smallest_value]
+    //
+    // - If the current element is smaller than the element whose index is at the back 
+    // of the deque the we push the index of that element to the back.
+    // - If the current element is larger that the back of the deque then we pop the 
+    // back of the deque until we find a higher value. Then we push the current value
+    // to the back. This has the effect of popping every value smaller than the 
+    // current value from the back, leaving the current value as the new minimum value.
+    //
+    //
+    std::deque<unsigned> idx_q;
+
+    for(unsigned idx = 0; idx < nums.size() - wsize; ++idx)
+    {
+
+    }
+
+    return result;
+}
 
 /*
 Question 322

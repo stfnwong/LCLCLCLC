@@ -7,6 +7,7 @@ Stefan Wong 2019
 
 from typing import List
 
+import time
 import unittest
 from pylc import questions
 from pylc.tree import TreeNode, repr_to_tree
@@ -207,6 +208,28 @@ def test_min_depth_binary_tree_111():
             assert depth == exp_out
 
 
+# Question 113
+# https://leetcode.com/problems/path-sum-ii/description/
+def test_path_sum_ii_113():
+    inputs = [
+        # (tree_repr, target_sum)
+        ("[5,4,8,11,null,13,4,7,2,null,null,5,1]", 22),
+        ("[1, 2, 3]", 5),
+        ("[1, 2]", 0)
+    ]
+    exp_outputs = [
+        [[5, 4, 11, 2], [5, 8, 4, 5]],
+        [],
+        []
+    ]
+
+    from pudb import set_trace; set_trace()
+    for inp, exp_out in zip(inputs, exp_outputs):
+        tree = repr_to_tree(inp[0])
+        out = questions.path_sum_ii_113(tree, inp[1])
+        assert out == exp_out
+
+
 # Question 114
 # https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
 def test_flatten_binary_tree_to_linked_list():
@@ -350,7 +373,10 @@ def test_max_sliding_window_239():
 
     for func in functions:
         for inp, exp_out in zip(inputs, exp_outputs):
+            start_time = time.time()
             out = func(inp[0], inp[1])
+            end_time = time.time()
+            print(f"Execution of [{func.__name__}] took {end_time - start_time} seconds on {len(inp[0])} elements")
             assert out == exp_out
 
 
@@ -489,6 +515,28 @@ def test_last_stone_weight_ii_1049() -> None:
         out = questions.last_stone_weight_ii_1049(inp)
         assert out == exp_out
 
+# Question 1091
+# https://leetcode.com/problems/shortest-path-in-binary-matrix/
+def test_shortest_path_in_binary_matrix_1091():
+    inputs = [
+        [[0, 1], [1, 0]],
+        [[0, 0, 0], [1, 1, 0], [1, 1, 0]],
+        [[1, 0, 0], [1, 1, 0], [1, 1, 0]]
+    ]
+    exp_outputs = [2, 4, -1]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.shortest_path_in_binary_matrix_1091(inp)
+        assert out == exp_out
+
+
+# Question 1293
+# https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination/description/
+def test_shortest_path_in_grid_with_obstacle_1293():
+    inputs = [
+        # (grid, k)
+        ([[0,0,0],[1,1,0],[0,0,0],[0,1,1],[0,0,0]], 1),
+    ]
 
 # Question 1584
 # https://leetcode.com/problems/min-cost-to-connect-all-points/
