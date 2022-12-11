@@ -224,10 +224,11 @@ def test_path_sum_ii_113():
     ]
     functions = [
         #questions.path_sum_ii_113,
-        questions.path_sum_ii_113_iter,
+        questions.path_sum_ii_113_iter_bfs,
+        #questions.path_sum_ii_113_iter_dfs,
     ]
 
-    from pudb import set_trace; set_trace()
+    #from pudb import set_trace; set_trace()
     for func in functions:
         print(f"Testing function [{func.__name__}]")
         for inp, exp_out in zip(inputs, exp_outputs):
