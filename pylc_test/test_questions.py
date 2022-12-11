@@ -222,11 +222,18 @@ def test_path_sum_ii_113():
         [],
         []
     ]
+    functions = [
+        #questions.path_sum_ii_113,
+        questions.path_sum_ii_113_iter,
+    ]
 
-    for inp, exp_out in zip(inputs, exp_outputs):
-        tree = repr_to_tree(inp[0])
-        out = questions.path_sum_ii_113(tree, inp[1])
-        assert out == exp_out
+    from pudb import set_trace; set_trace()
+    for func in functions:
+        print(f"Testing function [{func.__name__}]")
+        for inp, exp_out in zip(inputs, exp_outputs):
+            tree = repr_to_tree(inp[0])
+            out = func(tree, inp[1])
+            assert out == exp_out
 
 
 # Question 114

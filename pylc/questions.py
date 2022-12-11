@@ -359,8 +359,40 @@ def path_sum_ii_113(root: Optional[BinaryTreeNode], target_sum:int) -> List[List
 
 
 
-# TODO: do an iterative version of above
 
+def path_sum_ii_113_iter(root: Optional[BinaryTreeNode], target_sum:int) -> List[List[int]]:
+    """
+    Same as above but iterative.
+    """
+
+    results  = []
+    if not root:
+        return results
+
+    q = [root]
+    path = []
+    cur_sum = 0
+
+    while q:
+        cur_node = q.pop(-1)         # I want a stack here
+        path.append(cur_node.val)
+        cur_sum += cur_node.val
+
+        # Check all child nodes
+        if cur_node.left is None and cur_node.right is None:
+            if cur_sum == target_sum:
+                results.append(copy.copy(path))
+
+            path.pop()
+            cur_sum -= cur_node.val
+
+        if cur_node.right:
+            q.append(cur_node.right)
+        if cur_node.left:
+            q.append(cur_node.left)
+
+
+    return results
 
 
 

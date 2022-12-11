@@ -36,7 +36,8 @@ class BinaryTreeNode:
         self.val:int = val
 
     def __repr__(self) -> str:
-        return str(self.val)
+        return f"BinaryTreeNode({self.val})"
+        #return str(self.val)
 
         #s = []
         #q = deque([self])
