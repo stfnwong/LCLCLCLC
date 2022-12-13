@@ -332,7 +332,9 @@ def path_sum_ii_113(root: Optional[BinaryTreeNode], target_sum:int) -> List[List
     """
 
     def dfs(node:Optional[BinaryTreeNode], path:List[int], valid_paths:List[List[int]], cur_sum:int) -> None:
-
+        """
+        DFS helper function
+        """
         if node:
             path.append(node.val)
             cur_sum += node.val
@@ -353,45 +355,6 @@ def path_sum_ii_113(root: Optional[BinaryTreeNode], target_sum:int) -> List[List
         return results
 
     dfs(root, [], results, 0)
-
-    return results
-
-
-
-
-
-def path_sum_ii_113_iter_dfs(root: Optional[BinaryTreeNode], target_sum:int) -> List[List[int]]:
-    """
-    Same as above but iterative (DFS).
-    """
-
-    results  = []
-    if not root:
-        return results
-
-    # Element format is (node, [path], cur_sum)
-    q = [(root, [root.val], root.val)]
-    #path = []
-    #cur_sum = 0
-
-    while q:
-        cur_node, cur_path, cur_sum = q.pop(-1)         # I want a stack here
-        cur_path.append(cur_node.val)
-        cur_sum += cur_node.val
-
-        # Check all child nodes
-        if cur_node.left is None and cur_node.right is None:
-            if cur_sum == target_sum:
-                results.append(copy.copy(cur_path))
-
-            #path.pop()
-            #cur_sum -= cur_node.val
-
-        if cur_node.right:
-            q.append((cur_node.right, cur_path, cur_sum))
-        if cur_node.left:
-            q.append((cur_node.left, cur_path, cur_sum))
-
 
     return results
 
@@ -697,7 +660,6 @@ def max_sliding_window_239_brute(nums:List[int], k:int) -> List[int]:
     #for i in range(len(nums)-k+1):
     #    max_win.append(nums[i:i+k])
     #return max_win
-
     return [max(nums[i:i+k]) for i in range(n-k+1)]
 
 
@@ -725,6 +687,24 @@ def max_sliding_window_239_deque(nums:List[int], k:int) -> List[int]:
     the deque.
     """
     q = deqeue()
+    results = []
+
+    for idx, cur_elem in enumerate(nums):
+        while q and nums[q[-1]] <= cur_elem:
+            # Get rid of all the smaller elements so that cur_elem is the smallest
+            q.pop()
+
+        q.append(idx)
+        # Remove the first element if it falls outside the window 
+        if q[0] == (idx - k):
+            q.popleft()
+        # If the window as k elements then add this to the results 
+        # Remember that the first k-1 windows have less than k elements because we start
+        # from an empty window
+        if idx > k -1:
+            results.append(nums[q[0]])
+
+    return results
 
 
 # Question 300

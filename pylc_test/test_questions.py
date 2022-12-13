@@ -223,9 +223,8 @@ def test_path_sum_ii_113():
         []
     ]
     functions = [
-        #questions.path_sum_ii_113,
+        questions.path_sum_ii_113,
         questions.path_sum_ii_113_iter_bfs,
-        #questions.path_sum_ii_113_iter_dfs,
     ]
 
     #from pudb import set_trace; set_trace()
