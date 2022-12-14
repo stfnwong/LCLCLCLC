@@ -63,6 +63,14 @@ Minimum depth of binary tree
 */
 int min_depth_of_binary_tree_111(const TreeNode* root);
 
+
+ /*
+  * Question 114
+  * https://leetcode.com/problems/path-sum-ii/description/
+  */
+std::vector<std::vector<int>> path_sum_ii_113(const TreeNode* root, int target_sum);
+
+
 // Question 322
 // https://leetcode.com/problems/coin-change/
 int coin_change_vec_322(std::vector<int>& coins, int amount);

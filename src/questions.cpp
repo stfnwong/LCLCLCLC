@@ -450,6 +450,54 @@ int min_depth_of_binary_tree_111(const TreeNode* root)
     return height;
 }
 
+ /*
+  * Question 114
+  * https://leetcode.com/problems/path-sum-ii/description/
+  */
+void path_sum_ii_dfs_helper(
+        const TreeNode* node, 
+        std::vector<int>& path,
+        std::vector<std::vector<int>>& valid_paths,
+        int cur_sum,
+        int target_sum
+        )
+{
+    if(node)
+    {
+        path.push_back(node->val);
+        cur_sum += node->val;
+
+
+        // check that this is a child node 
+        if(!node->left && !node->right)
+        {
+            if(cur_sum == target_sum)
+                valid_paths.push_back(path);
+        }
+        else
+        {
+            path_sum_ii_dfs_helper(node->left, path, valid_paths, cur_sum, target_sum);
+            path_sum_ii_dfs_helper(node->right, path, valid_paths, cur_sum, target_sum);
+        }
+    }
+}
+
+std::vector<std::vector<int>> path_sum_ii_113(const TreeNode* root, int target_sum)
+{
+    std::vector<std::vector<int>> results;
+    
+    if(!root)
+        return results;
+
+    // the recursive bfs solution 
+
+    std::vector<int> paths;
+    path_sum_ii_dfs_helper(root, paths, results, 0, target_sum);
+
+    return results;
+}
+
+
 //def test_min_depth_binary_tree_111():
 //    inputs = [
 //        "[3,9,20,null,null,15,7]",

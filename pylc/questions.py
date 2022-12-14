@@ -368,7 +368,7 @@ def path_sum_ii_113_iter_bfs(root: Optional[BinaryTreeNode], target_sum:int) -> 
         return results
 
     # (node, cur_path)
-    q = [(root, [root.val])]     # Ends up with V log V nodes in worst case..
+    q = [(root, [root.val])]     # Ends up with V log V nodes in worst case
 
     while q:
         cur_node, cur_path = q.pop(0)
@@ -419,8 +419,8 @@ def path_sum_ii_113_iter_dfs(root: Optional[BinaryTreeNode], target_sum:int) -> 
                 results.append([n.val for n in cur_path])
 
         # If we don't go right first we end up with the results in the opposite
-        # order than expected in the unit test. To save doing anything about that we 
-        # just flip the order here 
+        # order than expected in the unit test. To save doing anything about that we
+        # just flip the order here
         if cur_node.right:
             q.append((cur_node.right, cur_level + 1))
 
@@ -664,10 +664,33 @@ def number_of_islands_200(grid:List[List[str]]) -> int:
     visited = set()
     num_islands = 0
 
+    def bfs(r: int, c: int):
+        q = deque()
+        q.append((r, c))
+        visited.add((r, c))
+
+        while q:
+            cur_row, cur_col = q.popleft()
+            directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+            for dir_row, dir_col in directions:
+                rr = cur_row + dir_row
+                cc = cur_col + dir_col
+                if (rr in range(n_rows) and
+                        cc in range(n_cols) and
+                        grid[rr][cc] == "1" and
+                        (rr, cc) not in visited):
+                   q.append((cur_row + dir_row, cur_col + dir_col))      # need to BFS on this cell also
+                   visited.add((cur_row + dir_row, cur_row + dir_row))
+
     for r in range(n_rows):
         for c in range(n_cols):
             if grid[r][c] == "1":    # Note that the elements are strings, not ints
-                pass    # traverse and mark visisted 
+                bfs(r, c)
+                num_islands += 1
+
+    return num_islands
+
 
 
 # Question 206
@@ -751,10 +774,10 @@ def max_sliding_window_239_deque(nums:List[int], k:int) -> List[int]:
             q.pop()
 
         q.append(idx)
-        # Remove the first element if it falls outside the window 
+        # Remove the first element if it falls outside the window
         if q[0] == (idx - k):
             q.popleft()
-        # If the window as k elements then add this to the results 
+        # If the window as k elements then add this to the results
         # Remember that the first k-1 windows have less than k elements because we start
         # from an empty window
         if idx > k -1:
