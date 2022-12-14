@@ -391,6 +391,46 @@ def path_sum_ii_113_iter_bfs(root: Optional[BinaryTreeNode], target_sum:int) -> 
     return results
 
 
+def path_sum_ii_113_iter_dfs(root: Optional[BinaryTreeNode], target_sum:int) -> List[List[int]]:
+    """
+    What about if we record what level we are on and store in the queue?
+    """
+
+    results = []
+    if not root:
+        return results
+
+    # Helper function - this is just to make debugging simpler
+    path_sum = lambda path: sum([n.val for n in path])
+
+    q = [(root, 0)]    # (cur_node, cur_depth)
+    cur_path = []
+
+    while q:
+        cur_node, cur_level = q.pop(-1)
+
+        if len(cur_path) > cur_level:
+            cur_path = cur_path[:cur_level]
+
+        cur_path.append(cur_node)
+
+        if cur_node.left is None and cur_node.right is None:
+            if path_sum(cur_path) == target_sum:
+                results.append([n.val for n in cur_path])
+
+        # If we don't go right first we end up with the results in the opposite
+        # order than expected in the unit test. To save doing anything about that we 
+        # just flip the order here 
+        if cur_node.right:
+            q.append((cur_node.right, cur_level + 1))
+
+        if cur_node.left:
+            q.append((cur_node.left, cur_level + 1))
+
+
+    return results
+
+
 
 
 
@@ -611,7 +651,23 @@ def bt_right_side_199_rec(root: Optional[BinaryTreeNode]) -> List[int]:
 # https://leetcode.com/problems/number-of-islands/
 # Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
 def number_of_islands_200(grid:List[List[str]]) -> int:
-    pass
+    """
+    This is the naive BFS version
+    """
+
+    if not grid:
+        return 0
+
+    n_rows = len(grid)
+    n_cols = len(grid[0])
+
+    visited = set()
+    num_islands = 0
+
+    for r in range(n_rows):
+        for c in range(n_cols):
+            if grid[r][c] == "1":    # Note that the elements are strings, not ints
+                pass    # traverse and mark visisted 
 
 
 # Question 206
