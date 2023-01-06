@@ -548,7 +548,7 @@ void tree_bfs(TreeNode* root, std::vector<int>& traversal)
     q.push(root);
     while(!q.empty())
     {
-        for(int i = 0; i < q.size(); ++i)
+        for(unsigned i = 0; i < q.size(); ++i)
         {
             const TreeNode* cur_node = q.front();
             traversal.push_back(cur_node->val);

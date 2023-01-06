@@ -28,7 +28,7 @@ bool check_fib_property(const std::vector<int>& seq)
     if(seq.size() <= 2)
         return true;
 
-    for(int n = 2; n < seq.size(); ++n)
+    for(unsigned n = 2; n < seq.size(); ++n)
     {
         if(seq[n] != (seq[n-1] + seq[n-2]))
             return false;

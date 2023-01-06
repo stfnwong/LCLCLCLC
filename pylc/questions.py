@@ -584,6 +584,30 @@ def flatten_binary_tree_to_linked_list_114_morris(root:Optional[BinaryTreeNode])
     pass
 
 
+# Question 121 
+# https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+# Best time to buy and sell stock 
+def best_time_to_buy_and_sell_stock_121(prices: List[int]) -> int:
+    """
+    Two pointers solution. Left pointer is buy time, right pointer is sell time.
+    """
+
+    left = 0
+    right = 1
+    max_prof = 0
+
+    while right < len(prices):
+        # Is this a potentially profitable stock?
+        if prices[left] < prices[right]:
+            prof = prices[right] - prices[left]
+            max_prof = max(max_prof, prof)
+        else:
+            left += 1
+        right += 1
+
+    return max_prof
+
+
 # Question 131
 # https://leetcode.com/problems/palindrome-partitioning/
 # Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
@@ -665,6 +689,10 @@ def number_of_islands_200(grid:List[List[str]]) -> int:
     num_islands = 0
 
     def bfs(r: int, c: int):
+        """
+        Helper function to do the actual BFS. We add new grid positions to the queue
+        and mark them as visited.
+        """
         q = deque()
         q.append((r, c))
         visited.add((r, c))
@@ -676,16 +704,17 @@ def number_of_islands_200(grid:List[List[str]]) -> int:
             for dir_row, dir_col in directions:
                 rr = cur_row + dir_row
                 cc = cur_col + dir_col
-                if (rr in range(n_rows) and
-                        cc in range(n_cols) and
-                        grid[rr][cc] == "1" and
-                        (rr, cc) not in visited):
+                if ((rr, cc) not in visited and
+                     rr in range(n_rows) and
+                     cc in range(n_cols) and
+                     grid[rr][cc] == "1" and
+                     (rr, cc) not in visited):
                    q.append((cur_row + dir_row, cur_col + dir_col))      # need to BFS on this cell also
-                   visited.add((cur_row + dir_row, cur_row + dir_row))
+                   visited.add((rr, cc))
 
     for r in range(n_rows):
         for c in range(n_cols):
-            if grid[r][c] == "1":    # Note that the elements are strings, not ints
+            if grid[r][c] == "1" and (r, c) not in visited:    # Note that the elements are strings, not ints
                 bfs(r, c)
                 num_islands += 1
 

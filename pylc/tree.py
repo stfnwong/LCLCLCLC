@@ -418,8 +418,13 @@ def levelorder_iter(root:Optional[BinaryTreeNode], traversal:List[int]) -> List[
 # ==== iterative traversal methods ==== #
 def inorder_iter(root:BinaryTreeNode, traversal:List[int]) -> List[int]:
     traversal = []
-    stack = []
 
+    if not root:
+        return traversal
+
+    stack = [root]
+
+    # TODO: rewrite this...
     while True:
         while root:
             stack.append(root)

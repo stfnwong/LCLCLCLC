@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <numeric>
 #include <queue>
 
 #include "questions.hpp"
@@ -49,7 +50,7 @@ std::vector<int> two_sum_map(std::vector<int>& nums, int target)
 // two sum sorted pointer
 std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target)
 {
-    unsigned int n = nums.size();
+    int n = int(nums.size());
     std::vector<std::pair<int, int>> val_and_idx(n);
 
     // since we plan to sort the array we need to remember what the original index was 
@@ -85,9 +86,9 @@ std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target)
 // two sum brute force 
 std::vector<int> two_sum_brute_force(std::vector<int>& nums, int target)
 {
-    for(int i = 0; i < nums.size(); ++i)
+    for(int i = 0; i < int(nums.size()); ++i)
     {
-        for(int j = i+1; j < nums.size(); ++j)
+        for(int j = i+1; j < int(nums.size()); ++j)
         {
             int s = nums[i] + nums[j];
             if(s == target)
@@ -489,14 +490,106 @@ std::vector<std::vector<int>> path_sum_ii_113(const TreeNode* root, int target_s
     if(!root)
         return results;
 
-    // the recursive bfs solution 
-
+    // the recursive dfs solution 
     std::vector<int> paths;
     path_sum_ii_dfs_helper(root, paths, results, 0, target_sum);
 
     return results;
 }
 
+// TODO: iterative DFS?
+
+
+// Another (iterative) BFS implementation 
+std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int target_sum)
+{
+    std::vector<std::vector<int>> results;
+
+    if(!root)
+        return results;
+
+    using NodePath = std::pair<const TreeNode*, std::vector<int>>; 
+
+    //std::queue<NodePath> node_q;
+    std::deque<NodePath> node_q;
+    std::vector<int> cur_path;
+
+    cur_path.push_back(root->val);
+    node_q.push_back({root, cur_path});   // TODO: does it need to be a dequq
+
+    while(!node_q.empty())
+    {
+        NodePath np = node_q.front();
+        const TreeNode* cur_node = np.first;
+        std::vector<int> cur_path = np.second;
+        node_q.pop_front();
+
+        // Check if this is a leaf node 
+        if(!cur_node->left && !cur_node->right)
+        {
+            int s = std::reduce(cur_path.begin(), cur_path.end());
+            std::cout << "Sum: " << s << std::endl;
+            if(s == target_sum)
+            {
+                std::vector<int> v = cur_path;
+                results.push_back(v);
+                std::cout << "results.size() = " << results.size() << std::endl;
+            }
+        }
+
+        std::vector<int> new_vec = cur_path;
+        if(cur_node->left)
+        {
+            new_vec.push_back(cur_node->left->val);
+            NodePath new_node_path = {cur_node->left, new_vec};
+            node_q.push_back(new_node_path);
+        }
+            
+        if(cur_node->right)
+        {
+            new_vec.push_back(cur_node->right->val);
+            NodePath new_node_path = {cur_node->right, new_vec};
+            node_q.push_back(new_node_path);
+        }
+
+    }
+
+    return results;
+}
+
+
+
+///std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int target_sum)
+///{
+///    std::vector<std::vector<int>> results;
+///
+///    if(!root)
+///        return results;
+///
+///    std::queue<const TreeNode*> node_q;
+///    std::vector<int> cur_path;
+///
+///    cur_path.push_back(root->val);
+///
+///    while(!node_q.empty())
+///    {
+///        const TreeNode* cur_node = node_q.front();
+///        // Check if this is a leaf node 
+///        if(!cur_node->left && !cur_node->right)
+///        {
+///            if(std::reduce(cur_path.begin(), cur_path.end()))
+///                results.push_back(cur_path);
+///        }
+///
+///
+///        node_q.pop();
+///        if(cur_node->left)
+///            node_q.push(cur_node->left);
+///    }
+///
+///    return results;
+///}
+///
 
 //def test_min_depth_binary_tree_111():
 //    inputs = [
@@ -571,13 +664,13 @@ int coin_change_vec_322(std::vector<int>& coins, int amount)
 
     min_num_coins[0] = 0;
 
-    for(int n = 1; n < min_num_coins.size(); ++n)
+    for(unsigned n = 1; n < min_num_coins.size(); ++n)
         min_num_coins[n] = amount + 1;
 
     // the nth element of min_num_coins represents the minimum number of coins to sum to n
-    for(int n = 1; n <= min_num_coins.size(); ++n)
+    for(unsigned n = 1; n <= min_num_coins.size(); ++n)
     {
-        for(int c = 0; c < coins.size(); ++c)
+        for(unsigned c = 0; c < coins.size(); ++c)
         {
             // If the difference between n and coins[c] is positive, it means that 
             // coins[c] could be used as part of the solution.
@@ -599,9 +692,9 @@ int coin_change_vec_322(std::vector<int>& coins, int amount)
  * Question 842
  * Split array into Fibonacci like sequence
  */
-std::vector<int> split_into_fib_seq_842(int i)
-{
-}
+//std::vector<int> split_into_fib_seq_842(int i)
+//{
+//}
 
 
 

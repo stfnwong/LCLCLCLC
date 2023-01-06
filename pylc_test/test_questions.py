@@ -270,6 +270,22 @@ def test_flatten_binary_tree_to_linked_list():
 #    exp_output = []
 #
 
+
+# Question 121 
+# https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+# Best time to buy and sell stock 
+def test_best_time_to_buy_and_sell_stock_121():
+    inputs = [
+        [7, 1, 5, 3, 6, 4],
+        [7, 6, 4, 3, 1]
+    ]
+    exp_outputs = [5, 0]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.best_time_to_buy_and_sell_stock_121(inp)
+        assert out == exp_out
+
+
 # Question 131
 # https://leetcode.com/problems/palindrome-partitioning/
 # Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
@@ -340,7 +356,6 @@ def test_number_of_islands_200():
 
     exp_outputs = [1, 3]
 
-    from pudb import set_trace; set_trace()
     for inp, exp_out in zip(inputs, exp_outputs):
         out = questions.number_of_islands_200(inp)
         assert out == exp_out
