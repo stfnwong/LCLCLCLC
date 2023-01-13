@@ -8,7 +8,7 @@ Stefan Wong 2019
 from typing import List, Optional, Tuple
 import copy
 import heapq        # can also use the internal heap structure, but its much slower
-from collections import deque
+from collections import defaultdict, deque
 
 from pylc.tree import TreeNode, BinaryTreeNode, RPTreeNode
 
@@ -103,31 +103,31 @@ def maximum_subarray_53(nums:list) -> int:
 # len(nums) - 1. If we terminate elsewhere, we must return False
 def jump_game_55(nums:list) -> bool:
     print('input : %s' % str(nums))
-    return jump_game_can_jump_basic(0, nums)
 
-
-# Inner function - determine if we can jump to the end from here
-# NOTE: This function is much too slow.
-def jump_game_can_jump_basic(cur_pos:int, nums:list) -> bool:
-    if cur_pos == len(nums)-1:
-        return True
-
-    if (cur_pos + nums[cur_pos]) > (len(nums)-1):
-        max_jump = len(nums) - 1
-    else:
-        max_jump = cur_pos + nums[cur_pos]
-
-    next_pos = cur_pos + 1
-    while(next_pos <= max_jump):
-        can_jump = jump_game_can_jump_basic(next_pos, nums)
-        if can_jump:
+    # Inner function - determine if we can jump to the end from here
+    # NOTE: This function is much too slow. We have to try every possible jump from
+    # index 0 and backtrack down.
+    def can_jump(cur_pos:int, nums:list) -> bool:
+        if cur_pos == len(nums)-1:
             return True
-        next_pos += 1
 
-    return False
+        if (cur_pos + nums[cur_pos]) > (len(nums)-1):
+            max_jump = len(nums) - 1
+        else:
+            max_jump = cur_pos + nums[cur_pos]
 
-# The above solution is expensive, because we have to try every possible
-# jump from index zero and backtracking down
+        next_pos = cur_pos + 1
+        while(next_pos <= max_jump):
+            cj = can_jump(next_pos, nums)
+            if cj:
+                return True
+            next_pos += 1
+
+        return False
+
+    return can_jump(0, nums)
+
+
 
 # Question 62
 # Unique paths
@@ -244,6 +244,26 @@ def min_path_sum_64_top_down(grid: List[List[int]]) -> int:
 
 
 
+# Question 70
+# https://leetcode.com/problems/climbing-stairs/
+# Climbing stairs
+def climbing_stairs_70(n: int) -> int:
+    """
+    You are climbing a staircase. It takes n steps to reach the top.
+
+    Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+    """
+    # Note that this is just standard fibonacci but re-worded
+
+    one_step = 1
+    two_step = 1
+
+    for _ in range(n-1):
+        temp = one_step
+        one_step = one_step + two_step
+        two_step = temp
+
+    return one_step
 
 
 # Question 102
@@ -584,9 +604,9 @@ def flatten_binary_tree_to_linked_list_114_morris(root:Optional[BinaryTreeNode])
     pass
 
 
-# Question 121 
+# Question 121
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-# Best time to buy and sell stock 
+# Best time to buy and sell stock
 def best_time_to_buy_and_sell_stock_121(prices: List[int]) -> int:
     """
     Two pointers solution. Left pointer is buy time, right pointer is sell time.
@@ -612,11 +632,21 @@ def best_time_to_buy_and_sell_stock_121(prices: List[int]) -> int:
 # https://leetcode.com/problems/palindrome-partitioning/
 # Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
 def palindrome_partitioning_131(s:str) -> List[List[str]]:
+    """
+    """
     pass
 
 
 # Question 146
 # https://leetcode.com/problems/lru-cache/
+
+
+# Question 198
+# https://leetcode.com/problems/house-robber/
+# House Robber
+def house_robber_198(nums: List[int]) -> int:
+    pass
+
 
 # Question 199
 # Binary Tree Right Side View
@@ -941,6 +971,20 @@ def time_to_buy_stock_714(prices: List[int], fee: int) -> int:
     pass
 
 
+# Question 746
+# https://leetcode.com/problems/min-cost-climbing-stairs/
+# Min cost climbing stairs
+def min_cost_climbing_stairs_746(cost: List[int]) -> int:
+
+    costs = [0 for _ in range(len(cost))]   # in theory you can re-use the input list by appending to the front as you work backwards
+    for idx in range(len(costs)-3, -1, -1):
+        cost[idx] = min(cost[idx] + cost[idx+1], cost[idx] + cost[idx+2])
+
+    # we only need to select from the starting positions
+    return min(cost[0], cost[1])
+
+
+
 # Question 842
 # https://leetcode.com/problems/split-array-into-fibonacci-sequence/
 def split_into_fib_seq_842(num:str) -> List[int]:
@@ -1148,4 +1192,63 @@ def min_cost_to_connect_all_points_1584(points:List[List[int]]) -> int:
 
 # Question 1971
 # https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/
-#def find_if_path_exists_in_graph_1971(
+def find_if_path_exists_in_graph_1971(n: int, edges: List[List[int]], source: int, dest: int) -> bool:
+    """
+    Imagine this as a graph traversal (ie: DFS). This version is recursive
+    """
+
+    # First build a graph representation of all the nodes
+    graph = defaultdict(list)
+
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)    # not needed if we know the graph is unidirectional
+
+
+    seen = set()
+
+    def dfs(node_key:int) -> bool:
+        # Anytime we manage to pick the dest node we are done
+        if node_key == dest:
+            return True
+
+        seen.add(node_key)
+        for v in graph[node_key]:
+            if v not in seen:
+                return dfs(v)
+
+        return False
+
+    return dfs(source)
+
+
+
+
+def find_if_path_exists_in_graph_1971_iter(n: int, edges: List[List[int]], source: int, dest: int) -> bool:
+    """
+    Same, but now solve iteratively
+    """
+
+    # Construct the graph same way
+    graph = defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+
+
+    seen = set()
+    node_stack = [source]   # NOTE: just a stack of ints 
+
+    while node_stack:
+        cur_node = node_stack.pop(0)
+
+        if cur_node == dest:
+            return True
+
+
+        seen.add(cur_node)
+        for v in graph[cur_node]:
+            if v not in seen:
+                node_stack.append(v)
+
+    return False
