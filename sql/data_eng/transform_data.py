@@ -10,21 +10,10 @@ def main():
     with open(source_filename, "r") as fp:
         # I happen to know that the first two rows are junk in my case
         raw_text_data = fp.readlines()[2:]
-
-        #temp_data = [
-        #    row.strip("\n") for row in raw_text_data
-        #]
-
         temp_data = [
             tuple(e for e in row.strip().split(" ") if e)
             for row in raw_text_data
         ]
-
-        #map(s.strip, raw_temp_data[i])
-
-        # Create a list of (date,temp) pairs
-        #temp_data = raw_temp_data.split(" ")
-
 
     # Now turn the temp data into a dataframe
     temp_df = pd.DataFrame(
@@ -33,6 +22,9 @@ def main():
     )
 
     print(temp_df)
+    print(temp_df.shape)
+
+    # Now get into a SQL DB...
 
 
 
