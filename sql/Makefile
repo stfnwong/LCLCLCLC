@@ -7,8 +7,9 @@ IMAGE_NAME=$(REPO_NAME):$(TAG)
 
 # Container options
 DB_PORT=5432
-PG_PASSWORD=brian_butterfield
+PG_PASSWORD=brian
 PG_USER=postgres
+CONTAINER_NAME=postgres
 
 # Mountpoints 
 DB_DIR_HOST=container
@@ -23,24 +24,22 @@ pull:
 	docker pull $(REPO_NAME):$(TAG)
 
 run:
-	docker run -it \
+	docker run \
+		-d --rm\
+		--name $(CONTAINER_NAME) \
 		-p $(DB_PORT):$(DB_PORT) \
 		-e POSTGRES_PASSWORD=$(PG_PASSWORD) \
 		-v $(DB_DIR_HOST):$(DB_DIR_DOCKER) \
 		-w $(DB_DIR_DOCKER) \
-		$(IMAGE_NAME) \
-		bash
+		$(IMAGE_NAME) 
 
 stop:
-	docker stop $(IMAGE_NAME)
+	docker stop $(CONTAINER_NAME)
 
 sql:
-	docker exec -it \
-		-p $(DB_PORT):$(DB_PORT) \
-		-e POSTGRES_PASSWORD=$(PG_PASSWORD) \
-		-v $(DB_DIR_HOST):$(DB_DIR_DOCKER) \
-		-w $(DB_DIR_DOCKER) \
-		$(IMAGE_NAME) \
+	docker exec\
+		-it \
+		$(CONTAINER_NAME) \
 		psql -U $(PG_USER)
 
 
