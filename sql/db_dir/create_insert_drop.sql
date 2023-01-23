@@ -1,3 +1,4 @@
+-- This is from "Database Design Fundamentals for Software Engineers" on educative.io
 -- Init the DB here each time
 \echo 'Deleting and recreating [sample_db] database'
 DROP DATABASE sample_db;
