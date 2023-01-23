@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:15
+    container_name: linux_postgres
+    restart: on-failure
+    environment:
+      POSTGRES_PASSWORD: brian
+      POSTGRES_USER: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./container:/var/lib/postgres/data
+      - ./db_dir:/root/db_dir
+
+
+volumes:
+  db_dir:
+  container:
