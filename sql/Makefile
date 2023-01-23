@@ -1,4 +1,5 @@
 # Makefile wrapper to bring up SQL container 
+SQL_SRC_PATH=db_dir
 
 #REPO_NAME=bitnami/postgresql
 REPO_NAME=postgres
@@ -11,6 +12,10 @@ PG_PASSWORD=brian
 PG_USER=postgres
 CONTAINER_NAME=linux_postgres
 DB_HOSTNAME=localhost
+
+# NOTE: tihs is a shit name
+SQL_FILES_PATH_HOST=$(SQL_SRC_PATH)
+SQL_FILES_PATH_DOCKER=/root/$(SQL_SRC_PATH)
 
 # Mountpoints 
 DB_DIR_HOST=container
@@ -36,13 +41,14 @@ run:
 		-e POSTGRES_USER=$(PG_USER) \
 		-e POSTGRES_PASSWORD=$(PG_PASSWORD) \
 		-v $(DB_DIR_HOST):$(DB_DIR_DOCKER) \
+		-v $(SQL_FILES_PATH_HOST):$(SQL_FILES_PATH_DOCKER) \
 		$(IMAGE_NAME) 
 
 stop:
 	docker stop $(CONTAINER_NAME)
 
 shell:
-	docker exec -it $(CONTAINER_NAME) bash
+	docker exec -w $(SQL_FILES_PATH_DOCKER) -it $(CONTAINER_NAME) bash
 
 sql:
 	docker exec -it $(CONTAINER_NAME) psql -U $(PG_USER)
