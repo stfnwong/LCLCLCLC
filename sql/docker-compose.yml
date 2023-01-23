@@ -12,7 +12,7 @@ services:
       - 5432:5432
     volumes:
       - ./container:/var/lib/postgres/data
-      - ./db_dir:/root/db_dir
+      - ./db_dir:/var/lib/postgresql
 
 
 volumes:

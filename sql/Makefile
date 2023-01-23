@@ -18,7 +18,7 @@ DB_HOSTNAME=localhost
 DB_DIR_HOST=container
 DB_DIR_DOCKER=/var/lib/postgres/data
 SQL_FILES_PATH_HOST=$(SQL_SRC_PATH)
-SQL_FILES_PATH_DOCKER=/root/$(SQL_SRC_PATH)
+SQL_FILES_PATH_DOCKER=/var/lib/postgresql
 
 
 # More notes on non-root container permissions 
@@ -54,7 +54,11 @@ stop:
 #	docker stop $(CONTAINER_NAME)
 
 shell:
-	docker exec -w $(SQL_FILES_PATH_DOCKER) -it $(CONTAINER_NAME) bash
+	docker exec \
+		-w $(SQL_FILES_PATH_DOCKER) \
+		--user $(PG_USER) \
+		-it $(CONTAINER_NAME) \
+		bash
 
 sql:
 	docker exec -it $(CONTAINER_NAME) psql -U $(PG_USER)

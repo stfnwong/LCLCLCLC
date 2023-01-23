@@ -29,7 +29,7 @@ VALUES (1, 'Mark', 32, 'Texas', 50000.00);
 -- we ever care to do by hand in general. It also turns out we can omit the columns in
 -- the case where we are inserting values for every column in the table. 
 INSERT INTO customers (id, name, age, address, salary)
-VALUES (2, 'John', 25, 'NY', 65000,00);
+VALUES (2, 'John', 25, 'NY', 65000.00);
 -- Its also a bit weird that the course is written by Indians but they still try to
 -- genericize the input but making them all American.
 INSERT INTO customers (id, name, age, address, salary)
