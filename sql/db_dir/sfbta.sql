@@ -43,6 +43,12 @@ VALUES ('Jennifer', 'Aniston', '1969-11-02', 'Female', 'Single', 240.00),
 INSERT INTO actors 
 VALUES (DEFAULT, 'Dream', 'Actress', '9999-01-01', 'Female', 'Single', 000.00);
 
+-- Insert these as well to give some extra rows to work with 
+INSERT INTO actors 
+VALUES (DEFAULT, 'Oleg', 'Yankovsky', '1944-02-23', 'Male', 'Married', 1),
+(DEFAULT, 'Domiziana', 'Giordano', '1959-11-04', 'Female', 'Unknown', 2),
+(DEFAULT, 'Henri', 'Attal', '1936-01-01', 'Male', 'Unknown', 0);
+
 
 -- Display again
 \d actors;
@@ -77,3 +83,10 @@ SELECT datname FROM pg_database;
 -- SELECT datname FROM pg_database LIKE '%tors';
 -- But this (below) does
 SELECT datname FROM pg_database WHERE datname LIKE '%tors';
+
+
+-- Multi-Conditional select 
+SELECT * FROM actors WHERE first_name > 'B' AND net_worth_millions > 200;
+SELECT * FROM actors WHERE first_name > 'B' AND net_worth_millions > 0;
+SELECT * FROM actors WHERE first_name > 'D' AND net_worth_millions > 0;
+

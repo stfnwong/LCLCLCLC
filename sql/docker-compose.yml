@@ -15,6 +15,3 @@ services:
       - ./db_dir:/var/lib/postgresql
 
 
-volumes:
-  db_dir:
-  container:
