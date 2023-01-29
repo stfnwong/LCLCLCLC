@@ -380,6 +380,26 @@ TEST_CASE("question_113_bfs_iter", "leetcode")
 }
 
 /*
+ ==== Question 198
+ https://leetcode.com/problems/house-robber/
+*/
+TEST_CASE("question_198", "leetcode")
+{
+    std::vector<std::vector<int>> inputs = {
+        {1, 2, 3, 1},
+        {2, 7, 9, 3, 1},
+    };
+    std::vector<int> exp_outputs = {4, 12};
+
+    for(unsigned test_case = 0; test_case < inputs.size(); ++test_case)
+    {
+        int out = house_robber_198(inputs[test_case]);
+        REQUIRE(out == exp_outputs[test_case]);
+    }
+}
+
+
+/*
  * Question 239
  * https://leetcode.com/problems/sliding-window-maximum/
  * Max in sliding window 

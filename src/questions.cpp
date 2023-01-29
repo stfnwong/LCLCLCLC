@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <map>
 #include <numeric>
 #include <queue>
 
@@ -515,7 +516,7 @@ std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int
     std::vector<int> cur_path;
 
     cur_path.push_back(root->val);
-    node_q.push_back({root, cur_path});   // TODO: does it need to be a dequq
+    node_q.push_back({root, cur_path});   // TODO: does it need to be a deque?
 
     while(!node_q.empty())
     {
@@ -605,6 +606,29 @@ std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int
 //            depth = func(tree)
 //            assert depth == exp_out
 //
+
+
+
+// ==== Question 198
+// https://leetcode.com/problems/house-robber/
+int house_robber_198(const std::vector<int>& nums)
+{
+    if(nums.size() == 0)
+        return 0;
+
+    if(nums.size() < 3)
+        return *std::max_element(nums.begin(), nums.end());
+
+    std::vector<int> dp(nums.size());
+    dp[0] = nums[0];
+    dp[1] = nums[1];
+
+    for(unsigned i = 2; i < dp.size(); ++i)
+        dp[i] = std::max(nums[i] + dp[i-2], dp[i-1]);
+
+    return dp.back();
+}
+
 
 /*
  Question 239
@@ -799,3 +823,66 @@ std::vector<std::vector<int>> queensAttackTheKing(std::vector<std::vector<int>>&
 
     return output;
 }
+
+// ==== QUESTION 1143
+// https://leetcode.com/problems/longest-common-subsequence/
+// This solution is okay (memoization brings time complexity down to 
+int longest_common_subsequence_1143(const std::string& text1, const std::string& text2)
+{
+    if(text1.empty() || text2.empty())
+        return 0;
+
+    using text_pair = std::pair<std::string, std::string>;
+    std::map<text_pair, int> answer;
+
+    auto it = answer.find({text1, text2});
+    if(it != answer.end())
+        return it->second;
+
+    // Actually we only have to check 
+
+
+}
+
+// Question 1971
+// https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/
+//Solution_1971::Solution_1971(int n, int source, int dest) : source(source), dest(dest)
+//{
+//    this->adj = std::vector<int>[n];
+//    this->vis = std::vector<bool>(n);
+//}
+//
+//bool Solution_1971::dfs(int node_key)
+//{
+//    if(node_key == this->dest)
+//        return true;
+//
+//    this->vis[node_key] = true;
+//    for(unsigned idx = 0; idx < this->adj[node_key].size(); ++idx)
+//    {
+//        auto v = this->adj[node_key][v];
+//        if(!this->vis[v])
+//            this->dfs(v);
+//    }
+//
+//    return false;
+//}
+//
+//bool Solution_1971::valid_path(int n, const std::vector<std::vector<int>>& edges, int source, int dest)
+//{
+//    this->dest = dest;
+//    this->source = source;
+//    std::vector<int> adj[n];
+//
+//    // Create adjaceny list 
+//    for(unsigned i = 0; i < edges.size(); ++i)
+//    {
+//        adj[edges[i][0]].push_back(edges[i][1]);
+//        adj[edges[i][1]].push_back(edges[i][0]);
+//    }
+//    
+//    return this->dfs(this->source);
+//}
+
+
+// TODO: an iterative solution

@@ -71,6 +71,11 @@ int min_depth_of_binary_tree_111(const TreeNode* root);
 std::vector<std::vector<int>> path_sum_ii_113(const TreeNode* root, int target_sum);
 std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int target_sum);
 
+// ==== Question 198
+// https://leetcode.com/problems/house-robber/
+int house_robber_198(const std::vector<int>& nums);
+
+
 
 // Question 322
 // https://leetcode.com/problems/coin-change/
@@ -96,8 +101,33 @@ https://leetcode.com/problems/last-stone-weight-ii/
 */
 int last_stone_weight_ii_1049(std::vector<int>& stones);
 
+
+// ==== QUESTION 1143
+// https://leetcode.com/problems/longest-common-subsequence/
+int longest_common_subsequence_1143(const std::string& text1, const std::string& text2);
+
+
 // ==== QUESTION 1222
 // https://leetcode.com/problems/queens-that-can-attack-the-king/
 std::vector<std::vector<int>> queensAttackTheKing(std::vector<std::vector<int>>& queens, std::vector<int>& king);
+
+// Question 1971
+// https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/
+//bool find_if_path_exists_in_graph_1971(int n, const std::vector<std::vector<int>>& edges, int source, int dest);
+
+
+struct Solution_1971
+{
+    std::vector<int> adj;
+    std::vector<bool> vis;
+    int source, dest;
+
+    public:
+        Solution_1971(int n, int source, int dest);
+        bool dfs(int node_key);
+        bool valid_path(int n, const std::vector<std::vector<int>>& edges, int source, int dest);
+        //bool valid_path_iter(int n, const std::vector<std::vector<int>>& edges, int source, int dest);
+};
+
 
 #endif /*__LC_QUESTIONS_HPP*/

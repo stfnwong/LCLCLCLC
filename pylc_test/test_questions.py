@@ -102,14 +102,15 @@ def test_min_path_sum_64():
     exp_outputs = [7, 12]
     functions = [
         questions.min_path_sum_64,
-        questions.min_path_sum_64_top_down
+        questions.min_path_sum_64_top_down,
+        questions.min_path_sum_64_top_down_memo,
+        questions.min_path_sum_64_tab_2_rows
     ]
 
     for func in functions:
         for inp, exp_out in zip(inputs, exp_outputs):
             out = func(inp)
             assert out == exp_out
-
 
 
 
@@ -291,6 +292,50 @@ def test_palindrome_partitioning_131():
         assert out == exp_out
 
 
+# Question 146
+# https://leetcode.com/problems/lru-cache/
+def test_lru_cache_146():
+    inputs = [
+        [("put", [1, 1]), ("get", [1]), ("put", [3, 3]), ("get", [2]), ("put", [4, 4]), ("get", [1]), ("get", [3]), ("get", [4])]
+    ]
+
+    exp_outputs = [
+        [None, 1, None, None, None, 1, 3, 4]
+    ]
+
+    test_size = 2       # This is the size in the example case
+    test_cache = questions.LRUCache(test_size)
+    for inp_sequence, out_sequence in zip(inputs, exp_outputs):
+        # Each input/output pair is a sequence of operations to give to the cache object 
+        for (op, inp), exp_out in zip(inp_sequence, out_sequence):
+            # You could use getattr here but you still have to know that you need to split
+            # the [k, v] into k and v arguments. An alternative is to accept a [k, v] 
+            # as a single argument in the cache API, but I will leave that exercise 
+            # for later.
+            if op == "get":
+                out = test_cache.get(inp[0])
+            elif op == "put":
+                out = test_cache.put(inp[0], inp[1])
+            else:
+                raise AssertionError(f"Invalid instruction {op} in input")
+
+            assert out == exp_out
+
+# Question 152
+# https://leetcode.com/problems/maximum-product-subarray/
+# Maximum product subarray
+def test_maximum_product_subarray_152():
+    inputs = [
+        [2, 3, -2, 4],
+        [-2, 0, -1]
+    ]
+    exp_outputs = [6, 0]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.maximum_product_subarray_152(inp)
+        assert out == exp_out
+
+
 # Question 198
 # https://leetcode.com/problems/house-robber/
 # House Robber 
@@ -300,10 +345,15 @@ def test_house_robber_198():
         [2, 7, 9, 3, 1]
     ]
     exp_outputs = [4, 12]
+    functions = [
+        questions.house_robber_198,
+        questions.house_robber_198_no_array
+    ]
 
-    for inp, exp_out in zip(inputs, exp_outputs):
-        out = questions.house_robber_198(inp)
-        assert out == exp_out
+    for func in functions:
+        for inp, exp_out in zip(inputs, exp_outputs):
+            out =  func(inp)
+            assert out == exp_out
 
 
 # Question 199
@@ -378,6 +428,21 @@ def test_course_schedule_206():
         assert out == exp_out
 
 
+# Question 213
+# https://leetcode.com/problems/house-robber-ii/
+def test_house_robber_ii_213():
+    inputs = [
+        [2, 3, 2],
+        [1, 2, 3, 1]
+    ]
+    exp_outputs = [3, 4]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.house_robber_ii_213(inp)
+        assert out == exp_out
+
+
+
 
 # Question 239
 # https://leetcode.com/problems/sliding-window-maximum/
@@ -393,7 +458,8 @@ def test_max_sliding_window_239():
         [1]
     ]
     functions = [
-        questions.max_sliding_window_239_brute
+        questions.max_sliding_window_239_brute,
+        questions.max_sliding_window_239_deque
     ]
 
     for func in functions:

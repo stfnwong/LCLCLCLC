@@ -210,6 +210,32 @@ def min_path_sum_64(grid: List[List[int]]) -> int:
     return cost[num_rows-1][num_cols-1]
 
 
+# It should be possible to implement the tabulation method from top to bottom storing
+# only the two most recent rows
+def min_path_sum_64_tab_2_rows(grid: List[List[int]]) -> int:
+    MAX_COST = 10000
+
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+    cur_row  = [0 for _ in range(num_cols)]
+    prev_row = [0 for _ in range(num_cols)]
+
+    cur_row[0] = grid[0][0]
+    for row in range(num_rows):
+        for col in range(num_cols):
+            if row == 0 and col == 0:
+                continue
+
+            col_cost = cur_row[col-1] if col > 0 else MAX_COST
+            row_cost = prev_row[col] if row > 0 else MAX_COST
+            cur_row[col] = grid[row][col] + min(row_cost, col_cost)
+
+        prev_row = cur_row
+
+    return cur_row[-1]
+
+
+
 
 def min_path_sum_64_top_down(grid: List[List[int]]) -> int:
     """
@@ -231,10 +257,7 @@ def min_path_sum_64_top_down(grid: List[List[int]]) -> int:
             return grid[0][0]
         if row >= num_rows or col >= num_cols:
             return MAX_COST
-        #if row == (num_rows-1) and col == (num_cols-1):
-        #    return grid[row][col]
 
-        # Wrong index here....
         row_cost = sp(grid, row-1, col) + grid[row][col] if row > 0 else MAX_COST
         col_cost = sp(grid, row, col-1) + grid[row][col] if col > 0 else MAX_COST
 
@@ -242,6 +265,38 @@ def min_path_sum_64_top_down(grid: List[List[int]]) -> int:
 
     return sp(grid, num_rows-1, num_cols-1)
 
+
+
+
+def min_path_sum_64_top_down_memo(grid: List[List[int]]) -> int:
+    """
+    Same as above but memoized
+    """
+    MAX_COST = 1000
+
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+
+    # Memoize the results in this array
+    memo = [[-1 for _ in range(num_cols)] for _ in range(num_rows)]
+
+    def sp(grid:List[List[int]], memo: List[List[int]], row:int, col:int) -> int:
+        # re-use the grid size from the outer scope
+        if row == 0 and col == 0:
+            return grid[0][0]
+        if row >= num_rows or col >= num_cols:
+            return MAX_COST
+
+        if memo[row][col] != -1:
+            return memo[row][col]
+
+        row_cost = sp(grid, memo, row-1, col) + grid[row][col] if row > 0 else MAX_COST
+        col_cost = sp(grid, memo, row, col-1) + grid[row][col] if col > 0 else MAX_COST
+        memo[row][col] = min(row_cost, col_cost)
+
+        return memo[row][col]
+
+    return sp(grid, memo, num_rows-1, num_cols-1)
 
 
 # Question 70
@@ -447,10 +502,7 @@ def path_sum_ii_113_iter_dfs(root: Optional[BinaryTreeNode], target_sum:int) -> 
         if cur_node.left:
             q.append((cur_node.left, cur_level + 1))
 
-
     return results
-
-
 
 
 
@@ -641,11 +693,57 @@ def palindrome_partitioning_131(s:str) -> List[List[str]]:
 # https://leetcode.com/problems/lru-cache/
 
 
+# Question 152
+# https://leetcode.com/problems/maximum-product-subarray/
+# Maximum product subarray
+def maximum_product_subarray_152(nums: List[int]) -> int:
+    """
+    """
+
+
+
+
 # Question 198
 # https://leetcode.com/problems/house-robber/
 # House Robber
 def house_robber_198(nums: List[int]) -> int:
-    pass
+    # There are two edge cases
+    if not nums:
+        return 0
+    if len(nums) < 3:
+        return max(nums)
+
+    dp = [0 for _ in range(len(nums))]
+    dp[0] = nums[0]
+    dp[1] = nums[1]
+
+    for i in range(2, len(dp)):
+        dp[i] = max(nums[i] + dp[i-2], dp[i-1])
+
+    return dp[-1]
+
+
+# Question 198
+# You don't need to store the entire array here since it cumulative, you can just keep
+# the last two values in memory as these are the only two values you look at anyway
+def house_robber_198_no_array(nums: List[int]) -> int:
+    if not nums:
+        return 0
+
+    if len(nums) < 3:
+        return max(nums)
+
+    max_minus_2 = nums[0]
+    max_minus_1 = nums[1]
+
+    new_max = 0  # shut linter up
+    for i in range(2, len(nums)):
+        new_max = max(nums[i] + max_minus_2, max_minus_1)
+        max_minus_2 = max_minus_1
+        max_minus_1 = new_max
+
+    return new_max
+
 
 
 # Question 199
@@ -781,10 +879,20 @@ def course_schedule_206(num_courses:int, prereqs:List[List[int]]) -> bool:
                 return False
 
 
+# Question 213
+# https://leetcode.com/problems/house-robber-ii/
+def house_robber_ii_213(nums: List[int]) -> int:
+    """
+    """
+
 # Question 239
 # https://leetcode.com/problems/sliding-window-maximum/
 def max_sliding_window_239_brute(nums:List[int], k:int) -> List[int]:
     """
+    You are given an array of integers nums, there is a sliding window of size k which
+    is moving from the very left of the array to the very right. You can only see the
+    k numbers in the window. Each time the sliding window moves right by one position.
+
     The shit implementation - this is an O(N^2) version with two loops.
     This one has Time Complexity O(N*K)
     We also need O(N-K+1) space to store the window
@@ -813,6 +921,7 @@ def max_sliding_window_239_brute(nums:List[int], k:int) -> List[int]:
 #    https://leetcode.com/problems/sliding-window-maximum/discuss/871317/Clear-thinking-process-with-PICTURE-brute-force-to-mono-deque-pythonjavajavascript
 #    """
 
+
 def max_sliding_window_239_deque(nums:List[int], k:int) -> List[int]:
     """
     The brute approach is very slow when N (or K) is large. One approach is to use a
@@ -824,9 +933,10 @@ def max_sliding_window_239_deque(nums:List[int], k:int) -> List[int]:
     element into the deque we first pop everything smaller than that element out of
     the deque.
     """
-    q = deqeue()
+    q = deque()
     results = []
 
+    #from pudb import set_trace; set_trace()
     for idx, cur_elem in enumerate(nums):
         while q and nums[q[-1]] <= cur_elem:
             # Get rid of all the smaller elements so that cur_elem is the smallest
@@ -836,6 +946,7 @@ def max_sliding_window_239_deque(nums:List[int], k:int) -> List[int]:
         # Remove the first element if it falls outside the window
         if q[0] == (idx - k):
             q.popleft()
+
         # If the window as k elements then add this to the results
         # Remember that the first k-1 windows have less than k elements because we start
         # from an empty window
@@ -1223,10 +1334,13 @@ def find_if_path_exists_in_graph_1971(n: int, edges: List[List[int]], source: in
 
 
 
-
+# Question 1971
+# https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/
 def find_if_path_exists_in_graph_1971_iter(n: int, edges: List[List[int]], source: int, dest: int) -> bool:
     """
-    Same, but now solve iteratively
+    Same, but now solve iteratively. It can be useful to say that Python sucks at
+    recursion when the expected stack depth is ~1000 or more and therefore an iterative
+    DFS might scale better.
     """
 
     # Construct the graph same way
@@ -1237,7 +1351,7 @@ def find_if_path_exists_in_graph_1971_iter(n: int, edges: List[List[int]], sourc
 
 
     seen = set()
-    node_stack = [source]   # NOTE: just a stack of ints 
+    node_stack = [source]   # NOTE: just a stack of ints
 
     while node_stack:
         cur_node = node_stack.pop(0)
