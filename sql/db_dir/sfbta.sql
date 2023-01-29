@@ -2,6 +2,8 @@
 -- That course does everything in MySQL, so some adjustments are needed to get it to 
 -- run on Postgres
 
+-- This file covers the stuff in the "Basic SQL" section of the course
+
 \echo 'Deleting and recreating [actors_db] database'
 DROP DATABASE actors_db;
 CREATE DATABASE actors_db;
@@ -90,3 +92,54 @@ SELECT * FROM actors WHERE first_name > 'B' AND net_worth_millions > 200;
 SELECT * FROM actors WHERE first_name > 'B' AND net_worth_millions > 0;
 SELECT * FROM actors WHERE first_name > 'D' AND net_worth_millions > 0;
 
+
+\echo 'net worth = 200' 
+SELECT first_name, second_name FROM actors WHERE net_worth_millions = 200;
+\echo 'net worth != 200' 
+SELECT first_name, second_name FROM actors WHERE NOT net_worth_millions = 200;
+
+-- MySQL has an XOR keyword, but Postgres does not. This means we can't do
+-- SELECT first_name, second_name FROM actors WHERE first_name > 'B' XOR net_worth_millions > 200;
+-- And instead have to do
+SELECT first_name, second_name, dob FROM actors WHERE 
+    (first_name > 'B' AND NOT net_worth_millions > 200) OR 
+    (NOT first_name > 'B' AND net_worth_millions > 200);
+
+-- ORDER BY
+SELECT first_name, second_name FROM actors ORDER BY first_name;
+SELECT first_name, second_name FROM actors ORDER BY second_name DESC;
+\echo 'first_name, second_name, ordered by net worth (descending)'
+SELECT first_name, second_name FROM actors ORDER BY net_worth_millions DESC;
+
+-- Does Postgres have the BINARY keyword? (no)
+--SELECT first_name, dob FROM actors ORDER BY BINARY first_name;
+
+-- Can order by multiple columns
+SELECT * FROM actors ORDER BY first_name ASC, net_worth_millions DESC;
+
+
+-- LIMIT
+\echo 'Selecting with limit in increasing order (2, 3, 4)'
+SELECT first_name, second_name FROM actors ORDER BY net_worth_millions DESC LIMIT 2;
+SELECT first_name, second_name FROM actors ORDER BY net_worth_millions DESC LIMIT 3;
+SELECT first_name, second_name FROM actors ORDER BY net_worth_millions DESC LIMIT 4;
+
+
+\echo 'Limit with OFFSET'
+SELECT first_name, second_name FROM actors ORDER BY net_worth_millions DESC LIMIT 2 OFFSET 4;
+-- In MySQL, "LIMIT 2 OFFSET 4" is equivalent to LIMIT 2,4
+-- But this is not the case in Postgres
+-- SELECT first_name, second_name FROM actors ORDER BY net_worth_millions DESC LIMIT 2,4;
+
+-- DELETING DATA 
+DELETE FROM actors WHERE first_name = 'priyanka';       -- has no effect
+DELETE FROM actors WHERE gender = 'Male';       -- how could Biden do this?
+\echo 'Table after delete'
+SELECT first_name, second_name, gender FROM actors;
+-- This next query deletes the 3 most valuable remaining actors
+-- NOTE: you can do the below query in SQL but not in Postgres
+-- DELETE FROM actors ORDER BY net_worth_millions DESC LIMIT 3; 
+-- Instead we need to do something like 
+DELETE FROM actors WHERE id IN (SELECT id FROM actors DESC LIMIT 3);    -- NOTE: error here...
+\echo 'Table after compound delete'
+SELECT first_name, second_name, gender FROM actors;
