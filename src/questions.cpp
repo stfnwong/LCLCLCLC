@@ -5,7 +5,6 @@
  * Stefan Wong 2019
  */
 
-#include <algorithm>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
@@ -368,12 +367,53 @@ bool can_jump_here_basic(int cur_pos, std::vector<int>& nums)
     return false;
 }
 
-
-
-
 bool can_jump(std::vector<int>& nums)
 {
     return can_jump_here_basic(0, nums);
+}
+
+
+
+/*
+ * Question 66
+ * Plus One
+ * https://leetcode.com/problems/plus-one
+ */
+std::vector<int> plus_one_66(std::vector<int>& digits)
+{
+    // only edge case is if the digits are all nines, in which case we need to 
+    // extend the vector by one to account for the carry.
+    bool all_nines = true;
+    for(int x: digits) 
+    {
+        if(x != 9) 
+        {
+            all_nines = false;
+            break;
+        }
+    }
+
+    if(all_nines) 
+    {
+        digits.insert(digits.begin(), 0);
+        for(int& x: digits)
+            x = 0;
+        digits[0] = 1;
+    }
+    else 
+    {
+        for(unsigned i = digits.size()-1; i >= 0; --i) 
+        {
+            digits[i]++;
+            // overflow/carry for this column
+            if(digits[i] == 10)  
+                digits[i] = 0;
+            else
+                break;   // we managed to add a one, no need to continue
+        }
+    }
+
+    return digits;
 }
 
 
@@ -607,7 +647,34 @@ std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int
 //            assert depth == exp_out
 //
 
+// ==== Question 153
+// Find minimum in rotated sorted array
+// https://leetcode.com/problems/find-minimum-in-rotated-sorted-array
+int find_min_in_rotated_sorted_array(const std::vector<int>& nums)
+{
+    // check if array is not rotated 
+    if(nums[0] <= nums[nums.size()-1])
+        return nums[0];
 
+    int l = 0;
+    int r = int(nums.size());
+
+    while(l < r) 
+    {
+        int p = (l + r) / 2;
+        if(nums[p] >= nums[0])
+            l = p + 1;
+        else
+            r = p;
+    }
+
+    return nums[l];
+}
+
+// ==== Question 155
+// Min stack
+// https://leetcode.com/problems/min-stack
+// (Solution in header file)
 
 // ==== Question 198
 // https://leetcode.com/problems/house-robber/
@@ -719,6 +786,16 @@ int coin_change_vec_322(std::vector<int>& coins, int amount)
 //std::vector<int> split_into_fib_seq_842(int i)
 //{
 //}
+
+
+
+/*
+ Question 994
+ Rotting Oranges
+ https://leetcode.com/problems/rotting-oranges/
+*/
+
+
 
 
 

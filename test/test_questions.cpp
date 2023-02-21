@@ -277,6 +277,33 @@ TEST_CASE("question_55", "leetcode")
     REQUIRE(exp4 == out4);
 }
 
+
+/*
+ * Question 66
+ * Plus One
+ * https://leetcode.com/problems/plus-one
+ */
+TEST_CASE("question_66", "leetcode")
+{
+    std::vector<std::vector<int>> inputs = {
+        {1, 2, 3},
+        {4, 3, 2, 1}
+    };
+    std::vector<std::vector<int>> exp_outputs = {
+        {1, 2, 4},
+        {4, 3, 2, 2}
+    };
+
+    unsigned num_tests = exp_outputs.size();
+    for(unsigned t = 0; t < num_tests; ++t)
+    {
+        std::vector<int> out = plus_one_66(inputs[t]);
+        REQUIRE(out.size() == exp_outputs[t].size());
+        for(unsigned e = 0; e < out.size(); ++e)
+            REQUIRE(out[e] == exp_outputs[t][e]);
+    }
+}
+
 /*
  * Question 102
  * Binary Tree Level Order Traversal
@@ -379,6 +406,54 @@ TEST_CASE("question_113_bfs_iter", "leetcode")
     }
 }
 
+
+// ==== Question 153
+// Find minimum in rotated sorted array
+// https://leetcode.com/problems/find-minimum-in-rotated-sorted-array
+TEST_CASE("question_153", "leetcode")
+{
+    std::vector<std::vector<int>> inputs = {
+        {3, 4, 5, 1, 2},
+        {4, 5, 6, 7, 0, 1, 2},
+        {11 ,13, 15, 17},       // non-rotated array
+    };
+    std::vector<int> exp_outputs = {1, 0, 11};
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = find_min_in_rotated_sorted_array(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+// ==== Question 155
+// Min stack
+// https://leetcode.com/problems/min-stack
+TEST_CASE("question_155", "leetcode")
+{
+    // this is how leetcode instantiate the stack 
+    MinStack* obj = new MinStack();
+    int ret;
+
+    // Example 1
+    obj->push(-2);
+    obj->push(0);
+    obj->push(-3);
+    ret = obj->get_min();
+    
+    REQUIRE(ret == -3);
+    obj->pop();
+    ret = obj->top();
+    REQUIRE(ret == 0);
+
+    ret = obj->get_min();
+    REQUIRE(ret == -2);
+
+    delete obj;
+}
+
+
+
 /*
  ==== Question 198
  https://leetcode.com/problems/house-robber/
@@ -418,6 +493,19 @@ TEST_CASE("question_239", "leetcode")
     };
 
 
+}
+
+/*
+ Question 994
+ Rotting Oranges
+ https://leetcode.com/problems/rotting-oranges/
+*/
+TEST_CASE("question_994", "leetcode")
+{
+    std::vector<std::vector<std::vector<int>>> inputs = {
+        {{2, 1, 1}, {1, 1, 0}, {0, 1, 1}}
+    };
+    std::vector<int> exp_outputs = {4};
 }
 
 

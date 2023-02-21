@@ -8,6 +8,8 @@
 #ifndef __LC_QUESTIONS_HPP
 #define __LC_QUESTIONS_HPP
 
+#include <algorithm>
+#include <stack>
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -49,6 +51,14 @@ std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target);
 // https://leetcode.com/problems/jump-game/
 bool can_jump(std::vector<int>& nums);
 
+
+/*
+ * Question 66
+ * Plus One
+ * https://leetcode.com/problems/plus-one
+ */
+std::vector<int> plus_one_66(std::vector<int>& digits);
+
 /*
  * Question 102
  * Binary Tree Level Order Traversal
@@ -70,6 +80,44 @@ int min_depth_of_binary_tree_111(const TreeNode* root);
   */
 std::vector<std::vector<int>> path_sum_ii_113(const TreeNode* root, int target_sum);
 std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int target_sum);
+
+// ==== Question 153
+// Find minimum in rotated sorted array
+// https://leetcode.com/problems/find-minimum-in-rotated-sorted-array
+int find_min_in_rotated_sorted_array(const std::vector<int>& nums);
+
+// ==== Question 155
+// Min stack
+// https://leetcode.com/problems/min-stack
+class MinStack
+{
+    std::stack<int> data;
+    std::stack<int> mins;
+
+    public:
+        MinStack() {}
+
+        void push(int val) {
+            this->data.push(val);
+            if(this->mins.empty())
+                this->mins.push(val);
+            else
+                this->mins.push(std::min(this->mins.top(), val));
+        }
+
+        void pop(void) {
+            this->data.pop();
+            this->mins.pop();
+        }
+
+        int top(void) {
+            return this->data.top();
+        }
+
+        int get_min(void) {
+            return this->mins.top();
+        }
+};
 
 // ==== Question 198
 // https://leetcode.com/problems/house-robber/
