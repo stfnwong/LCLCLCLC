@@ -341,6 +341,106 @@ std::vector<std::string> letter_combinations_17(std::string digits)
 //}
 
 /*
+ * Question 49
+ * Trapping rainwater
+ * https://leetcode.com/problems/trapping-rain-water/
+ */
+
+
+/*
+ * Question 42
+ * Trapping rainwater
+ * https://leetcode.com/problems/trapping-rain-water/
+ */
+// TODO: there are several ways to approach this, implement several of them here
+int trapping_rain_water_42(const std::vector<int>& height) 
+{
+    unsigned N = height.size();
+    std::vector<int> lmax(N);
+    std::vector<int> rmax(N);
+    int cur_max;
+
+    if(height.size() < 3)
+        return 0;           // not enough blocks to trap any water
+
+    // Find max height from the left 
+    lmax[0] = height[0];
+    for(unsigned i = 1; i < N; ++i)
+        lmax[i] = std::max(lmax[i-1], height[i-1]);
+
+    rmax[N-1] = height[N-1];
+    for(int i = N-2; i >= 0; --i)   // NOTE: don't use unsigned for decrement
+        rmax[i] = std::max(rmax[i+1], height[i+1]);
+    
+    int ans = 0;
+    for(unsigned i = 0; i < N; ++i)
+    {
+        int level = std::min(lmax[i], rmax[i]);
+        if(level >= height[i])
+            ans += level - height[i];
+    }
+
+    return ans;
+}
+
+// Alternative solution with two pointers
+// Time: O(N)
+// Space: O(1)
+int trapping_rain_water_42_two_pointers(const std::vector<int>& height) 
+{
+    if(height.size() < 2)
+        return 0;
+
+    unsigned lptr = 0;
+    unsigned rptr = height.size()-1;
+    int ans = 0;
+    int min_h = 0;
+    int max_h = 0;
+
+    while(lptr <= rptr)
+    {
+        min_h = std::min(height[lptr], height[rptr]);
+        max_h = std::max(max_h, min_h);
+        ans += max_h - min_h;   // TODO: why does this work?
+
+        if(height[lptr] < height[rptr])
+            lptr++;
+        else
+            rptr--;
+    }
+
+    return ans;
+}
+
+
+
+/*
+ * Question 49
+ * Group Anagrams 
+ * https://leetcode.com/problems/group-anagrams
+ */
+// NOTE: can sort the letters, this makes all anagrams the same
+std::vector<std::vector<std::string>> group_anagrams_49(const std::vector<std::string>& strs)
+{
+    std::unordered_map<std::string, std::vector<std::string>> anagrams;
+
+    for(std::string s : strs)
+    {
+        std::string cur_string = s;
+        std::sort(cur_string.begin(), cur_string.end());
+        anagrams[cur_string].push_back(s);
+    }
+
+    std::vector<std::vector<std::string>> ans;
+
+    for(std::pair<std::string, std::vector<std::string>> group: anagrams)
+        ans.push_back(group.second);
+
+    return ans;
+}
+
+
+/*
  * Question 55
  */
 // Lets implement the dumb way here. 
@@ -788,6 +888,15 @@ int coin_change_vec_322(std::vector<int>& coins, int amount)
 //}
 
 
+
+/*
+ Question 929
+ Unique Email Addresss
+ https://leetcode.com/problems/unique-email-addresses
+*/
+int num_unique_emails_929(const std::vector<std::string>& emails)
+{
+}
 
 /*
  Question 994

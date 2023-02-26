@@ -7,7 +7,13 @@ Unit tests for Graph object
 # unit under test
 from pylc import graph
 
+# Tests for new graph
 
+
+
+
+
+# Tests for old graph
 def test_create_graph_empty():
     g = graph.Graph()
 
@@ -38,3 +44,5 @@ def test_add_nodes_to_graph():
     g2.add(pairs)
 
     assert g1 == g2
+
+

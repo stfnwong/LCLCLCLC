@@ -73,6 +73,27 @@ def longest_common_prefix_14(strs:List[str]) -> str:
     return prefix
 
 
+# Question 49
+# Group Anagrams 
+# https://leetcode.com/problems/group-anagrams
+def group_anagrams_49(strs: List[str]) -> List[List[str]]:
+
+    anagrams = defaultdict(list)
+
+    for s in strs:
+        k = "".join(sorted(s))
+        anagrams[k].append(s)
+
+    ans = []
+    for group in anagrams.values():
+        ans.append(group)
+
+    return ans
+
+
+
+
+
 # leetcode 53
 # https://leetcode.com/problems/maximum-subarray/
 def maximum_subarray_53(nums:list) -> int:

@@ -47,6 +47,22 @@ std::vector<std::string> letter_combinations_17(std::string digits);
 // https://leetcode.com/problems/4sum/
 std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target);
 
+/*
+ * Question 42
+ * Trapping rainwater
+ * https://leetcode.com/problems/trapping-rain-water/
+ */
+// TODO: there are several ways to approach this, implement several of them here
+int trapping_rain_water_42(const std::vector<int>& height);
+int trapping_rain_water_42_two_pointers(const std::vector<int>& height);
+
+/*
+ * Question 49
+ * Group Anagrams 
+ * https://leetcode.com/problems/group-anagrams
+ */
+std::vector<std::vector<std::string>> group_anagrams_49(const std::vector<std::string>& strs);
+
 // ==== QUESTION 55
 // https://leetcode.com/problems/jump-game/
 bool can_jump(std::vector<int>& nums);
@@ -134,6 +150,13 @@ int coin_change_vec_322(std::vector<int>& coins, int amount);
 // https://leetcode.com/problems/split-array-into-fibonacci-sequence/
 std::vector<int> split_into_fib_seq_842(int i);
 
+
+/*
+ Question 929
+ Unique Email Addresss
+ https://leetcode.com/problems/unique-email-addresses
+*/
+int num_unique_emails_929(const std::vector<std::string>& emails);
 
 /*
  Question 1046

@@ -39,6 +39,28 @@ def test_longest_common_prefix_14():
         assert out == exp_out
 
 
+# Question 49
+# Group Anagrams 
+# https://leetcode.com/problems/group-anagrams
+def test_group_anagrams_49():
+    inputs = [
+        ["eat", "tea", "tan", "ate", "nat", "bat"],
+        [""],
+        ["a"]
+    ]
+    exp_outputs = [
+        [["bat"], ["nat", "tan"], ["ate", "eat", "tea"]],
+        [[""]],
+        [["a"]],
+    ]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.group_anagrams_49(inp)
+        assert len(out) == len(exp_out)    # check we have the correct number of groups
+        out_set = set(map(tuple, [sorted(g) for g in out]))
+        exp_set = set(map(tuple, [sorted(g) for g in exp_out]))
+
+        assert out_set == exp_set
 
 
 def test_maximum_subarray_53():

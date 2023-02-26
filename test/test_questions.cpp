@@ -239,13 +239,128 @@ TEST_CASE("question_17", "leetcode")
 /*
  * Question 18
  */
-TEST_CASE("question_18", "leetcode")
-{
-    std::vector<int> input = {1, 0, -1, 0, -2, 2};
-    int target = 0;
+//TEST_CASE("question_18", "leetcode")
+//{
+//    std::vector<int> input = {1, 0, -1, 0, -2, 2};
+//    int target = 0;
+//
+//    // We need to find all combinations of unique 4-tuples that 
+//    // add up to target. There must not be any duplicate tuples.
+//}
+//
+/*
+ * Question 42
+ * Trapping rainwater
+ * https://leetcode.com/problems/trapping-rain-water/
+ */
 
-    // We need to find all combinations of unique 4-tuples that 
-    // add up to target. There must not be any duplicate tuples.
+TEST_CASE("question_42", "leetcode")
+{
+    std::vector<std::vector<int>> inputs = {
+        {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1},
+        {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 0},
+        {4, 2, 0, 3, 2, 5},
+        {2, 6, 3, 4, 7, 3, 1, 5, 4},
+        {0, 6, 5, 4, 3, 2, 1, 0, 6, 0},
+        {0, 1, 2, 3, 4, 3, 2, 1, 0}
+    };
+    std::vector<int> exp_outputs = {6, 6, 9, 11, 21, 0};
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = trapping_rain_water_42(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+
+    // Try it with the other solution
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = trapping_rain_water_42_two_pointers(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+/*
+ * Question 49
+ * Group Anagrams 
+ * https://leetcode.com/problems/group-anagrams
+ */
+TEST_CASE("question_49", "leetcode")
+{
+    std::vector<std::vector<std::string>> inputs = {
+        {"eat", "tea", "tan", "ate", "nat", "bat"},
+        {""},
+        {"a"},
+    };
+
+    std::vector<std::vector<std::vector<std::string>>> exp_outputs = {
+        {{"bat"}, {"nat", "tan"}, {"ate", "eat", "tea"}},
+        {{""}},
+        {{"a"}},
+    };
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    // Try to compare with 2 unordered_map
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        std::unordered_map<std::string, std::vector<std::string>> out_map;
+        std::unordered_map<std::string, std::vector<std::string>> exp_map;
+
+        std::vector<std::vector<std::string>> out = group_anagrams_49(inputs[t]);
+        // check the number of groups is equal 
+        REQUIRE(out.size() == exp_outputs[t].size());  
+
+        // Create a map that we can iterate over
+        for(std::vector<std::string>& group : out)
+        {
+            std::string group_key = group[0];
+            std::sort(group_key.begin(), group_key.end());
+            std::vector<std::string> sorted_group = group;
+            std::sort(sorted_group.begin(), sorted_group.end());
+            for(std::string s : sorted_group)
+                out_map[group_key].push_back(s);
+        }
+
+        for(std::vector<std::string>& group : exp_outputs[t])
+        {
+            //std::string group_key = std::sort(group[0].begin(), group[0].end());
+            std::string group_key = group[0];
+            std::sort(group_key.begin(), group_key.end());
+            std::vector<std::string> sorted_group = group;
+            std::sort(sorted_group.begin(), sorted_group.end());
+            for(std::string s : sorted_group)
+                exp_map[group_key].push_back(s);
+        }
+
+        for(std::pair<std::string, std::vector<std::string>> group : out_map)
+        {
+            REQUIRE(group.second.size() == exp_map[group.first].size());
+            for(unsigned s = 0; s < group.second.size(); ++s)
+                REQUIRE(group.second[s] == exp_map[group.first][s]);
+        }
+
+
+        // TEST
+        //std::cout << "out[" << t << "]" << std::endl;
+        //for(std::pair<std::string, std::vector<std::string>> out_group: out_map)
+        //{
+        //    std::cout << out_group.first << ": [";
+        //    for(unsigned i = 0; i < out_group.second.size(); ++i)
+        //        std::cout << out_group.second[i] << ",";
+        //    std::cout << "]" << std::endl;
+        //}
+
+        //std::cout << "exp_out[" << t << "]" << std::endl;
+        //for(std::pair<std::string, std::vector<std::string>> out_group: exp_map)
+        //{
+        //    std::cout << out_group.first << ": [";
+        //    for(unsigned i = 0; i < out_group.second.size(); ++i)
+        //        std::cout << out_group.second[i] << ",";
+        //    std::cout << "]" << std::endl;
+        //}
+    }
 }
 
 /*
@@ -493,6 +608,27 @@ TEST_CASE("question_239", "leetcode")
     };
 
 
+}
+
+/*
+ Question 929
+ Unique Email Addresss
+ https://leetcode.com/problems/unique-email-addresses
+*/
+TEST_CASE("question_929", "leetcode")
+{
+    std::vector<std::vector<std::string>> inputs = {
+        {"test.email+alex@leetcode.com", "test.e.mail+bob.cathy@leetcode.com", "testemail@lee.tcode.com"},
+        {"a@leetcode.com", "b@leetcode.com", "c@leetcode.com"}
+    };
+
+    std::vector<int> exp_outputs = {2, 3};
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = num_unique_emails_929(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
 }
 
 /*
