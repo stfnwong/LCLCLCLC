@@ -262,9 +262,10 @@ TEST_CASE("question_42", "leetcode")
         {4, 2, 0, 3, 2, 5},
         {2, 6, 3, 4, 7, 3, 1, 5, 4},
         {0, 6, 5, 4, 3, 2, 1, 0, 6, 0},
-        {0, 1, 2, 3, 4, 3, 2, 1, 0}
+        {0, 1, 2, 3, 4, 3, 2, 1, 0},
+        {1, 0, 1},
     };
-    std::vector<int> exp_outputs = {6, 6, 9, 11, 21, 0};
+    std::vector<int> exp_outputs = {6, 6, 9, 11, 21, 0, 1};
 
     for(unsigned t = 0; t < exp_outputs.size(); ++t)
     {

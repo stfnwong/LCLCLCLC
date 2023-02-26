@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <map>
 #include <numeric>
 #include <queue>
@@ -386,18 +387,23 @@ int trapping_rain_water_42(const std::vector<int>& height)
 // Alternative solution with two pointers
 // Time: O(N)
 // Space: O(1)
+// 
+// I still don't quite grasp the intuition for how this method works for this problem...
 int trapping_rain_water_42_two_pointers(const std::vector<int>& height) 
 {
     if(height.size() < 2)
         return 0;
 
+    // NOTE: making these int (rather than unsigned) is probably sufficient for this, 
+    // but if we wanted to use unsigned here then we need to check for underflow in the 
+    // decrement branch
     unsigned lptr = 0;
     unsigned rptr = height.size()-1;
     int ans = 0;
     int min_h = 0;
     int max_h = 0;
 
-    while(lptr <= rptr)
+    while(lptr < rptr)
     {
         min_h = std::min(height[lptr], height[rptr]);
         max_h = std::max(max_h, min_h);
@@ -406,7 +412,7 @@ int trapping_rain_water_42_two_pointers(const std::vector<int>& height)
         if(height[lptr] < height[rptr])
             lptr++;
         else
-            rptr--;
+            rptr = ((rptr-1) >= std::numeric_limits<unsigned>::max()-1) ? 0 : rptr-1;
     }
 
     return ans;
