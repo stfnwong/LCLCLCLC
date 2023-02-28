@@ -26,7 +26,7 @@ std::vector<int> two_sum_brute_force(std::vector<int>& nums, int target);
 
 // ==== QUESTION 2
 // https://leetcode.com/problems/add-two-numbers/
-lc_list::ListNode* add_two_numbers(lc_list::ListNode* l1, lc_list::ListNode* l2);
+ListNode* add_two_numbers(ListNode* l1, ListNode* l2);
 
 // ==== QUESTION 3
 // https://leetcode.com/problems/longest-substring-without-repeating-characters/
@@ -53,8 +53,15 @@ std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target);
  * Merge two sorted lists
  * https://leetcode.com/problems/merge-two-sorted-lists
  */
-lc_list::ListNode* merge_two_sorted_lists_21(lc_list::ListNode* list1, lc_list::ListNode* list2);
+ListNode* merge_two_sorted_lists_21(ListNode* list1, ListNode* list2);
 
+
+/*
+ * Question 23
+ * Merge k sorted lists 
+ * https://leetcode.com/problems/merge-k-sorted-lists
+ */
+ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists);
 
 /*
  * Question 42

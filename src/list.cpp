@@ -9,10 +9,6 @@
 #include "list.hpp"
 
 
-namespace lc_list
-{
-
-
 ListNode* list_from_vector(const std::vector<int>& vals)
 {
     ListNode* root;
@@ -81,5 +77,4 @@ void print_list_node(ListNode* root)
     std::cout << "}" << std::endl;
 }
 
-}    //namespace lc_list
 

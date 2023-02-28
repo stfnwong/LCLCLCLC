@@ -11,8 +11,6 @@
 #include <vector>
 
 
-namespace lc_list 
-{
 
 // TODO: memory management
 struct ListNode
@@ -36,7 +34,6 @@ unsigned list_length(ListNode* root);
 void print_list_node(ListNode* root);
 
 
-} //namespace lc_list
 
 
 #endif /*__LC_LIST_HPP*/

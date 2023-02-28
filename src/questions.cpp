@@ -104,19 +104,19 @@ std::vector<int> two_sum_brute_force(std::vector<int>& nums, int target)
 /*
  * Question 2
  */
-lc_list::ListNode* add_two_numbers(lc_list::ListNode* l1, lc_list::ListNode* l2)
+ListNode* add_two_numbers(ListNode* l1, ListNode* l2)
 {
     int sum;
     int carry;
-    lc_list::ListNode* output;
-    lc_list::ListNode* root;
+    ListNode* output;
+    ListNode* root;
 
     // map pointers to the input lists 
-    lc_list::ListNode* p = l1;
-    lc_list::ListNode* q = l2;
+    ListNode* p = l1;
+    ListNode* q = l2;
 
     carry = 0;
-    root = new lc_list::ListNode(0);
+    root = new ListNode(0);
     output = root;
 
     //int q_val;
@@ -136,12 +136,12 @@ lc_list::ListNode* add_two_numbers(lc_list::ListNode* l1, lc_list::ListNode* l2)
         }
         sum = sum + carry;
         carry = sum / 10;
-        output->next = new lc_list::ListNode(sum % 10);
+        output->next = new ListNode(sum % 10);
         output = output->next;
     }
 
     if(carry > 0)
-        output->next = new lc_list::ListNode(carry);     // 'remainder' (but since list is reversed, its actually overflow)
+        output->next = new ListNode(carry);     // 'remainder' (but since list is reversed, its actually overflow)
 
     return root->next;    // ignore the first node - its just a dummy for init purposes
 }
@@ -347,19 +347,19 @@ std::vector<std::string> letter_combinations_17(std::string digits)
  * Merge two sorted lists
  * https://leetcode.com/problems/merge-two-sorted-lists
  */
-lc_list::ListNode* merge_two_sorted_lists_21(lc_list::ListNode* list1, lc_list::ListNode* list2)
+ListNode* merge_two_sorted_lists_21(ListNode* list1, ListNode* list2)
 {
     if(list1 == nullptr && list2 == nullptr)
         return nullptr;
 
 
     //ListNode* out_list = new ListNode();
-    lc_list::ListNode* out_list = nullptr;
-    lc_list::ListNode* out_list_tail = out_list;
+    ListNode* out_list = nullptr;
+    ListNode* out_list_tail = out_list;
 
     while(list1 != nullptr || list2 != nullptr)
     {
-        lc_list::ListNode* cur_node = new lc_list::ListNode();
+        ListNode* cur_node = new ListNode();
         if(list1 != nullptr && list2 != nullptr)
         {
             if(list1->val < list2->val)
@@ -399,6 +399,66 @@ lc_list::ListNode* merge_two_sorted_lists_21(lc_list::ListNode* list1, lc_list::
 
     return out_list;
 }
+
+
+/*
+ * Question 23
+ * Merge k sorted lists 
+ * https://leetcode.com/problems/merge-k-sorted-lists
+ */
+ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists)
+{
+    if(lists.size() == 0)
+        return nullptr;
+
+    //using q_elem = std::pair<int, ListNode*>;
+    //std::priority_queue<q_elem, std::greater<q_elem>> pq;
+    std::priority_queue<int, std::vector<int>, std::greater<int>> pq;
+
+    ListNode* head;
+
+    // iterate over each list and push elements into queue
+    for(unsigned l = 0; l < lists.size(); ++l)
+    {
+        head = lists[l];
+        while(head)
+        {
+            pq.push(head->val);
+            head = head->next;
+        }
+    }
+
+    // Now we have a heap with all elements inside 
+    if(pq.empty())
+        return nullptr;    // all lists were empty
+
+    ListNode* out_list = nullptr;
+    ListNode* out_list_head;
+    out_list_head = out_list;
+
+    while(!pq.empty())
+    {
+        ListNode* cur_node = new ListNode();
+        cur_node->val = pq.top();
+        pq.pop();
+
+        // attach to out list 
+        if(out_list == nullptr)
+        {
+            out_list = cur_node;
+            out_list_head = out_list;
+        }
+        else
+        {
+            out_list_head->next = cur_node;
+            out_list_head = cur_node;
+        }
+    }
+
+    return out_list;
+}
+
+
 
 
 /*

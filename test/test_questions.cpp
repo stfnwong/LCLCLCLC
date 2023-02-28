@@ -79,23 +79,23 @@ TEST_CASE("q1_two_sum", "leetcode")
 //{
 //    std::vector<int> vec1 = {2, 4, 3};
 //    std::vector<int> vec2 = {5, 6, 4};
-//    lc_list::ListNode* input1 = lc_list::list_from_vector(vec1);
-//    lc_list::ListNode* input2 = lc_list::list_from_vector(vec2);
+//    ListNode* input1 = list_from_vector(vec1);
+//    ListNode* input2 = list_from_vector(vec2);
 //
 //    std::cout << "[" << __func__ << "] created input lists" << std::endl;
 //
 //    int idx = 0;
 //
 //    std::cout << "input 1 " << std::endl;
-//    lc_list::print_list_node(input1);
+//    print_list_node(input1);
 //    std::cout << "input 2 " << std::endl;
-//    lc_list::print_list_node(input2);
+//    print_list_node(input2);
 //
-//    lc_list::ListNode* output = add_two_numbers(input1, input2);
+//    ListNode* output = add_two_numbers(input1, input2);
 //    REQUIRE(nullptr != output);
 //
 //    std::vector<int> expected_out_vec = {7, 0, 8};
-//    lc_list::ListNode* expected_output = lc_list::list_from_vector(expected_out_vec);
+//    ListNode* expected_output = list_from_vector(expected_out_vec);
 //
 //    int out_len = 0;
 //    int exp_len = 3;
@@ -274,11 +274,56 @@ TEST_CASE("question_21", "leetcode")
     for(unsigned t = 0; t < inputs.size(); ++t)
     {
         // Format the inputs
-        lc_list::ListNode* list1 = lc_list::list_from_vector(inputs[t].first);
-        lc_list::ListNode* list2 = lc_list::list_from_vector(inputs[t].second);
+        ListNode* list1 = list_from_vector(inputs[t].first);
+        ListNode* list2 = list_from_vector(inputs[t].second);
 
-        lc_list::ListNode* out = merge_two_sorted_lists_21(list1, list2);
-        std::vector<int> out_vec = lc_list::vector_from_list(out);
+        ListNode* out = merge_two_sorted_lists_21(list1, list2);
+
+        // convert output to vector and check
+        std::vector<int> out_vec = vector_from_list(out);
+        REQUIRE(out_vec.size() == exp_outputs[t].size());
+
+        for(unsigned i = 0; i < out_vec.size(); ++i)
+            REQUIRE(out_vec[i] == exp_outputs[t][i]);
+    }
+}
+
+/*
+ * Question 23
+ * Merge k sorted lists 
+ * https://leetcode.com/problems/merge-k-sorted-lists
+ */
+TEST_CASE("question_23", "leetcode")
+{
+    using list_of_lists = std::vector<std::vector<int>>;
+    std::vector<list_of_lists> inputs = {
+        {{4, 5, 6}, {7, 8, 1}, {2, 2, 2}},
+        {{1, 4, 5}, {1, 3, 4}, {2, 6}},
+        {},
+        {{}}
+    };
+
+    std::vector<std::vector<int>> exp_outputs = {
+        {1, 2, 2, 2, 4, 5, 6, 7, 8},
+        {1, 1, 2, 3, 4, 4, 5, 6},
+        {},
+        {}
+    };
+
+    for(unsigned t = 0; t < inputs.size(); ++t)
+    {
+        // make a vector of lists 
+        std::vector<ListNode*> list_vec;
+        for(unsigned v = 0; v < inputs[t].size(); ++v)
+        {
+            ListNode* some_list = list_from_vector(inputs[t][v]);
+            list_vec.push_back(some_list);
+        }
+
+        ListNode* out_node = merge_k_sorted_lists_23(list_vec);
+
+        // convert the output to vector and check 
+        std::vector<int> out_vec = vector_from_list(out_node);
         REQUIRE(out_vec.size() == exp_outputs[t].size());
 
         for(unsigned i = 0; i < out_vec.size(); ++i)
