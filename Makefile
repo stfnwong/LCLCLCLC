@@ -48,7 +48,7 @@ $(TEST_OBJECTS): $(OBJ_DIR)/%.o : $(TEST_DIR)/%.cpp $(HEADERS)
 
 # ==== TEST TARGETS ==== #
 TESTS=test_tree test_threaded_tree test_tree_traverse test_dynamic \
-	  test_questions test_vtable
+	  test_questions test_vtable test_list
 
 $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(OBJECTS) $(OBJ_DIR)/$@.o\

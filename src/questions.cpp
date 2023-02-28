@@ -341,6 +341,66 @@ std::vector<std::string> letter_combinations_17(std::string digits)
 //    
 //}
 
+
+/*
+ * Question 21
+ * Merge two sorted lists
+ * https://leetcode.com/problems/merge-two-sorted-lists
+ */
+lc_list::ListNode* merge_two_sorted_lists_21(lc_list::ListNode* list1, lc_list::ListNode* list2)
+{
+    if(list1 == nullptr && list2 == nullptr)
+        return nullptr;
+
+
+    //ListNode* out_list = new ListNode();
+    lc_list::ListNode* out_list = nullptr;
+    lc_list::ListNode* out_list_tail = out_list;
+
+    while(list1 != nullptr || list2 != nullptr)
+    {
+        lc_list::ListNode* cur_node = new lc_list::ListNode();
+        if(list1 != nullptr && list2 != nullptr)
+        {
+            if(list1->val < list2->val)
+            {
+                cur_node->val = list1->val;
+                list1 = list1->next;
+            }
+            else
+            {
+                cur_node->val = list2->val;
+                list2 = list2->next;
+            }
+        }
+        else if(list1 != nullptr)
+        {
+            cur_node->val = list1->val;
+            list1 = list1->next;
+        }
+        else 
+        {
+            cur_node->val = list2->val;
+            list2 = list2->next;
+        }
+
+        // add cur_node to end of out list
+        if(out_list == nullptr)
+        {
+            out_list = cur_node;
+            out_list_tail = out_list;
+        }
+        else
+        {
+            out_list_tail->next = cur_node;
+            out_list_tail = out_list_tail->next;
+        }
+    }
+
+    return out_list;
+}
+
+
 /*
  * Question 49
  * Trapping rainwater
@@ -806,7 +866,7 @@ int house_robber_198(const std::vector<int>& nums)
 /*
  Question 239
  https://leetcode.com/problems/sliding-window-maximum/
-       //Maximum in sliding window 
+ Maximum in sliding window 
 */
 std::vector<int> max_sliding_window_239_deque(const std::vector<int>& nums, int wsize) 
 {
@@ -883,6 +943,22 @@ int coin_change_vec_322(std::vector<int>& coins, int amount)
 }
 
 // TODO: BFS solution with memo
+
+
+/*
+ Question 337
+ https://leetcode.com/problems/house-robber-iii
+ House Robber III
+
+*/
+std::pair<int, int> hr3_dp(TreeNode* root)
+{
+}
+
+int house_robber_iii_337(TreeNode* root)
+{
+}
+
 
 
 /*

@@ -47,6 +47,15 @@ std::vector<std::string> letter_combinations_17(std::string digits);
 // https://leetcode.com/problems/4sum/
 std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target);
 
+
+/*
+ * Question 21
+ * Merge two sorted lists
+ * https://leetcode.com/problems/merge-two-sorted-lists
+ */
+lc_list::ListNode* merge_two_sorted_lists_21(lc_list::ListNode* list1, lc_list::ListNode* list2);
+
+
 /*
  * Question 42
  * Trapping rainwater
@@ -145,6 +154,15 @@ int house_robber_198(const std::vector<int>& nums);
 // https://leetcode.com/problems/coin-change/
 int coin_change_vec_322(std::vector<int>& coins, int amount);
 
+
+/*
+ Question 337
+ https://leetcode.com/problems/house-robber-iii
+ House Robber III
+*/
+// The node structure for this problem
+
+int house_robber_iii_337(TreeNode* root);
 
 // ==== QUESTION 842
 // https://leetcode.com/problems/split-array-into-fibonacci-sequence/

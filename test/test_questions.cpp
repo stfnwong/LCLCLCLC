@@ -248,6 +248,45 @@ TEST_CASE("question_17", "leetcode")
 //    // add up to target. There must not be any duplicate tuples.
 //}
 //
+
+
+
+/*
+ * Question 21
+ * Merge two sorted lists
+ * https://leetcode.com/problems/merge-two-sorted-lists
+ */
+TEST_CASE("question_21", "leetcode")
+{
+    using list_pair = std::pair<std::vector<int>, std::vector<int>>;
+    std::vector<list_pair> inputs = {
+        {{1, 2, 4}, {1, 3, 4}},
+        {{}, {}},
+        {{}, {0}}
+    };
+
+    std::vector<std::vector<int>> exp_outputs = {
+        {1, 1, 2, 3, 4, 4},
+        {},
+        {0}
+    };
+    
+    for(unsigned t = 0; t < inputs.size(); ++t)
+    {
+        // Format the inputs
+        lc_list::ListNode* list1 = lc_list::list_from_vector(inputs[t].first);
+        lc_list::ListNode* list2 = lc_list::list_from_vector(inputs[t].second);
+
+        lc_list::ListNode* out = merge_two_sorted_lists_21(list1, list2);
+        std::vector<int> out_vec = lc_list::vector_from_list(out);
+        REQUIRE(out_vec.size() == exp_outputs[t].size());
+
+        for(unsigned i = 0; i < out_vec.size(); ++i)
+            REQUIRE(out_vec[i] == exp_outputs[t][i]);
+    }
+}
+
+
 /*
  * Question 42
  * Trapping rainwater
@@ -264,8 +303,9 @@ TEST_CASE("question_42", "leetcode")
         {0, 6, 5, 4, 3, 2, 1, 0, 6, 0},
         {0, 1, 2, 3, 4, 3, 2, 1, 0},
         {1, 0, 1},
+        {3, 1, 0, 0, 1, 0}
     };
-    std::vector<int> exp_outputs = {6, 6, 9, 11, 21, 0, 1};
+    std::vector<int> exp_outputs = {6, 6, 9, 11, 21, 0, 1, 2};
 
     for(unsigned t = 0; t < exp_outputs.size(); ++t)
     {
@@ -610,6 +650,31 @@ TEST_CASE("question_239", "leetcode")
 
 
 }
+
+
+/*
+ Question 337
+ https://leetcode.com/problems/house-robber-iii
+ House Robber III
+*/
+TEST_CASE("question_337", "leetcode")
+{
+    std::vector<std::string> inputs = {
+        "[3, 2, 3, null, 3, null, 1]",
+        "[3, 4, 5, 1, 3, null, 1]"
+    };
+
+    std::vector<int> exp_outputs = {7, 9};
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        TreeNode* inp_root = repr_to_tree(inputs[t]);
+        int out = house_robber_iii_337(inp_root);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+
 
 /*
  Question 929

@@ -16,21 +16,55 @@ namespace lc_list
 ListNode* list_from_vector(const std::vector<int>& vals)
 {
     ListNode* root;
-    ListNode* dummy_head;
+    ListNode* cur_node;
 
-    std::cout << "[" << __func__ << "] creating new ListNode with " 
-        << vals.size() << " elements." << std::endl;
+    if(vals.size() == 0)
+        return nullptr;
 
     root = new ListNode(vals[0]);
-    dummy_head = root;
+    cur_node = root;
     for(unsigned int n = 1; n < vals.size(); ++n)
     {
-        dummy_head->next = new ListNode(vals[n]);
-        dummy_head = dummy_head->next;
+        cur_node->next = new ListNode(vals[n]);
+        cur_node = cur_node->next;
     }
 
     return root;
 }
+
+std::vector<int> vector_from_list(const ListNode* node)
+{
+    std::vector<int> out_vec;
+
+    if(node == nullptr)
+        return out_vec;
+
+    while(node != nullptr)
+    {
+        out_vec.push_back(node->val);
+        node = node->next;
+    }
+
+    return out_vec;
+}
+
+
+unsigned list_length(ListNode* root)
+{
+    unsigned len = 0;
+    
+    if(!root)
+        return len;
+
+    while(root)
+    {
+        len++;
+        root = root->next;
+    }
+
+    return len;
+}
+
 
 
 void print_list_node(ListNode* root)
@@ -47,5 +81,5 @@ void print_list_node(ListNode* root)
     std::cout << "}" << std::endl;
 }
 
-}
+}    //namespace lc_list
 
