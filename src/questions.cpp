@@ -411,10 +411,7 @@ ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists)
     if(lists.size() == 0)
         return nullptr;
 
-    //using q_elem = std::pair<int, ListNode*>;
-    //std::priority_queue<q_elem, std::greater<q_elem>> pq;
     std::priority_queue<int, std::vector<int>, std::greater<int>> pq;
-
     ListNode* head;
 
     // iterate over each list and push elements into queue
