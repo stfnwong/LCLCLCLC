@@ -26,9 +26,7 @@
 
 You may assume that each input would have exactly one solution, and you may not use the same element twice.
  */
-// TODO: we should be able to simplify this by placing function pointers into a vector 
-// and passing the same args to each function in a loop (probably while printing the function name)?
-TEST_CASE("q1_two_sum", "leetcode")
+TEST_CASE("question_1", "leetcode")
 {
     using two_sum_function = std::function<std::vector<int>(std::vector<int>&, int)>;
     std::vector<std::pair<two_sum_function, std::string>> functions = {
@@ -673,6 +671,31 @@ TEST_CASE("question_198", "leetcode")
     {
         int out = house_robber_198(inputs[test_case]);
         REQUIRE(out == exp_outputs[test_case]);
+    }
+}
+
+/*
+ Question 222
+ https://leetcode.com/problems/count-complete-tree-nodes
+ Count Complete Tree Nodes
+*/
+TEST_CASE("question_222", "leetcode")
+{
+    std::vector<std::string> inputs = {
+        "[1, 2, 3, 4, 5, 6]",
+        "[]",
+        "[1]",
+        "[1, 2, 3]",
+        "[1, 2]",
+    };
+
+    std::vector<int> exp_outputs = {6, 0, 1, 3, 2};
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        TreeNode* cur_tree = repr_to_tree(inputs[t]);
+        int out = count_nodes_222(cur_tree);
+        REQUIRE(out == exp_outputs[t]);
     }
 }
 

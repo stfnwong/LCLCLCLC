@@ -156,6 +156,12 @@ class MinStack
 int house_robber_198(const std::vector<int>& nums);
 
 
+/*
+ Question 222
+ https://leetcode.com/problems/count-complete-tree-nodes
+ Count Complete Tree Nodes
+*/
+int count_nodes_222(TreeNode* root);
 
 // Question 322
 // https://leetcode.com/problems/coin-change/
@@ -167,8 +173,6 @@ int coin_change_vec_322(std::vector<int>& coins, int amount);
  https://leetcode.com/problems/house-robber-iii
  House Robber III
 */
-// The node structure for this problem
-
 int house_robber_iii_337(TreeNode* root);
 
 // ==== QUESTION 842

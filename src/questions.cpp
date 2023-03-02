@@ -899,6 +899,7 @@ int find_min_in_rotated_sorted_array(const std::vector<int>& nums)
 // https://leetcode.com/problems/min-stack
 // (Solution in header file)
 
+
 // ==== Question 198
 // https://leetcode.com/problems/house-robber/
 int house_robber_198(const std::vector<int>& nums)
@@ -917,6 +918,67 @@ int house_robber_198(const std::vector<int>& nums)
         dp[i] = std::max(nums[i] + dp[i-2], dp[i-1]);
 
     return dp.back();
+}
+
+
+/*
+ Question 222
+ https://leetcode.com/problems/count-complete-tree-nodes
+ Count Complete Tree Nodes
+
+NOTE: we need an algorithm faster than O(N)
+*/
+bool node_exists_222(TreeNode* node, int t, int d)
+{
+    // Each node in a given layer is encoded as an implicit bit pattern.
+    for(int i = 0; i < d; ++i)
+    {
+        int bit = (d - 1) - i;
+        if((t >> bit) & 1)
+            node = node->right;
+        else
+            node = node->left;
+    }
+
+    return node != nullptr;
+}
+
+int count_nodes_222(TreeNode* root)
+{
+    if(root == nullptr)
+        return 0;
+
+    // We know the tree is complete save for the last layer, so we first find the 
+    // depth. From this we can deduce the number of nodes in the first d-1 layers. 
+    // Note that the definition of "complete" means that nodes are populated from 
+    // left to right.
+
+    unsigned depth = 0;
+    TreeNode* ptr = root;
+
+    while(ptr->left != nullptr)
+    {
+        depth++;
+        ptr = ptr->left;
+    }
+
+    // Now we need to find how many nodes there are in the bottom layer.
+    // Since the tree is guaranteed to be complete we know the nodes are "filled" 
+    // from left to right.
+    int left = 0;
+    int right = (1 << depth);           // max number of nodes on layer d
+
+    // do a template binary search here 
+    while(left < right)
+    {
+        int mid = (left + right) / 2;
+        if(node_exists_222(root, mid, depth))
+            left = mid + 1;
+        else
+            right = mid;
+    }
+
+    return (1 << depth) + left - 1;
 }
 
 
