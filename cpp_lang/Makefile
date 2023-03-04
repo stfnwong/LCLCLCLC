@@ -16,7 +16,7 @@ TEST_BIN_DIR=$(BIN_DIR)/test
 # Tool options
 CXX=g++
 OPT=-O0
-CXXFLAGS=-Wall -Wshadow -g2 -std=c++14 -D_REENTRANT $(OPT) 
+CXXFLAGS=-Wall -Wshadow -g2 -std=c++17 -D_REENTRANT $(OPT) 
 TESTFLAGS=-lgtest -lgtest_main
 LDFLAGS=-pthread
 LIBS = 

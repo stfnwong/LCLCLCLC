@@ -11,5 +11,5 @@ tags
 # Also ignore these directories 
 other/
 
-# Ignore other vim/lsp things 
+# Ignore the langserver cache 
 .ccls-cache/
