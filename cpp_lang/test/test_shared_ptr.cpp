@@ -59,16 +59,16 @@ TEST_CASE("test_shared_ptr_intrusive_share", "[classic]")
 
     SharedPtrIntrusive<int> ref1(some_val);
     REQUIRE(1 == ref1.numRef());
-    std::cout << "There are " << ref1.numRef() << " references to <some_val>" << std::endl;
+    std::cout << "There are (" << ref1.numRef() << ") references to <some_val>" << std::endl;
     SharedPtrIntrusive<int> ref2(ref1);
     REQUIRE(2 == ref1.numRef());
-    std::cout << "There are " << ref1.numRef() << " references to <some_val>" << std::endl;
+    std::cout << "There are (" << ref1.numRef() << ") references to <some_val>" << std::endl;
     SharedPtrIntrusive<int> ref3(ref2);
     REQUIRE(3 == ref1.numRef());
-    std::cout << "There are " << ref1.numRef() << " references to <some_val>" << std::endl;
+    std::cout << "There are (" << ref1.numRef() << ") references to <some_val>" << std::endl;
     SharedPtrIntrusive<int> ref4(ref3);
     REQUIRE(4 == ref1.numRef());
-    std::cout << "There are " << ref1.numRef() << " references to <some_val>" << std::endl;
+    std::cout << "There are (" << ref1.numRef() << ") references to <some_val>" << std::endl;
 
     // All these should be 'equal' since they have the same pointer
     // Equality test is overloaded for the pointers than the value
@@ -130,16 +130,16 @@ TEST_CASE("test_shared_ptr_share", "[classic]")
 
     SharedPtr<int> ref1(some_val);
     REQUIRE(1 == ref1.numRef());
-    std::cout << "There are " << ref1.numRef() << " references to <some_val>" << std::endl;
+    std::cout << "There are (" << ref1.numRef() << ") references to <some_val>" << std::endl;
     SharedPtr<int> ref2(ref1);
     REQUIRE(2 == ref1.numRef());
-    std::cout << "There are " << ref1.numRef() << " references to <some_val>" << std::endl;
+    std::cout << "There are (" << ref1.numRef() << ") references to <some_val>" << std::endl;
     SharedPtr<int> ref3(ref2);
     REQUIRE(3 == ref1.numRef());
-    std::cout << "There are " << ref1.numRef() << " references to <some_val>" << std::endl;
+    std::cout << "There are (" << ref1.numRef() << ") references to <some_val>" << std::endl;
     SharedPtr<int> ref4(ref3);
     REQUIRE(4 == ref1.numRef());
-    std::cout << "There are " << ref1.numRef() << " references to <some_val>" << std::endl;
+    std::cout << "There are (" << ref1.numRef() << ") references to <some_val>" << std::endl;
 
     // Do all the same checks as for the intrusive shared pointer
     REQUIRE(ref2 == ref1);

@@ -4,3 +4,6 @@
 
 # Ignore pyc 
 *.pyc
+
+# Ignore the langserver cache 
+.ccls-cache/
