@@ -14,8 +14,8 @@
 
 #include "list.hpp"
 #include "tree.hpp"
-#include "util.hpp"
 #include "questions.hpp"
+#include "util.hpp"
 
 
 /*
@@ -745,6 +745,30 @@ TEST_CASE("question_337", "leetcode")
 }
 
 
+/*
+ Question 389
+ https://leetcode.com/problems/find-the-difference
+ Find The Difference
+*/
+TEST_CASE("question_389", "leetcode")
+{
+    using input_t = std::pair<std::string, std::string>;
+    std::vector<input_t> inputs = {
+        {"abcd", "abcde"},
+        {"", "y"},
+        {"", ""}
+    };
+    std::vector<char> exp_outputs = {'e', 'y', '\0'};
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        char out = find_the_difference_389(inputs[t].first, inputs[t].second);
+        REQUIRE(out == exp_outputs[t]);
+        out = find_the_difference_389_um(inputs[t].first, inputs[t].second);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
 
 /*
  Question 929
@@ -779,6 +803,7 @@ TEST_CASE("question_994", "leetcode")
     };
     std::vector<int> exp_outputs = {4};
 }
+
 
 
 
@@ -826,6 +851,27 @@ TEST_CASE("question_1046", "leetcode")
 //}
 //
 
+
+/*
+ * Question 1091 
+ * Shortest Path in Binary Matrix 
+ * https://leetcode.com/problems/shortest-path-in-binary-matrix/
+ */
+TEST_CASE("question_1091", "leetcode")
+{
+    using grid_t = std::vector<std::vector<int>>;
+    std::vector<grid_t> inputs = {
+        {{0, 1}, {1, 0}},
+    };
+
+    std::vector<int> exp_outputs = {2};
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = shortest_path_in_binary_matrix_1091(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
 
 /*
  * Question 1222
@@ -902,4 +948,34 @@ TEST_CASE("question_1222", "leetcode")
     // Check each element of the output vector in turn
     for(unsigned int elem = 0; elem < output3.size(); ++elem)
         REQUIRE(exp_output_3[elem][1] == output3[elem][1]);
+}
+
+
+
+
+/*
+ Question 1293
+ Shortest Path in Grid with Obstacles Elimination
+ https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination
+*/
+TEST_CASE("question_1293", "leetcode")
+{
+    using grid_t = std::vector<std::vector<int>>;
+
+    std::vector<grid_t> grids = {
+        {{0,0,0}, {1,1,0}, {0,0,0}, {0,1,1}, {0,0,0}},
+        {{0,1,1}, {1,1,1}, {1,0,0}}
+    };
+
+    std::vector<int> ks = {1, 1};
+
+    std::vector<int> exp_outputs = {6, -1};
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        // first arg is grid, second arg is k
+        //int out = shortest_path_1293(inputs[t].first, inputs[t].second);
+        int out = shortest_path_1293(grids[t], ks[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
 }

@@ -450,6 +450,24 @@ def test_course_schedule_206():
         assert out == exp_out
 
 
+# Question 208
+# https://leetcode.com/problems/implement-trie-prefix-tree/
+# Implement Trie
+def test_implement_trie():
+    inputs = [
+        (
+            ["insert", "search", "search", "starts_with", "insert", "search"],
+            ["apple", "apple", "app", "app", "app", "app"]
+        )
+    ]
+
+    exp_outputs = [
+        [None, None, True, False, True, None, True]
+    ]
+
+
+
+
 # Question 213
 # https://leetcode.com/problems/house-robber-ii/
 def test_house_robber_ii_213():
@@ -543,6 +561,29 @@ def test_coin_change_332():
             # TODO: fix
             #assert out == exp_out
 
+
+
+# Question 389
+# https://leetcode.com/problems/find-the-difference
+# Find The Difference
+def test_find_the_difference_389():
+    inputs = [
+        ("abcd", "abcde"),
+        ("", "y"),
+        ("", "")
+    ]
+    exp_outputs = ['e', 'y', '']
+    functions = [
+        questions.find_the_difference_389,
+        questions.find_the_difference_389_no_set,
+        questions.find_the_difference_389_alpha_hist,
+        questions.find_the_difference_389_dict,
+    ]
+
+    for func in functions:
+        for inp, exp_out in zip(inputs, exp_outputs):
+            out = func(inp[0], inp[1])
+            assert out == exp_out
 
 
 # Question 714
@@ -646,6 +687,7 @@ def test_last_stone_weight_ii_1049() -> None:
     for inp, exp_out in zip(inputs, exp_outputs):
         out = questions.last_stone_weight_ii_1049(inp)
         assert out == exp_out
+
 
 # Question 1091
 # https://leetcode.com/problems/shortest-path-in-binary-matrix/

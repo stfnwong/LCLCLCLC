@@ -5,7 +5,9 @@
  * Stefan Wong 2019
  */
 
+#include <array>
 #include <cstdlib>
+#include <deque>
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -14,6 +16,7 @@
 #include <queue>
 
 #include "questions.hpp"
+#include "util.hpp"
 
 /*
  * Question 1
@@ -1072,10 +1075,63 @@ int coin_change_vec_322(std::vector<int>& coins, int amount)
 */
 std::pair<int, int> hr3_dp(TreeNode* root)
 {
+    return {0, 0};       // shut linter up
 }
 
 int house_robber_iii_337(TreeNode* root)
 {
+    return 9;           // shut linter up
+}
+
+
+
+/*
+ Question 389
+ https://leetcode.com/problems/find-the-difference
+ Find The Difference
+
+ Most solutions to this problem will involve constructing a histogram of letters and 
+ then using that to determine which character is missing from the two strings (by the 
+ difference in frequency)
+*/
+char find_the_difference_389(const std::string& s1, const std::string& s2)
+{
+    std::vector<int> alpha(26);
+
+    for(char c: s1)
+        alpha[c - 'a']++;
+
+    for(char c : s2)
+        alpha[c - 'a']--;
+
+    for(unsigned i = 0; i < 26; ++i)
+    {
+        if(alpha[i] != 0)
+            return i + 'a';
+    }
+
+    return '\0';
+}
+
+// same, but with an unordered_map
+char find_the_difference_389_um(const std::string& s1, const std::string& s2)
+{
+    std::unordered_map<char, int> hist;
+
+    for(char c : s1)
+        hist[c]++;
+
+    for(char c: s2)
+        hist[c]++;
+
+    // Check 
+    for(auto& [key, val]: hist)
+    {
+        if(val < 2)
+            return key;
+    }
+
+    return '\0';
 }
 
 
@@ -1097,6 +1153,7 @@ int house_robber_iii_337(TreeNode* root)
 */
 int num_unique_emails_929(const std::vector<std::string>& emails)
 {
+    return 0;           // shut linter up
 }
 
 /*
@@ -1156,6 +1213,79 @@ int last_stone_weight_ii_1049(std::vector<int>& stones)
 
     return s.size() > 0 ? s.top() : 0;
 }
+
+
+/*
+ * Question 1091 
+ * Shortest Path in Binary Matrix 
+ * https://leetcode.com/problems/shortest-path-in-binary-matrix/
+ */
+int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& grid)
+{
+    //using result_t = std::array<int, 3>;  // (row, col, dist)
+    //using pos_t = std::pair<int, int>;
+
+    int num_rows = grid.size();
+    int num_cols = grid[0].size();
+
+    // case where we are blocked
+    if(grid[0][0] == 1 || grid[num_rows-1][num_cols-1] == 1)
+        return -1;
+
+    // Using a set here is a bit of a pain (because of hashing, etc)
+    std::vector<bool> visited(num_rows * num_cols);
+
+    //std::array<pos_t, 8> directions = {
+    //    {1, 1}, {1, 0}, {1, -1}, {-1, -1},
+    //    {-1, 1}, {0, 1}, {-1, 0}, {0, -1}
+    //};
+
+
+    //std::vector<pos_t> directions = {
+    std::vector<std::pair<int, int>> directions = {
+        {1, 1}, {1, 0}, {1, -1}, {-1, -1},
+        {-1, 1}, {0, 1}, {-1, 0}, {0, -1}
+    };
+
+    // Get a queue for BFS
+    std::array<int, 3> init_pos = {0, 0, 1};
+    std::deque<std::array<int, 3>> q;
+    q.push_back(init_pos);
+    //q.push_back({0, 0, 1});
+
+    while(!q.empty())
+    {
+        auto cur_res = q.front();
+        q.pop_front();
+
+        // check if we reached the end 
+        if(cur_res[0] == num_rows-1 && cur_res[1] == num_cols-1)
+            return cur_res[2];          // current distance
+
+
+        int visited_idx = row_col_to_idx(cur_res[0], cur_res[1], num_cols);
+
+        for(auto& dir : directions)
+        {
+            int row_inc = cur_res[0] + dir.first;
+            int col_inc = cur_res[1] + dir.second;
+            visited_idx = row_col_to_idx(row_inc, col_inc, num_cols);
+
+            // bounds check 
+            if((row_inc > 0 && row_inc < num_rows) &&
+               (col_inc > 0 && col_inc < num_cols) &&
+               (grid[row_inc][col_inc] != 1) &&
+               (visited[visited_idx] == false))
+            {
+                q.push_back({row_inc, col_inc, cur_res[2] + 1});
+            }
+        }
+    }
+
+    return -1;
+}
+
+
 
 /*
  * Question 1222
@@ -1230,6 +1360,19 @@ int longest_common_subsequence_1143(const std::string& text1, const std::string&
 
 
 }
+
+
+/*
+ Question 1293
+ Shortest Path in Grid with Obstacles Elimination
+ https://leetcode.com/problems/shortest-path-grid-with-obstacles-elimination
+*/
+int shortest_path_1293(const std::vector<std::vector<int>>& grid, int k)
+{
+    return 0;       // shut linter up
+}
+
+
 
 // Question 1971
 // https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/

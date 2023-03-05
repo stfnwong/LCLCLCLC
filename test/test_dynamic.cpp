@@ -42,9 +42,9 @@ TEST_CASE("dynamic_test_memo", "dynamic")
     for(unsigned int f = 0; f < expected_fib_numbers.size(); ++f)
         fib_outputs.push_back(fibonacci_memo(f));
     REQUIRE(expected_fib_numbers.size() == fib_outputs.size());
-    std::cout << "fib_memo" << std::endl;
 
     // Check
+    std::cout << "fib_memo" << std::endl;
     for(unsigned int f = 0; f < fib_outputs.size(); ++f)
         REQUIRE(expected_fib_numbers[f] == fib_outputs[f]);
 }
@@ -58,10 +58,9 @@ TEST_CASE("fib_iter", "dynamic")
         fib_outputs.push_back(fib_iter(f));
     REQUIRE(expected_fib_numbers.size() == fib_outputs.size());
 
+    // Check
     std::cout << "[" << __func__ << "]" << std::endl;
     std::cout << vec_to_str(fib_outputs) << std::endl;
-
-    // Check
     for(unsigned int f = 0; f < fib_outputs.size(); ++f)
         REQUIRE(expected_fib_numbers[f] == fib_outputs[f]);
 }

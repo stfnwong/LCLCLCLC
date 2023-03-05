@@ -12,8 +12,6 @@ from collections import defaultdict, deque
 
 from pylc.tree import TreeNode, BinaryTreeNode, RPTreeNode
 
-# debug
-#from pudb import set_trace; set_trace()
 
 
 # leetcode 3
@@ -74,7 +72,7 @@ def longest_common_prefix_14(strs:List[str]) -> str:
 
 
 # Question 49
-# Group Anagrams 
+# Group Anagrams
 # https://leetcode.com/problems/group-anagrams
 def group_anagrams_49(strs: List[str]) -> List[List[str]]:
 
@@ -357,7 +355,6 @@ def level_order_traversal_102(root: Optional[BinaryTreeNode]) -> List[List[int]]
     q = [root]
     traversal = []
 
-    #from pudb import set_trace; set_trace()
     while q:
         # Get any nodes from the queue. The nodes will have been added in "level" order
         # since we add all children to the queue at the end of the loop. In other words
@@ -900,6 +897,33 @@ def course_schedule_206(num_courses:int, prereqs:List[List[int]]) -> bool:
                 return False
 
 
+# Question 208
+# https://leetcode.com/problems/implement-trie-prefix-tree/
+# Implement Trie
+
+class TrieNode:
+    def __init__(self, c:str):
+        self.char = c
+        self.termination = False
+        self.children = {}
+
+
+class Trie:
+    def __init__(self):
+        pass
+
+    def insert(self, word:str) -> None:
+        pass
+
+    def search(self, word:str) -> bool:
+        pass
+
+    def starts_with(self, word:str) -> bool:
+        pass
+
+
+
+
 # Question 213
 # https://leetcode.com/problems/house-robber-ii/
 def house_robber_ii_213(nums: List[int]) -> int:
@@ -957,7 +981,6 @@ def max_sliding_window_239_deque(nums:List[int], k:int) -> List[int]:
     q = deque()
     results = []
 
-    #from pudb import set_trace; set_trace()
     for idx, cur_elem in enumerate(nums):
         while q and nums[q[-1]] <= cur_elem:
             # Get rid of all the smaller elements so that cur_elem is the smallest
@@ -994,7 +1017,6 @@ def lis_300(nums: List[int]) -> int:
     d = [1 for _ in range(N)]
 
     # Construct d
-    #from pudb import set_trace; set_trace()
     ans = d[0]
     for i in range(N):
         for j in range(i):
@@ -1092,6 +1114,66 @@ def coin_change_322(coins:List[int], amount:int) -> int:
 # an implementation using a depth-first search.
 def coin_change_dfs_322(coins: List[int], amount:int) -> int:
     pass
+
+
+# Question 389
+# https://leetcode.com/problems/find-the-difference
+# Find The Difference
+def find_the_difference_389(s1: str, s2: str) -> str:
+    try:
+        result = set(s1).symmetric_difference(set(s2)).pop()
+    except KeyError:
+        result = ''
+
+    return result
+
+
+# What if we require the use of a histogram?
+def find_the_difference_389_no_set(s1: str, s2: str) -> str:
+
+    if len(s2) > len(s1):
+        long_str = s2
+        short_str = s1
+    else:
+        long_str = s1
+        short_str = s2
+
+    for c in long_str:
+        # NOTE: this comparison might itself be O(N)
+        if c not in short_str:
+            return c
+
+    return ''
+
+
+def find_the_difference_389_alpha_hist(s1: str, s2: str) -> str:
+    alpha_hist = [0 for _ in range(26)]
+
+    for c in s1:
+        alpha_hist[ord(c) - ord('a')] -= 1
+
+    for c in s2:
+        alpha_hist[ord(c) - ord('a')] += 1
+
+    for n, l in enumerate(alpha_hist):
+        if l > 0:
+            return chr(n + ord('a'))
+
+    return ''
+
+
+# This is actually the stupidest one yet
+def find_the_difference_389_dict(s1: str, s2: str) -> str:
+    hist = {c: 1 for c in s2}
+
+    for c in s1:
+        if c in hist:
+            hist.pop(c)
+
+    try:
+        return list(hist.keys())[0]
+    except IndexError:
+        return ''
 
 
 # Question 416
@@ -1258,6 +1340,7 @@ def last_stone_weight_ii_1049(stones:List[int]) -> int:
     # stones. This means that its actually more like a knapsack problem.
     pass
 
+
 # Question 1091
 # https://leetcode.com/problems/shortest-path-in-binary-matrix/
 def shortest_path_in_binary_matrix_1091(grid: List[List[int]]) -> int:
@@ -1274,6 +1357,55 @@ def shortest_path_in_binary_matrix_1091(grid: List[List[int]]) -> int:
 
     The length of a clear path is the number of visited cells of this path.
     """
+
+    if not grid:
+        return -1
+
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+
+    # If the start or end are blocked then we automatically can't move
+    if grid[0][0] == 1 or grid[num_rows-1][num_cols-1] == 1:
+        return -1
+
+    end_pos = (num_rows-1, num_cols-1)
+    # We can move 8-directionally, cache each direction here
+    directions = [(-1, 0), (-1, -1), (-1, 1), (0, 1), (0, -1), (1, 0), (1, -1), (1, 1)]
+    # Assume here that we can't modify the grid
+    visited = set()
+
+    # Perform BFS on all nodes in the grid.
+    queue = deque()   # (x, y, dist)
+    queue.append((0,0,1))
+
+    while queue:
+        row, col, dist = queue.popleft()
+        # Don't revist positions on the grid
+        if (row, col) in visited:
+            continue
+
+        # Check if we reached the end
+        if (row, col) == end_pos:
+            return dist
+
+        visited.add((row, col))
+
+        for r, c in directions:
+            row_inc = row + r
+            col_inc = col + c
+
+            if (row_inc >= 0 and row_inc < num_rows) and \
+               (col_inc >= 0 and col_inc < num_cols) and \
+               grid[row_inc][col_inc] != 1 and \
+               (row_inc, col_inc) not in visited:
+                   queue.append((row_inc, col_inc, dist+1))
+
+
+    return -1
+
+
+
+
 
 
 # Question 1293

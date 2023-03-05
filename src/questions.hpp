@@ -175,6 +175,14 @@ int coin_change_vec_322(std::vector<int>& coins, int amount);
 */
 int house_robber_iii_337(TreeNode* root);
 
+/*
+ Question 389
+ https://leetcode.com/problems/find-the-difference
+ Find The Difference
+*/
+char find_the_difference_389(const std::string& s1, const std::string& s2);
+char find_the_difference_389_um(const std::string& s1, const std::string& s2);
+
 // ==== QUESTION 842
 // https://leetcode.com/problems/split-array-into-fibonacci-sequence/
 std::vector<int> split_into_fib_seq_842(int i);
@@ -202,6 +210,13 @@ https://leetcode.com/problems/last-stone-weight-ii/
 int last_stone_weight_ii_1049(std::vector<int>& stones);
 
 
+/*
+ * Question 1091 
+ * Shortest Path in Binary Matrix 
+ * https://leetcode.com/problems/shortest-path-in-binary-matrix/
+ */
+int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& grid);
+
 // ==== QUESTION 1143
 // https://leetcode.com/problems/longest-common-subsequence/
 int longest_common_subsequence_1143(const std::string& text1, const std::string& text2);
@@ -210,6 +225,16 @@ int longest_common_subsequence_1143(const std::string& text1, const std::string&
 // ==== QUESTION 1222
 // https://leetcode.com/problems/queens-that-can-attack-the-king/
 std::vector<std::vector<int>> queensAttackTheKing(std::vector<std::vector<int>>& queens, std::vector<int>& king);
+
+
+
+
+/*
+ Question 1293
+ Shortest Path in Grid with Obstacles Elimination
+ https://leetcode.com/problems/shortest-path-grid-with-obstacles-elimination
+*/
+int shortest_path_1293(const std::vector<std::vector<int>>& grid, int k);
 
 // Question 1971
 // https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/

@@ -1,38 +1,26 @@
+// Utilities 
+
+#ifndef __LC_UTIL_HPP
+#define __LC_UTIL_HPP
+
 #include <vector>
 #include <sstream>
 #include <iostream>
 #include <string>
 
+
 // helper to print vectors 
-void print_vec(const std::vector<int>& vec)
-{
-    for(auto& elem : vec)
-        std::cout << elem << " ";
+void print_vec(const std::vector<int>& vec);
 
-    std::cout << std::endl;
-}
-
-std::string vec_to_str(const std::vector<int>& vec)
-{
-    std::ostringstream oss;
-
-    for(auto& elem : vec)
-        oss << elem << " ";
-
-    return oss.str();
-}
+std::string vec_to_str(const std::vector<int>& vec);
 
 // Check fibonacci property 
-bool check_fib_property(const std::vector<int>& seq)
+bool check_fib_property(const std::vector<int>& seq);
+
+
+inline int row_col_to_idx(int row, int col, int num_cols)
 {
-    if(seq.size() <= 2)
-        return true;
-
-    for(unsigned n = 2; n < seq.size(); ++n)
-    {
-        if(seq[n] != (seq[n-1] + seq[n-2]))
-            return false;
-    }
-
-    return true;
+    return (row * num_cols) + col;
 }
+
+#endif /*__LC_UTIL_HPP*/
