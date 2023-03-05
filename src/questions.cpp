@@ -1161,7 +1161,90 @@ int num_unique_emails_929(const std::vector<std::string>& emails)
  Rotting Oranges
  https://leetcode.com/problems/rotting-oranges/
 */
+int oranges_rotting_994(const std::vector<std::vector<int>>& grid)
+{
+    const std::array<int, 4> row_dirs = {0, 0, -1, 1};
+    const std::array<int, 4> col_dirs = {1, -1, 0, 0};
 
+    // On each turn we do BFS from any fresh orange to 
+    int num_rows = grid.size();
+    int num_cols = grid[0].size();
+    
+    using position = std::pair<int, int>;
+
+    // can't modify grid here, so we need another way to keep track of which 
+    // tiles have changed with each turn
+    auto dist = std::vector<std::vector<int>>(num_rows, std::vector<int>(num_cols, -1));
+
+    std::queue<position> q;
+
+    // In the first pass we work out which oranges are fresh - these are the 
+    // starting locations for each BFS pass 
+    for(int r = 0; r < num_rows; ++r)
+    {
+        for(int c = 0; c < num_cols; ++c)
+        {
+            if(grid[r][c] == 2)
+            {
+                dist[r][c] = 0;
+                q.push({r, c});
+            }
+        }
+    }
+
+    std::cout << "Found " << q.size() << " starting positions" << std::endl;
+
+    std::cout << "Grid: " << std::endl << vec_vec_to_str(grid) << std::endl;
+
+    // Now do BFS normally. The queue is pre-loaded with all start positions.
+    while(!q.empty())
+    {
+        position cur_pos = q.front();
+        q.pop();
+
+        // Check neighbours 
+        for(unsigned d = 0; d < 4; d++)
+        {
+            int new_row = cur_pos.first + row_dirs[d];
+            int new_col = cur_pos.second + col_dirs[d];
+
+            std::cout << "New pos: (" << new_row << "," << new_col << ")" << std::endl;
+
+            // bounds check 
+            if((0 <= new_row && new_row < num_rows) && (0 <= new_col && new_col < num_cols))
+            {
+                std::cout << "(" << new_row << "," << new_col << ") in bounds" << std::endl;
+                std::cout << "grid[" << new_row << "][" << new_col << "]: "  
+                    << grid[new_row][new_col] << std::endl;
+                std::cout << "dist[" << new_row << "][" << new_col << "]: "  
+                    << dist[new_row][new_col] << std::endl;
+
+                if(grid[new_row][new_col] == 1 && dist[new_row][new_col] == -1)
+                {
+                    dist[new_row][new_col] = dist[cur_pos.first][cur_pos.second] + 1;
+                    q.push({new_row, new_col});
+                }
+            }
+        }
+    }
+
+    std::cout << "dist: " << std::endl << vec_vec_to_str(dist) << std::endl;
+
+    int ans = 0;
+    for(int r = 0; r < num_rows; ++r)
+    {
+        for(int c = 0; c < num_cols; ++c)
+        {
+            if(grid[r][c] == 1 && dist[r][c] == -1)
+                return -1;
+
+            if(grid[r][c] == 1)
+                ans = std::max(ans, dist[r][c]);
+        }
+    }
+
+    return ans;           // return the real value here
+}
 
 
 
@@ -1222,8 +1305,8 @@ int last_stone_weight_ii_1049(std::vector<int>& stones)
  */
 int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& grid)
 {
-    //using result_t = std::array<int, 3>;  // (row, col, dist)
-    //using pos_t = std::pair<int, int>;
+    using result_t = std::array<int, 3>;  // (row, col, dist)
+    using pos_t = std::pair<int, int>;
 
     int num_rows = grid.size();
     int num_cols = grid[0].size();
@@ -1235,23 +1318,14 @@ int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& gri
     // Using a set here is a bit of a pain (because of hashing, etc)
     std::vector<bool> visited(num_rows * num_cols);
 
-    //std::array<pos_t, 8> directions = {
-    //    {1, 1}, {1, 0}, {1, -1}, {-1, -1},
-    //    {-1, 1}, {0, 1}, {-1, 0}, {0, -1}
-    //};
-
-
-    //std::vector<pos_t> directions = {
-    std::vector<std::pair<int, int>> directions = {
+    std::vector<pos_t> directions = {
         {1, 1}, {1, 0}, {1, -1}, {-1, -1},
         {-1, 1}, {0, 1}, {-1, 0}, {0, -1}
     };
 
     // Get a queue for BFS
-    std::array<int, 3> init_pos = {0, 0, 1};
-    std::deque<std::array<int, 3>> q;
-    q.push_back(init_pos);
-    //q.push_back({0, 0, 1});
+    std::deque<result_t> q;
+    q.push_back({0, 0, 1});   // (row, col, dist)
 
     while(!q.empty())
     {
@@ -1262,14 +1336,19 @@ int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& gri
         if(cur_res[0] == num_rows-1 && cur_res[1] == num_cols-1)
             return cur_res[2];          // current distance
 
-
         int visited_idx = row_col_to_idx(cur_res[0], cur_res[1], num_cols);
+        visited[visited_idx] = true;
 
         for(auto& dir : directions)
         {
             int row_inc = cur_res[0] + dir.first;
             int col_inc = cur_res[1] + dir.second;
-            visited_idx = row_col_to_idx(row_inc, col_inc, num_cols);
+            visited_idx = std::max(0, row_col_to_idx(row_inc, col_inc, num_cols));
+
+            std::cout << "[" << __func__ << "] trying position ("
+                << row_inc << "," << col_inc << "), dir = ("
+                << dir.first << "," << dir.second << ")" 
+                << std::endl;
 
             // bounds check 
             if((row_inc > 0 && row_inc < num_rows) &&

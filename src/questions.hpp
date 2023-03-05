@@ -195,6 +195,14 @@ std::vector<int> split_into_fib_seq_842(int i);
 */
 int num_unique_emails_929(const std::vector<std::string>& emails);
 
+
+/*
+ Question 994
+ Rotting Oranges
+ https://leetcode.com/problems/rotting-oranges/
+*/
+int oranges_rotting_994(const std::vector<std::vector<int>>& grid);
+
 /*
  Question 1046
  Last Stone Weight

@@ -13,6 +13,7 @@
 void print_vec(const std::vector<int>& vec);
 
 std::string vec_to_str(const std::vector<int>& vec);
+std::string vec_vec_to_str(const std::vector<std::vector<int>>& grid);
 
 // Check fibonacci property 
 bool check_fib_property(const std::vector<int>& seq);

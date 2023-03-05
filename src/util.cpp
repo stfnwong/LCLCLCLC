@@ -20,6 +20,23 @@ std::string vec_to_str(const std::vector<int>& vec)
     return oss.str();
 }
 
+
+std::string vec_vec_to_str(const std::vector<std::vector<int>>& grid)
+{
+    std::ostringstream oss;
+    unsigned num_rows = grid.size();
+    unsigned num_cols = grid[0].size();
+
+    for(unsigned r = 0; r < num_rows; ++r)
+    {
+        for(unsigned c = 0; c < num_cols; ++c)
+            oss << grid[r][c] << " ";
+        oss << std::endl;
+    }
+
+    return oss.str();
+}
+
 // Check fibonacci property 
 bool check_fib_property(const std::vector<int>& seq)
 {

@@ -799,9 +799,17 @@ TEST_CASE("question_929", "leetcode")
 TEST_CASE("question_994", "leetcode")
 {
     std::vector<std::vector<std::vector<int>>> inputs = {
-        {{2, 1, 1}, {1, 1, 0}, {0, 1, 1}}
+        {{2, 1, 1}, {1, 1, 0}, {0, 1, 1}},
+        {{2, 1, 1}, {0, 1, 1}, {1, 0, 1}},
+        {{0, 2}}
     };
-    std::vector<int> exp_outputs = {4};
+    std::vector<int> exp_outputs = {4, -1, 0};
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = oranges_rotting_994(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
 }
 
 
@@ -862,9 +870,12 @@ TEST_CASE("question_1091", "leetcode")
     using grid_t = std::vector<std::vector<int>>;
     std::vector<grid_t> inputs = {
         {{0, 1}, {1, 0}},
+        {{0, 0, 0}, {1, 1, 0}, {1, 1, 0}},
+        {{1, 0, 0}, {1, 1, 0}, {1, 1, 0}}
+
     };
 
-    std::vector<int> exp_outputs = {2};
+    std::vector<int> exp_outputs = {2, 4, -1};
 
     for(unsigned t = 0; t < exp_outputs.size(); ++t)
     {
