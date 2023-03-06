@@ -791,6 +791,7 @@ TEST_CASE("question_929", "leetcode")
     }
 }
 
+
 /*
  Question 994
  Rotting Oranges
@@ -799,17 +800,27 @@ TEST_CASE("question_929", "leetcode")
 TEST_CASE("question_994", "leetcode")
 {
     std::vector<std::vector<std::vector<int>>> inputs = {
+        {{0, 0, 0, 1}, {0, 0, 0, 1}, {0, 0, 0, 1}, {2, 1, 1, 1}},
         {{2, 1, 1}, {1, 1, 0}, {0, 1, 1}},
         {{2, 1, 1}, {0, 1, 1}, {1, 0, 1}},
-        {{0, 2}}
+        {{0, 2}},
+        {{0, 0, 1}, {1, 1, 0}, {2, 1, 0}},
     };
-    std::vector<int> exp_outputs = {4, -1, 0};
+    std::vector<int> exp_outputs = {6, 4, -1, 0, -1};
 
     for(unsigned t = 0; t < exp_outputs.size(); ++t)
     {
         int out = oranges_rotting_994(inputs[t]);
         REQUIRE(out == exp_outputs[t]);
     }
+
+    // Also try with the other function
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = oranges_rotting_994_2_eb(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+    
 }
 
 
@@ -883,6 +894,34 @@ TEST_CASE("question_1091", "leetcode")
         REQUIRE(out == exp_outputs[t]);
     }
 }
+
+
+
+/*
+ * Question 1162 
+ * As far from land as possible 
+ * https://leetcode.com/problems/as-far-from-land-as-possible/
+ */
+TEST_CASE("question_1162", "leetcode")
+{
+    // NOTE: 0 = water, 1 = land
+    using grid_t = std::vector<std::vector<int>>;
+    std::vector<grid_t> inputs = {
+        {{1, 0, 1}, {0, 0, 0}, {1, 0, 1}},
+        {{1, 0, 0}, {0, 0, 0}, {0, 0, 0}}
+    };
+
+    std::vector<int> exp_outputs = {2, 4};
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = as_far_from_land_as_possible_1162(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+
+
 
 /*
  * Question 1222

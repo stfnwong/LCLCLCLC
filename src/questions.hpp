@@ -202,6 +202,7 @@ int num_unique_emails_929(const std::vector<std::string>& emails);
  https://leetcode.com/problems/rotting-oranges/
 */
 int oranges_rotting_994(const std::vector<std::vector<int>>& grid);
+int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid);
 
 /*
  Question 1046
@@ -229,6 +230,13 @@ int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& gri
 // https://leetcode.com/problems/longest-common-subsequence/
 int longest_common_subsequence_1143(const std::string& text1, const std::string& text2);
 
+
+/*
+ * Question 1162 
+ * As far from land as possible 
+ * https://leetcode.com/problems/as-far-from-land-as-possible/
+ */
+int as_far_from_land_as_possible_1162(const std::vector<std::vector<int>>& grid);
 
 // ==== QUESTION 1222
 // https://leetcode.com/problems/queens-that-can-attack-the-king/

@@ -1172,8 +1172,9 @@ int oranges_rotting_994(const std::vector<std::vector<int>>& grid)
     
     using position = std::pair<int, int>;
 
-    // can't modify grid here, so we need another way to keep track of which 
-    // tiles have changed with each turn
+    // Can't modify grid here, so we need another way to keep track of which 
+    // tiles have changed with each turn. The "distance" here represents the turn 
+    // in which an orange turned bad, if it did.
     auto dist = std::vector<std::vector<int>>(num_rows, std::vector<int>(num_cols, -1));
 
     std::queue<position> q;
@@ -1186,15 +1187,11 @@ int oranges_rotting_994(const std::vector<std::vector<int>>& grid)
         {
             if(grid[r][c] == 2)
             {
-                dist[r][c] = 0;
+                dist[r][c] = 0;     // need this to tell what changed from one turn to the next
                 q.push({r, c});
             }
         }
     }
-
-    std::cout << "Found " << q.size() << " starting positions" << std::endl;
-
-    std::cout << "Grid: " << std::endl << vec_vec_to_str(grid) << std::endl;
 
     // Now do BFS normally. The queue is pre-loaded with all start positions.
     while(!q.empty())
@@ -1208,17 +1205,10 @@ int oranges_rotting_994(const std::vector<std::vector<int>>& grid)
             int new_row = cur_pos.first + row_dirs[d];
             int new_col = cur_pos.second + col_dirs[d];
 
-            std::cout << "New pos: (" << new_row << "," << new_col << ")" << std::endl;
-
             // bounds check 
             if((0 <= new_row && new_row < num_rows) && (0 <= new_col && new_col < num_cols))
             {
-                std::cout << "(" << new_row << "," << new_col << ") in bounds" << std::endl;
-                std::cout << "grid[" << new_row << "][" << new_col << "]: "  
-                    << grid[new_row][new_col] << std::endl;
-                std::cout << "dist[" << new_row << "][" << new_col << "]: "  
-                    << dist[new_row][new_col] << std::endl;
-
+                // we only care about the progression of fresh oranges
                 if(grid[new_row][new_col] == 1 && dist[new_row][new_col] == -1)
                 {
                     dist[new_row][new_col] = dist[cur_pos.first][cur_pos.second] + 1;
@@ -1228,8 +1218,8 @@ int oranges_rotting_994(const std::vector<std::vector<int>>& grid)
         }
     }
 
-    std::cout << "dist: " << std::endl << vec_vec_to_str(dist) << std::endl;
-
+    std::cout << "[" << __func__ << "] Visited: " << std::endl << vec_vec_to_str(dist) << std::endl;
+    // Now find any spaces that were occupied
     int ans = 0;
     for(int r = 0; r < num_rows; ++r)
     {
@@ -1247,6 +1237,87 @@ int oranges_rotting_994(const std::vector<std::vector<int>>& grid)
 }
 
 
+// Alternative version where we decrement a count of fresh oranges
+int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid)
+{
+    // Rather than iterating again at the end, lets try to keep a running
+    // count of the number of fresh oranges.
+    int num_rows = grid.size();
+    int num_cols = grid[0].size();
+
+    // We still need to track the state of the grid somehow 
+    auto visited = std::vector<std::vector<int>>(num_rows, std::vector<int>(num_cols, -1));
+
+    using pos_t = std::pair<int,int>;
+    std::queue<pos_t> q;
+
+    // Find the position of all rotten and fresh oranges.
+    // Rotten oranges are the start points for BFS, fresh oranges are added to a count 
+    int num_fresh_oranges = 0;
+    for(int r = 0; r < num_rows; ++r)
+    {
+        for(int c = 0; c < num_cols; ++c)
+        {
+            if(grid[r][c] == 1)  // fresh
+                num_fresh_oranges++;
+            if(grid[r][c] == 2)  // rotten
+            {
+                visited[r][c] = 0;       // set the initial time to zero (-1 therefore indicates not visited)
+                q.push({r, c});
+            }
+        }
+    }
+
+    std::cout << "[" << __func__ << "] found " << num_fresh_oranges << " fresh oranges." << std::endl;
+
+    // We can actually exit here if there turns out to be no fresh oranges 
+    if(num_fresh_oranges == 0)
+        return 0;
+
+    // Directions 
+    std::array<int, 4> row_dir = {0, 0, -1, 1};
+    std::array<int, 4> col_dir = {1, -1, 0, 0};
+
+    // Perform BFS 
+    int max_time = 0;           // to offset the -1 starting value
+    while(!q.empty())
+    {
+        pos_t cur_pos = q.front();
+        q.pop();
+
+        // Check neighbours 
+        for(unsigned d = 0; d < 4; ++d)
+        {
+            int nrow = cur_pos.first + row_dir[d];
+            int ncol = cur_pos.second + col_dir[d];
+
+            // bounds check 
+            if((0 <= nrow && nrow < num_rows) && (0 <= ncol && ncol < num_cols))
+            {
+                // is this neighbour a fresh orange that hasn't been visited?
+                if(grid[nrow][ncol] == 1 && visited[nrow][ncol] == -1)
+                {
+                    visited[nrow][ncol] = visited[cur_pos.first][cur_pos.second] + 1;
+                    q.push({nrow, ncol});
+                    num_fresh_oranges--;
+                    max_time = std::max(max_time, visited[nrow][ncol]);
+
+                    // TODO: remove
+                    std::cout << "[" << __func__ << "] num: " << num_fresh_oranges
+                        << ", max_time: " << max_time << std::endl;
+                }
+            }
+        }
+
+        if(num_fresh_oranges == 0)
+            break;
+    }
+
+    std::cout << "[" << __func__ << "] Visited: " << std::endl << vec_vec_to_str(visited) << std::endl;
+
+    // Why is max_time out by -1 (or -2)?
+    return (num_fresh_oranges > 0) ? -1 : max_time;
+}
 
 
 /*
@@ -1362,6 +1433,19 @@ int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& gri
     }
 
     return -1;
+}
+
+
+
+/*
+ * Question 1162 
+ * As far from land as possible 
+ * https://leetcode.com/problems/as-far-from-land-as-possible/
+ */
+int as_far_from_land_as_possible_1162(const std::vector<std::vector<int>>& grid)
+{
+
+    return 0; // shut linter up
 }
 
 

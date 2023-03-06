@@ -1298,6 +1298,60 @@ def min_falling_path_sum_931_tab(matrix:List[List[int]]) -> int:
 
 
 
+# Question 994
+# Rotting Oranges
+# https://leetcode.com/problems/rotting-oranges/
+def rotting_oranges_994(grid: List[List[int]]) -> int:
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+
+    row_dirs = (0, 0, -1, 1)
+    col_dirs = (1, -1, 0, 0)
+    # -1 = not visited, n = visited on turn n
+    visited = [[-1 for _ in range(num_cols)] for _ in range(num_rows)]
+
+    # BFS queue
+    q = deque()
+
+    # Find start positions - these are where there are rotting oranges
+    for row in range(num_rows):
+        for col in range(num_cols):
+            if grid[row][col] == 2:
+                visited[row][col] = 0
+                q.append((row, col))
+
+    # Now perform BFS from all starting points in queue.
+    while q:
+        r, c = q.popleft()
+
+        for row_dir, col_dir in zip(row_dirs, col_dirs):
+            new_row = r + row_dir
+            new_col = c + col_dir
+
+            # Bounds check
+            if (0 <= new_row and new_row < num_rows) and (0 <= new_col and new_col < num_cols):
+                if grid[new_row][new_col] == 1 and visited[new_row][new_col] == -1:
+                    visited[new_row][new_col] = visited[r][c] + 1
+                    q.append((new_row, new_col))
+
+    # Now we've marked all nodes through time
+    result = 0
+    for row in range(num_rows):
+        for col in range(num_cols):
+            # If there is a fresh orange that we never reached then result is -1
+            if grid[row][col] == 1 and visited[row][col] == -1:
+                return -1
+
+            # If there is a fresh orange here, then save the turn in which is turned bad
+            if grid[row][col] == 1:
+                result = max(result, visited[row][col])
+
+    return result
+
+
+
+
+
 
 
 # Question 1046

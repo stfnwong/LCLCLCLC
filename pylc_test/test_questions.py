@@ -658,6 +658,25 @@ def min_falling_path_sum_931(matrix:List[List[int]]) -> int:
         assert out == exp_out
 
 
+
+
+
+# Question 994
+# Rotting Oranges
+# https://leetcode.com/problems/rotting-oranges/
+def test_rotting_oranges_994():
+    inputs = [
+        [[2, 1, 1], [1, 1, 0], [0, 1, 1]],
+        [[2, 1, 1], [0, 1, 1], [1, 0, 1]],
+        [[0, 2]]
+    ]
+    exp_outputs = [4, -1, 0]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.rotting_oranges_994(inp)
+        assert out == exp_out
+
+
 # Question 1046
 # Last Stone Weight
 # https://leetcode.com/problems/last-stone-weight/
