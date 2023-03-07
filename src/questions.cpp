@@ -1218,7 +1218,6 @@ int oranges_rotting_994(const std::vector<std::vector<int>>& grid)
         }
     }
 
-    std::cout << "[" << __func__ << "] Visited: " << std::endl << vec_vec_to_str(dist) << std::endl;
     // Now find any spaces that were occupied
     int ans = 0;
     for(int r = 0; r < num_rows; ++r)
@@ -1268,8 +1267,6 @@ int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid)
         }
     }
 
-    std::cout << "[" << __func__ << "] found " << num_fresh_oranges << " fresh oranges." << std::endl;
-
     // We can actually exit here if there turns out to be no fresh oranges 
     if(num_fresh_oranges == 0)
         return 0;
@@ -1280,6 +1277,7 @@ int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid)
 
     // Perform BFS 
     int max_time = 0;           // to offset the -1 starting value
+    int num_visited = 0;           // to offset the -1 starting value
     while(!q.empty())
     {
         pos_t cur_pos = q.front();
@@ -1297,14 +1295,11 @@ int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid)
                 // is this neighbour a fresh orange that hasn't been visited?
                 if(grid[nrow][ncol] == 1 && visited[nrow][ncol] == -1)
                 {
+                    num_visited++;
                     visited[nrow][ncol] = visited[cur_pos.first][cur_pos.second] + 1;
                     q.push({nrow, ncol});
                     num_fresh_oranges--;
                     max_time = std::max(max_time, visited[nrow][ncol]);
-
-                    // TODO: remove
-                    std::cout << "[" << __func__ << "] num: " << num_fresh_oranges
-                        << ", max_time: " << max_time << std::endl;
                 }
             }
         }
@@ -1313,12 +1308,84 @@ int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid)
             break;
     }
 
-    std::cout << "[" << __func__ << "] Visited: " << std::endl << vec_vec_to_str(visited) << std::endl;
+    std::cout << "[" << __func__ << "] visited " << num_visited << " cells in total" << std::endl;
 
-    // Why is max_time out by -1 (or -2)?
     return (num_fresh_oranges > 0) ? -1 : max_time;
 }
 
+// Same again, but trying to use a map for the visited array
+int oranges_rotting_994_3_eb(const std::vector<std::vector<int>>& grid)
+{
+    int num_rows = grid.size();
+    int num_cols = grid[0].size();
+
+    using pos_t = std::pair<int, int>;
+    std::queue<pos_t> q;
+
+    // This time create a map and only save those elements we actually visit in the map
+    std::unordered_map<int, int> visited;
+
+    int num_fresh_oranges = 0;          // will use this idea again
+    for(int r = 0; r < num_rows; ++r)
+    {
+        for(int c = 0; c < num_cols; ++c)
+        {
+            if(grid[r][c] == 2)
+            {
+                int idx = row_col_to_idx(r, c, num_cols);
+                visited.insert({idx, 0});
+                //visited[idx] = 0;
+                q.push({r, c});
+            }
+            if(grid[r][c] == 1)
+                num_fresh_oranges++;
+        }
+    }
+
+    if(num_fresh_oranges == 0)
+        return 0;
+
+    // directions 
+    std::array<int, 4> row_dirs = {-1, 1, 0, 0};
+    std::array<int, 4> col_dirs = {0, 0, 1, -1};
+
+    // Now BFS on grid 
+    int max_time = 0;
+    while(!q.empty())
+    {
+        pos_t cur_pos = q.front();
+        q.pop();
+
+        for(int d = 0; d < 4; ++d)
+        {
+            int nrow = cur_pos.first + row_dirs[d];
+            int ncol = cur_pos.second + col_dirs[d];
+
+            // bounds check 
+            if((0 <= nrow && nrow < num_rows) && (0 <= ncol && ncol < num_cols))
+            {
+                // is this a fresh unvisited position
+                int idx = row_col_to_idx(nrow, ncol, num_cols);
+                if(grid[nrow][ncol] == 1 && (visited.find(idx) == visited.end()))
+                {
+                    q.push({nrow, ncol});
+                    auto it = visited.find(row_col_to_idx(cur_pos.first, cur_pos.second, num_cols));
+                    visited.insert({idx, it->second+1});
+                    max_time = std::max(max_time, it->second+1);
+                    //visited.insert({idx, cur_time});
+                    num_fresh_oranges--;
+                }
+            }
+        }
+    }
+
+    std::cout << "[" << __func__ <<"] visited " << visited.size() << " elements." << std::endl;
+    std::cout << "[" << __func__ << "] visited elements:" << std::endl;
+    for(auto it = visited.begin(); it != visited.end(); ++it)
+        std::cout << "[" << it->first << "] " << it->second << std::endl;
+
+    return (num_fresh_oranges > 0) ? -1 : max_time;
+}
 
 /*
  Question 1046

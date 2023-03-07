@@ -203,6 +203,8 @@ int num_unique_emails_929(const std::vector<std::string>& emails);
 */
 int oranges_rotting_994(const std::vector<std::vector<int>>& grid);
 int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid);
+int oranges_rotting_994_3_eb(const std::vector<std::vector<int>>& grid);
+
 
 /*
  Question 1046

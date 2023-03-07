@@ -821,6 +821,12 @@ TEST_CASE("question_994", "leetcode")
         REQUIRE(out == exp_outputs[t]);
     }
     
+    // And the other other functions
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = oranges_rotting_994_3_eb(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
 }
 
 
