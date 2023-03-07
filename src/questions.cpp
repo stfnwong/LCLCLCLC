@@ -469,6 +469,19 @@ ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists)
 
 
 /*
+ * Question 41
+ * First Missing Positive Integer 
+ * https://leetcode.com/problems/first-missing-positive/
+ */
+int first_missing_positive_integer_41(const std::vector<int>& nums)
+{
+    // First thought - can we solve this by pushing nums through a queue and 
+    // removing everything smaller/larger than some target?
+
+
+}
+
+/*
  * Question 42
  * Trapping rainwater
  * https://leetcode.com/problems/trapping-rain-water/
@@ -1277,7 +1290,6 @@ int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid)
 
     // Perform BFS 
     int max_time = 0;           // to offset the -1 starting value
-    int num_visited = 0;           // to offset the -1 starting value
     while(!q.empty())
     {
         pos_t cur_pos = q.front();
@@ -1295,7 +1307,6 @@ int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid)
                 // is this neighbour a fresh orange that hasn't been visited?
                 if(grid[nrow][ncol] == 1 && visited[nrow][ncol] == -1)
                 {
-                    num_visited++;
                     visited[nrow][ncol] = visited[cur_pos.first][cur_pos.second] + 1;
                     q.push({nrow, ncol});
                     num_fresh_oranges--;
@@ -1307,8 +1318,6 @@ int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid)
         if(num_fresh_oranges == 0)
             break;
     }
-
-    std::cout << "[" << __func__ << "] visited " << num_visited << " cells in total" << std::endl;
 
     return (num_fresh_oranges > 0) ? -1 : max_time;
 }
@@ -1372,17 +1381,11 @@ int oranges_rotting_994_3_eb(const std::vector<std::vector<int>>& grid)
                     auto it = visited.find(row_col_to_idx(cur_pos.first, cur_pos.second, num_cols));
                     visited.insert({idx, it->second+1});
                     max_time = std::max(max_time, it->second+1);
-                    //visited.insert({idx, cur_time});
                     num_fresh_oranges--;
                 }
             }
         }
     }
-
-    std::cout << "[" << __func__ <<"] visited " << visited.size() << " elements." << std::endl;
-    std::cout << "[" << __func__ << "] visited elements:" << std::endl;
-    for(auto it = visited.begin(); it != visited.end(); ++it)
-        std::cout << "[" << it->first << "] " << it->second << std::endl;
 
     return (num_fresh_oranges > 0) ? -1 : max_time;
 }

@@ -39,6 +39,21 @@ def test_longest_common_prefix_14():
         assert out == exp_out
 
 
+# Question 41
+# First Missing Positive
+# https://leetcode.com/problems/first-missing-positive/
+def test_first_missing_positive_41():
+    inputs = [
+        [1, 2, 0],
+        [3, 4, -1, 1],
+        [7, 8, 9, 11, 12]
+    ]
+    exp_outputs = [3, 2, 1]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.first_missing_positive_41(inp)
+        assert out == exp_out
+
 # Question 49
 # Group Anagrams 
 # https://leetcode.com/problems/group-anagrams

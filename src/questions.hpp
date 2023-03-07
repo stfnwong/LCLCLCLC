@@ -63,6 +63,14 @@ ListNode* merge_two_sorted_lists_21(ListNode* list1, ListNode* list2);
  */
 ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists);
 
+
+/*
+ * Question 41
+ * First Missing Positive Integer 
+ * https://leetcode.com/problems/first-missing-positive/
+ */
+int first_missing_positive_integer_41(const std::vector<int>& nums);
+ 
 /*
  * Question 42
  * Trapping rainwater

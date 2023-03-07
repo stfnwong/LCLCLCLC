@@ -71,6 +71,38 @@ def longest_common_prefix_14(strs:List[str]) -> str:
     return prefix
 
 
+# Question 41
+# First Missing Positive
+# https://leetcode.com/problems/first-missing-positive/
+def first_missing_positive_41(nums: List[int]) -> int:
+    # Can we use a min queue here?
+    # [3, 4, -1, 1]
+
+    q = deque()   # ordered from low to high
+
+    q.append(nums[0])
+    for elem in nums[1:]:
+        if elem <= 0:
+            continue
+        if elem >= q[0]:
+            q.append(elem)
+        else:
+            q.appendleft(elem)
+
+    if q[0] != 1:
+        return 1
+
+    cur_min = 2
+    for n in range(len(q)):
+        if n == 0:
+            continue
+        if q[n] - q[n-1] != 1:
+            return cur_min
+        cur_min += 1
+
+    return cur_min
+
+
 # Question 49
 # Group Anagrams
 # https://leetcode.com/problems/group-anagrams

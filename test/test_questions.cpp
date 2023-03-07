@@ -331,6 +331,28 @@ TEST_CASE("question_23", "leetcode")
     }
 }
 
+/*
+ * Question 41
+ * First Missing Positive Integer 
+ * https://leetcode.com/problems/first-missing-positive/
+ */
+
+TEST_CASE("question_41", "leetcode")
+{
+    std::vector<std::vector<int>> inputs = {
+        {1, 2, 0},
+        {3, 4, -1, 1},
+        {7, 8, 9, 11, 12}
+    };
+    std::vector<int> exp_outputs = {3, 2, 1};
+    REQUIRE(inputs.size() == exp_outputs.size());       // check I didn't miss anything
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = first_missing_positive_integer_41(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
 
 /*
  * Question 42
@@ -805,8 +827,11 @@ TEST_CASE("question_994", "leetcode")
         {{2, 1, 1}, {0, 1, 1}, {1, 0, 1}},
         {{0, 2}},
         {{0, 0, 1}, {1, 1, 0}, {2, 1, 0}},
+        {{2, 1, 1}, {1, 1, 1}, {1, 1, 1}}
     };
-    std::vector<int> exp_outputs = {6, 4, -1, 0, -1};
+    std::vector<int> exp_outputs = {6, 4, -1, 0, -1, 4};
+
+    REQUIRE(inputs.size() == exp_outputs.size());       // check if I missed something
 
     for(unsigned t = 0; t < exp_outputs.size(); ++t)
     {
