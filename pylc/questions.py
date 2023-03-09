@@ -79,12 +79,12 @@ def first_missing_positive_41(nums: List[int]) -> int:
     # The intuition here is that A[A[i]-1] should always equal A[i]
     #
     # For instance, in [1, 2, 0]
-    # 
-    # The first two elements are correct because 
-    # A[0] = 1, A[1-1] = 1
-    # A[1] = 2, A[2-1] = 2 
     #
-    # For a correctly sorted array this property holds. The A[A[i]-1] is 
+    # The first two elements are correct because
+    # A[0] = 1, A[1-1] = 1
+    # A[1] = 2, A[2-1] = 2
+    #
+    # For a correctly sorted array this property holds. The A[A[i]-1] is
     # just offsetting the fact that the array is zero indexed.
 
     N = len(nums)
@@ -108,7 +108,7 @@ def first_missing_positive_41(nums: List[int]) -> int:
 
 def first_missing_positive_41_q(nums: List[int]) -> int:
     # Can we use a min queue here?
-    # The answer is no, because we have to implement in constant space (so 
+    # The answer is no, because we have to implement in constant space (so
     # no additional queue memory). This means that the input needs to be mutable
     # [3, 4, -1, 1]
 
@@ -1261,6 +1261,40 @@ def min_cost_climbing_stairs_746(cost: List[int]) -> int:
 
     # we only need to select from the starting positions
     return min(cost[0], cost[1])
+
+
+
+# Question 779
+# Kth symbol in grammar
+# https://leetcode.com/problems/k-th-symbol-in-grammar
+def kth_symbol_in_grammar_779(n: int, k:int) -> int:
+    # The observation here is that there are only two combinations of solutions
+    #
+    #   0
+    #  / \
+    # 0   1
+    #
+    # and
+    #
+    #   1
+    #  / \
+    # 1   0
+    #
+    # and that combination of the parent value in the tree and the (1-indexed) 
+    # position k can uniquely identify the output value
+
+    # This is the root element for all trees
+    if n == 0:
+        return 0
+
+    # Each pair has a single parent, so every other k connects to a new k 
+    # on the row above.
+    parent = kth_symbol_in_grammar_779(n-1, k // 2)
+
+    if parent == 0:
+        return 1 if (k % 2 == 0) else 0
+    else:
+        return 0 if (k % 2 == 1) else 1
 
 
 

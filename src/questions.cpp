@@ -485,13 +485,13 @@ int first_missing_positive_integer_41(const std::vector<int>& nums)
     }
 
     // Now walk along the array and see whats missing
-    for(int i = 0; i < A.size(); ++i)
+    for(int i = 0; i < int(A.size()); ++i)
     {
         if(A[i] != i+1)
             return i+1;
     }
 
-    return A.size() + 1;
+    return int(A.size() + 1);
 }
 
 /*
@@ -589,6 +589,16 @@ std::vector<std::vector<std::string>> group_anagrams_49(const std::vector<std::s
         ans.push_back(group.second);
 
     return ans;
+}
+
+/*
+ * Question 53
+ * Maxium Subarray
+ * https://leetcode.com/problems/maximum-subarray
+ */
+int max_subarray_53(const std::vector<int>& nums)
+{
+    return 0;       // shut linter up
 }
 
 
@@ -957,6 +967,8 @@ ListNode* detect_cycle_142(ListNode* head)
         slow = slow->next;
         fast = fast->next;
     }
+
+    return slow;
 }
 
 
@@ -1222,6 +1234,25 @@ char find_the_difference_389_um(const std::string& s1, const std::string& s2)
 }
 
 
+/*
+ * Question 779
+ * Kth symbol in grammar
+ * https://leetcode.com/problems/k-th-symbol-in-grammar
+ */
+int kth_symbol_in_grammar_779(int n, int k)
+{
+    // base case is top of tree which is 1-indexed
+    if(n == 1)
+        return 0;
+
+    int parent = kth_symbol_in_grammar_779(n-1, k / 2);
+
+    if(parent == 0)
+        return (k % 2 == 0) ? 1 : 0;
+    else
+        return (k % 2 == 0) ? 0 : 1;
+}
+
 
 /*
  * Question 842
@@ -1241,6 +1272,96 @@ char find_the_difference_389_um(const std::string& s1, const std::string& s2)
 int num_unique_emails_929(const std::vector<std::string>& emails)
 {
     return 0;           // shut linter up
+}
+
+// Question 931
+// Minimum Falling Path Sum
+// https://leetcode.com/problems/minimum-falling-path-sum/_931
+int minimum_falling_path_sum_931(const std::vector<std::vector<int>>& grid)
+{
+    int num_rows = grid.size();
+    int num_cols = grid[0].size();
+
+    int cost_val = 1e5;
+
+    // tabulate the cost for all cells in the grid
+    std::vector<std::vector<int>> dp(num_rows, std::vector<int>(num_cols, 0));
+
+    // set up the first row 
+    for(int c = 0; c < num_cols; ++c)
+        dp[0][c] = grid[0][c];
+
+    int dir_ld;    // left diagonal
+    int dir_rd;    // right diagonal
+    int dir_down;
+    for(int r = 1; r < num_rows; ++r)
+    {
+        for(int c = 0; c < num_cols; ++c)
+        {
+            dir_down = grid[r][c] + dp[r-1][c];
+            if(c > 0)
+                dir_ld = grid[r][c] + dp[r-1][c-1];
+            else
+                dir_ld = cost_val;
+            if(c < num_cols-1)
+                dir_rd = grid[r][c] + dp[r-1][c+1];
+            else
+                dir_rd = cost_val;
+
+            dp[r][c] = std::min(dir_down, std::min(dir_ld, dir_rd));
+        }
+    }
+
+    // Whats the min on the last row?
+    int min_sum = cost_val;
+    for(int c = 0; c < num_cols; ++c)
+        min_sum = std::min(min_sum, dp[num_rows-1][c]);
+
+    return min_sum;
+}
+
+// Same solution by tabulatio, but only keeping the last two rows of the cost array
+int minimum_falling_path_sum_931_two_rows(const std::vector<std::vector<int>>& grid)
+{
+    int num_rows = grid.size();
+    int num_cols = grid[0].size();
+
+    std::vector<int> cur_row(num_cols, 0);
+    std::vector<int> prev_row(num_cols, 0);
+
+    int cost_val = 1e5;  // needs to be bigger than any value in grid
+
+    // Init the cost array
+    for(int c = 0; c < num_cols; ++c)
+        prev_row[c] = grid[0][c];
+    
+    int dir_down, dir_ld, dir_rd;
+    for(int r = 1; r < num_rows; ++r)
+    {
+        for(int c = 0; c < num_cols; ++c)
+        {
+            dir_down = grid[r][c] + prev_row[c];
+            if(c > 0)
+                dir_rd = grid[r][c] + prev_row[c-1];
+            else
+                dir_rd = cost_val;
+
+            if(c < num_cols-1)
+                dir_ld = grid[r][c] + prev_row[c+1];
+            else
+                dir_ld = cost_val;
+
+            cur_row[c] = std::min(dir_down, std::min(dir_ld, dir_rd));
+        }
+        prev_row = cur_row;
+    }
+
+    // Now find the min in cur_row
+    int min_cost = cost_val;
+    for(int c = 0; c < num_cols; ++c)
+        min_cost = std::min(min_cost, cur_row[c]);
+
+    return min_cost;
 }
 
 /*

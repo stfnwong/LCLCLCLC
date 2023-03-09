@@ -579,6 +579,10 @@ def test_coin_change_332():
             #assert out == exp_out
 
 
+# Question 323
+# Number of connected components in undirected graph
+# https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/
+
 
 # Question 389
 # https://leetcode.com/problems/find-the-difference
@@ -644,6 +648,24 @@ def test_min_cost_climbing_stairs_746():
 # https://leetcode.com/problems/min-cost-climbing-stairs/
 # Min cost climbing stairs 
 
+
+
+
+# Question 779
+# Kth symbol in grammar
+# https://leetcode.com/problems/k-th-symbol-in-grammar
+def test_kth_symbol_in_grammar_779():
+    # inputs are (k, n) pairs
+    inputs = [
+        (1, 1), (2, 1), (2, 2)
+    ]
+    exp_outputs = [0, 0, 1]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.kth_symbol_in_grammar_779(inp[0], inp[1])
+        assert out == exp_out
+
+
 # Question 842
 # https://leetcode.com/problems/split-array-into-fibonacci-sequence/
 def test_split_into_fib_842():
@@ -663,19 +685,21 @@ def test_split_into_fib_842():
 #
 # Given an n x n array of integers matrix, return the minimum sum of any falling
 # path through matrix.
-def min_falling_path_sum_931(matrix:List[List[int]]) -> int:
+def test_min_falling_path_sum_931():
     inputs = [
         [[2,1,3],[6,5,4],[7,8,9]],
         [[-19, 57], [-40, -5]]
     ]
     exp_outputs = [13, -59]
+    functions = [
+        questions.min_falling_path_sum_931,
+        questions.min_falling_path_sum_931_tab
+    ]
 
-    for inp, exp_out in zip(inputs, exp_outputs):
-        out = questions.min_falling_path_sum_931(inp)
-        assert out == exp_out
-
-
-
+    for func in functions:
+        for inp, exp_out in zip(inputs, exp_outputs):
+            out = func(inp)
+            assert out == exp_out
 
 
 # Question 994

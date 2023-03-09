@@ -87,6 +87,13 @@ int trapping_rain_water_42_two_pointers(const std::vector<int>& height);
  */
 std::vector<std::vector<std::string>> group_anagrams_49(const std::vector<std::string>& strs);
 
+/*
+ * Question 53
+ * Maxium Subarray
+ * https://leetcode.com/problems/maximum-subarray
+ */
+int max_subarray_53(const std::vector<int>& nums);
+
 // ==== QUESTION 55
 // https://leetcode.com/problems/jump-game/
 bool can_jump(std::vector<int>& nums);
@@ -201,6 +208,13 @@ int house_robber_iii_337(TreeNode* root);
 char find_the_difference_389(const std::string& s1, const std::string& s2);
 char find_the_difference_389_um(const std::string& s1, const std::string& s2);
 
+/*
+ * Question 779
+ * Kth symbol in grammar
+ * https://leetcode.com/problems/k-th-symbol-in-grammar
+ */
+int kth_symbol_in_grammar_779(int n, int k);
+
 // ==== QUESTION 842
 // https://leetcode.com/problems/split-array-into-fibonacci-sequence/
 std::vector<int> split_into_fib_seq_842(int i);
@@ -213,6 +227,12 @@ std::vector<int> split_into_fib_seq_842(int i);
 */
 int num_unique_emails_929(const std::vector<std::string>& emails);
 
+
+// Question 931
+// Minimum Falling Path Sum
+// https://leetcode.com/problems/minimum-falling-path-sum/_931
+int minimum_falling_path_sum_931(const std::vector<std::vector<int>>& grid);
+int minimum_falling_path_sum_931_two_rows(const std::vector<std::vector<int>>& grid);
 
 /*
  Question 994

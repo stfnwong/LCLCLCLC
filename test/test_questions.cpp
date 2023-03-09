@@ -470,6 +470,31 @@ TEST_CASE("question_49", "leetcode")
     }
 }
 
+
+
+/*
+ * Question 53
+ * Maxium Subarray
+ * https://leetcode.com/problems/maximum-subarray
+ */
+TEST_CASE("question_53", "leetcode")
+{
+    std::vector<std::vector<int>> inputs = {
+        {-2, 1, -3, 4, -1, 2, 1, -5, 4},
+        {1},
+        {5, 4, -1, 7, 8}
+    };
+    std::vector<int> exp_outputs = {6, 1, 23};
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = max_subarray_53(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+
 /*
  * Question 55
  */
@@ -849,6 +874,26 @@ TEST_CASE("question_389", "leetcode")
     }
 }
 
+/*
+ * Question 779
+ * Kth symbol in grammar
+ * https://leetcode.com/problems/k-th-symbol-in-grammar
+ */
+TEST_CASE("question_779", "leetcode")
+{
+    // inputs are (k, n) pairs
+    std::vector<std::pair<int, int>> inputs = {
+        {2, 1}, {1, 1}, {2, 2}
+    };
+    std::vector<int> exp_outputs = {0, 0, 1};
+    REQUIRE(exp_outputs.size() == inputs.size());
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = kth_symbol_in_grammar_779(inputs[t].first, inputs[t].second);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
 
 /*
  Question 929
@@ -867,6 +912,37 @@ TEST_CASE("question_929", "leetcode")
     for(unsigned t = 0; t < exp_outputs.size(); ++t)
     {
         int out = num_unique_emails_929(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+// Question 931
+// Minimum Falling Path Sum
+// https://leetcode.com/problems/minimum-falling-path-sum/_931
+// 
+// Given an n x n array of integers matrix, return the minimum sum of any falling
+// path through matrix.
+TEST_CASE("question_931", "leetcode")
+{
+    using grid_t = std::vector<std::vector<int>>;
+    std::vector<grid_t> inputs = {
+        {{2, 2, 1}, {2, 2, 1}, {2, 2, 1}},
+        {{-19, 57}, {-40, -5}},
+        {{2,1,3}, {6,5,4}, {7,8,9}},
+    };
+    std::vector<int> exp_outputs = {3, -59, 13};
+    REQUIRE(exp_outputs.size() == inputs.size());
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = minimum_falling_path_sum_931(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+
+    // Version with only two rows of history
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = minimum_falling_path_sum_931_two_rows(inputs[t]);
         REQUIRE(out == exp_outputs[t]);
     }
 }
