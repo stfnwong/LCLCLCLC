@@ -44,16 +44,17 @@ def test_longest_common_prefix_14():
 # https://leetcode.com/problems/first-missing-positive/
 def test_first_missing_positive_41():
     inputs = [
-        [1, 2, 0],
         [3, 4, -1, 1],
+        [1, 2, 0],
         [7, 8, 9, 11, 12]
     ]
-    exp_outputs = [3, 2, 1]
+    exp_outputs = [2, 3, 1]
 
     for inp, exp_out in zip(inputs, exp_outputs):
         out = questions.first_missing_positive_41(inp)
         #out = questions.first_missing_positive_41_q(inp)
         assert out == exp_out
+
 
 # Question 49
 # Group Anagrams 

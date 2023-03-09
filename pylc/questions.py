@@ -76,13 +76,34 @@ def longest_common_prefix_14(strs:List[str]) -> str:
 # https://leetcode.com/problems/first-missing-positive/
 def first_missing_positive_41(nums: List[int]) -> int:
 
-    for n in range(len(nums)):
-        # TODO: not all boundary conditions are checked here
-        while nums[n] != n+1 and (0 <= nums[n] and nums[n] < len(nums)):
-            nums[n], nums[nums[n]] = nums[nums[n]], nums[n]
+    # The intuition here is that A[A[i]-1] should always equal A[i]
+    #
+    # For instance, in [1, 2, 0]
+    # 
+    # The first two elements are correct because 
+    # A[0] = 1, A[1-1] = 1
+    # A[1] = 2, A[2-1] = 2 
+    #
+    # For a correctly sorted array this property holds. The A[A[i]-1] is 
+    # just offsetting the fact that the array is zero indexed.
 
+    N = len(nums)
+    for i in range(N):
+        while nums[i] > 0 and nums[i] <= N and nums[nums[i]-1] != nums[i]:
+            # NOTE: there is a one line swap trick, but it doesn't seem to be working
+            # BECAUSE THE INDEX IS MODIFIED IN THE SWAP
+            #nums[i], nums[nums[i]-1] = nums[nums[i]-1], nums[i]
 
-    return 0
+            n1 = i
+            n2 = nums[i]-1
+            nums[n1], nums[n2] = nums[n2], nums[n1]
+
+    # Now walk the array and check the first element
+    for n in range(N):
+        if nums[n] != n+1:
+            return n+1
+
+    return N + 1
 
 
 def first_missing_positive_41_q(nums: List[int]) -> int:

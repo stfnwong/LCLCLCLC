@@ -359,7 +359,6 @@ TEST_CASE("question_41", "leetcode")
  * Trapping rainwater
  * https://leetcode.com/problems/trapping-rain-water/
  */
-
 TEST_CASE("question_42", "leetcode")
 {
     std::vector<std::vector<int>> inputs = {

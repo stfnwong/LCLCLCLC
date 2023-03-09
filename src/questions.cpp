@@ -474,28 +474,15 @@ int first_missing_positive_integer_41(const std::vector<int>& nums)
     std::vector<int> A = nums;
     int N = int(A.size());
 
-    std::cout << "[" << __func__ << "] nums: [" << vec_to_str(A) << "]" << std::endl;
     for(int n = 0; n < N; ++n)
     {
         // Swap this element if its in the range [1, N]
+        // This works in C++ because std::swap takes care of all the details. In Python
+        // the tuple swap trick won't work this way because the index changes between
+        // the assignments (if written in this compact form).
         while((A[n] > 0 && A[n] <= N) && (A[A[n]-1] != A[n]))
-        {
-            std::cout << "At n = " << n << " swapping " << A[n] << " with " << A[A[n]-1] << std::endl;
             std::swap(A[n], A[A[n]-1]);
-            std::cout << "nums at n=" << n << ": [" << vec_to_str(A) << "]" << std::endl;
-        }
-
-        //while(nums_copy[n]-1 != n && (0 < n && n < nums_copy.size()) && (0 < nums_copy[n] && nums_copy[n] < nums_copy.size()))
-        //while(nums_copy[n] != n && (1 <= n && n < nums_copy.size()))
-        //{
-        //    std::cout << "Swapping " << nums_copy[n] << " with " << nums_copy[nums_copy[n]] << std::endl;
-        //    std::swap(nums_copy[n], nums_copy[nums_copy[n]]);
-        //    std::cout << "nums_copy at element " << n << ": [" << vec_to_str(nums_copy) << "]" << std::endl;
-        //    
-        //}
     }
-
-    std::cout << "finally: [" << vec_to_str(A) << "]" << std::endl;
 
     // Now walk along the array and see whats missing
     for(int i = 0; i < A.size(); ++i)
