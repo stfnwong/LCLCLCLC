@@ -1902,3 +1902,12 @@ int shortest_path_1293(const std::vector<std::vector<int>>& grid, int k)
 
 
 // TODO: an iterative solution
+/*
+ * Question 1642 
+ * Furthest Building You Can Reach
+ * https://leetcode.com/problems/furthest-building-you-can-reach/
+ */
+int furthest_building_you_can_reach_1642(const std::vector<int>& heights, int bricks, int ladders)
+{
+    return 0;
+}

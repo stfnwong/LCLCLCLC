@@ -787,6 +787,25 @@ def test_min_cost_to_connect_all_points_1584():
         assert out == exp_out
 
 
+# Question 1642 
+# Furthest Building You Can Reach
+# https://leetcode.com/problems/furthest-building-you-can-reach/
+#
+def test_furthest_building_you_can_reach_1642():
+    # (heights, bricks, ladders)
+    inputs = [
+        ([4, 2, 7, 6, 9, 14, 12], 5, 1),
+        ([4, 12, 2, 7, 3, 18, 20, 3, 19], 10, 2)
+    ]
+    exp_outputs = [4, 7]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.furthest_building_you_can_reach_1642(
+            inp[0], inp[1], inp[2]
+        )
+        assert out == exp_out
+
+
 # Question 1971
 # https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/
 def test_find_if_path_exists_in_graph_1971():

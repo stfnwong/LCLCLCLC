@@ -1607,6 +1607,38 @@ def min_cost_to_connect_all_points_1584(points:List[List[int]]) -> int:
     return cost
 
 
+
+# Question 1642 
+# Furthest Building You Can Reach
+# https://leetcode.com/problems/furthest-building-you-can-reach/
+def furthest_building_you_can_reach_1642(heights: List[int], bricks: int, ladders: int) -> int:
+
+    # TODO: could there be a DP solution? Since we don't know if we should pick bricks 
+    # or ladders to get the optimal result? NOTE: we need to do this
+    num = 0
+    for h in range(len(heights)-1):
+        if heights[h+1] <= heights[h]:
+            num += 1
+            continue
+
+        # try using bricks if we have enough
+        height_diff = heights[h+1] - heights[h]
+        if bricks - height_diff > 0:
+            bricks = bricks - height_diff
+            num += 1
+            continue
+
+        # do we have any ladders?
+        if ladders > 0:
+            ladders -= 1
+            num += 1
+            continue
+
+        break
+
+    return num
+
+
 # Question 1971
 # https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/
 def find_if_path_exists_in_graph_1971(n: int, edges: List[List[int]], source: int, dest: int) -> bool:

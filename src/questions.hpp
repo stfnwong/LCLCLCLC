@@ -310,5 +310,11 @@ struct Solution_1971
         //bool valid_path_iter(int n, const std::vector<std::vector<int>>& edges, int source, int dest);
 };
 
+/*
+ * Question 1642 
+ * Furthest Building You Can Reach
+ * https://leetcode.com/problems/furthest-building-you-can-reach/
+ */
+int furthest_building_you_can_reach_1642(const std::vector<int>& heights, int bricks, int ladders);
 
 #endif /*__LC_QUESTIONS_HPP*/

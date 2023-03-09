@@ -916,6 +916,7 @@ TEST_CASE("question_929", "leetcode")
     }
 }
 
+
 // Question 931
 // Minimum Falling Path Sum
 // https://leetcode.com/problems/minimum-falling-path-sum/_931
@@ -1193,6 +1194,45 @@ TEST_CASE("question_1293", "leetcode")
         // first arg is grid, second arg is k
         //int out = shortest_path_1293(inputs[t].first, inputs[t].second);
         int out = shortest_path_1293(grids[t], ks[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+/*
+ * Question 1642 
+ * Furthest Building You Can Reach
+ * https://leetcode.com/problems/furthest-building-you-can-reach/
+ */
+TEST_CASE("question_1642", "leetcode")
+{
+    struct BuildingInfo
+    {
+        std::vector<int> heights;
+        int bricks;
+        int ladders;
+
+        public:
+            BuildingInfo(const std::vector<int>& h, int b, int l) : 
+                heights(h), bricks(b), ladders(l) {}
+    };
+
+    std::vector<BuildingInfo> inputs = {
+        BuildingInfo({4, 2, 7, 6, 9, 14, 12}, 5, 1),
+        BuildingInfo({4, 12, 2, 7, 3, 18, 20, 3, 19}, 10, 2),
+        BuildingInfo({14, 3, 9, 3}, 17, 0),
+    };
+
+    std::vector<int> exp_outputs = {4, 7, 3};
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = furthest_building_you_can_reach_1642(
+                inputs[t].heights,
+                inputs[t].bricks,
+                inputs[t].ladders
+        );
         REQUIRE(out == exp_outputs[t]);
     }
 }
