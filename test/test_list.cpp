@@ -27,6 +27,7 @@ TEST_CASE("test_create_list_from_vector", "list")
     ListNode* test_list;
     test_list = list_from_vector(test_inp);
 
+    REQUIRE(test_list != nullptr);
     REQUIRE(list_length(test_list) == test_inp.size());
 
     unsigned idx = 0;
@@ -39,6 +40,41 @@ TEST_CASE("test_create_list_from_vector", "list")
 
     delete test_list;
 }
+
+
+TEST_CASE("test_create_list_from_vector_with_tail_pointer_with_cycle", "list")
+{
+    std::vector<int> test_inp = {0, 1};
+    int target_pos = 0;
+
+    ListNode* test_list = list_from_vector_with_tail_pointer(test_inp, target_pos);
+    REQUIRE(test_list != nullptr);
+
+    // Do cycle detection on the list, if we 
+    REQUIRE(list_has_cycle(test_list) == true);
+}
+
+TEST_CASE("test_create_list_from_vector_with_tail_pointer_with_cycle_2", "list")
+{
+    // Try on a larger list
+    std::vector<int> test_inp = {1, 2, 3, 4, 5, 6};
+    int target_pos = 3;
+    ListNode* test_list = list_from_vector_with_tail_pointer(test_inp, target_pos);
+
+    REQUIRE(test_list != nullptr);
+    REQUIRE(list_has_cycle(test_list) == true);
+}
+
+TEST_CASE("test_create_list_from_vector_with_tail_pointer_without_cycle", "list")
+{
+    std::vector<int> test_inp = {1, 2, 3, 4};
+    
+    ListNode* test_list = list_from_vector_with_tail_pointer(test_inp, -1);
+    
+    REQUIRE(list_has_cycle(test_list) == false);
+    REQUIRE(list_length(test_list) == test_inp.size());
+}
+
 
 TEST_CASE("test_create_vector_from_list", "list")
 {

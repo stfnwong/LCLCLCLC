@@ -630,6 +630,65 @@ TEST_CASE("question_113_bfs_iter", "leetcode")
 }
 
 
+// ==== Question 141
+// Linked List Cycle 
+// https://leetcode.com/problems/linked-list-cycle
+TEST_CASE("question_141", "leetcode")
+{
+    // When we construct the linked list, this is the element that 
+    // tail points to. If -1 then the next pointer of the tail is a
+    // null pointer.
+    std::vector<std::pair<std::vector<int>, int>> inputs = {
+        {{3, 2, 0, -4}, 1},
+        {{1, 2}, 0},
+        {{1}, -1}
+    };
+
+    std::vector<bool> exp_outputs = {true, true, false};
+
+    REQUIRE(exp_outputs.size() == inputs.size());
+    
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        ListNode* root = list_from_vector_with_tail_pointer(
+                inputs[t].first, inputs[t].second
+        );
+        bool out = has_cycle_141(root);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+// ==== Question 142
+// Linked List Cycle II
+// https://leetcode.com/problems/linked-list-cycle-ii
+TEST_CASE("question_142", "leetcode")
+{
+    std::vector<std::pair<std::vector<int>, int>> inputs = {
+        {{1, 2}, 0},
+        {{0, 1, 2}, 1},
+        {{0, 1, 2, 3, 4, 5, 6}, 2},
+        {{0, 1, 2, 3}, 1},
+        {{1}, -1},
+        {{3, 2, 0, -4}, 1},
+    };
+    // In the assert I will check the value of the target node. In this list 
+    // the value -1 indicates that we expect the output to be nullptr
+    std::vector<int> exp_outputs = {1, 1, 2, 1, -1, 2};
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        ListNode* root = list_from_vector_with_tail_pointer(
+                inputs[t].first, inputs[t].second
+        );
+        ListNode* out = detect_cycle_142(root);
+        if(out == nullptr)
+            REQUIRE(exp_outputs[t] == -1);
+        else
+            REQUIRE(out->val == exp_outputs[t]);
+    }
+}
+
 // ==== Question 153
 // Find minimum in rotated sorted array
 // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array
@@ -939,7 +998,9 @@ TEST_CASE("question_1162", "leetcode")
     using grid_t = std::vector<std::vector<int>>;
     std::vector<grid_t> inputs = {
         {{1, 0, 1}, {0, 0, 0}, {1, 0, 1}},
-        {{1, 0, 0}, {0, 0, 0}, {0, 0, 0}}
+        {{1, 0, 0}, {0, 0, 0}, {0, 0, 0}},
+        {{0, 0}, {0, 0}},
+        {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}
     };
 
     std::vector<int> exp_outputs = {2, 4};

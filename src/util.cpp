@@ -16,8 +16,14 @@ std::string vec_to_str(const std::vector<int>& vec)
 {
     std::ostringstream oss;
 
-    for(auto& elem : vec)
-        oss << elem << " ";
+    //for(auto& elem : vec)
+    //    oss << elem << " ";
+    for(unsigned i = 0; i < vec.size(); ++i)
+    {
+        oss << vec[i];
+        if(i != vec.size()-1)
+            oss << ", ";
+    }
 
     return oss.str();
 }

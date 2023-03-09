@@ -27,12 +27,17 @@ struct ListNode
 };
 
 
+// TODO: how should the dtor work, since element will try to delete its children?
+void delete_list(ListNode* root);
+
 // Create a list from a vector
 ListNode* list_from_vector(const std::vector<int>& vals);
+ListNode* list_from_vector_with_tail_pointer(const std::vector<int>& vals, int tail_pointer_idx);
 std::vector<int> vector_from_list(const ListNode* list);
 unsigned list_length(ListNode* root);
 void print_list_node(ListNode* root);
 
+bool list_has_cycle(ListNode* root);
 
 
 

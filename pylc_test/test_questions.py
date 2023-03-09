@@ -52,6 +52,7 @@ def test_first_missing_positive_41():
 
     for inp, exp_out in zip(inputs, exp_outputs):
         out = questions.first_missing_positive_41(inp)
+        #out = questions.first_missing_positive_41_q(inp)
         assert out == exp_out
 
 # Question 49

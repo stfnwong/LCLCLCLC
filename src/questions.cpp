@@ -417,7 +417,7 @@ ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists)
     std::priority_queue<int, std::vector<int>, std::greater<int>> pq;
     ListNode* head;
 
-    // iterate over each list and push elements into queue
+    // iterate over each list and push elements into priority queue
     for(unsigned l = 0; l < lists.size(); ++l)
     {
         head = lists[l];
@@ -461,12 +461,6 @@ ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists)
 
 
 
-/*
- * Question 49
- * Trapping rainwater
- * https://leetcode.com/problems/trapping-rain-water/
- */
-
 
 /*
  * Question 41
@@ -475,10 +469,42 @@ ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists)
  */
 int first_missing_positive_integer_41(const std::vector<int>& nums)
 {
-    // First thought - can we solve this by pushing nums through a queue and 
-    // removing everything smaller/larger than some target?
+    // The idea is to not use any extra memory, for this I will make a copy of the array
+    // here 
+    std::vector<int> A = nums;
+    int N = int(A.size());
 
+    std::cout << "[" << __func__ << "] nums: [" << vec_to_str(A) << "]" << std::endl;
+    for(int n = 0; n < N; ++n)
+    {
+        // Swap this element if its in the range [1, N]
+        while((A[n] > 0 && A[n] <= N) && (A[A[n]-1] != A[n]))
+        {
+            std::cout << "At n = " << n << " swapping " << A[n] << " with " << A[A[n]-1] << std::endl;
+            std::swap(A[n], A[A[n]-1]);
+            std::cout << "nums at n=" << n << ": [" << vec_to_str(A) << "]" << std::endl;
+        }
 
+        //while(nums_copy[n]-1 != n && (0 < n && n < nums_copy.size()) && (0 < nums_copy[n] && nums_copy[n] < nums_copy.size()))
+        //while(nums_copy[n] != n && (1 <= n && n < nums_copy.size()))
+        //{
+        //    std::cout << "Swapping " << nums_copy[n] << " with " << nums_copy[nums_copy[n]] << std::endl;
+        //    std::swap(nums_copy[n], nums_copy[nums_copy[n]]);
+        //    std::cout << "nums_copy at element " << n << ": [" << vec_to_str(nums_copy) << "]" << std::endl;
+        //    
+        //}
+    }
+
+    std::cout << "finally: [" << vec_to_str(A) << "]" << std::endl;
+
+    // Now walk along the array and see whats missing
+    for(int i = 0; i < A.size(); ++i)
+    {
+        if(A[i] != i+1)
+            return i+1;
+    }
+
+    return A.size() + 1;
 }
 
 /*
@@ -885,6 +911,67 @@ std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int
 //            depth = func(tree)
 //            assert depth == exp_out
 //
+
+
+
+// ==== Question 141
+// Linked List Cycle 
+// https://leetcode.com/problems/linked-list-cycle
+bool has_cycle_141(ListNode* root)
+{
+    if(!root || !root->next)
+        return false;
+
+    ListNode* fast = root;
+    ListNode* slow = root;
+
+    while(fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if(slow == fast)
+            return true;
+    }
+
+    return false;
+}
+
+// ==== Question 142
+// Linked List Cycle II  
+// https://leetcode.com/problems/linked-list-cycle-ii
+ListNode* detect_cycle_142(ListNode* head)
+{
+    // start with the usual cycle detection
+    if(!head || !head->next)
+        return nullptr;
+
+    ListNode* fast = head;
+    ListNode* slow = head;
+
+    int slow_idx = 0;
+    while(fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        slow_idx++;
+
+        if(slow == fast)
+            break;
+    }
+
+    if(fast == nullptr || fast->next == nullptr)
+        return nullptr;     // no cycle
+
+    slow = head;
+
+    while(slow != fast)
+    {
+        slow = slow->next;
+        fast = fast->next;
+    }
+}
+
 
 // ==== Question 153
 // Find minimum in rotated sorted array
@@ -1514,8 +1601,66 @@ int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& gri
  */
 int as_far_from_land_as_possible_1162(const std::vector<std::vector<int>>& grid)
 {
+    // This seems like its a BFS from all water to land, then take the max distance
 
-    return 0; // shut linter up
+    int num_rows = grid.size();
+    int num_cols = grid[0].size();
+
+    auto distance = std::vector<std::vector<int>>(num_rows, std::vector<int>(num_cols, -1));
+
+    using pos_t = std::pair<int, int>;
+    std::queue<pos_t> q;
+
+    // I guess we should find candidates here 
+    for(int r = 0; r < num_rows; ++r)
+    {
+        for(int c = 0; c < num_cols; ++c)
+        {
+            // 0 = water, 1 = land
+            // Start at land and find distance to water
+            if(grid[r][c] == 1)
+            {
+                distance[r][c] = 0;
+                q.push({r, c});
+            }
+        }
+    }
+
+    if(q.size() == 0 || q.size() == unsigned(num_rows * num_cols))
+        return -1;
+
+    std::array<int, 4> row_dirs = {1, -1, 0, 0};
+    std::array<int, 4> col_dirs = {0, 0, 1, -1};
+
+    // BFS from all initial positions
+    int max_dist = 0;
+    while(!q.empty())
+    {
+        pos_t cur_pos = q.front();
+        q.pop();
+
+        // Check neighbours - Manhattan distance implies 4-directional 
+        for(int r = 0; r < 4; ++r)
+        {
+            int nrow = cur_pos.first + row_dirs[r];
+            int ncol = cur_pos.second + col_dirs[r];
+
+            // bounds check 
+            if((0 <= nrow && nrow < num_rows) && (0 <= ncol && ncol < num_cols))
+            {
+                if(grid[nrow][ncol] == 0 && distance[nrow][ncol] == -1)
+                {
+                    // record the distance to this cell
+                    distance[nrow][ncol] = distance[cur_pos.first][cur_pos.second] + 1;
+                    q.push({nrow, ncol});
+                    // keep track of largest distance seen
+                    max_dist = std::max(max_dist, distance[nrow][ncol]);
+                }
+            }
+        }
+    }
+
+    return max_dist;
 }
 
 

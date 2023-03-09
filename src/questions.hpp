@@ -121,6 +121,16 @@ int min_depth_of_binary_tree_111(const TreeNode* root);
 std::vector<std::vector<int>> path_sum_ii_113(const TreeNode* root, int target_sum);
 std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int target_sum);
 
+// ==== Question 141
+// Linked List Cycle 
+// https://leetcode.com/problems/linked-list-cycle
+bool has_cycle_141(ListNode* head);
+
+// ==== Question 142
+// Linked List Cycle II
+// https://leetcode.com/problems/linked-list-cycle-ii
+ListNode* detect_cycle_142(ListNode* head);
+
 // ==== Question 153
 // Find minimum in rotated sorted array
 // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array

@@ -75,12 +75,25 @@ def longest_common_prefix_14(strs:List[str]) -> str:
 # First Missing Positive
 # https://leetcode.com/problems/first-missing-positive/
 def first_missing_positive_41(nums: List[int]) -> int:
+
+    for n in range(len(nums)):
+        # TODO: not all boundary conditions are checked here
+        while nums[n] != n+1 and (0 <= nums[n] and nums[n] < len(nums)):
+            nums[n], nums[nums[n]] = nums[nums[n]], nums[n]
+
+
+    return 0
+
+
+def first_missing_positive_41_q(nums: List[int]) -> int:
     # Can we use a min queue here?
+    # The answer is no, because we have to implement in constant space (so 
+    # no additional queue memory). This means that the input needs to be mutable
     # [3, 4, -1, 1]
 
     q = deque()   # ordered from low to high
-
     q.append(nums[0])
+
     for elem in nums[1:]:
         if elem <= 0:
             continue
@@ -92,11 +105,10 @@ def first_missing_positive_41(nums: List[int]) -> int:
     if q[0] != 1:
         return 1
 
+    # We check 1 separately above
     cur_min = 2
-    for n in range(len(q)):
-        if n == 0:
-            continue
-        if q[n] - q[n-1] != 1:
+    for n in range(len(q)-1):
+        if q[n+1] - q[n] != 1:
             return cur_min
         cur_min += 1
 

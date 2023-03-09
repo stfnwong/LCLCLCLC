@@ -9,6 +9,28 @@
 #include "list.hpp"
 
 
+
+void delete_list(ListNode* root)
+{
+    ListNode* cur_node;
+    ListNode* next_node;
+    
+    if(!root)
+        return;
+
+    cur_node = root->next;
+    while(cur_node)
+    {
+        if(cur_node->next)
+        {
+            next_node = cur_node->next;
+            delete cur_node;
+            cur_node = next_node;
+        }
+    }
+}
+
+
 ListNode* list_from_vector(const std::vector<int>& vals)
 {
     ListNode* root;
@@ -23,6 +45,35 @@ ListNode* list_from_vector(const std::vector<int>& vals)
     {
         cur_node->next = new ListNode(vals[n]);
         cur_node = cur_node->next;
+    }
+
+    return root;
+}
+
+ListNode* list_from_vector_with_tail_pointer(const std::vector<int>& vals, int tail_pointer_idx)
+{
+    ListNode* root = list_from_vector(vals);
+
+    if(tail_pointer_idx >= 0)
+    {
+        // Make the next pointer of the tail element point to this pos
+        int idx = 0;
+        ListNode* target_pos;
+        ListNode* cur_pos = root;
+
+        while(cur_pos)
+        {
+            if(idx == tail_pointer_idx)
+                target_pos = cur_pos;
+
+            if(cur_pos->next == nullptr)
+                break;
+            cur_pos = cur_pos->next;
+            idx++;
+        }
+
+        // cur_pos is now the tail node
+        cur_pos->next = target_pos;
     }
 
     return root;
@@ -77,4 +128,27 @@ void print_list_node(ListNode* root)
     std::cout << "}" << std::endl;
 }
 
+
+
+bool list_has_cycle(ListNode* root)
+{
+    if(root == nullptr || root->next == nullptr)
+        return false;
+
+    ListNode* fast_ptr = root;
+    ListNode* slow_ptr = root;
+
+    // Move the fast pointer ahead 
+    while(fast_ptr != nullptr && fast_ptr->next != nullptr)
+    {
+        slow_ptr = slow_ptr->next;
+        fast_ptr = fast_ptr->next->next;
+
+        // if we can catch ourselves, we have a cycle
+        if(slow_ptr == fast_ptr)
+            return true;
+    }
+
+    return false;
+}
 
