@@ -551,6 +551,56 @@ TEST_CASE("question_66", "leetcode")
     }
 }
 
+
+/*
+ * Question 98
+ * Valid Binary Search Tree
+ * https://leetcode.com/problems/valid-binary-search-tree/
+ */
+TEST_CASE("question_98", "leetcode")
+{
+    std::vector<std::string> inputs = {
+        "[2, 1, 3]",
+        "[5, 1, 4, null, null, 3, 6]",
+    };
+    std::vector<bool> exp_outputs = {true, false};
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        TreeNode* root = repr_to_tree(inputs[t]);
+        bool out = is_valid_bst_98(root);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+/*
+ * Question 100
+ * Same Tree
+ * https://leetcode.com/problems/same-tree/
+ */
+TEST_CASE("question_100", "leetcode")
+{
+    using tree_input = std::pair<std::string, std::string>;
+    std::vector<tree_input> inputs = {
+        {{"[1, 2, 3]", "[1, 2, 3]"}},
+    };
+    std::vector<bool> exp_outputs = {true};
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        // Create the two trees
+        TreeNode* t1 = repr_to_tree(inputs[t].first);
+        TreeNode* t2 = repr_to_tree(inputs[t].second);
+        bool out = same_tree_100(t1, t2);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+
 /*
  * Question 102
  * Binary Tree Level Order Traversal
@@ -610,9 +660,23 @@ TEST_CASE("question_113", "leetcode")
         {}
     };
 
-    unsigned num_test_cases = repr_inputs.size();
+    REQUIRE(repr_inputs.size() == exp_outputs.size());
+    REQUIRE(target_sum_inputs.size() == exp_outputs.size());
+
     std::vector<std::vector<int>> results;
-    for(unsigned t = 0; t < num_test_cases; ++t)
+
+    // Iterative 
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        TreeNode* root = repr_to_tree(repr_inputs[t]);
+        results = path_sum_ii_113_dfs_iter(root, target_sum_inputs[t]);
+        REQUIRE(results.size() == exp_outputs[t].size());
+        for(unsigned r = 0; r < results.size(); ++r)
+            REQUIRE(results[r] == exp_outputs[t][r]);
+    }
+
+    // Recursive 
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
     {
         TreeNode* root = repr_to_tree(repr_inputs[t]);
         results = path_sum_ii_113(root, target_sum_inputs[t]);
@@ -926,6 +990,36 @@ TEST_CASE("question_779", "leetcode")
         REQUIRE(out == exp_outputs[t]);
     }
 }
+
+/*
+ Question 802
+ Find Eventual Safe States
+ https://leetcode.com/problems/find-eventual-safe-states
+*/
+TEST_CASE("question_802", "leetcode")
+{
+    using graph_t = std::vector<std::vector<int>>;
+    std::vector<graph_t> inputs = {
+        {{1, 2}, {2, 3}, {5}, {0}, {5}, {}, {}},
+        {{1, 2, 3, 4}, {1, 2}, {3, 4}, {0, 4}, {}},
+    };
+    // Terminal nodes in ascending order
+    std::vector<std::vector<int>> exp_outputs = {
+        {2, 4, 5, 6},
+        {4},
+    };
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        std::vector<int> out = find_eventual_safe_states_802(inputs[t]);
+        REQUIRE(out.size() == exp_outputs[t].size());
+        for(unsigned i = 0; i < out.size(); ++i)
+            REQUIRE(out[i] == exp_outputs[t][i]);
+    }
+}
+
 
 /*
  Question 929

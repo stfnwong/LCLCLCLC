@@ -107,6 +107,20 @@ bool can_jump(std::vector<int>& nums);
 std::vector<int> plus_one_66(std::vector<int>& digits);
 
 /*
+ * Question 98
+ * Valid Binary Search Tree
+ * https://leetcode.com/problems/valid-binary-search-tree/
+ */
+bool is_valid_bst_98(TreeNode* root);
+
+/*
+ * Question 100
+ * Same Tree
+ * https://leetcode.com/problems/same-tree/
+ */
+bool same_tree_100(TreeNode* p, TreeNode* q);
+
+/*
  * Question 102
  * Binary Tree Level Order Traversal
  * https://leetcode.com/problems/binary-tree-level-order-traversal/
@@ -127,6 +141,7 @@ int min_depth_of_binary_tree_111(const TreeNode* root);
   */
 std::vector<std::vector<int>> path_sum_ii_113(const TreeNode* root, int target_sum);
 std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int target_sum);
+std::vector<std::vector<int>> path_sum_ii_113_dfs_iter(const TreeNode* root, int target_sum);
 
 // ==== Question 141
 // Linked List Cycle 
@@ -222,6 +237,13 @@ std::vector<std::vector<int>> matrix_542(const std::vector<std::vector<int>>& ma
  * https://leetcode.com/problems/k-th-symbol-in-grammar
  */
 int kth_symbol_in_grammar_779(int n, int k);
+
+/*
+ Question 802
+ Find Eventual Safe States
+ https://leetcode.com/problems/find-eventual-safe-states
+*/
+std::vector<int> find_eventual_safe_states_802(const std::vector<std::vector<int>>& graph);
 
 // ==== QUESTION 842
 // https://leetcode.com/problems/split-array-into-fibonacci-sequence/

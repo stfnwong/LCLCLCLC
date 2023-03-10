@@ -193,8 +193,6 @@ std::string graph_to_repr(const GraphNode* graph)
  */
 GraphNode* createGraph(const std::string& repr)
 {
-    GraphNode* graph_root;
-
     // do the various basic sanity checks 
     if(repr.length() < 1)
         return nullptr;

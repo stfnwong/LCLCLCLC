@@ -680,6 +680,97 @@ std::vector<int> plus_one_66(std::vector<int>& digits)
 
 
 /*
+ * Question 98
+ * Valid Binary Search Tree
+ * https://leetcode.com/problems/valid-binary-search-tree/
+ */
+bool is_valid_bst_98(TreeNode* root)
+{
+    if(!root)
+        return false;
+
+    // Lets to an iterative DFS for this. As we pop a node from the stack we check its
+    // left children are less than itself, and the right children are greater than itself.
+    
+    std::stack<TreeNode*> node_stack;
+    node_stack.push(root);
+
+    while(!node_stack.empty())
+    {
+        TreeNode* cur_node = node_stack.top();
+        node_stack.pop();
+
+        // If the left child value is larger this isn't a valid BST
+        if(cur_node->left)
+        {
+            if(cur_node->left->val >= cur_node->val)
+                return false;
+            node_stack.push(cur_node->left);
+        }
+        if(cur_node->right)
+        {
+            if(cur_node->right->val <= cur_node->val)
+                return false;
+            node_stack.push(cur_node->right);
+        }
+    }
+
+    return true;
+}
+
+/*
+ * Question 100
+ * Same Tree
+ * https://leetcode.com/problems/same-tree/
+ */
+bool same_tree_100(TreeNode* p, TreeNode* q)
+{
+    // Can simplify I think....
+    if(p == nullptr && q == nullptr)
+        return true;        // surely this is the only correct thing to return 
+
+    // one is null and the other isn't (TODO: whats a short logic XOR in C++?
+    if(!p != !q)
+        return false;
+
+    // Traverse p and check that we can traverse q the same way
+    std::stack<TreeNode*> p_stack;
+    std::stack<TreeNode*> q_stack;
+
+    p_stack.push(p);
+    q_stack.push(q);
+
+    while(!p_stack.empty())
+    {
+        TreeNode* p_node = p_stack.top(); p_stack.pop();
+        TreeNode* q_node = q_stack.top(); q_stack.pop();
+
+        if(p_node->val != q_node->val)
+            return false;
+
+        if(p_node->left && !q_node->left || !p_node->left && q_node->left)
+            return false;
+        if(p_node->right && !q_node->right || !p_node->right && q_node->right)
+            return false;
+
+        if(p_node->left)
+            p_stack.push(p_node->left);
+        if(p_node->right)
+            p_stack.push(p_node->right);
+
+        if(q_node->left)
+            q_stack.push(q_node->left);
+        if(q_node->right)
+            q_stack.push(q_node->right);
+    }
+
+    return true;
+}
+
+// TODO: the recursive solution is probably more elegant...
+
+
+/*
  * Question 102
  * Binary Tree Level Order Traversal
  * https://leetcode.com/problems/binary-tree-level-order-traversal/
@@ -755,7 +846,7 @@ int min_depth_of_binary_tree_111(const TreeNode* root)
 }
 
  /*
-  * Question 114
+  * Question 113
   * https://leetcode.com/problems/path-sum-ii/description/
   */
 void path_sum_ii_dfs_helper(
@@ -783,6 +874,9 @@ void path_sum_ii_dfs_helper(
             path_sum_ii_dfs_helper(node->left, path, valid_paths, cur_sum, target_sum);
             path_sum_ii_dfs_helper(node->right, path, valid_paths, cur_sum, target_sum);
         }
+
+        // Don't forget to remove this node when we return 
+        path.pop_back();        
     }
 }
 
@@ -801,6 +895,44 @@ std::vector<std::vector<int>> path_sum_ii_113(const TreeNode* root, int target_s
 }
 
 // TODO: iterative DFS?
+std::vector<std::vector<int>> path_sum_ii_113_dfs_iter(const TreeNode* root, int target_sum)
+{
+    std::vector<std::vector<int>> valid_paths;
+
+    if(root == nullptr || target_sum == 0)
+        return valid_paths;
+
+    // Do DFS, but iteratively
+    std::vector<int> p;
+    int cur_sum = 0;
+
+    // TODO: store the total path value at this moment in the stack also?
+    std::stack<const TreeNode*> node_stack;
+
+    node_stack.push(root);
+
+    // Now DFS on tree
+    while(!node_stack.empty())
+    {
+        const TreeNode* cur_node = node_stack.top();
+        node_stack.pop();
+        p.push_back(cur_node->val);          // <- TODO: there is a segfault here...
+
+        // Is this a child node?
+        if(!cur_node->left && !cur_node->right)
+        {
+            if(cur_sum == target_sum)
+                valid_paths.push_back(p);
+        }
+        else
+        {
+            node_stack.push(cur_node->left);
+            node_stack.push(cur_node->right);
+        }
+    }
+
+    return valid_paths;
+}
 
 
 // Another (iterative) BFS implementation 
@@ -1307,6 +1439,75 @@ int kth_symbol_in_grammar_779(int n, int k)
         return (k % 2 == 0) ? 0 : 1;
 }
 
+
+/*
+ Question 802
+ Find Eventual Safe States
+ https://leetcode.com/problems/find-eventual-safe-states
+*/
+std::vector<int> find_eventual_safe_states_802(const std::vector<std::vector<int>>& graph)
+{
+    // Form an adjacency list from the input 
+    int N = graph.size();
+    std::vector<int> ans;
+
+    // {{1, 2}, {1, 3}, {5}}
+    // graph[0] = {1, 2}; graph[0].size(): 2
+    // graph[1] = {1, 3};
+    // graph[2] = {5};
+
+    std::vector<std::vector<int>> adj(N);
+
+    for(unsigned i = 0; i < graph.size(); ++i)
+    {
+        for(unsigned r = 0; r < graph[i].size(); ++r)
+            adj[i].push_back(graph[i][r]);
+    }
+
+    // TODO: Debug only, remove this 
+    std::cout << "[" << __func__ << "] adj list: " << std::endl;
+    for(unsigned n = 0; n < adj.size(); ++n)
+    {
+        std::cout << "node[" << n << "]: ";
+        for(unsigned r = 0; r < adj[n].size(); ++r)
+            std::cout << adj[n][r] << " ";
+        std::cout << std::endl;
+    }
+
+    // Visited set
+    std::vector<int> vis(N, 0);
+
+    // DFS stack 
+    std::stack<int> node_stack;
+
+    // Try and dfs from every node 
+    for(unsigned n = 0; n < N; ++n)
+    {
+        if(vis[n] == 0)
+        {
+            node_stack.push(n);
+            while(!node_stack.empty())
+            {
+                int cur_node = node_stack.top();
+                node_stack.pop();
+                vis[cur_node] = 1;
+
+                // Check all the neighbours, when do we set vis = 2?
+                for(auto child : adj[cur_node])
+                {
+                    if(vis[child] == 0)
+                    {
+                        // DFS from here 
+                        node_stack.push(child);
+                    }
+                }
+            }
+        }
+    }
+
+
+    return ans;
+}
 
 /*
  * Question 842
