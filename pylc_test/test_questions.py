@@ -57,7 +57,7 @@ def test_first_missing_positive_41():
 
 
 # Question 49
-# Group Anagrams 
+# Group Anagrams
 # https://leetcode.com/problems/group-anagrams
 def test_group_anagrams_49():
     inputs = [
@@ -298,9 +298,9 @@ def test_flatten_binary_tree_to_linked_list():
 #
 
 
-# Question 121 
+# Question 121
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-# Best time to buy and sell stock 
+# Best time to buy and sell stock
 def test_best_time_to_buy_and_sell_stock_121():
     inputs = [
         [7, 1, 5, 3, 6, 4],
@@ -345,11 +345,11 @@ def test_lru_cache_146():
     test_size = 2       # This is the size in the example case
     test_cache = questions.LRUCache(test_size)
     for inp_sequence, out_sequence in zip(inputs, exp_outputs):
-        # Each input/output pair is a sequence of operations to give to the cache object 
+        # Each input/output pair is a sequence of operations to give to the cache object
         for (op, inp), exp_out in zip(inp_sequence, out_sequence):
             # You could use getattr here but you still have to know that you need to split
-            # the [k, v] into k and v arguments. An alternative is to accept a [k, v] 
-            # as a single argument in the cache API, but I will leave that exercise 
+            # the [k, v] into k and v arguments. An alternative is to accept a [k, v]
+            # as a single argument in the cache API, but I will leave that exercise
             # for later.
             if op == "get":
                 out = test_cache.get(inp[0])
@@ -377,7 +377,7 @@ def test_maximum_product_subarray_152():
 
 # Question 198
 # https://leetcode.com/problems/house-robber/
-# House Robber 
+# House Robber
 def test_house_robber_198():
     inputs = [
         [1, 2, 3, 1],
@@ -607,10 +607,32 @@ def test_find_the_difference_389():
             assert out == exp_out
 
 
+
+
+# Question 542
+# 01 Matrix
+# https://leetcode.com/problems/01-matrix/
+def test_matrix_542():
+
+    inputs = [
+        [[0, 0, 0], [0, 1, 0], [0, 0, 0]],
+        [[0, 0, 0], [0, 1, 0], [1, 1, 1]]
+    ]
+    exp_outputs = [
+        [[0, 0, 0], [0, 1, 0], [0, 0, 0]],
+        [[0, 0, 0], [0, 1, 0], [1, 2, 1]]
+    ]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.matrix_542(inp)
+        assert out == exp_out
+
+
 # Question 714
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
 #
 def test_time_to_buy_stock_714():
+
     input_prices = [
         [1, 3, 2, 8, 4, 9],
         [1, 3, 7, 5, 10, 3],
@@ -628,9 +650,9 @@ def test_time_to_buy_stock_714():
         #assert max_profit == exp_profit
 
 
-# Question 746 
+# Question 746
 # https://leetcode.com/problems/min-cost-climbing-stairs/
-# Min cost climbing stairs 
+# Min cost climbing stairs
 def test_min_cost_climbing_stairs_746():
     inputs = [
         [10, 15, 20],
@@ -644,9 +666,9 @@ def test_min_cost_climbing_stairs_746():
 
 
 
-# Question 746 
+# Question 746
 # https://leetcode.com/problems/min-cost-climbing-stairs/
-# Min cost climbing stairs 
+# Min cost climbing stairs
 
 
 
@@ -787,7 +809,7 @@ def test_min_cost_to_connect_all_points_1584():
         assert out == exp_out
 
 
-# Question 1642 
+# Question 1642
 # Furthest Building You Can Reach
 # https://leetcode.com/problems/furthest-building-you-can-reach/
 #

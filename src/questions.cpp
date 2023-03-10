@@ -1235,6 +1235,60 @@ char find_the_difference_389_um(const std::string& s1, const std::string& s2)
 
 
 /*
+ * Question 542
+ * 01 Matrix
+ * https://leetcode.com/problems/01-matrix/
+ */
+std::vector<std::vector<int>> matrix_542(const std::vector<std::vector<int>>& matrix)
+{
+    int num_rows = matrix.size();
+    int num_cols = matrix[0].size();
+
+    using pos_t = std::pair<int, int>;
+    std::queue<pos_t> q;
+
+    std::vector<std::vector<int>> dist(num_rows, std::vector<int>(num_cols, -1));
+    // Find starting candidates 
+    for(int r = 0; r < num_rows; ++r)
+    {
+        for(int c = 0; c < num_cols; ++c)
+        {
+            if(matrix[r][c] == 0)
+            {
+                q.push({r, c});
+                dist[r][c] = 0;
+            }
+        }
+    }
+
+    std::array<int, 4> row_dirs = {1, -1, 0, 0};
+    std::array<int, 4> col_dirs = {0, 0, -1, 1};
+
+    // BFS on matrix 
+    while(!q.empty())
+    {
+        pos_t cur_pos = q.front();
+        q.pop();
+
+        // TODO: may need to do 8-directional
+        for(int r = 0; r < 4; ++r)
+        {
+            int nrow = cur_pos.first + row_dirs[r];
+            int ncol = cur_pos.second + col_dirs[r];
+
+            // bounds check 
+            if((0 <= nrow && nrow < num_rows) && (0 <= ncol && ncol < num_cols) && dist[nrow][ncol] == -1)
+            {
+                dist[nrow][ncol] = dist[cur_pos.first][cur_pos.second] + 1;
+                q.push({nrow, ncol});
+            }
+        }
+    }
+
+    return dist;
+}
+
+/*
  * Question 779
  * Kth symbol in grammar
  * https://leetcode.com/problems/k-th-symbol-in-grammar
@@ -1930,14 +1984,16 @@ int furthest_building_you_can_reach_1642(const std::vector<int>& heights, int br
     std::priority_queue<int, std::vector<int>, std::greater<int>> brick_heap;
     int bricks_used = 0;
 
-    for(int h = 0; h < heights.size()-1; ++h)
+    for(int h = 0; h < int(heights.size()-1); ++h)
     {
         int diff = heights[h+1] - heights[h];
         if(diff <= 0)
             continue;
 
         // Prefer bricks - we place bricks in a priority queue so that we can switch
-        // them out later for ladders when we run out.
+        // them out later for ladders when we run out. We use a max heap because there 
+        // isn't any restriction on which swtich we make, and so we should swap the 
+        // largest number of bricks we have used anywhere for one ladder.
         bricks_used += diff;
         brick_heap.push(bricks_used);
 

@@ -1244,6 +1244,47 @@ def find_the_difference_389_dict(s1: str, s2: str) -> str:
 # Question 416
 # https://leetcode.com/problems/partition-equal-subset-sum/
 
+
+# Question 542
+# 01 Matrix
+# https://leetcode.com/problems/01-matrix/
+def matrix_542(matrix: List[List[int]]) -> List[List[int]]:
+
+    num_rows = len(matrix)
+    num_cols = len(matrix[0])
+
+    q = []
+    dist = [[-1 for _ in range(num_cols)] for _ in range(num_rows)]
+
+    # Find initial candidates 
+    for row in range(num_rows):
+        for col in range(num_cols):
+            if matrix[row][col] == 0:
+                q.append((row, col))
+                dist[row][col] = 0   # 0 has a distance of 0 (to itself)
+
+
+    # Now BFS from all q positions 
+    row_dir = (1, -1, 0, 0)
+    col_dir = (0, 0, 1, -1)
+
+    while q:
+        r, c = q.pop(0)
+
+        for row_dx, col_dx in zip(row_dir, col_dir):
+            nrow = r + row_dx
+            ncol = c + col_dx
+
+            # bounds check 
+            if (0 <= nrow and nrow < num_rows) and (0 <= ncol and ncol < num_cols) and dist[nrow][ncol] == -1:
+                dist[nrow][ncol] = dist[r][c] + 1
+                q.append((nrow, ncol))
+
+    return dist
+
+
+
+
 # Question 714
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
 def time_to_buy_stock_714(prices: List[int], fee: int) -> int:

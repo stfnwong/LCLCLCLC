@@ -874,6 +874,38 @@ TEST_CASE("question_389", "leetcode")
     }
 }
 
+
+/*
+ * Question 542
+ * 01 Matrix
+ * https://leetcode.com/problems/01-matrix/
+ */
+TEST_CASE("question_542", "leetcode")
+{
+    using grid_t = std::vector<std::vector<int>>;
+    std::vector<grid_t> inputs = {
+        {{0, 0, 0}, {0, 1, 0}, {0, 0, 0}},
+        {{0, 0, 0}, {0, 1, 0}, {1, 1, 1}}
+    };
+    std::vector<grid_t> exp_outputs = {
+        {{0, 0, 0}, {0, 1, 0}, {0, 0, 0}},
+        {{0, 0, 0}, {0, 1, 0}, {1, 2, 1}}
+    };
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        grid_t out = matrix_542(inputs[t]);
+        REQUIRE(out.size() == exp_outputs[t].size());
+        for(unsigned r = 0; r < out.size(); ++r)
+        {
+            for(unsigned c = 0; c < out[0].size(); ++c)
+                REQUIRE(out[r][c] == exp_outputs[t][r][c]);
+        }
+    }
+}
+
 /*
  * Question 779
  * Kth symbol in grammar

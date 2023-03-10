@@ -208,6 +208,14 @@ int house_robber_iii_337(TreeNode* root);
 char find_the_difference_389(const std::string& s1, const std::string& s2);
 char find_the_difference_389_um(const std::string& s1, const std::string& s2);
 
+
+/*
+ * Question 542
+ * 01 Matrix
+ * https://leetcode.com/problems/01-matrix/
+ */
+std::vector<std::vector<int>> matrix_542(const std::vector<std::vector<int>>& matrix);
+
 /*
  * Question 779
  * Kth symbol in grammar
