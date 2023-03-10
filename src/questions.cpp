@@ -1907,7 +1907,52 @@ int shortest_path_1293(const std::vector<std::vector<int>>& grid, int k)
  * Furthest Building You Can Reach
  * https://leetcode.com/problems/furthest-building-you-can-reach/
  */
+template <typename T> void print_base(std::string_view name, const T& q)
+{
+    std::cout << name << ":\t";
+    for(auto const& elem : q)
+        std::cout << elem << " ";
+    std::cout << std::endl;
+}
+
+template <typename Q> void print_q(std::string_view name, Q q)
+{
+    // pass queue by value since traversal of a priority queue erases the values
+    for(std::cout << name << ":\t"; !q.empty(); q.pop())
+        std::cout << q.top() << " ";
+
+    std::cout << std::endl;
+}
+
 int furthest_building_you_can_reach_1642(const std::vector<int>& heights, int bricks, int ladders)
 {
-    return 0;
+    // brick heap should be a max heap
+    std::priority_queue<int, std::vector<int>, std::greater<int>> brick_heap;
+    int bricks_used = 0;
+
+    for(int h = 0; h < heights.size()-1; ++h)
+    {
+        int diff = heights[h+1] - heights[h];
+        if(diff <= 0)
+            continue;
+
+        // Prefer bricks - we place bricks in a priority queue so that we can switch
+        // them out later for ladders when we run out.
+        bricks_used += diff;
+        brick_heap.push(bricks_used);
+
+        if(bricks_used >= bricks)
+        {
+            if(ladders > 0)
+            {
+                ladders--;
+                bricks_used -= brick_heap.top();
+                brick_heap.pop();
+            }
+            else
+                return h;
+        }
+    }
+
+    return int(heights.size()-1);
 }

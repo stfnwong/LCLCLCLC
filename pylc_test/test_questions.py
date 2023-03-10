@@ -795,9 +795,10 @@ def test_furthest_building_you_can_reach_1642():
     # (heights, bricks, ladders)
     inputs = [
         ([4, 2, 7, 6, 9, 14, 12], 5, 1),
+        ([14, 3, 19, 3], 17, 0),
         ([4, 12, 2, 7, 3, 18, 20, 3, 19], 10, 2)
     ]
-    exp_outputs = [4, 7]
+    exp_outputs = [4, 3, 7]
 
     for inp, exp_out in zip(inputs, exp_outputs):
         out = questions.furthest_building_you_can_reach_1642(

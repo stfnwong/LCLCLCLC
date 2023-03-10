@@ -1280,14 +1280,14 @@ def kth_symbol_in_grammar_779(n: int, k:int) -> int:
     #  / \
     # 1   0
     #
-    # and that combination of the parent value in the tree and the (1-indexed) 
+    # and that combination of the parent value in the tree and the (1-indexed)
     # position k can uniquely identify the output value
 
     # This is the root element for all trees
     if n == 0:
         return 0
 
-    # Each pair has a single parent, so every other k connects to a new k 
+    # Each pair has a single parent, so every other k connects to a new k
     # on the row above.
     parent = kth_symbol_in_grammar_779(n-1, k // 2)
 
@@ -1608,35 +1608,38 @@ def min_cost_to_connect_all_points_1584(points:List[List[int]]) -> int:
 
 
 
-# Question 1642 
+# Question 1642
 # Furthest Building You Can Reach
 # https://leetcode.com/problems/furthest-building-you-can-reach/
 def furthest_building_you_can_reach_1642(heights: List[int], bricks: int, ladders: int) -> int:
 
-    # TODO: could there be a DP solution? Since we don't know if we should pick bricks 
-    # or ladders to get the optimal result? NOTE: we need to do this
-    num = 0
-    for h in range(len(heights)-1):
-        if heights[h+1] <= heights[h]:
-            num += 1
-            continue
+    # TODO: could there be a DP solution? Since we don't know if we should pick bricks
+    # or ladders to get the optimal result?
+    # The answer for DP is basically no, because in practice the state space of the
+    # problem is too big (for instance, you may get up to 10^9 bricks)
+    N = len(heights)
+    brick_heap = []
 
-        # try using bricks if we have enough
+    bricks_used = 0
+    for h in range(N-1):
         height_diff = heights[h+1] - heights[h]
-        if bricks - height_diff > 0:
-            bricks = bricks - height_diff
-            num += 1
+        if height_diff <= 0:
             continue
 
-        # do we have any ladders?
-        if ladders > 0:
-            ladders -= 1
-            num += 1
-            continue
+        # Lets try the strategy of preferring to use bricks where possible
+        bricks_used += height_diff
+        heapq.heappush(brick_heap, -bricks_used)
 
-        break
+        # If we run out of bricks, use a ladder instead
+        if bricks_used >= bricks:
+            if ladders > 0:
+                ladders -= 1
+                # Note the double negative due to the max heap property
+                bricks_used -= (-heapq.heappop(brick_heap))
+            else:
+                return h
+    return N-1
 
-    return num
 
 
 # Question 1971
