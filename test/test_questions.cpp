@@ -634,10 +634,13 @@ TEST_CASE("question_111", "leetcode")
     };
     std::vector<int> exp_min_height = {2, 5};
 
+    int min_height;
     for(unsigned i = 0; i < tree_reprs.size(); ++i)
     {
         TreeNode* tree = repr_to_tree(tree_reprs[i]);
-        int min_height = min_depth_of_binary_tree_111(tree);
+        min_height = min_depth_of_binary_tree_111(tree);
+        REQUIRE(min_height == exp_min_height[i]);
+        min_height = min_depth_of_binary_tree_111_rec(tree);
         REQUIRE(min_height == exp_min_height[i]);
     }
 }
@@ -670,7 +673,9 @@ TEST_CASE("question_113", "leetcode")
     {
         TreeNode* root = repr_to_tree(repr_inputs[t]);
         results = path_sum_ii_113_dfs_iter(root, target_sum_inputs[t]);
+        std::cout << "[" << __func__ << "] results for input " << t << ": " << vec_vec_to_str(results) << std::endl;
         REQUIRE(results.size() == exp_outputs[t].size());
+        
         for(unsigned r = 0; r < results.size(); ++r)
             REQUIRE(results[r] == exp_outputs[t][r]);
     }
@@ -683,37 +688,6 @@ TEST_CASE("question_113", "leetcode")
         REQUIRE(results.size() == exp_outputs[t].size());
         for(unsigned r = 0; r < results.size(); ++r)
             REQUIRE(results[r] == exp_outputs[t][r]);
-    }
-}
-
-// The iterative BFS version 
-TEST_CASE("question_113_bfs_iter", "leetcode")
-{
-    std::vector<std::string> repr_inputs = {
-        "[5,4,8,11,null,13,4,7,2,null,null,5,1]",
-        "[1, 2, 3]",
-        "[1, 2]",
-    };
-    std::vector<int> target_sum_inputs = {22, 5, 0};
-
-    //std::vector<std::vector<int>> exp_outputs;
-    //exp_outputs.push_back({{5, 4, 11,2}, {5, 8, 4, 5}});
-    //exp_outputs.push_back({});
-    //exp_outputs.push_back({});
-
-    std::vector<std::vector<std::vector<int>>> exp_outputs = {
-        {{5, 4, 11, 2}, {5, 8, 4, 5}},
-        {},
-        {}
-    };
-
-    unsigned num_test_cases = repr_inputs.size();
-    std::vector<std::vector<int>> results;
-    for(unsigned t = 0; t < num_test_cases; ++t)
-    {
-        TreeNode* root = repr_to_tree(repr_inputs[t]);
-        results = path_sum_ii_113_bfs_iter(root, target_sum_inputs[t]);
-        REQUIRE(results.size() == exp_outputs[t].size());
     }
 }
 

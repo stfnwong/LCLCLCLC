@@ -57,18 +57,18 @@ std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target)
     int n = int(nums.size());
     std::vector<std::pair<int, int>> val_and_idx(n);
 
-    // since we plan to sort the array we need to remember what the original index was 
-    // create a vector of pairs that store a value and its position in the original array 
+    // since we plan to sort the array we need to remember what the original index was
+    // create a vector of pairs that store a value and its position in the original array
     for(int i = 0; i < n; ++i)
         val_and_idx[i] = std::make_pair(nums[i], i);
 
-    // now we can sort the input 
+    // now we can sort the input
     std::sort(val_and_idx.begin(), val_and_idx.end());
     int left = 0;
     int right = val_and_idx.size()-1;
     //int right = n-1;
 
-    while(left < right) 
+    while(left < right)
     {
         int s = val_and_idx[left].first + val_and_idx[right].first;
         std::cout << "[" << __func__ << "] left  (" << left << "): " << val_and_idx[left].first << std::endl;
@@ -77,7 +77,7 @@ std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target)
         if(s == target)
             return std::vector<int>{val_and_idx[left].second, val_and_idx[right].second};
         else if(s > target)
-            right--;    //  too large, deccrease 
+            right--;    //  too large, deccrease
         else
             left++;     // too small, increase
     }
@@ -87,7 +87,7 @@ std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target)
 
 }
 
-// two sum brute force 
+// two sum brute force
 std::vector<int> two_sum_brute_force(std::vector<int>& nums, int target)
 {
     for(int i = 0; i < int(nums.size()); ++i)
@@ -100,8 +100,8 @@ std::vector<int> two_sum_brute_force(std::vector<int>& nums, int target)
         }
     }
 
-    // in the real question I think we are guaranteed there is an answer 
-    return std::vector<int>{};  
+    // in the real question I think we are guaranteed there is an answer
+    return std::vector<int>{};
 }
 
 /*
@@ -114,7 +114,7 @@ ListNode* add_two_numbers(ListNode* l1, ListNode* l2)
     ListNode* output;
     ListNode* root;
 
-    // map pointers to the input lists 
+    // map pointers to the input lists
     ListNode* p = l1;
     ListNode* q = l2;
 
@@ -161,7 +161,7 @@ int length_of_longest_substring(std::string& s)
     std::unordered_map <char, bool> seen_chars;
 
 
-    // Create a sliding window and walk along the string. 
+    // Create a sliding window and walk along the string.
     while(end < s.size())
     {
         // add new characters to the map and move the pointer forward
@@ -330,7 +330,7 @@ std::vector<std::string> letter_combinations_17(std::string digits)
         {'9', "wxyz"},
     };
     find_letter_combo(digits, output, digit_map, std::string(""), 0);
-    
+
     return output;
 }
 
@@ -341,7 +341,7 @@ std::vector<std::string> letter_combinations_17(std::string digits)
  */
 //std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target)
 //{
-//    
+//
 //}
 
 
@@ -381,7 +381,7 @@ ListNode* merge_two_sorted_lists_21(ListNode* list1, ListNode* list2)
             cur_node->val = list1->val;
             list1 = list1->next;
         }
-        else 
+        else
         {
             cur_node->val = list2->val;
             list2 = list2->next;
@@ -406,7 +406,7 @@ ListNode* merge_two_sorted_lists_21(ListNode* list1, ListNode* list2)
 
 /*
  * Question 23
- * Merge k sorted lists 
+ * Merge k sorted lists
  * https://leetcode.com/problems/merge-k-sorted-lists
  */
 ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists)
@@ -428,7 +428,7 @@ ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists)
         }
     }
 
-    // Now we have a heap with all elements inside 
+    // Now we have a heap with all elements inside
     if(pq.empty())
         return nullptr;    // all lists were empty
 
@@ -442,7 +442,7 @@ ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists)
         cur_node->val = pq.top();
         pq.pop();
 
-        // attach to out list 
+        // attach to out list
         if(out_list == nullptr)
         {
             out_list = cur_node;
@@ -464,13 +464,13 @@ ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists)
 
 /*
  * Question 41
- * First Missing Positive Integer 
+ * First Missing Positive Integer
  * https://leetcode.com/problems/first-missing-positive/
  */
 int first_missing_positive_integer_41(const std::vector<int>& nums)
 {
     // The idea is to not use any extra memory, for this I will make a copy of the array
-    // here 
+    // here
     std::vector<int> A = nums;
     int N = int(A.size());
 
@@ -500,7 +500,7 @@ int first_missing_positive_integer_41(const std::vector<int>& nums)
  * https://leetcode.com/problems/trapping-rain-water/
  */
 // TODO: there are several ways to approach this, implement several of them here
-int trapping_rain_water_42(const std::vector<int>& height) 
+int trapping_rain_water_42(const std::vector<int>& height)
 {
     unsigned N = height.size();
     std::vector<int> lmax(N);
@@ -510,7 +510,7 @@ int trapping_rain_water_42(const std::vector<int>& height)
     if(height.size() < 3)
         return 0;           // not enough blocks to trap any water
 
-    // Find max height from the left 
+    // Find max height from the left
     lmax[0] = height[0];
     for(unsigned i = 1; i < N; ++i)
         lmax[i] = std::max(lmax[i-1], height[i-1]);
@@ -518,7 +518,7 @@ int trapping_rain_water_42(const std::vector<int>& height)
     rmax[N-1] = height[N-1];
     for(int i = N-2; i >= 0; --i)   // NOTE: don't use unsigned for decrement
         rmax[i] = std::max(rmax[i+1], height[i+1]);
-    
+
     int ans = 0;
     for(unsigned i = 0; i < N; ++i)
     {
@@ -533,15 +533,15 @@ int trapping_rain_water_42(const std::vector<int>& height)
 // Alternative solution with two pointers
 // Time: O(N)
 // Space: O(1)
-// 
+//
 // I still don't quite grasp the intuition for how this method works for this problem...
-int trapping_rain_water_42_two_pointers(const std::vector<int>& height) 
+int trapping_rain_water_42_two_pointers(const std::vector<int>& height)
 {
     if(height.size() < 2)
         return 0;
 
-    // NOTE: making these int (rather than unsigned) is probably sufficient for this, 
-    // but if we wanted to use unsigned here then we need to check for underflow in the 
+    // NOTE: making these int (rather than unsigned) is probably sufficient for this,
+    // but if we wanted to use unsigned here then we need to check for underflow in the
     // decrement branch
     unsigned lptr = 0;
     unsigned rptr = height.size()-1;
@@ -568,7 +568,7 @@ int trapping_rain_water_42_two_pointers(const std::vector<int>& height)
 
 /*
  * Question 49
- * Group Anagrams 
+ * Group Anagrams
  * https://leetcode.com/problems/group-anagrams
  */
 // NOTE: can sort the letters, this makes all anagrams the same
@@ -605,7 +605,7 @@ int max_subarray_53(const std::vector<int>& nums)
 /*
  * Question 55
  */
-// Lets implement the dumb way here. 
+// Lets implement the dumb way here.
 
 bool can_jump_here_basic(int cur_pos, std::vector<int>& nums)
 {
@@ -620,7 +620,7 @@ bool can_jump_here_basic(int cur_pos, std::vector<int>& nums)
 
     for(int next_pos = cur_pos+1; next_pos <= max_jump; ++next_pos)
     {
-        //std::cout << "[" << __func__ << "] jumping from " << 
+        //std::cout << "[" << __func__ << "] jumping from " <<
         //    cur_pos << "->" << next_pos << std::endl;
         if(can_jump_here_basic(next_pos, nums))
             return true;
@@ -643,32 +643,32 @@ bool can_jump(std::vector<int>& nums)
  */
 std::vector<int> plus_one_66(std::vector<int>& digits)
 {
-    // only edge case is if the digits are all nines, in which case we need to 
+    // only edge case is if the digits are all nines, in which case we need to
     // extend the vector by one to account for the carry.
     bool all_nines = true;
-    for(int x: digits) 
+    for(int x: digits)
     {
-        if(x != 9) 
+        if(x != 9)
         {
             all_nines = false;
             break;
         }
     }
 
-    if(all_nines) 
+    if(all_nines)
     {
         digits.insert(digits.begin(), 0);
         for(int& x: digits)
             x = 0;
         digits[0] = 1;
     }
-    else 
+    else
     {
-        for(unsigned i = digits.size()-1; i >= 0; --i) 
+        for(unsigned i = digits.size()-1; i >= 0; --i)
         {
             digits[i]++;
             // overflow/carry for this column
-            if(digits[i] == 10)  
+            if(digits[i] == 10)
                 digits[i] = 0;
             else
                 break;   // we managed to add a one, no need to continue
@@ -691,7 +691,7 @@ bool is_valid_bst_98(TreeNode* root)
 
     // Lets to an iterative DFS for this. As we pop a node from the stack we check its
     // left children are less than itself, and the right children are greater than itself.
-    
+
     std::stack<TreeNode*> node_stack;
     node_stack.push(root);
 
@@ -727,7 +727,7 @@ bool same_tree_100(TreeNode* p, TreeNode* q)
 {
     // Can simplify I think....
     if(p == nullptr && q == nullptr)
-        return true;        // surely this is the only correct thing to return 
+        return true;        // surely this is the only correct thing to return
 
     // one is null and the other isn't (TODO: whats a short logic XOR in C++?
     if(!p != !q)
@@ -808,7 +808,7 @@ std::vector<std::vector<int>> level_order_traversal_102(const TreeNode* root)
 
 
 /*
- * Question 111 
+ * Question 111
 https://leetcode.com/problems/minimum-depth-of-binary-tree/
 Minimum depth of binary tree
 */
@@ -845,12 +845,31 @@ int min_depth_of_binary_tree_111(const TreeNode* root)
     return height;
 }
 
+// Recursive solution
+int mdbt_111_rec(const TreeNode* node, int height)
+{
+    if(!node)
+        return 0;
+
+    height += mdbt_111_rec(node->left, height);
+    height += mdbt_111_rec(node->right, height);
+
+    return height;
+}
+
+int min_depth_of_binary_tree_111_rec(const TreeNode* root)
+{
+    int height = 0;
+    return mdbt_111_rec(root, height);
+}
+
+
  /*
   * Question 113
   * https://leetcode.com/problems/path-sum-ii/description/
   */
 void path_sum_ii_dfs_helper(
-        const TreeNode* node, 
+        const TreeNode* node,
         std::vector<int>& path,
         std::vector<std::vector<int>>& valid_paths,
         int cur_sum,
@@ -863,7 +882,7 @@ void path_sum_ii_dfs_helper(
         cur_sum += node->val;
 
 
-        // check that this is a child node 
+        // check that this is a child node
         if(!node->left && !node->right)
         {
             if(cur_sum == target_sum)
@@ -875,19 +894,19 @@ void path_sum_ii_dfs_helper(
             path_sum_ii_dfs_helper(node->right, path, valid_paths, cur_sum, target_sum);
         }
 
-        // Don't forget to remove this node when we return 
-        path.pop_back();        
+        // Don't forget to remove this node when we return
+        path.pop_back();
     }
 }
 
 std::vector<std::vector<int>> path_sum_ii_113(const TreeNode* root, int target_sum)
 {
     std::vector<std::vector<int>> results;
-    
+
     if(!root)
         return results;
 
-    // the recursive dfs solution 
+    // the recursive dfs solution
     std::vector<int> paths;
     path_sum_ii_dfs_helper(root, paths, results, 0, target_sum);
 
@@ -899,7 +918,7 @@ std::vector<std::vector<int>> path_sum_ii_113_dfs_iter(const TreeNode* root, int
 {
     std::vector<std::vector<int>> valid_paths;
 
-    if(root == nullptr || target_sum == 0)
+    if(!root || target_sum == 0)
         return valid_paths;
 
     // Do DFS, but iteratively
@@ -916,7 +935,7 @@ std::vector<std::vector<int>> path_sum_ii_113_dfs_iter(const TreeNode* root, int
     {
         const TreeNode* cur_node = node_stack.top();
         node_stack.pop();
-        p.push_back(cur_node->val);          // <- TODO: there is a segfault here...
+        p.push_back(cur_node->val);
 
         // Is this a child node?
         if(!cur_node->left && !cur_node->right)
@@ -926,8 +945,10 @@ std::vector<std::vector<int>> path_sum_ii_113_dfs_iter(const TreeNode* root, int
         }
         else
         {
-            node_stack.push(cur_node->left);
-            node_stack.push(cur_node->right);
+            if(cur_node->left)
+                node_stack.push(cur_node->left);
+            if(cur_node->right)
+                node_stack.push(cur_node->right);
         }
     }
 
@@ -935,7 +956,7 @@ std::vector<std::vector<int>> path_sum_ii_113_dfs_iter(const TreeNode* root, int
 }
 
 
-// Another (iterative) BFS implementation 
+// Another (iterative) BFS implementation
 std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int target_sum)
 {
     std::vector<std::vector<int>> results;
@@ -943,7 +964,7 @@ std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int
     if(!root)
         return results;
 
-    using NodePath = std::pair<const TreeNode*, std::vector<int>>; 
+    using NodePath = std::pair<const TreeNode*, std::vector<int>>;
 
     //std::queue<NodePath> node_q;
     std::deque<NodePath> node_q;
@@ -959,7 +980,7 @@ std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int
         std::vector<int> cur_path = np.second;
         node_q.pop_front();
 
-        // Check if this is a leaf node 
+        // Check if this is a leaf node
         if(!cur_node->left && !cur_node->right)
         {
             int s = std::reduce(cur_path.begin(), cur_path.end());
@@ -979,7 +1000,7 @@ std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int
             NodePath new_node_path = {cur_node->left, new_vec};
             node_q.push_back(new_node_path);
         }
-            
+
         if(cur_node->right)
         {
             new_vec.push_back(cur_node->right->val);
@@ -1009,7 +1030,7 @@ std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int
 ///    while(!node_q.empty())
 ///    {
 ///        const TreeNode* cur_node = node_q.front();
-///        // Check if this is a leaf node 
+///        // Check if this is a leaf node
 ///        if(!cur_node->left && !cur_node->right)
 ///        {
 ///            if(std::reduce(cur_path.begin(), cur_path.end()))
@@ -1044,7 +1065,7 @@ std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int
 
 
 // ==== Question 141
-// Linked List Cycle 
+// Linked List Cycle
 // https://leetcode.com/problems/linked-list-cycle
 bool has_cycle_141(ListNode* root)
 {
@@ -1067,7 +1088,7 @@ bool has_cycle_141(ListNode* root)
 }
 
 // ==== Question 142
-// Linked List Cycle II  
+// Linked List Cycle II
 // https://leetcode.com/problems/linked-list-cycle-ii
 ListNode* detect_cycle_142(ListNode* head)
 {
@@ -1109,14 +1130,14 @@ ListNode* detect_cycle_142(ListNode* head)
 // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array
 int find_min_in_rotated_sorted_array(const std::vector<int>& nums)
 {
-    // check if array is not rotated 
+    // check if array is not rotated
     if(nums[0] <= nums[nums.size()-1])
         return nums[0];
 
     int l = 0;
     int r = int(nums.size());
 
-    while(l < r) 
+    while(l < r)
     {
         int p = (l + r) / 2;
         if(nums[p] >= nums[0])
@@ -1182,9 +1203,9 @@ int count_nodes_222(TreeNode* root)
     if(root == nullptr)
         return 0;
 
-    // We know the tree is complete save for the last layer, so we first find the 
-    // depth. From this we can deduce the number of nodes in the first d-1 layers. 
-    // Note that the definition of "complete" means that nodes are populated from 
+    // We know the tree is complete save for the last layer, so we first find the
+    // depth. From this we can deduce the number of nodes in the first d-1 layers.
+    // Note that the definition of "complete" means that nodes are populated from
     // left to right.
 
     unsigned depth = 0;
@@ -1197,12 +1218,12 @@ int count_nodes_222(TreeNode* root)
     }
 
     // Now we need to find how many nodes there are in the bottom layer.
-    // Since the tree is guaranteed to be complete we know the nodes are "filled" 
+    // Since the tree is guaranteed to be complete we know the nodes are "filled"
     // from left to right.
     int left = 0;
     int right = (1 << depth);           // max number of nodes on layer d
 
-    // do a template binary search here 
+    // do a template binary search here
     while(left < right)
     {
         int mid = (left + right) / 2;
@@ -1219,29 +1240,29 @@ int count_nodes_222(TreeNode* root)
 /*
  Question 239
  https://leetcode.com/problems/sliding-window-maximum/
- Maximum in sliding window 
+ Maximum in sliding window
 */
-std::vector<int> max_sliding_window_239_deque(const std::vector<int>& nums, int wsize) 
+std::vector<int> max_sliding_window_239_deque(const std::vector<int>& nums, int wsize)
 {
     std::vector<int> result;
     if(nums.size() == 0)
         return result;
 
-    // Deque to store indicies into the input array, sorted by value. 
-    // Specifically - the value at the front of the deque is the index of the value in 
+    // Deque to store indicies into the input array, sorted by value.
+    // Specifically - the value at the front of the deque is the index of the value in
     // nums which is the largest in the current window.
     //
     // To main this order without "sorting" we check the value of each element as we
     // place it into the deque. We do this by checking each new element we visit in
-    // nums. Note that the order we want to preserve is 
+    // nums. Note that the order we want to preserve is
     //
     // [idx_of_largest_value, idx_of_next_smallest_value, ..., idx_of_smallest_value]
     //
-    // - If the current element is smaller than the element whose index is at the back 
+    // - If the current element is smaller than the element whose index is at the back
     // of the deque the we push the index of that element to the back.
-    // - If the current element is larger that the back of the deque then we pop the 
+    // - If the current element is larger that the back of the deque then we pop the
     // back of the deque until we find a higher value. Then we push the current value
-    // to the back. This has the effect of popping every value smaller than the 
+    // to the back. This has the effect of popping every value smaller than the
     // current value from the back, leaving the current value as the new minimum value.
     //
     //
@@ -1282,7 +1303,7 @@ int coin_change_vec_322(std::vector<int>& coins, int amount)
     {
         for(unsigned c = 0; c < coins.size(); ++c)
         {
-            // If the difference between n and coins[c] is positive, it means that 
+            // If the difference between n and coins[c] is positive, it means that
             // coins[c] could be used as part of the solution.
             if((n - coins[c]) >= 0)
                 min_num_coins[n] = std::min(min_num_coins[n], 1 + min_num_coins[n - coins[c]]);
@@ -1321,8 +1342,8 @@ int house_robber_iii_337(TreeNode* root)
  https://leetcode.com/problems/find-the-difference
  Find The Difference
 
- Most solutions to this problem will involve constructing a histogram of letters and 
- then using that to determine which character is missing from the two strings (by the 
+ Most solutions to this problem will involve constructing a histogram of letters and
+ then using that to determine which character is missing from the two strings (by the
  difference in frequency)
 */
 char find_the_difference_389(const std::string& s1, const std::string& s2)
@@ -1355,7 +1376,7 @@ char find_the_difference_389_um(const std::string& s1, const std::string& s2)
     for(char c: s2)
         hist[c]++;
 
-    // Check 
+    // Check
     for(auto& [key, val]: hist)
     {
         if(val < 2)
@@ -1380,7 +1401,7 @@ std::vector<std::vector<int>> matrix_542(const std::vector<std::vector<int>>& ma
     std::queue<pos_t> q;
 
     std::vector<std::vector<int>> dist(num_rows, std::vector<int>(num_cols, -1));
-    // Find starting candidates 
+    // Find starting candidates
     for(int r = 0; r < num_rows; ++r)
     {
         for(int c = 0; c < num_cols; ++c)
@@ -1396,7 +1417,7 @@ std::vector<std::vector<int>> matrix_542(const std::vector<std::vector<int>>& ma
     std::array<int, 4> row_dirs = {1, -1, 0, 0};
     std::array<int, 4> col_dirs = {0, 0, -1, 1};
 
-    // BFS on matrix 
+    // BFS on matrix
     while(!q.empty())
     {
         pos_t cur_pos = q.front();
@@ -1408,7 +1429,7 @@ std::vector<std::vector<int>> matrix_542(const std::vector<std::vector<int>>& ma
             int nrow = cur_pos.first + row_dirs[r];
             int ncol = cur_pos.second + col_dirs[r];
 
-            // bounds check 
+            // bounds check
             if((0 <= nrow && nrow < num_rows) && (0 <= ncol && ncol < num_cols) && dist[nrow][ncol] == -1)
             {
                 dist[nrow][ncol] = dist[cur_pos.first][cur_pos.second] + 1;
@@ -1447,7 +1468,7 @@ int kth_symbol_in_grammar_779(int n, int k)
 */
 std::vector<int> find_eventual_safe_states_802(const std::vector<std::vector<int>>& graph)
 {
-    // Form an adjacency list from the input 
+    // Form an adjacency list from the input
     int N = graph.size();
     std::vector<int> ans;
 
@@ -1464,7 +1485,7 @@ std::vector<int> find_eventual_safe_states_802(const std::vector<std::vector<int
             adj[i].push_back(graph[i][r]);
     }
 
-    // TODO: Debug only, remove this 
+    // TODO: Debug only, remove this
     std::cout << "[" << __func__ << "] adj list: " << std::endl;
     for(unsigned n = 0; n < adj.size(); ++n)
     {
@@ -1477,10 +1498,10 @@ std::vector<int> find_eventual_safe_states_802(const std::vector<std::vector<int
     // Visited set
     std::vector<int> vis(N, 0);
 
-    // DFS stack 
+    // DFS stack
     std::stack<int> node_stack;
 
-    // Try and dfs from every node 
+    // Try and dfs from every node
     for(unsigned n = 0; n < N; ++n)
     {
         if(vis[n] == 0)
@@ -1497,7 +1518,7 @@ std::vector<int> find_eventual_safe_states_802(const std::vector<std::vector<int
                 {
                     if(vis[child] == 0)
                     {
-                        // DFS from here 
+                        // DFS from here
                         node_stack.push(child);
                     }
                 }
@@ -1542,7 +1563,7 @@ int minimum_falling_path_sum_931(const std::vector<std::vector<int>>& grid)
     // tabulate the cost for all cells in the grid
     std::vector<std::vector<int>> dp(num_rows, std::vector<int>(num_cols, 0));
 
-    // set up the first row 
+    // set up the first row
     for(int c = 0; c < num_cols; ++c)
         dp[0][c] = grid[0][c];
 
@@ -1589,7 +1610,7 @@ int minimum_falling_path_sum_931_two_rows(const std::vector<std::vector<int>>& g
     // Init the cost array
     for(int c = 0; c < num_cols; ++c)
         prev_row[c] = grid[0][c];
-    
+
     int dir_down, dir_ld, dir_rd;
     for(int r = 1; r < num_rows; ++r)
     {
@@ -1629,21 +1650,21 @@ int oranges_rotting_994(const std::vector<std::vector<int>>& grid)
     const std::array<int, 4> row_dirs = {0, 0, -1, 1};
     const std::array<int, 4> col_dirs = {1, -1, 0, 0};
 
-    // On each turn we do BFS from any fresh orange to 
+    // On each turn we do BFS from any fresh orange to
     int num_rows = grid.size();
     int num_cols = grid[0].size();
-    
+
     using position = std::pair<int, int>;
 
-    // Can't modify grid here, so we need another way to keep track of which 
-    // tiles have changed with each turn. The "distance" here represents the turn 
+    // Can't modify grid here, so we need another way to keep track of which
+    // tiles have changed with each turn. The "distance" here represents the turn
     // in which an orange turned bad, if it did.
     auto dist = std::vector<std::vector<int>>(num_rows, std::vector<int>(num_cols, -1));
 
     std::queue<position> q;
 
-    // In the first pass we work out which oranges are fresh - these are the 
-    // starting locations for each BFS pass 
+    // In the first pass we work out which oranges are fresh - these are the
+    // starting locations for each BFS pass
     for(int r = 0; r < num_rows; ++r)
     {
         for(int c = 0; c < num_cols; ++c)
@@ -1662,13 +1683,13 @@ int oranges_rotting_994(const std::vector<std::vector<int>>& grid)
         position cur_pos = q.front();
         q.pop();
 
-        // Check neighbours 
+        // Check neighbours
         for(unsigned d = 0; d < 4; d++)
         {
             int new_row = cur_pos.first + row_dirs[d];
             int new_col = cur_pos.second + col_dirs[d];
 
-            // bounds check 
+            // bounds check
             if((0 <= new_row && new_row < num_rows) && (0 <= new_col && new_col < num_cols))
             {
                 // we only care about the progression of fresh oranges
@@ -1707,14 +1728,14 @@ int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid)
     int num_rows = grid.size();
     int num_cols = grid[0].size();
 
-    // We still need to track the state of the grid somehow 
+    // We still need to track the state of the grid somehow
     auto visited = std::vector<std::vector<int>>(num_rows, std::vector<int>(num_cols, -1));
 
     using pos_t = std::pair<int,int>;
     std::queue<pos_t> q;
 
     // Find the position of all rotten and fresh oranges.
-    // Rotten oranges are the start points for BFS, fresh oranges are added to a count 
+    // Rotten oranges are the start points for BFS, fresh oranges are added to a count
     int num_fresh_oranges = 0;
     for(int r = 0; r < num_rows; ++r)
     {
@@ -1730,28 +1751,28 @@ int oranges_rotting_994_2_eb(const std::vector<std::vector<int>>& grid)
         }
     }
 
-    // We can actually exit here if there turns out to be no fresh oranges 
+    // We can actually exit here if there turns out to be no fresh oranges
     if(num_fresh_oranges == 0)
         return 0;
 
-    // Directions 
+    // Directions
     std::array<int, 4> row_dir = {0, 0, -1, 1};
     std::array<int, 4> col_dir = {1, -1, 0, 0};
 
-    // Perform BFS 
+    // Perform BFS
     int max_time = 0;           // to offset the -1 starting value
     while(!q.empty())
     {
         pos_t cur_pos = q.front();
         q.pop();
 
-        // Check neighbours 
+        // Check neighbours
         for(unsigned d = 0; d < 4; ++d)
         {
             int nrow = cur_pos.first + row_dir[d];
             int ncol = cur_pos.second + col_dir[d];
 
-            // bounds check 
+            // bounds check
             if((0 <= nrow && nrow < num_rows) && (0 <= ncol && ncol < num_cols))
             {
                 // is this neighbour a fresh orange that hasn't been visited?
@@ -1804,11 +1825,11 @@ int oranges_rotting_994_3_eb(const std::vector<std::vector<int>>& grid)
     if(num_fresh_oranges == 0)
         return 0;
 
-    // directions 
+    // directions
     std::array<int, 4> row_dirs = {-1, 1, 0, 0};
     std::array<int, 4> col_dirs = {0, 0, 1, -1};
 
-    // Now BFS on grid 
+    // Now BFS on grid
     int max_time = 0;
     while(!q.empty())
     {
@@ -1820,7 +1841,7 @@ int oranges_rotting_994_3_eb(const std::vector<std::vector<int>>& grid)
             int nrow = cur_pos.first + row_dirs[d];
             int ncol = cur_pos.second + col_dirs[d];
 
-            // bounds check 
+            // bounds check
             if((0 <= nrow && nrow < num_rows) && (0 <= ncol && ncol < num_cols))
             {
                 // is this a fresh unvisited position
@@ -1890,8 +1911,8 @@ int last_stone_weight_ii_1049(std::vector<int>& stones)
 
 
 /*
- * Question 1091 
- * Shortest Path in Binary Matrix 
+ * Question 1091
+ * Shortest Path in Binary Matrix
  * https://leetcode.com/problems/shortest-path-in-binary-matrix/
  */
 int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& grid)
@@ -1923,7 +1944,7 @@ int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& gri
         auto cur_res = q.front();
         q.pop_front();
 
-        // check if we reached the end 
+        // check if we reached the end
         if(cur_res[0] == num_rows-1 && cur_res[1] == num_cols-1)
             return cur_res[2];          // current distance
 
@@ -1938,10 +1959,10 @@ int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& gri
 
             std::cout << "[" << __func__ << "] trying position ("
                 << row_inc << "," << col_inc << "), dir = ("
-                << dir.first << "," << dir.second << ")" 
+                << dir.first << "," << dir.second << ")"
                 << std::endl;
 
-            // bounds check 
+            // bounds check
             if((row_inc > 0 && row_inc < num_rows) &&
                (col_inc > 0 && col_inc < num_cols) &&
                (grid[row_inc][col_inc] != 1) &&
@@ -1958,8 +1979,8 @@ int shortest_path_in_binary_matrix_1091(const std::vector<std::vector<int>>& gri
 
 
 /*
- * Question 1162 
- * As far from land as possible 
+ * Question 1162
+ * As far from land as possible
  * https://leetcode.com/problems/as-far-from-land-as-possible/
  */
 int as_far_from_land_as_possible_1162(const std::vector<std::vector<int>>& grid)
@@ -1974,7 +1995,7 @@ int as_far_from_land_as_possible_1162(const std::vector<std::vector<int>>& grid)
     using pos_t = std::pair<int, int>;
     std::queue<pos_t> q;
 
-    // I guess we should find candidates here 
+    // I guess we should find candidates here
     for(int r = 0; r < num_rows; ++r)
     {
         for(int c = 0; c < num_cols; ++c)
@@ -2002,13 +2023,13 @@ int as_far_from_land_as_possible_1162(const std::vector<std::vector<int>>& grid)
         pos_t cur_pos = q.front();
         q.pop();
 
-        // Check neighbours - Manhattan distance implies 4-directional 
+        // Check neighbours - Manhattan distance implies 4-directional
         for(int r = 0; r < 4; ++r)
         {
             int nrow = cur_pos.first + row_dirs[r];
             int ncol = cur_pos.second + col_dirs[r];
 
-            // bounds check 
+            // bounds check
             if((0 <= nrow && nrow < num_rows) && (0 <= ncol && ncol < num_cols))
             {
                 if(grid[nrow][ncol] == 0 && distance[nrow][ncol] == -1)
@@ -2042,7 +2063,7 @@ bool is_inside(int row, int col)
     return false;
 }
 
-std::vector<std::vector<int>> queensAttackTheKing(std::vector<std::vector<int>>& queens, std::vector<int>& king) 
+std::vector<std::vector<int>> queensAttackTheKing(std::vector<std::vector<int>>& queens, std::vector<int>& king)
 {
     int row, col;
     std::vector<std::vector<bool>> has_queen(8, std::vector<bool>(8));
@@ -2053,8 +2074,8 @@ std::vector<std::vector<int>> queensAttackTheKing(std::vector<std::vector<int>>&
     {
         has_queen[q[0]][q[1]] = true;
     }
-    
-    // walk over the board in delta co-ordinates 
+
+    // walk over the board in delta co-ordinates
     for(int d1 = -1; d1 <=1; d1++)
     {
         for(int d2 = -1; d2 <= 1; d2++)
@@ -2084,7 +2105,7 @@ std::vector<std::vector<int>> queensAttackTheKing(std::vector<std::vector<int>>&
 
 // ==== QUESTION 1143
 // https://leetcode.com/problems/longest-common-subsequence/
-// This solution is okay (memoization brings time complexity down to 
+// This solution is okay (memoization brings time complexity down to
 int longest_common_subsequence_1143(const std::string& text1, const std::string& text2)
 {
     if(text1.empty() || text2.empty())
@@ -2097,7 +2118,7 @@ int longest_common_subsequence_1143(const std::string& text1, const std::string&
     if(it != answer.end())
         return it->second;
 
-    // Actually we only have to check 
+    // Actually we only have to check
 
 
 }
@@ -2145,20 +2166,20 @@ int shortest_path_1293(const std::vector<std::vector<int>>& grid, int k)
 //    this->source = source;
 //    std::vector<int> adj[n];
 //
-//    // Create adjaceny list 
+//    // Create adjaceny list
 //    for(unsigned i = 0; i < edges.size(); ++i)
 //    {
 //        adj[edges[i][0]].push_back(edges[i][1]);
 //        adj[edges[i][1]].push_back(edges[i][0]);
 //    }
-//    
+//
 //    return this->dfs(this->source);
 //}
 
 
 // TODO: an iterative solution
 /*
- * Question 1642 
+ * Question 1642
  * Furthest Building You Can Reach
  * https://leetcode.com/problems/furthest-building-you-can-reach/
  */
@@ -2192,8 +2213,8 @@ int furthest_building_you_can_reach_1642(const std::vector<int>& heights, int br
             continue;
 
         // Prefer bricks - we place bricks in a priority queue so that we can switch
-        // them out later for ladders when we run out. We use a max heap because there 
-        // isn't any restriction on which swtich we make, and so we should swap the 
+        // them out later for ladders when we run out. We use a max heap because there
+        // isn't any restriction on which swtich we make, and so we should swap the
         // largest number of bricks we have used anywhere for one ladder.
         bricks_used += diff;
         brick_heap.push(bricks_used);

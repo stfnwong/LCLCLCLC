@@ -133,6 +133,7 @@ https://leetcode.com/problems/minimum-depth-of-binary-tree/
 Minimum depth of binary tree
 */
 int min_depth_of_binary_tree_111(const TreeNode* root);
+int min_depth_of_binary_tree_111_rec(const TreeNode* root);
 
 
  /*

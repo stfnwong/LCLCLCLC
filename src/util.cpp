@@ -33,6 +33,11 @@ std::string vec_vec_to_str(const std::vector<std::vector<int>>& grid)
 {
     std::ostringstream oss;
     unsigned num_rows = grid.size();
+
+    // If there are zero rows then this is an empty vector
+    if(num_rows == 0)
+        return "";
+
     unsigned num_cols = grid[0].size();
 
     for(unsigned r = 0; r < num_rows; ++r)
