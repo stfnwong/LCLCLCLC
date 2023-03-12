@@ -678,6 +678,151 @@ std::vector<int> plus_one_66(std::vector<int>& digits)
     return digits;
 }
 
+/*
+ * Question 79
+ * Word Search
+ * https://leetcode.com/problems/word-search/
+ */
+bool word_search_79(const std::vector<std::vector<char>>& grid, const std::string& word)
+{
+    // Iterate over the board and find the starting character. Then try to do DFS from 
+    // there on neighbours, moving if we find the next character in the word. If we 
+    // find a character that is not the next character, backtrack and try another direction
+    
+    int num_rows = grid.size();
+    int num_cols = grid[0].size();
+
+    // (row, col, char_idx)
+    using pos_t = std::tuple<int, int, int>;
+    std::stack<pos_t> st;
+    // to save worrying about issues with bool I am using int
+    std::vector<std::vector<int>> visited(num_rows, std::vector<int>(num_cols, 0));
+
+    for(int r = 0; r < num_rows; ++r)
+    {
+        for(int c = 0; c < num_cols; ++c)
+        {
+            if(grid[r][c] == word[0])
+            {
+                st.push({r, c, 0});
+                visited[r][c] = 1;
+            }
+        }
+    }
+
+    if(st.empty())
+        return false;       // can't even find first char 
+
+    std::array<int, 4> row_dir = {1, -1, 0, 0};
+    std::array<int, 4> col_dir = {0, 0, -1, 1};
+
+    while(!st.empty())
+    {
+        pos_t cur_pos = st.top();
+        st.pop();
+
+        int row = std::get<0>(cur_pos);
+        int col = std::get<1>(cur_pos);
+        int idx = std::get<2>(cur_pos);
+
+        //std::cout << "[" << __func__ << "] params: "  << std::endl;
+        //std::cout << "idx: " << idx << ", pos=(" << row << "," << col << ") has char [" << grid[row][col] <<"], need char [" << word[idx] << "] stack has " << st.size() << " elements" << std::endl;
+
+        if(word[idx] != grid[row][col])
+        {
+            visited[row][col] = 0;   // need to unvisit rejected cells
+            continue;
+        }
+
+        if(idx == int(word.length())-1)
+            return true;
+
+        // check neighbours 
+        for(int r = 0; r < 4; ++r)
+        {
+            int nrow = row + row_dir[r];
+            int ncol = col + col_dir[r];
+
+            if((0 <= nrow && nrow < num_rows) && (0 <= ncol && ncol < num_cols) && visited[nrow][ncol] == 0)
+            {
+                st.push({nrow, ncol, idx+1});
+                visited[nrow][ncol] = 1;
+            }
+        }
+    }
+
+    return false;
+}
+
+// A recursive backtracking solution for the same problem
+bool ws79_search(
+        const std::vector<std::vector<char>>& grid, 
+        std::vector<std::vector<int>>& visited,
+        int row,
+        int col,
+        int idx,
+        int num_rows,
+        int num_cols,
+        const std::string& word
+        )
+{
+    if(idx == int(word.length()))
+        return true;
+
+    // reverse bounds check 
+    if(row < 0 || row >= num_rows || col < 0 || col >= num_cols)
+        return false;
+
+    //std::cout << "[" << __func__ << "] idx: " << idx << ", pos(" << row 
+    //    << "," << col << ") need char [" << word[idx] << "], grid has char ["
+    //    << grid[row][col] << "]" << std::endl;
+
+    // wrong char 
+    if(grid[row][col] != word[idx])
+        return false;
+
+    if(visited[row][col] == 1)
+        return false;
+
+    visited[row][col] = 1;
+
+    bool up, down, left, right;
+
+    left = ws79_search(grid, visited, row, col-1, idx+1, num_rows, num_cols, word);
+    right = ws79_search(grid, visited, row, col+1, idx+1, num_rows, num_cols, word);
+    up = ws79_search(grid, visited, row-1, col, idx+1, num_rows, num_cols, word);
+    down = ws79_search(grid, visited, row+1, col, idx+1, num_rows, num_cols, word);
+
+    visited[row][col] = 0;
+
+    return left || right || up || down;
+}
+
+bool word_search_79_rec(const std::vector<std::vector<char>>& grid, const std::string& word)
+{
+    int num_rows = grid.size();
+    int num_cols = grid[0].size();
+
+    std::vector<std::vector<int>> visited(num_rows, std::vector<int>(num_cols, 0));
+    int idx = 0;
+
+    // Initially we don't know where the starting characters are 
+    for(int r = 0; r < num_rows; ++r)
+    {
+        for(int c = 0; c < num_cols; ++c)
+        {
+            if(grid[r][c] == word[idx])
+            {
+                if(ws79_search(grid, visited, r, c, idx, num_rows, num_cols, word))
+                    return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+
 
 /*
  * Question 98
@@ -718,6 +863,34 @@ bool is_valid_bst_98(TreeNode* root)
     return true;
 }
 
+// Recursive formulation of above
+bool is_valid_bst_98_rec(TreeNode* root)
+{
+    if(!root)
+        return true;
+
+    // Left must be less, right must be greater
+    if(root->left && (root->left->val >= root->val))
+        return false;
+
+    if(root->right && (root->right->val <= root->val))
+        return false;
+
+    return is_valid_bst_98_rec(root->left) &&  is_valid_bst_98_rec(root->right);
+}
+
+/*
+ * Question 99
+ * Recover Binary Search Tree
+ * https://leetcode.com/problems/recover-binary-search-tree
+ */
+// In the original problem we just modify the tree in place
+TreeNode* recover_binary_search_tree_99(TreeNode* root)
+{
+    // TODO
+    return root;
+}
+
 /*
  * Question 100
  * Same Tree
@@ -748,9 +921,9 @@ bool same_tree_100(TreeNode* p, TreeNode* q)
         if(p_node->val != q_node->val)
             return false;
 
-        if(p_node->left && !q_node->left || !p_node->left && q_node->left)
+        if((p_node->left && !q_node->left) || (!p_node->left && q_node->left))
             return false;
-        if(p_node->right && !q_node->right || !p_node->right && q_node->right)
+        if((p_node->right && !q_node->right) || (!p_node->right && q_node->right))
             return false;
 
         if(p_node->left)
@@ -767,8 +940,148 @@ bool same_tree_100(TreeNode* p, TreeNode* q)
     return true;
 }
 
-// TODO: the recursive solution is probably more elegant...
+// Another simpler recursive solution.
+bool same_tree_100_rec(TreeNode* p, TreeNode* q)
+{
+    if(!p && !q)
+        return true;
 
+    if((!p && q) || (p && !q))
+        return false;
+
+    if(p->val != q->val)
+        return false;
+
+    return same_tree_100_rec(p->left, q->left) && same_tree_100_rec(p->right, q->right);
+}
+
+
+/*
+ * Question 101
+ * Symmetric Tree
+ * https://leetcode.com/problems/symmetric-tree
+ */
+// Recursion helper function
+bool is_symmetric_101_rec(const TreeNode* p, const TreeNode* q)
+{
+    if(!p && !q)
+        return true;
+
+    if(p && q && (p->val == q->val))
+        return is_symmetric_101_rec(p->left, q->right) && is_symmetric_101_rec(p->right, q->left);
+
+    return false;
+
+    //if((p && !q) || (!p && q))
+    //    return false;
+    //if(p->val != q->val)
+    //    return false;
+
+    //return is_symmetric_101_rec(p->left, q->left) && is_symmetric_101_rec(p->right, q->right);
+}
+
+bool symmetric_tree_101(const TreeNode* root)
+{
+    if(!root)
+        return true;
+    if(root->left && root->right)
+        return is_symmetric_101_rec(root->left, root->right);
+
+    return false;
+}
+
+
+// Can we do an iterative solution?
+bool symmetric_tree_101_iter(const TreeNode* root)
+{
+    if(!root)
+        return true;
+
+    // if root doesn't have two children then skip also
+    if(!root->left && !root->right)
+        return true;    // self symmetric
+
+    std::stack<const TreeNode*> p_stack;
+    std::stack<const TreeNode*> q_stack;
+
+    p_stack.push(root->left);
+    q_stack.push(root->right);
+
+    while(!p_stack.empty())
+    {
+        // Does this have any effect? I only push nodes when they both exist...
+        //if(q_stack.empty())
+        //    return false;
+
+        const TreeNode* p_node = p_stack.top();
+        const TreeNode* q_node = q_stack.top();
+        p_stack.pop();
+        q_stack.pop();
+
+        if(p_node->val != q_node->val)
+            return false;
+
+        // If nodes have no children then continue.
+        // NOTE: is it simpler to allow null values on the stack and check for that?
+        if((!p_node->left && !p_node->right) && (!q_node->left && !q_node->right))
+            continue;
+
+        if(p_node->left && q_node->right)
+        {
+            p_stack.push(p_node->left);
+            q_stack.push(q_node->right);
+        }
+        else if(p_node->right && q_node->left)
+        {
+            p_stack.push(p_node->right);
+            q_stack.push(q_node->left);
+        }
+        else
+            return false;
+    }
+
+    return true;
+}
+
+// Same as above, but stack can contain nullptr
+bool symmetric_tree_101_iter_null(const TreeNode* root)
+{
+    if(!root)
+        return true;
+
+    if(!root->left && !root->right)
+        return true;
+
+    std::stack<const TreeNode*> p_stack;
+    std::stack<const TreeNode*> q_stack;
+
+    p_stack.push(root->left);
+    q_stack.push(root->right);
+
+    while(!p_stack.empty())
+    {
+        const TreeNode* p_node = p_stack.top();
+        const TreeNode* q_node = q_stack.top();
+        p_stack.pop();
+        q_stack.pop();
+        // Note that nodes can be null
+
+        // We've reached the bottom of the tree
+        if(!p_node && !q_node)
+            continue;
+        // If only one is null then the tree can't be symmetric
+        if((p_node && !q_node) || (!p_node && q_node))
+            return false;
+
+        if(p_node->val != q_node->val)
+            return false;
+
+        p_stack.push(p_node->left); q_stack.push(q_node->right);
+        p_stack.push(p_node->right); q_stack.push(q_node->left);
+    }
+
+    return true;
+}
 
 /*
  * Question 102
@@ -779,6 +1092,7 @@ std::vector<std::vector<int>> level_order_traversal_102(const TreeNode* root)
 {
     if(not root)
         return std::vector<std::vector<int>>();
+
 
     std::queue<TreeNode*> node_q;
     std::vector<std::vector<int>> traversal;
@@ -1236,15 +1550,82 @@ int count_nodes_222(TreeNode* root)
     return (1 << depth) + left - 1;
 }
 
+/*
+ * Question 230
+ * Kth smallest element in BST
+ * https://leetcode.com/problems/kth-smallest-element-in-a-bst
+ */
+int kth_smallest_element_in_bst_230(const TreeNode* root, int k)
+{
+    // Turns out that if this is a real BST the in-order traversal will
+    // give the elements in sorted order.
+    if(!root)
+        return 0;       // I actually don't know what the failure condition is here
+
+    int idx = 0;
+
+    std::stack<const TreeNode*> s;
+    const TreeNode* cur_node = root;
+
+    while(cur_node || !s.empty())
+    {
+        // get the leftmost child of the current node
+        while(cur_node)
+        {
+            s.push(cur_node);
+            cur_node = cur_node->left;
+        }
+
+        // Now backtrack one step
+        cur_node = s.top();
+        s.pop();
+        idx++;
+        if(idx == k)
+            return cur_node->val;
+        cur_node = cur_node->right;
+    }
+
+    return cur_node->val;
+}
+
+
+// Just do a recursive in-order traversal k times
+void ksme_bst_230_rec(const TreeNode* root, std::vector<int>& traversal, int k)
+{
+    if(!root)
+        return;       // is this a real base case?
+
+    if(int(traversal.size()) == k)
+        return;
+
+    if(root->left)
+        ksme_bst_230_rec(root->left, traversal, k);
+    traversal.push_back(root->val);
+    if(root->right)
+        ksme_bst_230_rec(root->right, traversal, k);
+}
+
+int kth_smallest_element_in_bst_230_rec(const TreeNode* root, int k)
+{
+    if(!root)
+        return 0;
+
+    std::vector<int> traversal;
+    ksme_bst_230_rec(root, traversal, k);
+
+    return (traversal.size() > 0) ? traversal[k-1] : 0;
+}
+
 
 /*
  Question 239
  https://leetcode.com/problems/sliding-window-maximum/
  Maximum in sliding window
 */
-std::vector<int> max_sliding_window_239_deque(const std::vector<int>& nums, int wsize)
+std::vector<int> max_sliding_window_239_deque(const std::vector<int>& nums, int k)
 {
     std::vector<int> result;
+
     if(nums.size() == 0)
         return result;
 
@@ -1265,15 +1646,43 @@ std::vector<int> max_sliding_window_239_deque(const std::vector<int>& nums, int 
     // to the back. This has the effect of popping every value smaller than the
     // current value from the back, leaving the current value as the new minimum value.
     //
-    //
-    std::deque<unsigned> idx_q;
 
-    for(unsigned idx = 0; idx < nums.size() - wsize; ++idx)
+    // holds the index of a given value in order sorted from largest...smallest in the
+    // original array. That is, d[0] is the index of the largest value in nums.
+    std::deque<int> d;
+
+    // put the first k element in the deque
+    for(int i = 0; i < k; ++i)
     {
-
+        while(!d.empty() && nums[i] > nums[d.back()])
+            d.pop_back();
+        d.push_back(i);
     }
 
+    for(int i = k; i < int(nums.size()); ++i)
+    {
+        result.push_back(nums[d.front()]);
+        // Thw window slides to the right (increasing), remove elements too far to the left
+        if(!d.empty() && (d.front() <= i-k))
+            d.pop_front();
+
+        // Remove any elements from the back that are larger than the current element
+        while(!d.empty() && (nums[i] >= nums[d.back()]))
+            d.pop_back();
+
+        d.push_back(i);
+    }
+
+    // NOTE: why does this miss the last element?
+    result.push_back(nums[d.front()]);
+
     return result;
+}
+
+
+// TODO: also possible to implement with two stacks
+std::vector<int> max_sliding_window_239_two_stack(const std::vector<int>& nums, int k)
+{
 }
 
 /*
@@ -1502,7 +1911,7 @@ std::vector<int> find_eventual_safe_states_802(const std::vector<std::vector<int
     std::stack<int> node_stack;
 
     // Try and dfs from every node
-    for(unsigned n = 0; n < N; ++n)
+    for(int n = 0; n < N; ++n)
     {
         if(vis[n] == 0)
         {

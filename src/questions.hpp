@@ -107,11 +107,29 @@ bool can_jump(std::vector<int>& nums);
 std::vector<int> plus_one_66(std::vector<int>& digits);
 
 /*
+ * Question 79
+ * Word Search
+ * https://leetcode.com/problems/word-search/
+ */
+bool word_search_79(const std::vector<std::vector<char>>& grid, const std::string& word);
+bool word_search_79_rec(const std::vector<std::vector<char>>& grid, const std::string& word);
+
+/*
  * Question 98
  * Valid Binary Search Tree
  * https://leetcode.com/problems/valid-binary-search-tree/
  */
 bool is_valid_bst_98(TreeNode* root);
+bool is_valid_bst_98_rec(TreeNode* root);
+
+
+/*
+ * Question 99
+ * Recover Binary Search Tree
+ * https://leetcode.com/problems/recover-binary-search-tree
+ */
+// In the original problem we just modify the tree in place 
+TreeNode* recover_binary_search_tree_99(TreeNode* root);
 
 /*
  * Question 100
@@ -119,6 +137,16 @@ bool is_valid_bst_98(TreeNode* root);
  * https://leetcode.com/problems/same-tree/
  */
 bool same_tree_100(TreeNode* p, TreeNode* q);
+bool same_tree_100_rec(TreeNode* p, TreeNode* q);
+
+/*
+ * Question 101
+ * Symmetric Tree
+ * https://leetcode.com/problems/symmetric-tree
+ */
+bool symmetric_tree_101(const TreeNode* root);
+bool symmetric_tree_101_iter(const TreeNode* root);
+bool symmetric_tree_101_iter_null(const TreeNode* root);
 
 /*
  * Question 102
@@ -203,6 +231,23 @@ int house_robber_198(const std::vector<int>& nums);
  Count Complete Tree Nodes
 */
 int count_nodes_222(TreeNode* root);
+
+/*
+ * Question 230
+ * Kth smallest element in BST
+ * https://leetcode.com/problems/kth-smallest-element-in-a-bst
+ */
+int kth_smallest_element_in_bst_230(const TreeNode* root, int k);
+int kth_smallest_element_in_bst_230_rec(const TreeNode* root, int k);
+
+/*
+ Question 239
+ https://leetcode.com/problems/sliding-window-maximum/
+ Maximum in sliding window
+*/
+std::vector<int> max_sliding_window_239_deque(const std::vector<int>& nums, int k);
+//std::vector<int> max_sliding_window_239(const std::vector<int>& nums, int k);
+
 
 // Question 322
 // https://leetcode.com/problems/coin-change/

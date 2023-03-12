@@ -551,6 +551,37 @@ TEST_CASE("question_66", "leetcode")
     }
 }
 
+/*
+ * Question 79
+ * Word Search
+ * https://leetcode.com/problems/word-search/
+ */
+TEST_CASE("question_79", "leetcode")
+{
+    // using char here allows for comparisons like grid[r][c] == word[0]
+    // rather than needing grid[r][c][0] == word[0]
+    using grid_t = std::vector<std::vector<char>>;
+    std::vector<grid_t> inputs = {
+        {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}},
+        {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}},
+    };
+
+    std::vector<std::string> inp_words = {"ABCCED", "SEE"};
+    std::vector<bool> exp_outputs = {true, true};
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+    REQUIRE(inp_words.size() == exp_outputs.size());
+
+    bool out;
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        out = word_search_79(inputs[t], inp_words[t]);
+        REQUIRE(out == exp_outputs[t]);
+        out = word_search_79_rec(inputs[t], inp_words[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
 
 /*
  * Question 98
@@ -567,11 +598,42 @@ TEST_CASE("question_98", "leetcode")
 
     REQUIRE(inputs.size() == exp_outputs.size());
 
+    bool out;
     for(unsigned t = 0; t < exp_outputs.size(); ++t)
     {
         TreeNode* root = repr_to_tree(inputs[t]);
-        bool out = is_valid_bst_98(root);
+        out = is_valid_bst_98(root);
         REQUIRE(out == exp_outputs[t]);
+        out = is_valid_bst_98_rec(root);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+/*
+ * Question 99
+ * Recover Binary Search Tree
+ * https://leetcode.com/problems/recover-binary-search-tree
+ */
+TEST_CASE("question_99", "leetcode")
+{
+    std::vector<std::string> inputs = {
+        "[1, 3, null, null, 2]",
+        "[3, 1, 4, null, null, 2]"
+    };
+    std::vector<std::string> exp_outputs = {
+        "[3, 1, null, null, 2]",
+        "[2, 1, 4, null, null, 3]"
+    };
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+    
+    std::string out_repr;
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        TreeNode* root = repr_to_tree(inputs[t]);
+        TreeNode* out_tree = recover_binary_search_tree_99(root);
+        out_repr = tree_to_repr(out_tree);
+        REQUIRE(out_repr == exp_outputs[t]);
     }
 }
 
@@ -590,16 +652,46 @@ TEST_CASE("question_100", "leetcode")
 
     REQUIRE(inputs.size() == exp_outputs.size());
 
+    bool out;
     for(unsigned t = 0; t < exp_outputs.size(); ++t)
     {
         // Create the two trees
         TreeNode* t1 = repr_to_tree(inputs[t].first);
         TreeNode* t2 = repr_to_tree(inputs[t].second);
-        bool out = same_tree_100(t1, t2);
+        out = same_tree_100(t1, t2);
+        REQUIRE(out == exp_outputs[t]);
+        out = same_tree_100_rec(t1, t2);
         REQUIRE(out == exp_outputs[t]);
     }
 }
 
+/*
+ * Question 101
+ * Symmetric Tree
+ * https://leetcode.com/problems/symmetric-tree
+ */
+TEST_CASE("question_101", "leetcode")
+{
+    std::vector<std::string> inputs = {
+        "[1, 2, 2, 3, 4, 4, 3]",
+        "[1, 2, 2, null, 3, null, 3]",
+    };
+    std::vector<bool> exp_outputs = {true, false};
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    bool out;
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        TreeNode* root = repr_to_tree(inputs[t]);
+        out = symmetric_tree_101(root);
+        REQUIRE(out == exp_outputs[t]);
+        out = symmetric_tree_101_iter(root);
+        REQUIRE(out == exp_outputs[t]);
+        out = symmetric_tree_101_iter_null(root);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
 
 /*
  * Question 102
@@ -842,6 +934,33 @@ TEST_CASE("question_222", "leetcode")
     }
 }
 
+/*
+ * Question 230
+ * Kth smallest element in BST
+ * https://leetcode.com/problems/kth-smallest-element-in-a-bst
+ */
+TEST_CASE("question_230", "leetcode")
+{
+    using input_type = std::pair<std::string, int>;
+    std::vector<input_type> inputs = {
+        {"[3, 1, 4, null, 2]", 1},
+        {"[5, 3, 6, 2, 4, null, null, 1]", 3},
+    };
+    std::vector<int> exp_outputs = {1, 3};
+
+    REQUIRE(inputs.size( ) == exp_outputs.size());
+
+    int out;
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        TreeNode* root = repr_to_tree(inputs[t].first);
+        out =  kth_smallest_element_in_bst_230(root, inputs[t].second);
+        REQUIRE(out == exp_outputs[t]);
+        out =  kth_smallest_element_in_bst_230_rec(root, inputs[t].second);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
 
 /*
  * Question 239
@@ -861,6 +980,18 @@ TEST_CASE("question_239", "leetcode")
         {1}
     };
 
+    REQUIRE(input_arrays.size() == exp_outputs.size());
+    REQUIRE(input_wsize.size() == exp_outputs.size());
+
+    std::vector<int> out;
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        out = max_sliding_window_239_deque(input_arrays[t], input_wsize[t]);
+        std::cout << "[" << __func__ << "] got out vector: " << vec_to_str(out) << std::endl;
+        REQUIRE(out.size() == exp_outputs[t].size());
+        for(unsigned i = 0; i < out.size(); ++i)
+            REQUIRE(out[i] == exp_outputs[t][i]);
+    }
 
 }
 
