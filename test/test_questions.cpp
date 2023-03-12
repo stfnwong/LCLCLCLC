@@ -564,10 +564,12 @@ TEST_CASE("question_79", "leetcode")
     std::vector<grid_t> inputs = {
         {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}},
         {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}},
+        {{'d', 'e', 'f', 'g'}, {'m', 'n', 'q', 'r'}, {'p', 's', 't', 'v'}},
+        {{'d', 'e', 'f', 'g'}, {'m', 'n', 'q', 'r'}, {'p', 's', 't', 'v'}},
     };
 
-    std::vector<std::string> inp_words = {"ABCCED", "SEE"};
-    std::vector<bool> exp_outputs = {true, true};
+    std::vector<std::string> inp_words = {"ABCCED", "SEE", "vrqnsp", "snev"};
+    std::vector<bool> exp_outputs = {true, true, true, false};
 
     REQUIRE(inputs.size() == exp_outputs.size());
     REQUIRE(inp_words.size() == exp_outputs.size());

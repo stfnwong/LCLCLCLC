@@ -806,7 +806,8 @@ bool word_search_79_rec(const std::vector<std::vector<char>>& grid, const std::s
     std::vector<std::vector<int>> visited(num_rows, std::vector<int>(num_cols, 0));
     int idx = 0;
 
-    // Initially we don't know where the starting characters are 
+    // Initially we don't know where the starting characters are, so iterate over all
+    // cells and start a search from cells matching the first character.
     for(int r = 0; r < num_rows; ++r)
     {
         for(int c = 0; c < num_cols; ++c)
