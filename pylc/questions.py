@@ -1033,6 +1033,74 @@ class Trie:
         pass
 
 
+# Question 210
+# https://leetcode.com/problems/course-schedule/
+# Course Schedule II
+def course_schedule_ii_210(num_courses:int, prereqs:List[List[int]]) -> List[int]:
+    # This question is effectively asking for a topological sort of a graph
+
+    # Create a graph
+    graph = {i: [] for i in range(num_courses)}
+    for v, e in prereqs:
+        graph[v].append(e)
+
+    indeg = {v: 0 for v in graph}
+    for nb in graph.values():
+        for n in nb:
+            indeg[n] += 1
+
+    zero_q = [node for node in indeg if indeg[node] == 0]
+    ordering = []
+
+    while zero_q:
+        cur_node = zero_q.pop()
+        ordering.append(cur_node)
+
+        # check neighbours 
+        for nb in graph[cur_node]:
+            indeg[nb] -= 1
+            if indeg[nb] == 0:
+                zero_q.append(nb)
+
+    return ordering
+
+
+# The other valid topological ordering is DFS ordering. This is the recursive implementation
+def course_schedule_ii_210_dfs(num_courses:int, prereqs:List[List[int]]) -> List[int]:
+
+    # Creating the graph is the same 
+    graph = {i: [] for i in range(num_courses)}
+    for v, e in prereqs:
+        graph[v].append(e)
+
+    # Since there are always N nodes in this question we can just use a list,
+    # but we may prefer a dict if the numbering of the nodes wasn't just from 0 -> N-1
+    # 0 = not visited, 1 = visited in this branch only, 2 = visited 
+    visited = [0 for _ in range(num_courses)]
+    ordering = []
+
+
+    def dfs(vert:int) -> bool:
+        # Return true if there is a valid DFS (no cycles)
+        visited[vert] = 1       #  at the start of the branch we mark as semi-visited
+        for nb in graph[vert]:
+            if (visited[nb] == 0 and not dfs(nb)) or visited[nb] == 1:
+                return False
+        visited[vert] = 2       # "fully" visited 
+        ordering.append(vert)
+        return True
+
+
+    # Now we DFS from the start, trying every unvisited node 
+    for n in range(num_courses):
+        # not dfs() indicates that we can't do a valid DFS from here 
+        if visited[n] == 0 and not dfs(n):
+            return []
+
+    # The DFS ordering is the reverse of the BFS ordering
+    print(f"ordering: {ordering}, ordering reversed {ordering[::-1]}")
+    return ordering[::-1]
+
 
 
 # Question 213

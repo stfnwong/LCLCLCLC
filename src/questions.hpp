@@ -248,6 +248,14 @@ int house_robber_198(const std::vector<int>& nums);
 bool course_schedule_207(int num_courses, const std::vector<std::vector<int>>& prereqs);
 bool course_schedule_207_topo(int num_courses, const std::vector<std::vector<int>>& prereqs);
 
+
+/*
+ Question 210
+ https://leetcode.com/problems/course-schedule-ii
+ Course Schedule II
+*/
+std::vector<int> course_schedule_ii_210(int num_courses, const std::vector<std::vector<int>>& prereqs);
+
 /*
  Question 222
  https://leetcode.com/problems/count-complete-tree-nodes

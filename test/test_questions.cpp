@@ -973,10 +973,40 @@ TEST_CASE("question_207", "leetcode")
     bool out;
     for(unsigned t = 0; t < exp_outputs.size(); ++t)
     {
+        out = course_schedule_207(inputs[t].first, inputs[t].second);
+        REQUIRE(out == exp_outputs[t]);
         out = course_schedule_207_topo(inputs[t].first, inputs[t].second);
         REQUIRE(out == exp_outputs[t]);
     }
 }
+
+/*
+ Question 210
+ https://leetcode.com/problems/course-schedule-ii
+ Course Schedule II
+*/
+TEST_CASE("question_210", "leetcode")
+{
+    using graph_input = std::pair<int, std::vector<std::vector<int>>>;
+    std::vector<graph_input> inputs = {
+        {2, {{1, 0}}},
+    };
+    using graph_output = std::vector<int>;
+    std::vector<graph_output> exp_outputs = {
+        {0, 1},
+    };
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    graph_output output;
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        output = course_schedule_ii_210(inputs[t].first, inputs[t].second);
+        REQUIRE(output.size() == exp_outputs[t].size());
+    }
+}
+
+
 
 /*
  Question 222

@@ -1683,32 +1683,23 @@ bool course_schedule_207_topo(int num_courses, const std::vector<std::vector<int
     for(unsigned n = 0; n < prereqs.size(); ++n)
         graph[prereqs[n][0]].push_back(prereqs[n][1]);
 
-    std::cout << "[" << __func__  << "] graph: " << std::endl;
+    // Init the keys in the graph
     for(const auto& it : graph)
-    {
         indeg[it.first] = 0;
-        std::cout << "[" << it.first << "]: " << vec_to_str(it.second) << std::endl;
-    }
-
 
     // Find indegrees of the graph
     for(const auto& it : graph)
     {
-        std::cout << "graph[" << it.first << "] size: " << it.second.size() << std::endl;
-        //for(unsigned n = 0; n < it.second.size(); ++n)
         for(const int& n : it.second)
             indeg[n] += 1;
     }
 
     // Find starting elements (which will have indegree 0)
-    std::cout << "[" << __func__ << "] indeg:" << std::endl;
     for(const auto& it: indeg)
     {
-        std::cout << it.first << ":" << it.second << ", ";
         if(it.second == 0)
             zero_indeg_q.push(it.first);
     }
-    std::cout << std::endl << "zero_indeg_q.size(): " << zero_indeg_q.size() << std::endl;
 
     // Now visit every node in the zero_indeg_q until we run out of nodes
     while(!zero_indeg_q.empty())
@@ -1729,6 +1720,59 @@ bool course_schedule_207_topo(int num_courses, const std::vector<std::vector<int
     return (ordering.size() == graph.size()) ? true : false;
 }
 
+/*
+ Question 210
+ https://leetcode.com/problems/course-schedule-ii
+ Course Schedule II
+*/
+std::vector<int> course_schedule_ii_210(int num_courses, const std::vector<std::vector<int>>& prereqs)
+{
+    // For this one we have to produce a topological ordering since the solution to the
+    // question is exactly this ordering.
+
+    std::unordered_map<int, std::vector<int>> graph;
+    std::unordered_map<int, int> indeg;
+    std::vector<int> ordering;
+    std::queue<int> zero_q;         // this implements the BFS version - TODO: implement DFS version
+
+
+    // Create graph 
+    for(unsigned e = 0; e < prereqs.size(); ++e)
+    {
+        graph[prereqs[e][0]].push_back(prereqs[e][1]);
+        indeg[prereqs[e][0]] = 0;
+    }
+
+    // Compute indegrees of each node 
+    for(const auto& it: graph)
+    {
+        for(const int& n : it.second)
+            indeg[n] += 1;
+    }
+
+    // Find starting nodes
+    for(const auto& it : indeg)
+    {
+        if(it.second == 0)
+            zero_q.push(it.first);
+    }
+
+    while(!zero_q.empty())
+    {
+        int cur_node = zero_q.front();
+        zero_q.pop();
+        ordering.push_back(cur_node);
+
+        for(const auto& nb : graph[cur_node])
+        {
+            indeg[nb]--;
+            if(indeg[nb] == 0)
+                zero_q.push(nb);
+        }
+    }
+
+    return ordering;
+}
 
 /*
  Question 222

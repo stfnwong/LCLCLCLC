@@ -454,6 +454,7 @@ def test_number_of_islands_200():
 
 # Question 207
 # https://leetcode.com/problems/course-schedule/
+# Course Schedule
 def test_course_schedule_207():
     inputs = [
         (2, [[1, 0]]),
@@ -485,6 +486,30 @@ def test_implement_trie():
     ]
 
 
+
+# Question 210
+# https://leetcode.com/problems/course-schedule/
+# Course Schedule II
+def test_course_schedule_ii_210():
+    inputs = [
+        (2, [[1, 0]]),
+        (2, [[1,0], [0,1]]),
+        (5, [[0, 1], [0, 2], [1, 3], [1, 4], [3, 4]]),
+        (3, [[0, 1], [1, 2], [2, 0]]),
+    ]
+    exp_outputs = [
+        [1, 0],
+        [],
+        [0, 2, 1, 3, 4],  # [0, 1, 2, 3, 4] should also be a valid ordering
+        []
+    ]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.course_schedule_ii_210_dfs(inp[0], inp[1])
+        assert len(out) == len(exp_out)
+        print(f"out: {out}, exp_out: {exp_out}")
+        for o, e in zip(out, exp_out):
+            assert o == e
 
 
 # Question 213
