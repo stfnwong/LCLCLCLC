@@ -65,6 +65,21 @@ ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists);
 
 
 /*
+ * Question 39 
+ * Combination Sum 
+ * https://leetcode.com/problems/combination-sum/
+ */
+std::vector<std::vector<int>> combination_sum_39(const std::vector<int>& candidates, int target);
+
+
+/*
+ * Question 40
+ * Combinatio Sum II
+ * https://leetcode.com/problems/combination-sum-ii
+ */
+std::vector<std::vector<int>> combination_sum_ii_40(const std::vector<int>& candidates, int target);
+
+/*
  * Question 41
  * First Missing Positive Integer 
  * https://leetcode.com/problems/first-missing-positive/
@@ -226,6 +241,14 @@ int house_robber_198(const std::vector<int>& nums);
 
 
 /*
+ Question 207
+ Course Schedule
+ https://leetcode.com/problems/course-schedule
+*/
+bool course_schedule_207(int num_courses, const std::vector<std::vector<int>>& prereqs);
+bool course_schedule_207_topo(int num_courses, const std::vector<std::vector<int>>& prereqs);
+
+/*
  Question 222
  https://leetcode.com/problems/count-complete-tree-nodes
  Count Complete Tree Nodes
@@ -276,6 +299,22 @@ char find_the_difference_389_um(const std::string& s1, const std::string& s2);
  * https://leetcode.com/problems/01-matrix/
  */
 std::vector<std::vector<int>> matrix_542(const std::vector<std::vector<int>>& matrix);
+
+/*
+ * Question 710
+ * Random Pick with Blacklist
+ * https://leetcode.com/problems/random-pick-with-blacklist/
+ */
+class RandomPickWithBlacklist
+{
+    int N;
+    int sample_size;
+    std::unordered_map<int, int> bl2wl;
+
+    public:
+        RandomPickWithBlacklist(int n, const std::vector<int>& blacklist);
+        int pick(void);
+};
 
 /*
  * Question 779

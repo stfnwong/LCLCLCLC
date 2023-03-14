@@ -5,9 +5,10 @@ Answers to specific Leetcode questions
 Stefan Wong 2019
 """
 
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 import copy
 import heapq        # can also use the internal heap structure, but its much slower
+import random
 from collections import defaultdict, deque
 
 from pylc.tree import TreeNode, BinaryTreeNode, RPTreeNode
@@ -933,9 +934,9 @@ def number_of_islands_200(grid:List[List[str]]) -> int:
 
 
 
-# Question 206
+# Question 207
 # https://leetcode.com/problems/course-schedule/
-def course_schedule_206(num_courses:int, prereqs:List[List[int]]) -> bool:
+def course_schedule_207(num_courses:int, prereqs:List[List[int]]) -> bool:
     """
     This is a graph traversal where we want to find if there are any cycles in the graph.
     We don't know that it is a complete graph. If we DFS the graph and visit the same node
@@ -960,6 +961,51 @@ def course_schedule_206(num_courses:int, prereqs:List[List[int]]) -> bool:
         for edge in graph[vert]:
             if not dfs(edge):
                 return False
+        visited.remove(vert)
+        #graph[vert] = []
+        return True
+
+    start_vert = 0
+    return dfs(start_vert)
+
+
+
+# TODO: should do a BFS version as well....
+#def course_schedule_207_bfs(num_courses:int, prereqs:List[List[int]]) -> bool:
+
+
+def course_schedule_207_topo(num_courses:int, prereqs:List[List[int]]) -> bool:
+    graph = {i: [] for i in range(num_courses)}
+    for v, e in prereqs:
+        graph[v].append(e)
+
+    # Construct mapping of indegree
+    indegrees = {v: 0 for v in graph}
+    for nb in graph.values():
+        for n in nb:
+            indegrees[n] += 1
+
+    # Now find a node with 0 indegrees
+    zero_id_nodes = [node for node in indegrees if indegrees[node] == 0]
+    ordering = []       # topologically sorted ordering
+
+    while len(zero_id_nodes) > 0:
+        node = zero_id_nodes.pop()
+        ordering.append(node)
+
+        # remove from graph - to do this we decrement indegree of each neighbour 
+        for nb in graph[node]:
+            indegrees[nb] -= 1
+            if indegrees[nb] == 0:
+                zero_id_nodes.append(nb)
+
+    # If the number of nodes in the ordering and graph are the same then we found 
+    # a valid topological ordering of the graph.
+    if len(ordering) == len(graph):
+        return True
+
+    return False
+
 
 
 # Question 208
@@ -1256,7 +1302,7 @@ def matrix_542(matrix: List[List[int]]) -> List[List[int]]:
     q = []
     dist = [[-1 for _ in range(num_cols)] for _ in range(num_rows)]
 
-    # Find initial candidates 
+    # Find initial candidates
     for row in range(num_rows):
         for col in range(num_cols):
             if matrix[row][col] == 0:
@@ -1264,7 +1310,7 @@ def matrix_542(matrix: List[List[int]]) -> List[List[int]]:
                 dist[row][col] = 0   # 0 has a distance of 0 (to itself)
 
 
-    # Now BFS from all q positions 
+    # Now BFS from all q positions
     row_dir = (1, -1, 0, 0)
     col_dir = (0, 0, 1, -1)
 
@@ -1275,13 +1321,212 @@ def matrix_542(matrix: List[List[int]]) -> List[List[int]]:
             nrow = r + row_dx
             ncol = c + col_dx
 
-            # bounds check 
+            # bounds check
             if (0 <= nrow and nrow < num_rows) and (0 <= ncol and ncol < num_cols) and dist[nrow][ncol] == -1:
                 dist[nrow][ncol] = dist[r][c] + 1
                 q.append((nrow, ncol))
 
     return dist
 
+
+# Question 695
+# Max Area of Island
+# https://leetcode.com/proble
+def max_area_of_island_695(grid: List[List[int]]) -> int:
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+
+    visited = [[0 for _ in range(num_cols)] for _ in range(num_rows)]
+
+    def dfs(row:int, col:int) -> int:
+        # bounds check
+        if row < 0 or row >= num_rows or col < 0 or col >= num_cols:
+            return 0
+
+        # Is this water or land we have seen before?
+        if visited[row][col] == 1 or grid[row][col] == 0:
+            return 0
+
+        visited[row][col] = 1
+        # try each direction
+        return dfs(row-1, col) + dfs(row+1, col) + dfs(row, col-1) + dfs(row, col+1) + 1
+
+
+    # Find initial positions of islands
+    max_area = 0
+    for r in range(num_rows):
+        for c in range(num_cols):
+            if grid[r][c] == 1 and visited[r][c] == 0:     # some land
+                area = dfs(r, c)
+                max_area = max(max_area, area)
+
+    return max_area
+
+
+# Is an iterative solution possible?
+def max_area_of_island_695_iter(grid: List[List[int]]) -> int:
+
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+    visited = [[0 for _ in range(num_cols)] for _ in range(num_rows)]
+
+
+    def find_area(row:int, col:int) ->int:
+        stack = [(r, c)]
+        row_dirs = (1, -1, 0, 0)
+        col_dirs = (0, 0, -1, 1)
+        area = 0
+
+        while stack:
+            cur_row, cur_col = stack.pop()
+
+            # find valid neighbours
+            for rdx, cdx in zip(row_dirs, col_dirs):
+                new_row = rdx + cur_row
+                new_col = cdx + cur_col
+
+                if (0 <= new_row and new_row < num_rows) and (0 <= new_col and new_col < num_cols):
+                    if grid[new_row][new_col] == 1 and visited[new_row][new_col] == 0:
+                        visited[new_row][new_col] = 1
+                        area += 1
+                        # try neighbours of this cell
+                        stack.append((new_row, new_col))
+
+        return area
+
+    # We still have no idea where to start, so we need to try all possible paths
+    max_area = 0
+    for r in range(num_rows):
+        for c in range(num_cols):
+            if grid[r][c] == 1 and visited[r][c] == 0:
+                area = find_area(r, c)     # dfs from here
+                max_area = max(area, max_area)
+
+    return max_area
+
+
+
+def bl710_construct_map_without_boundary(N:int, blacklist:List[int]) -> Dict[int, int]:
+    bl_2_wl = {}
+    bl_set = set(blacklist)
+    idx = N-1     # start at the top of the list and map backwards
+
+    # This gives a better result in the sample case...
+    # But why? The theory is that we map numbers from
+    for elem in bl_set:
+        while idx in bl_set:
+            idx -= 1
+        bl_2_wl[elem] = idx
+        idx -= 1        # skip to the next smallest
+
+    return bl_2_wl
+
+
+def bl710_construct_map_with_boundary(N:int, blacklist:List[int]) -> Dict[int, int]:
+    bl_2_wl = {}
+    # implement the boundary condition using two sets
+    bl_set = set(blacklist)
+    sample_size = N - len(bl_set)
+
+    #bl_greater = set([k for k in range(sample_size, N) if k not in bl_set])
+    idx = N-1     # start at the top of the list and map backwards
+
+    # Now we go over the blacklist and for each item less than N we map to a
+    # non-blacklist number greater than N
+
+    for elem in bl_set:
+        if elem <= sample_size:
+            while idx in bl_set:
+                idx -= 1
+            bl_2_wl[elem] = idx
+            idx -= 1        # skip to the next smallest
+
+    return bl_2_wl
+
+
+# Question 710
+# Random Pick with Blacklist
+# https://leetcode.com/problems/random-pick-with-blacklist/
+class RandomPickWithBlacklist:
+    def __init__(self, N:int, blacklist:List[int]):
+        #bl_map_1 = bl710_construct_map_with_boundary(N, blacklist)
+        #print(f"Blacklist with boundary: ")
+        #for k, v in bl_map_1.items():
+        #    print(f"[{k}]: {v}")
+
+        #bl_map_2 = bl710_construct_map_without_boundary(N, blacklist)
+        #print(f"Blacklist without boundary: ")
+        #for k, v in bl_map_2.items():
+        #    print(f"[{k}]: {v}")
+
+        self.N = N
+        self.bl_2_wl = {}       # map blacklist digits to some whitelist digits
+
+        bl_set = set(blacklist)
+        idx = N-1
+        self.sample_size = N - len(bl_set)
+        #valid_nums = N - len(bl_set)  # TODO: what is the deal with this boundary line?
+
+        for num in bl_set:
+            while idx in bl_set:
+                idx -= 1
+            self.bl_2_wl[num] = idx
+            idx -= 1
+
+    def pick(self) -> int:
+        #r = random.randint(0, self.sample_size)
+        r = random.randint(0, self.N-1)
+        return self.bl_2_wl[r] if r in self.bl_2_wl else r
+
+
+class RandomPickWithBlacklist2:
+    def __init__(self, N:int, blacklist:List[int]):
+        self.N = N
+        self.bl_2_wl = {}
+
+        bl_set = set(blacklist)
+        self.sample_size = N - len(bl_set)
+
+        ridx = N-1
+        lidx = 0
+
+        for num in bl_set:
+            if num < self.sample_size:
+                while ridx in bl_set:
+                    ridx -= 1
+                self.bl_2_wl[num] = ridx
+                ridx -= 1
+            else:
+                while lidx in bl_set:
+                    lidx += 1
+                self.bl_2_wl[num] = lidx
+                lidx += 1
+
+        print(f"Input:")
+        print(f"self.N: {self.N}, blacklist: {blacklist}")
+        print("Mapping:")
+        for k, v in self.bl_2_wl.items():
+            print(f"[{k}]: {v}")
+
+        #to_remap = []
+
+        #for n in blacklist:
+        #    if n <= self.sample_size:
+        #        to_remap.append(n)
+
+        #r = 0
+        #for i in range(self.sample_size, self.N):
+        #    if i not in bl_set:
+        #        self.bl_2_wl[to_remap[r]] = i
+        #        r += 1
+
+        #print(f"Remapping map:")
+        #for k, v in self.bl_2_wl.items():
+        #    print(f"[{k}]: {v}")
+
+    def pick(self) -> int:
+        r = random.randint(0, self.N-1)
+        return self.bl_2_wl[r] if r in self.bl_2_wl else r
 
 
 

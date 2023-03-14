@@ -14,6 +14,8 @@
 #include <map>
 #include <numeric>
 #include <queue>
+#include <random>
+#include <unordered_set>
 
 #include "questions.hpp"
 #include "util.hpp"
@@ -459,7 +461,137 @@ ListNode* merge_k_sorted_lists_23(const std::vector<ListNode*>& lists)
 }
 
 
+/*
+ * Question 39 
+ * Combination Sum 
+ * https://leetcode.com/problems/combination-sum/
+ */
 
+void cs39_rec_dfs(
+        int idx, 
+        const std::vector<int>& candidates, 
+        std::vector<std::vector<int>>& results,
+        std::vector<int>& path, 
+        int sum, 
+        int target)
+{
+    //std::cout << "[" << __func__ << "] idx: " << idx << ", path: (" << vec_to_str(path) << ")" << std::endl;
+    // we are done if sum hits the target  
+    if(sum == target)
+    {
+        results.push_back(path);
+        return;
+    }
+
+    // or if we go over the target 
+    if(sum > target)
+        return;
+
+    // if we run out of candidates
+    if(idx >= int(candidates.size()))       // typecase to shut linter up
+        return;
+
+    path.push_back(candidates[idx]);
+    // branch where we take this candidate 
+    cs39_rec_dfs(idx, candidates, results, path, sum + candidates[idx], target);
+    path.pop_back();
+    // branch where we take the next candidate
+    cs39_rec_dfs(idx+1, candidates, results, path, sum, target);
+}
+
+std::vector<std::vector<int>> combination_sum_39(const std::vector<int>& candidates, int target)
+{
+    std::vector<std::vector<int>> results;
+    std::vector<int> path;
+
+    int idx = 0;
+    int sum = 0;
+    cs39_rec_dfs(idx, candidates, results, path, sum, target);
+
+    return results;
+}
+
+
+// Can we do this iteratively?
+// TODO: Probably yes, but backtracking iteratively is actually quite 
+// a different algorithm, so don't bother now.
+std::vector<std::vector<int>> combination_sum_39_iter(const std::vector<int>& candidates, int target)
+{
+    std::vector<std::vector<int>> results;
+
+    // Need to do DFS on the array with backtracking
+    std::vector<int> visited(candidates.size(), 0);
+    std::vector<int> path;
+
+    std::stack<int> st;
+    int idx = 0;  // where in the word we are looking now 
+    int sum = 0;
+
+    
+    for(int base_idx = 0; base_idx < candidates.size(); ++base_idx)
+    {
+        st.push(candidates[base_idx]);  
+
+        while(!st.empty())
+        {
+            if(sum == target)
+                results.push_back(path);
+
+            if(sum > target)
+            {
+                st.pop();       // go back one
+                continue;
+            }
+
+            if(st.empty() && base_idx < candidates.size())
+            {
+                // Try starting from the next candidiate
+                base_idx++;
+                st.push(candidates[base_idx]);
+            }
+        }
+    }
+
+    return results;
+}
+
+
+/*
+ * Question 40
+ * Combinatio Sum II
+ * https://leetcode.com/problems/combination-sum-ii
+ */
+//void cs2_rec(
+//        int idx,
+//        const std::vector<int>& candidates, 
+//        std::vector<std::vector<int>>& results,
+//        std::vector<int>& path,
+//        )
+//{
+//    int prev = -1;      // in this case we know all values are positive
+//
+//    // TODO: finish this
+//    for(int c = 0; c < candidates.size(); ++c)
+//    {
+//        if(candidates[c] == prev)
+//            continue;
+//
+//        // check rejection criteria
+//
+//        // explore 
+//        //cs2_rec(
+//    }
+//
+//}
+//
+
+
+std::vector<std::vector<int>> combination_sum_ii_40(const std::vector<int>& candidates, int target)
+{
+    std::vector<std::vector<int>> results;
+
+    return results;
+}
 
 
 /*
@@ -863,6 +995,7 @@ bool is_valid_bst_98(TreeNode* root)
 
     return true;
 }
+
 
 // Recursive formulation of above
 bool is_valid_bst_98_rec(TreeNode* root)
@@ -1492,6 +1625,112 @@ int house_robber_198(const std::vector<int>& nums)
 
 
 /*
+ Question 207
+ Course Schedule
+ https://leetcode.com/problems/course-schedule
+*/
+bool cs207_dfs(
+        std::unordered_map<int, std::vector<int>>& graph,
+        std::unordered_set<int>& visited,
+        int vertex
+        )
+{
+    // if no neighbours this is a terminating node
+    if(graph[vertex].size() == 0) 
+        return true;
+    // if visited, we are in a cycle
+    if(visited.find(vertex) != visited.end())
+        return false;
+
+    visited.insert(vertex);
+    for(const int& v : graph[vertex])
+    {
+        if(!cs207_dfs(graph, visited, v))
+            return false;
+    }
+    visited.erase(vertex);
+    return true;
+}
+
+bool course_schedule_207(int num_courses, const std::vector<std::vector<int>>& prereqs)
+{
+    // Form a graph
+    std::unordered_map<int, std::vector<int>> graph;
+    std::unordered_set<int> visited;
+
+    for(unsigned t = 0; t < prereqs.size(); ++t)
+    {
+        graph[prereqs[t][0]].push_back(prereqs[t][1]);
+    }
+
+    int start_vertex = 0;
+    return cs207_dfs(graph, visited, start_vertex);
+
+}
+
+
+// Do one that implements topological sort
+bool course_schedule_207_topo(int num_courses, const std::vector<std::vector<int>>& prereqs)
+{
+    // Lets try to solve by finding the topological sort of the graph
+
+    std::unordered_map<int, std::vector<int>> graph;
+    std::unordered_map<int, int> indeg;
+    std::queue<int> zero_indeg_q;
+    std::vector<int> ordering;
+
+    // Construct the adj list
+    for(unsigned n = 0; n < prereqs.size(); ++n)
+        graph[prereqs[n][0]].push_back(prereqs[n][1]);
+
+    std::cout << "[" << __func__  << "] graph: " << std::endl;
+    for(const auto& it : graph)
+    {
+        indeg[it.first] = 0;
+        std::cout << "[" << it.first << "]: " << vec_to_str(it.second) << std::endl;
+    }
+
+
+    // Find indegrees of the graph
+    for(const auto& it : graph)
+    {
+        std::cout << "graph[" << it.first << "] size: " << it.second.size() << std::endl;
+        //for(unsigned n = 0; n < it.second.size(); ++n)
+        for(const int& n : it.second)
+            indeg[n] += 1;
+    }
+
+    // Find starting elements (which will have indegree 0)
+    std::cout << "[" << __func__ << "] indeg:" << std::endl;
+    for(const auto& it: indeg)
+    {
+        std::cout << it.first << ":" << it.second << ", ";
+        if(it.second == 0)
+            zero_indeg_q.push(it.first);
+    }
+    std::cout << std::endl << "zero_indeg_q.size(): " << zero_indeg_q.size() << std::endl;
+
+    // Now visit every node in the zero_indeg_q until we run out of nodes
+    while(!zero_indeg_q.empty())
+    {
+        auto cur_node = zero_indeg_q.front();
+        zero_indeg_q.pop();
+        
+        ordering.push_back(cur_node);
+
+        for(const int& nb : graph[cur_node])
+        {
+            indeg[nb]--;
+            if(indeg[nb] == 0)
+                zero_indeg_q.push(nb);
+        }
+    }
+
+    return (ordering.size() == graph.size()) ? true : false;
+}
+
+
+/*
  Question 222
  https://leetcode.com/problems/count-complete-tree-nodes
  Count Complete Tree Nodes
@@ -1850,6 +2089,100 @@ std::vector<std::vector<int>> matrix_542(const std::vector<std::vector<int>>& ma
 
     return dist;
 }
+
+
+
+/*
+ * Question 710
+ * Random Pick with Blacklist
+ * https://leetcode.com/problems/random-pick-with-blacklist/
+ */
+
+RandomPickWithBlacklist::RandomPickWithBlacklist(int n, const std::vector<int>& blacklist) : N(n)
+{
+    std::unordered_set<int> bl_set;
+    // For some reason I can't get the one-liner of this to work
+    for(const int& num : blacklist)
+        bl_set.insert(num);
+
+    this->sample_size = N - bl_set.size();
+    int idx = N-1;
+
+    for(const int& num : bl_set)
+    {
+        if(num < sample_size)
+        {
+            while(bl_set.count(idx))
+                idx--;
+            this->bl2wl[num] = idx;
+            idx--;
+        }
+    }
+}
+
+int RandomPickWithBlacklist::pick(void)
+{
+    int r = rand() % this->N;
+    return (this->bl2wl.find(r) == this->bl2wl.end()) ? r : this->bl2wl[r];
+}
+
+//RandomPickWithBlacklist::RandomPickWithBlacklist(int n, const std::vector<int>& blacklist) : N(n)
+//{
+//    std::cout << "[" << __func__ << "] got blacklist: " << vec_to_str(blacklist) << std::endl;
+//    //std::unordered_set<int> bl_set(blacklist.begin(), blacklist.end());   // remove duplicates from blacklist
+//
+//
+//    std::unordered_set<int> bl_set;
+//
+//    for(int elem : blacklist)
+//        bl_set.insert(elem);
+//
+//    int idx = N-1;
+//    int sample_size = N - bl_set.size();
+//
+//    // so in one version of this I have seen you make this set of elements in the 
+//    // blacklist, and then you make another one of only those greater than the sample 
+//    // size boundary
+//    std::unordered_set<int> bl_gt;
+//    
+//    for(int i = sample_size; i < N; ++i)
+//    {
+//        // if i is NOT in the blacklist we add it to the set.
+//        if(bl_set.count(i) == 0)
+//            bl_gt.insert(i);
+//    }
+//
+//    // whats in the sets ?
+//    std::cout << "[" << __func__ << "] bl_set: (" << bl_set.size() << " elements): " << std::endl;
+//    for(auto& it: bl_set)
+//        std::cout << it << " ";
+//
+//    std::cout << std::endl << "[" << __func__ << "] bl_gt (" << bl_gt.size() << " elements): " << std::endl;
+//    for(auto& it : bl_gt)
+//        std::cout << it << " ";
+//    std::cout << std::endl;
+//
+//    // we then go over the blacklist, and for each element < sample_size we map to
+//    // a non-blacklist number > sample_size;
+//    // TODO: what happens if sample_size is in the blacklist?
+//
+//    auto iter = bl_gt.begin();
+//    for(int i = 0; i < blacklist.size(); ++i)
+//    {
+//        if(blacklist[i] <= sample_size)
+//        {
+//            bl2wl[blacklist[i]] = *iter;
+//            iter++;
+//        }
+//    }
+//
+//    // Lets see what the replacement mapping looks like
+//    std::cout << "[" << __func__ << "] mapping : " << std::endl;
+//    for(auto& it : bl2wl)
+//        std::cout << "[" << it.first<< "]: " << it.second << std::endl;
+//
+//}
+
 
 /*
  * Question 779

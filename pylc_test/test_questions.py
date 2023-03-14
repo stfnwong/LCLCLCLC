@@ -452,18 +452,20 @@ def test_number_of_islands_200():
         assert out == exp_out
 
 
-# Question 206
+# Question 207
 # https://leetcode.com/problems/course-schedule/
-def test_course_schedule_206():
-    graph_inputs = [
-        [[1, 0]],
-        [[1,0], [0,1]]
+def test_course_schedule_207():
+    inputs = [
+        (2, [[1, 0]]),
+        (2, [[1,0], [0,1]]),
+        (5, [[0, 1], [0, 2], [1, 3], [1, 4], [3, 4]]),
+        (3, [[0, 1], [1, 2], [2, 0]]),
     ]
-    nc_inputs = [2, 2]
-    exp_outputs = [True, False]
+    exp_outputs = [True, False, True, False]
 
-    for nc, graph, exp_out in zip(nc_inputs, graph_inputs, exp_outputs):
-        out = questions.course_schedule_206(nc, graph)
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.course_schedule_207_topo(inp[0], inp[1])
+        #out = questions.course_schedule_207(inp[0], inp[1])
         assert out == exp_out
 
 
@@ -628,9 +630,54 @@ def test_matrix_542():
         assert out == exp_out
 
 
+
+# Question 695
+# Max Area of Island
+# https://leetcode.com/problems/max-area-of-island
+def test_max_area_of_island_695():
+    inputs = [
+        [[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]],
+        [[0, 0, 0, 0, 0, 0, 0]]
+    ]
+    exp_outputs = [6, 0]
+    functions = [
+        questions.max_area_of_island_695,
+        questions.max_area_of_island_695_iter,
+    ]
+
+    for func in functions:
+        for inp, exp_out in zip(inputs, exp_outputs):
+            out = func(inp)
+            assert out == exp_out
+
+
+# Question 710
+# Random Pick with Blacklist
+# https://leetcode.com/problems/random-pick-with-blacklist/
+def test_random_pick_with_blacklist_710():
+    inputs = [
+        (7, [2, 3, 5]),
+        (8, [1, 6, 7]),
+        (5, [2, 1, 0]),
+    ]
+    num_picks = 64
+
+    from pudb import set_trace; set_trace()
+    for inp in inputs:
+        #picker = questions.RandomPickWithBlacklist(inp[0], inp[1])
+        picker = questions.RandomPickWithBlacklist2(inp[0], inp[1])
+        picks = [picker.pick() for _ in range(num_picks)]
+        print(picks)
+
+        for p in picks:
+            assert p not in inp[1]
+            assert p >= 0
+
+
+
 # Question 714
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
-#
+# TODO: review
 def test_time_to_buy_stock_714():
 
     input_prices = [

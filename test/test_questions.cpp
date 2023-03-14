@@ -9,8 +9,8 @@
 
 #include <functional>
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "list.hpp"
 #include "tree.hpp"
@@ -330,6 +330,46 @@ TEST_CASE("question_23", "leetcode")
             REQUIRE(out_vec[i] == exp_outputs[t][i]);
     }
 }
+
+/*
+ * Question 39 
+ * Combination Sum 
+ * https://leetcode.com/problems/combination-sum/
+ */
+TEST_CASE("question_39", "leetcode")
+{
+    using input_t = std::pair<std::vector<int>, int>;
+    std::vector<input_t> inputs = {
+        {{2, 3, 6, 7}, 7},
+        {{2, 3, 5}, 8},
+        {{2}, 1},
+    };
+
+    using result_t = std::vector<std::vector<int>>;
+    std::vector<result_t> exp_outputs = {
+        {{2, 2, 3}, {7}},
+        {{2, 2, 2, 2}, {2, 3, 3}, {3, 5}},
+        {},
+    };
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        result_t out = combination_sum_39(inputs[t].first, inputs[t].second);
+        REQUIRE(out.size() == exp_outputs[t].size());
+        //std::cout << "[" << __func__ << "] out[" << t << "]: " << std::endl << vec_vec_to_str(out) << std::endl;
+
+        // TODO: how to test?
+        for(unsigned r = 0; r < out.size(); ++r)
+        {
+            REQUIRE(out[r].size() == exp_outputs[t][r].size());
+            for(unsigned rr = 0; rr < out[r].size(); ++rr)
+                REQUIRE(out[r][rr] == exp_outputs[t][r][rr]);
+        }
+    }
+}
+
 
 /*
  * Question 41
@@ -911,6 +951,33 @@ TEST_CASE("question_198", "leetcode")
     }
 }
 
+
+/*
+ Question 207
+ Course Schedule
+ https://leetcode.com/problems/course-schedule
+*/
+TEST_CASE("question_207", "leetcode")
+{
+    using graph_input = std::pair<int, std::vector<std::vector<int>>>;
+    std::vector<graph_input> inputs = {
+        {5, {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {3, 4}}},
+        {2, {{1,0}}},
+        {2, {{1,0}, {0,1}}},
+        {3, {{0, 1}, {1, 2}, {2, 0}}},
+    };
+    std::vector<bool> exp_outputs = {true, true, false, false};
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    bool out;
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        out = course_schedule_207_topo(inputs[t].first, inputs[t].second);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
 /*
  Question 222
  https://leetcode.com/problems/count-complete-tree-nodes
@@ -1076,6 +1143,30 @@ TEST_CASE("question_542", "leetcode")
         }
     }
 }
+
+
+/*
+ * Question 710
+ * Random Pick with Blacklist
+ * https://leetcode.com/problems/random-pick-with-blacklist/
+ */
+TEST_CASE("question_710", "leetcode")
+{
+    using blacklist_t = std::pair<int, std::vector<int>>;
+    std::vector<blacklist_t> inputs = {
+        {7, {2, 3, 5}},
+    };
+
+
+    for(unsigned t = 0; t < inputs.size(); ++t)
+    {
+        RandomPickWithBlacklist picker(inputs[t].first, inputs[t].second);
+
+    }
+
+
+}
+
 
 /*
  * Question 779
