@@ -5,7 +5,7 @@ Answers to specific Leetcode questions
 Stefan Wong 2019
 """
 
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Iterable, List, Optional, Tuple
 import copy
 import heapq        # can also use the internal heap structure, but its much slower
 import random
@@ -260,6 +260,116 @@ def unique_paths_62_memo(m:int, n:int) -> int:
         return cache[row][col]
 
     return unique_paths(m, n, 0, 0, cache)
+
+
+# Question 62
+# Unique paths (Dynamic Progamming)
+# https://leetcode.com/problems/unique-paths/
+def unique_paths_62_dp(m:int, n:int) -> int:
+    # How can we formulate a recurrence relationship for DP here? The number of paths
+    # is just the sum of the number of paths on the left and the number of paths above.
+    # We can tabulate this from the start point (bottom up DP).
+    num_rows = m
+    num_cols = n
+
+    dp = [[1 for _ in range(num_cols)] for _ in range(num_rows)]
+    # Set the first row
+    dp[0][0] = 0
+
+    for row in range(1, num_rows):
+        for col in range(num_cols):
+            if col == 0:
+                dp[row][col] = 1
+            else:
+                dp[row][col] = dp[row-1][col] + dp[row][col-1]
+
+    return dp[num_rows-1][num_cols-1]
+
+# Question 62
+# Unique paths (Dynamic Progamming)
+# https://leetcode.com/problems/unique-paths/
+def unique_paths_62_dp_2(m:int, n:int) -> int:
+    # We actually only need to keep two rows of DP, since the current row only needs
+    # the previous row.
+
+    num_rows = m
+    num_cols = n
+
+    dp = [[1 for _ in range(num_cols)] for _ in range(2)]
+
+    for row in range(1, num_rows):
+        for col in range(1, num_cols):
+            dp[row & 1][col] = dp[(row-1) & 1][col] + dp[row & 1][col-1]
+
+    return dp[(num_rows-1) & 1][num_cols-1]
+
+
+# Question 63
+# Unique paths II
+# https://leetcode.com/problems/unique-paths-ii/
+def unique_paths_ii_63(grid: List[List[int]]) -> int:
+    # Can we just do tabular DP but set obstacles to zero?
+
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+
+    # This can probably be reduced, but just make the whole DP grid for now
+    dp = [[0 for _ in range(num_cols)] for _ in range(num_rows)]
+
+    for row in range(num_rows):
+        for col in range(num_cols):
+
+            if row == 0 and col == 0:
+                dp[row][col] = 1
+                continue
+
+            # Assign no points to blocked positions
+            if grid[row][col] == 1:
+                dp[row][col] = 0
+                continue
+
+            l = dp[row][col-1] if col > 0 else 0
+            u = dp[row-1][col] if row > 0 else 0
+            dp[row][col] = l + u
+
+    return dp[num_rows-1][num_cols-1]
+
+
+# Question 63
+# Unique paths II
+# https://leetcode.com/problems/unique-paths-ii/
+def unique_paths_ii_63_less_mem(grid: List[List[int]]) -> int:
+    # Like 62, we only need to have one previous row since the state only depends on
+    # one position left and one position up.
+
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+
+    dp = [[0 for _ in range(num_cols)] for _ in range(2)]
+    print(f"dp initially: {dp}")
+
+    for row in range(num_rows):
+        for col in range(num_cols):
+            if row == 0 and col == 0:
+                dp[row & 1][col] = 1
+                continue
+
+            if grid[row][col] == 1:
+                dp[row & 1][col] = 0
+                continue
+
+            l = dp[row & 1][col-1] if col > 0 else 0
+            u = dp[(row-1) & 1][col] if row > 0 else 0
+            dp[row & 1][col] = l + u
+
+            print(f"dp[row & 1]: {dp[row & 1]}, [row & 1] = [{row & 1}]")
+
+    print(f"dp: {dp}")
+
+    return dp[(num_rows-1) & 1][num_cols-1]
+
+
+
 
 
 
@@ -993,13 +1103,13 @@ def course_schedule_207_topo(num_courses:int, prereqs:List[List[int]]) -> bool:
         node = zero_id_nodes.pop()
         ordering.append(node)
 
-        # remove from graph - to do this we decrement indegree of each neighbour 
+        # remove from graph - to do this we decrement indegree of each neighbour
         for nb in graph[node]:
             indegrees[nb] -= 1
             if indegrees[nb] == 0:
                 zero_id_nodes.append(nb)
 
-    # If the number of nodes in the ordering and graph are the same then we found 
+    # If the number of nodes in the ordering and graph are the same then we found
     # a valid topological ordering of the graph.
     if len(ordering) == len(graph):
         return True
@@ -1056,7 +1166,7 @@ def course_schedule_ii_210(num_courses:int, prereqs:List[List[int]]) -> List[int
         cur_node = zero_q.pop()
         ordering.append(cur_node)
 
-        # check neighbours 
+        # check neighbours
         for nb in graph[cur_node]:
             indeg[nb] -= 1
             if indeg[nb] == 0:
@@ -1068,37 +1178,40 @@ def course_schedule_ii_210(num_courses:int, prereqs:List[List[int]]) -> List[int
 # The other valid topological ordering is DFS ordering. This is the recursive implementation
 def course_schedule_ii_210_dfs(num_courses:int, prereqs:List[List[int]]) -> List[int]:
 
-    # Creating the graph is the same 
-    graph = {i: [] for i in range(num_courses)}
+    # Creating the graph is the same
+    #graph = {i: [] for i in range(num_courses)}
+    #for v, e in prereqs:
+    #    graph[v].append(e)
+
+    graph = {i: set() for i in range(num_courses)}
     for v, e in prereqs:
-        graph[v].append(e)
+        graph[v].add(e)
 
     # Since there are always N nodes in this question we can just use a list,
     # but we may prefer a dict if the numbering of the nodes wasn't just from 0 -> N-1
-    # 0 = not visited, 1 = visited in this branch only, 2 = visited 
+    # 0 = not visited, 1 = visited in this branch only, 2 = visited
     visited = [0 for _ in range(num_courses)]
     ordering = []
 
-
-    def dfs(vert:int) -> bool:
-        # Return true if there is a valid DFS (no cycles)
+    def dfs_find_cycle(vert:int) -> bool:
+        # Return true if there is a cycle
         visited[vert] = 1       #  at the start of the branch we mark as semi-visited
         for nb in graph[vert]:
-            if (visited[nb] == 0 and not dfs(nb)) or visited[nb] == 1:
-                return False
-        visited[vert] = 2       # "fully" visited 
+            if visited[nb] == 1 or (visited[nb] == 0 and dfs_find_cycle(nb)):
+                return True
+
+        visited[vert] = 2       # "fully" visited
         ordering.append(vert)
-        return True
+        return False
 
 
-    # Now we DFS from the start, trying every unvisited node 
+    # Now we DFS from the start, trying every unvisited node
     for n in range(num_courses):
-        # not dfs() indicates that we can't do a valid DFS from here 
-        if visited[n] == 0 and not dfs(n):
+        # not dfs() indicates that we can't do a valid DFS from here
+        if visited[n] == 0 and dfs_find_cycle(n):
             return []
 
     # The DFS ordering is the reverse of the BFS ordering
-    print(f"ordering: {ordering}, ordering reversed {ordering[::-1]}")
     return ordering[::-1]
 
 
@@ -1913,6 +2026,48 @@ def shortest_path_in_binary_matrix_1091(grid: List[List[int]]) -> int:
 
 
 
+# Question 1203
+# https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/
+# Sort Items by Group Respecting Dependencies
+def sort_items_by_group_1203(n:int, m:int, group:List[int], before_items:List[List[int]]) -> List[int]:
+    # I found the description of this question quite hard to decipher, but I think you
+    # need to do a kind of two-level topological sort
+
+    # There isn't any special need for this to be a closure....
+    def topological_sort(graph:Dict[int, Iterable[int]]) -> List[int]:
+        """
+        Return the topological ordering of a graph, or an empty ordering
+        if no valid topological ordering can be found.
+        """
+
+        indeg = {v: 0 for v in graph}
+        for nb in graph.values():
+            for n in nb:
+                indeg[n] += 1
+
+        zero_q = [node for node in indeg if indeg[node] == 0]
+        ordering = []
+
+        while zero_q:
+            cur_node = zero_q.pop()
+            ordering.append(cur_node)
+
+            for nb in graph[cur_node]:
+                indeg[nb] -= 1
+                if indeg[nb] == 0:
+                    zero_q.append(nb)
+
+        return ordering if (len(ordering) == len(graph)) else []
+
+    # Could just as well be sets I guess....
+    item_graph = {nn: [] for nn in range(n)}
+    group_graph = {gg: [] for gg in range(m)}
+
+    # How to construct the graphs?
+
+
+    item_topo = topological_sort(item_graph)
+    group_topo = topological_sort(group_graph)
 
 
 # Question 1293
@@ -2027,6 +2182,45 @@ def find_if_path_exists_in_graph_1971(n: int, edges: List[List[int]], source: in
 
     return dfs(source)
 
+
+# Question 1937
+# Maximum Number of Points With Cost
+# https://leetcode.com/problems/maximum-number-of-points-with-cost/
+def maximum_number_of_points_with_cost_1937(points: List[List[int]]) -> int:
+    num_rows = len(points)
+    num_cols = len(points[0])
+
+    # We can't do naive DP here since the state space will be much too large.
+    # M*N is in the order of 10^5, so a O(n*n*m) algorithm will TLE.
+
+    #dp = [0 for _ in range(num_cols)]
+    dp = [p for p in points[0]]
+    # It turns out that we can do DP from left -> right looking back one,
+    # and from right -> left looking "forward" one .
+    left_dp = [0 for _ in range(num_cols)]
+    right_dp = [0 for _ in range(num_cols)]
+
+    # start on first row and work down
+    for r in range(1, num_rows):
+        # compute from left side
+        for c in range(num_cols):
+            if c == 0:
+                left_dp[c] = dp[c]
+            else:
+                left_dp[c] = max(left_dp[c-1]-1, dp[c])
+
+        # compute from right side
+        for c in range(num_cols-1, -1, -1):
+            if c == num_cols-1:
+                right_dp[c] = dp[c]
+            else:
+                right_dp[c] = max(right_dp[c+1]-1, dp[c])
+
+        # update dp for next row
+        for c in range(num_cols):
+            dp[c] = points[r][c] + max(left_dp[c], right_dp[c])
+
+    return max(dp)
 
 
 # Question 1971

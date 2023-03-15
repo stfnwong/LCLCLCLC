@@ -3021,3 +3021,60 @@ int furthest_building_you_can_reach_1642(const std::vector<int>& heights, int br
 
     return int(heights.size()-1);
 }
+
+
+/*
+ * Question 1937 
+ * Maximum Number of Points with Cost
+ * https://leetcode.com/problems/maximum-number-of-points-with-cost/
+ */
+int maximum_number_of_points_with_cost_1937(const std::vector<std::vector<int>>& points)
+{
+    // We have to find a simpler recurrence relationship that the "standard" dp which
+    // will be O(N*N*M) or so (M*N in the order of 10^5).
+
+    int num_rows = points.size();
+    int num_cols = points[0].size();
+
+    std::vector<int> row_dp;
+    std::vector<int> left_dp(num_cols, 0);
+    std::vector<int> right_dp(num_cols, 0);
+
+    // Init the row dp
+    for(const int& num : points[0])
+        row_dp.push_back(num);
+
+    int max_points = 0;
+    // Now walk down the grid and compute the dp
+    for(unsigned r = 1; r < num_rows; ++r)
+    {
+        // Compute dp from the left
+        for(unsigned c = 0; c < num_cols; ++c)
+        {
+            if(c == 0)
+                left_dp[c] = row_dp[c];
+            else
+                left_dp[c] = std::max(left_dp[c-1]-1, row_dp[c]);
+        }
+
+        for(unsigned c = num_cols-1; c > 0; --c)
+        {
+            if(c == num_cols-1)
+                right_dp[c] = row_dp[c];
+            else
+                right_dp[c] = std::max(right_dp[c+1]-1, row_dp[c]);
+        }
+
+        // update row dp
+        for(unsigned c = 0; c < num_cols; ++c)
+        {
+            row_dp[c] = points[r][c] + std::max(left_dp[c], right_dp[c]);
+            max_points = std::max(max_points, row_dp[c]);
+        }
+
+        std::cout << "[" << __func__ << "] row_dp at row " << r << ": " << vec_to_str(row_dp) << std::endl;
+    }
+
+    return max_points;
+}
+

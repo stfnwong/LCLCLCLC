@@ -1590,3 +1590,27 @@ TEST_CASE("question_1642", "leetcode")
         REQUIRE(out == exp_outputs[t]);
     }
 }
+
+
+/*
+ * Question 1937 
+ * Maximum Number of Points with Cost
+ * https://leetcode.com/problems/maximum-number-of-points-with-cost/
+ */
+TEST_CASE("question_1937", "leetcode")
+{
+    using grid_t = std::vector<std::vector<int>>;
+    std::vector<grid_t> inputs = {
+        {{1, 2, 3}, {1, 5, 1}, {3, 1, 1}}
+    };
+    std::vector<int> exp_outputs = {9};
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    int out;
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        out = maximum_number_of_points_with_cost_1937(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}

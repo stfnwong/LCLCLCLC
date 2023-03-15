@@ -440,4 +440,11 @@ struct Solution_1971
  */
 int furthest_building_you_can_reach_1642(const std::vector<int>& heights, int bricks, int ladders);
 
+/*
+ * Question 1937 
+ * Maximum Number of Points with Cost
+ * https://leetcode.com/problems/maximum-number-of-points-with-cost/
+ */
+int maximum_number_of_points_with_cost_1937(const std::vector<std::vector<int>>& points);
+
 #endif /*__LC_QUESTIONS_HPP*/
