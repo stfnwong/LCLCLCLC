@@ -3078,3 +3078,11 @@ int maximum_number_of_points_with_cost_1937(const std::vector<std::vector<int>>&
     return max_points;
 }
 
+/*
+ * Question 2050 
+ * Parallel Courses III
+ * https://leetcode.com/problems/parallel-courses-iii
+ */
+int parallel_courses_iii_2050(int n, const std::vector<std::vector<int>>& relations, const std::vector<int>& times)
+{
+}

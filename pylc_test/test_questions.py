@@ -144,7 +144,8 @@ def test_unique_paths_ii_63():
     exp_outputs = [0, 2, 1]
     functions =[
         questions.unique_paths_ii_63,
-        questions.unique_paths_ii_63_less_mem
+        questions.unique_paths_ii_63_less_mem,
+        questions.unique_paths_ii_63_rec_from_end,
     ]
 
     for func in functions:
@@ -685,6 +686,26 @@ def test_matrix_542():
         assert out == exp_out
 
 
+# Question 630
+# Course Schedule III
+# https://leetcode.com/problems/course-schedule-iii/
+def test_course_schedule_iii_630():
+    inputs = [
+        [[100, 200], [200, 1300], [1000, 1250], [2000, 3200]],
+        [[1, 2]],
+        [[3, 2], [4, 3]]
+    ]
+    exp_outputs = [3, 1, 0]
+    functions = [
+        questions.course_schedule_iii_630_dp,   # this is TLE on leetcode since its O(n^2)
+        questions.course_schedule_iii_630_pq,
+    ]
+
+    for func in functions:
+        for inp, exp_out in zip(inputs, exp_outputs):
+            out = func(inp)
+            assert out == exp_out
+
 
 # Question 695
 # Max Area of Island
@@ -802,6 +823,25 @@ def test_split_into_fib_842():
     for inp in inputs:
         output = questions.split_into_fib_seq_842(inp)
         assert check_fib_property(output) == True
+
+
+# Question 871
+# Minimum Number of Refuelling Stops
+# https://leetcode.com/problems/minimum-number-of-refuelling-stops/
+def test_min_number_refuelling_stops_871():
+    inputs = [
+        #(target, start_fuel, [(station_pos, station_fuel)])
+        (1, 1, []),
+        (100, 1, [[10, 100]]),
+        (100, 10, [[10, 60], [20, 30], [30, 30], [60, 40]]),
+    ]
+    exp_outputs = [0, -1, 2]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.min_number_of_refuelling_stops_871(
+            inp[0], inp[1], inp[2]
+        )
+        assert out == exp_out
 
 
 # Question 931
@@ -984,3 +1024,23 @@ def test_find_if_path_exists_in_graph_1971():
         for inp, exp_out in zip(inputs, exp_outputs):
             out = func(inp[0], inp[1], inp[2], inp[3])
             assert out == exp_out
+
+
+
+# Question 2050
+# Parallel Courses III 
+# https://leetcode.com/problems/parallel-courses-iii/
+def test_parallel_courses_iii_2050():
+    inputs = [
+        # (n, relations, time)
+        (2, [[2,1]], [1000, 1000]),
+        (3, [[1, 3], [2, 3]], [3, 2, 5]),
+        (5, [[1, 5], [2, 5], [3, 5], [3, 4], [4,5]], [1, 2, 3, 4, 5]),
+    ]
+    exp_outputs = [2000, 8, 12]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.parallel_courses_iii_2050(
+            inp[0], inp[1], inp[2]
+        )
+        assert out == exp_out

@@ -369,6 +369,39 @@ def unique_paths_ii_63_less_mem(grid: List[List[int]]) -> int:
     return dp[(num_rows-1) & 1][num_cols-1]
 
 
+def unique_paths_ii_63_rec_from_end(grid: List[List[int]]) -> int:
+    # Try a recursive solution from the end backwards
+
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+
+    dp = [[-1 for _ in range(num_cols)] for _ in range(num_rows)]
+
+    def dfs(row:int, col:int) -> int:
+        # check whether we are blocked
+        if grid[row][col] == 1:
+            return 0
+        # start position has only one return
+        if row == 0 and col == 0:
+            return 1
+        # bounds check
+        if row < 0 or col < 0:
+            return 0
+
+        # we've computed this already
+        if dp[row][col] != -1:
+            return dp[row][col]
+
+        # try left
+        left = dfs(row, col-1)
+        up = dfs(row-1, col)
+
+        dp[row][col] = left + up
+        return dp[row][col]
+
+
+    return dfs(num_rows-1, num_cols-1)
+
 
 
 
@@ -1510,6 +1543,59 @@ def matrix_542(matrix: List[List[int]]) -> List[List[int]]:
     return dist
 
 
+
+# Question 630
+# Course Schedule III
+# https://leetcode.com/problems/course-schedule-iii/
+def course_schedule_iii_630_dp(courses:List[List[int]]) -> int:
+    # This is a recursive DP solution which has Time Complexity O(N^2)
+
+    # The second parameter of each course is the deadline by which is must be complete
+    def dp(course:int, time:int) -> int:
+        # Only base case we need is reaching the end of the array
+        if course == len(courses):
+            return 0
+
+        ans = 0
+        # Don't take this course, take the next course
+        ans = max(ans, dp(course+1, time))
+        dur, deadline = courses[course]
+        if dur + time <= deadline:
+            ans = max(ans, dp(course+1, time + dur) + 1)
+
+        return ans
+
+    courses.sort(key=lambda x: x[1])
+
+    return dp(0, 0)
+
+
+# The DP solution is too slow on LC. We can find an O(N * log N) solution
+# using a heap. The idea is to take every course greedily until we can't, and
+# then backtrack by taking the duration of the untaken course with the longest duration
+def course_schedule_iii_630_pq(courses: List[List[int]]) -> int:
+
+    courses.sort(key=lambda x: x[1])
+
+    # We need a max heap here which is annoying in python
+    pq = []
+    time = 0            # What is the elapsed time so far
+
+    for dur, deadline in courses:
+        # We can take this course if it fits in the deadline
+        if time + dur <= deadline:
+            heapq.heappush(pq, -dur)
+            time += dur
+        # If we can't, and the biggest duration is more that this duration then swap
+        elif pq and -pq[0] > dur:
+            time += (dur + heapq.heappop(pq))  # would be negative but its a max heap
+            heapq.heappush(pq, -dur)   # the current duration is now the longest
+
+    # Since we push a duration onto the heap each time we visit a course, the size
+    # of the heap is actually the number of courses we have visited
+    return len(pq)
+
+
 # Question 695
 # Max Area of Island
 # https://leetcode.com/proble
@@ -1763,6 +1849,13 @@ def kth_symbol_in_grammar_779(n: int, k:int) -> int:
     else:
         return 0 if (k % 2 == 1) else 1
 
+
+
+# Question 871
+# Minimum Number of Refuelling Stops
+# https://leetcode.com/problems/minimum-number-of-refuelling-stops/
+def min_number_of_refuelling_stops_871(target:int, start_fuel:int, stations:List[List[int]]) -> int:
+    pass
 
 
 # Question 842
@@ -2255,3 +2348,37 @@ def find_if_path_exists_in_graph_1971_iter(n: int, edges: List[List[int]], sourc
                 node_stack.append(v)
 
     return False
+
+
+# Question 2050
+# Parallel Courses III
+# https://leetcode.com/problems/parallel-courses-iii/
+def parallel_courses_iii_2050(n:int, relations:List[List[int]], time: List[int]) -> int:
+
+    indeg = [0 for _ in range(n)]
+    graph = {v: [] for v in range(n)}
+    complete = [0 for _ in range(n)]
+
+    for v, e in relations:
+        graph[v-1].append(e-1)
+        indeg[e-1] += 1
+
+    q = []
+    for n, d in enumerate(indeg):
+        if d == 0:
+            q.append((n, 0))
+
+    max_time = 0
+    while q:
+        cur_vert, cur_time = q.pop(0)
+        complete[cur_vert] = cur_time + time[cur_vert]
+        max_time = max(max_time, complete[cur_vert])
+
+        for nb in graph[cur_vert]:
+            complete[nb] = max(complete[nb], complete[cur_vert])
+            indeg[nb] -= 1
+            if indeg[nb] == 0:
+                q.append((nb, complete[nb]))
+
+    #return complete[-1]
+    return max_time

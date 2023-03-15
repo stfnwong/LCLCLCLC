@@ -447,4 +447,11 @@ int furthest_building_you_can_reach_1642(const std::vector<int>& heights, int br
  */
 int maximum_number_of_points_with_cost_1937(const std::vector<std::vector<int>>& points);
 
+/*
+ * Question 2050 
+ * Parallel Courses III
+ * https://leetcode.com/problems/parallel-courses-iii
+ */
+int parallel_courses_iii_2050(int n, const std::vector<std::vector<int>>& relations, const std::vector<int>& times);
+
 #endif /*__LC_QUESTIONS_HPP*/

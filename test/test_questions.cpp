@@ -1614,3 +1614,31 @@ TEST_CASE("question_1937", "leetcode")
         REQUIRE(out == exp_outputs[t]);
     }
 }
+
+
+
+/*
+ * Question 2050 
+ * Parallel Courses III
+ * https://leetcode.com/problems/parallel-courses-iii
+ */
+TEST_CASE("question_2050", "leetcode")
+{
+    using input_t = std::pair<std::vector<std::vector<int>>, std::vector<int>>;
+    std::vector<input_t> inputs = {
+    };
+    std::vector<int> n_inputs = {
+    };
+    std::vector<int> exp_outputs = {
+    };
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+    REQUIRE(n_inputs.size() == exp_outputs.size());
+
+    int out;
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        out = parallel_courses_iii_2050(n_inputs[t], inputs[t].first, inputs[t].second);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
