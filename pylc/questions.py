@@ -1303,24 +1303,52 @@ def max_sliding_window_239_deque(nums:List[int], k:int) -> List[int]:
     element into the deque we first pop everything smaller than that element out of
     the deque.
     """
-    q = deque()
+    q = deque()   # will put indexes here
     results = []
 
-    for idx, cur_elem in enumerate(nums):
-        while q and nums[q[-1]] <= cur_elem:
-            # Get rid of all the smaller elements so that cur_elem is the smallest
-            q.pop()
+    left = 0
+    right = 0
 
+    while right < len(nums):
+        # Make sure there is nothing in the deque smaller than nums[r]
+        while q and nums[q[-1]] < nums[right]:
+            q.pop()
+        # Add this element to the deque
+        q.append(right)
+
+        # bounds check the left value
+        if left > q[0]:
+            q.popleft()
+
+        # Since the left and right pointers start at zero, we need a check to
+        # make sure that we have a window of size k
+        if (right+1) >= k:
+            results.append(nums[q[0]])   # largest values on left of deque
+            left += 1
+
+        right += 1
+
+    return results
+
+
+def max_sliding_window_239_deque_2(nums:List[int], k:int) -> List[int]:
+    # Why use two pointers?
+
+    q = deque()  # like the previous one I will use an index queue here
+    results = []
+
+    # Have a monotonically decreasing queue, left->right = largest->smallest
+    for idx, val in enumerate(nums):
+        while q and nums[q[-1]] < val:
+            q.pop()
         q.append(idx)
-        # Remove the first element if it falls outside the window
+
         if q[0] == (idx - k):
             q.popleft()
 
-        # If the window as k elements then add this to the results
-        # Remember that the first k-1 windows have less than k elements because we start
-        # from an empty window
-        if idx > k -1:
+        if idx+1 >= k:
             results.append(nums[q[0]])
+
 
     return results
 

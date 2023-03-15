@@ -574,7 +574,8 @@ def test_max_sliding_window_239():
     ]
     functions = [
         questions.max_sliding_window_239_brute,
-        questions.max_sliding_window_239_deque
+        questions.max_sliding_window_239_deque,
+        questions.max_sliding_window_239_deque_2,
     ]
 
     for func in functions:
