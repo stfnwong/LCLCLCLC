@@ -956,6 +956,15 @@ bool word_search_79_rec(const std::vector<std::vector<char>>& grid, const std::s
 }
 
 
+/*
+ * Question 84
+ * Largest Rectangle in Histogram
+ * https://leetcode.com/problems/largest-rectangle-in-histogram/
+ */
+int largest_rectangle_in_histogram_84(const std::vector<int>& heights)
+{
+    return 0;       // shut linter up
+}
 
 /*
  * Question 98
@@ -1512,6 +1521,55 @@ std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int
 
 
 
+/*
+ * Question 121 
+ * https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+ * Best time to buy and sell stock
+*/
+int max_profit_121(const std::vector<int>& prices)
+{
+    // On each day we have to decide whether to buy or sell stocks on which days. 
+    // We cannot buy and sell in the same day.
+    // This seems like a problem we can solve with dynamic programming, as we can
+    // imagine a decision tree where we either buy, sell or hold.
+
+    std::vector<int> max_prices(prices.size(), 0);
+
+    int max_profit = 0;
+    int profit = 0;
+    int left = 0; 
+    int right = 0;
+
+    while(right < prices.size())
+    {
+        // Old price is lower than current price - could be a profit here 
+        if(prices[left] < prices[right])
+        {
+            profit = prices[right] - prices[left];
+            max_profit = std::max(profit, max_profit);
+        }
+        else
+            left++;
+        right++;
+    }
+
+    return max_profit;
+}
+
+
+//int max_profit_121_two_pointers(const std::vector<int>& prices)
+
+/*
+ * Question 122 
+ * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/
+ * Best time to buy and sell stock II
+*/
+int max_profit_122(const std::vector<int>& prices)
+{
+    return 0;   // shut linter up
+}
+
+
 // ==== Question 141
 // Linked List Cycle
 // https://leetcode.com/problems/linked-list-cycle
@@ -1963,6 +2021,10 @@ std::vector<int> max_sliding_window_239_deque(const std::vector<int>& nums, int 
     return result;
 }
 
+// Another formulation of the deque 
+std::vector<int> max_sliding_window_239_deque_2(const std::vector<int>& nums, int k)
+{
+}
 
 // TODO: also possible to implement with two stacks
 std::vector<int> max_sliding_window_239_two_stack(const std::vector<int>& nums, int k)
@@ -3022,6 +3084,26 @@ int furthest_building_you_can_reach_1642(const std::vector<int>& heights, int br
     return int(heights.size()-1);
 }
 
+
+/*
+ * Question 1673 
+ * Find the most competitive subsequence
+ * https://leetcode.com/problems/find-the-most-competitive-subsequence/
+ */
+std::vector<int> find_the_most_competitive_subsequence_1673(const std::vector<int>& nums, int k)
+{
+    std::vector<int> s;
+
+    for(unsigned i = 0; i < nums.size(); ++i)
+    {
+        while(!s.empty() && (s.back() > nums[i]) && (s.size() + nums.size() - i > k))
+            s.pop_back();
+        if(s.size() < k)
+            s.push_back(nums[i]);
+    }
+
+    return s;
+}
 
 /*
  * Question 1937 

@@ -626,6 +626,27 @@ TEST_CASE("question_79", "leetcode")
 
 
 /*
+ * Question 84
+ * Largest Rectangle in a Histogram
+ * https://leetcode.com/problems/largest-rectangle-in-histogram/
+ */
+TEST_CASE("question_84", "leetcode")
+{
+    std::vector<std::vector<int>> inputs = {
+        {2, 1, 5, 6, 2, 3},
+        {2, 4},
+    };
+    std::vector<int> exp_outputs = {10, 4};
+    REQUIRE(inputs.size() == exp_outputs.size());
+
+    for(unsigned t = 0; t < exp_outputs.size(); ++i)
+    {
+        int out = largest_rectangle_in_histogram_84(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
+    }
+}
+
+/*
  * Question 98
  * Valid Binary Search Tree
  * https://leetcode.com/problems/valid-binary-search-tree/
@@ -822,6 +843,27 @@ TEST_CASE("question_113", "leetcode")
         REQUIRE(results.size() == exp_outputs[t].size());
         for(unsigned r = 0; r < results.size(); ++r)
             REQUIRE(results[r] == exp_outputs[t][r]);
+    }
+}
+
+/*
+ * Question 121 
+ * https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+ * Best time to buy and sell stock
+*/
+TEST_CASE("question_121", "leetcode")
+{
+    std::vector<std::vector<int>> inputs = {
+        {7, 1, 5, 3, 6, 4},
+        {7, 6, 4, 3, 1},
+    };
+    std::vector<int> exp_outputs = {5, 0};
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        int out = max_profit_121(inputs[t]);
+        REQUIRE(out == exp_outputs[t]);
     }
 }
 
@@ -1591,6 +1633,37 @@ TEST_CASE("question_1642", "leetcode")
     }
 }
 
+
+/*
+ * Question 1673 
+ * Find the most competitive subsequence
+ * https://leetcode.com/problems/find-the-most-competitive-subsequence/
+ */
+TEST_CASE("question_1673", "leetcode")
+{
+    using input_t = std::pair<std::vector<int>, int>;
+    std::vector<input_t> inputs = {
+        {{3, 5, 2, 6}, 2},
+        {{2, 4, 3, 3, 5, 4, 9, 6}, 4},
+        {{71,18,52,29,55,73,24,42,66,8,80,2}, 3},
+    };
+    std::vector<std::vector<int>> exp_outputs = {
+        {2, 6},
+        {2, 3, 3, 4},
+        {8, 80, 2},
+    };
+
+    REQUIRE(inputs.size() == exp_outputs.size());
+    for(unsigned t = 0; t < exp_outputs.size(); ++t)
+    {
+        std::vector<int> out = find_the_most_competitive_subsequence_1673(
+                inputs[t].first, inputs[t].second
+        );
+        REQUIRE(out.size() == exp_outputs[t].size());
+        for(unsigned i = 0; i < out.size(); ++i)
+            REQUIRE(out[i] == exp_outputs[t][i]);
+    }
+}
 
 /*
  * Question 1937 

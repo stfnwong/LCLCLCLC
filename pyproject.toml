@@ -6,7 +6,7 @@ authors = ["Stefan Wong <stfnwong@gmail.com>"]
 license = "DEEZ NUTS"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 pytest = "^7.2.0"
 pudb = "^2022.1.3"
 ipython = "^8.7.0"

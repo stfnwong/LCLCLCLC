@@ -155,9 +155,6 @@ def group_anagrams_49(strs: List[str]) -> List[List[str]]:
     return ans
 
 
-
-
-
 # leetcode 53
 # https://leetcode.com/problems/maximum-subarray/
 def maximum_subarray_53(nums:list) -> int:
@@ -1306,6 +1303,9 @@ def max_sliding_window_239_deque(nums:List[int], k:int) -> List[int]:
     q = deque()   # will put indexes here
     results = []
 
+    if not nums:
+        return results
+
     left = 0
     right = 0
 
@@ -1336,6 +1336,9 @@ def max_sliding_window_239_deque_2(nums:List[int], k:int) -> List[int]:
 
     q = deque()  # like the previous one I will use an index queue here
     results = []
+
+    if not nums:
+        return results
 
     # Have a monotonically decreasing queue, left->right = largest->smallest
     for idx, val in enumerate(nums):
@@ -1531,6 +1534,24 @@ def find_the_difference_389_dict(s1: str, s2: str) -> str:
 
 # Question 416
 # https://leetcode.com/problems/partition-equal-subset-sum/
+
+
+# Question 496
+# Next Greater Element
+# https://leetcode.com/problems/next-greater-element-i/
+def next_greater_element_496(nums1:List[int], nums2:List[int]) -> List[int]:
+    g = {elem: -1 for elem in nums1}
+
+    stack = []
+    for i in range(len(nums2)):
+        while stack and nums2[i] > stack[-1]:
+            top = stack[-1]
+            g[top] = nums2[i]
+            stack.pop()
+
+        stack.append(nums2[i])
+
+    return [g[i] for i in nums1]
 
 
 # Question 542
@@ -1829,6 +1850,39 @@ class RandomPickWithBlacklist2:
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
 def time_to_buy_stock_714(prices: List[int], fee: int) -> int:
     pass
+
+
+# Question 743
+# https://leetcode.com/problems/network-delay-time
+# Network Delay Time
+def network_delay_time_743(times: List[List[int]], n:int, k:int) -> int:
+    # Find the shortest path to all nodes
+
+    graph = {v: [] for v in range(n)}
+    for (u, v, w) in times:
+        graph[u-1].append((v-1, w))
+
+    # We can use Dijkstra here, in which we visit the node with the smallest cost next
+    pq = []
+    # need to put weight here first, not sure if its possible to speicfy a key
+    heapq.heappush(pq, (0, k-1))      # start at K - ive adjusted this indices so this is k-1
+    path = dict()       # weights for each path
+
+    while pq:
+        w, v = heapq.heappop(pq)
+        # We have to explore every node in this case
+        if v not in path:
+            path[v] = w
+            for n_v, n_w in graph[v]:
+                heapq.heappush(pq, (n_w + w, n_v))
+
+    # check that we found a path to all nodes
+    if len(path) == n:
+        return max(path.values())
+
+    return -1       # can't reach everything
+
+
 
 
 # Question 746
@@ -2206,6 +2260,11 @@ def shortest_path_in_grid_with_obstacle_1293(grid: List[List[int]], k:int) -> in
 
 
 
+# Question 1335
+# https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/
+# Minimum Difficulty of a Job Schedule
+def minimum_difficulty_of_a_job_schedule_1335(difficulty: List[int], d:int) -> int:
+    pass
 
 
 # Question 1584
@@ -2268,8 +2327,37 @@ def furthest_building_you_can_reach_1642(heights: List[int], bricks: int, ladder
                 bricks_used -= (-heapq.heappop(brick_heap))
             else:
                 return h
+
     return N-1
 
+
+
+# Question 1673
+# Find the Most Competitive Subsequence
+# https://leetcode.com/problems/find-the-most-competitive-subsequence/
+def find_the_most_competitive_subsequence_1673(nums:List[int], k:int) -> List[int]:
+    # The most competitive subsequence is the subsequence of length k where the final 
+    # digit is the smallest. Because we are looking for the smallest next thing we 
+    # can use a monotonic stack here
+
+    # idx  : [0, 1, 2, 3, 4, 5, 6, 7]
+    # nums : [2, 4, 3, 3, 5, 4, 9, 6]   N = 8
+    #
+    # N-i is how many more numbers are left in the input at iteration i.
+    # We want the size of the stack plus the number of possible items remaining to 
+    # be at least k. If we go over this we need to remove some elements from the stack.
+
+    stack = []
+    for i, item in enumerate(nums):
+        # We want the stack to be at least size k and to be monotonically increasing
+        # We need a condition that ensures the stack size doesn't go below k
+        while stack and stack[-1] > item and (len(stack) + len(nums) - i > k):
+        #while stack and stack[-1] > item:
+            stack.pop()
+        if len(stack) < k:
+            stack.append(item)
+
+    return stack
 
 
 # Question 1971
@@ -2376,6 +2464,75 @@ def find_if_path_exists_in_graph_1971_iter(n: int, edges: List[List[int]], sourc
                 node_stack.append(v)
 
     return False
+
+
+# Question 2039
+# Time When Network Becomes Idle
+# https://leetcode.com/problems/time-when-the-network-becomes-idle
+def time_when_network_becomes_idle_2039(edges: List[List[int]], patience: List[int]) -> int:
+    # First idea is to compute all distances with a BFS and then find the max
+    # number of repeats per patience for each node. The largest of these is the last
+    # time that a packet moves through the network, add one to get the first time when
+    # the network is idle.
+
+    graph = defaultdict(list)
+    for v, e in edges:
+        graph[v].append(e)
+        graph[e].append(v)
+
+    INF = int(10e6)
+    visited = set()
+    distance = {v: INF for v in graph.keys()}
+    # We know the location of the master node, so BFS from there to find distances
+    q = [(0,0)]
+
+    while q:
+        vert, dist = q.pop(0)
+        distance[vert] = dist
+        for nb in graph[vert]:
+            #if distance[nb] == INF:
+            if nb not in visited:
+                visited.add(nb)
+                q.append((nb, dist+1))
+
+    ans = 0
+    # Now we have the distances for each node
+    for p in range(1, len(patience)):
+        num_extra_msg = (2 * distance[p] - 1) // patience[p]
+        last_msg_sent = patience[p] * num_extra_msg
+        ans = max(ans, last_msg_sent + (2 * distance[p] -1))
+
+    return int(ans)
+
+
+
+
+def time_when_network_becomes_idle_2039_online(edges: List[List[int]], patience: List[int]) -> int:
+    # We should be able to compute the max time as we compute the distances. This isn't
+    # really an algorithmic improvement (we still have to visit all the nodes so the
+    # number of calculations we have to do is the same, we just don't have another
+    # loop at the end).
+
+    graph = defaultdict(list)
+
+    for v, e in edges:
+        graph[v].append(e)
+        graph[e].append(v)
+
+    INF = int(10e5)
+    distance = {v: INF for v in graph}
+    q = [(0, 0)]    # (vertex, dist)
+
+    # BFS to find distances
+    while q:
+        vert, dist = q.pop(0)
+        distance[vert] = dist
+        for nb in graph[vert]:
+            if distance[vert] == INF:
+                q.append((nb, dist+1))
+
+
+
 
 
 # Question 2050

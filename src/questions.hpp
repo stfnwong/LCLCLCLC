@@ -130,6 +130,13 @@ bool word_search_79(const std::vector<std::vector<char>>& grid, const std::strin
 bool word_search_79_rec(const std::vector<std::vector<char>>& grid, const std::string& word);
 
 /*
+ * Question 84
+ * Largest Rectangle in Histogram
+ * https://leetcode.com/problems/largest-rectangle-in-histogram/
+ */
+int largest_rectangle_in_histogram_84(const std::vector<int>& heights);
+
+/*
  * Question 98
  * Valid Binary Search Tree
  * https://leetcode.com/problems/valid-binary-search-tree/
@@ -172,20 +179,35 @@ std::vector<std::vector<int>> level_order_traversal_102(const TreeNode* root);
 
 /*
  * Question 111 
-https://leetcode.com/problems/minimum-depth-of-binary-tree/
-Minimum depth of binary tree
+ * https://leetcode.com/problems/minimum-depth-of-binary-tree/
+ * Minimum depth of binary tree
 */
 int min_depth_of_binary_tree_111(const TreeNode* root);
 int min_depth_of_binary_tree_111_rec(const TreeNode* root);
 
 
- /*
-  * Question 114
-  * https://leetcode.com/problems/path-sum-ii/description/
-  */
+/*
+ * Question 114
+ * https://leetcode.com/problems/path-sum-ii/description/
+ */
 std::vector<std::vector<int>> path_sum_ii_113(const TreeNode* root, int target_sum);
 std::vector<std::vector<int>> path_sum_ii_113_bfs_iter(const TreeNode* root, int target_sum);
 std::vector<std::vector<int>> path_sum_ii_113_dfs_iter(const TreeNode* root, int target_sum);
+
+/*
+ * Question 121 
+ * https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+ * Best time to buy and sell stock
+*/
+int max_profit_121(const std::vector<int>& prices);
+
+/*
+ * Question 122 
+ * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/
+ * Best time to buy and sell stock II
+*/
+int max_profit_122(const std::vector<int>& prices);
+
 
 // ==== Question 141
 // Linked List Cycle 
@@ -439,6 +461,13 @@ struct Solution_1971
  * https://leetcode.com/problems/furthest-building-you-can-reach/
  */
 int furthest_building_you_can_reach_1642(const std::vector<int>& heights, int bricks, int ladders);
+
+/*
+ * Question 1673 
+ * Find the most competitive subsequence
+ * https://leetcode.com/problems/find-the-most-competitive-subsequence/
+ */
+std::vector<int> find_the_most_competitive_subsequence_1673(const std::vector<int>& nums, int k);
 
 /*
  * Question 1937 

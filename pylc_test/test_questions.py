@@ -80,9 +80,11 @@ def test_group_anagrams_49():
         assert out_set == exp_set
 
 
+# leetcode 53
+# https://leetcode.com/problems/maximum-subarray/
 def test_maximum_subarray_53():
     inputs = [
-        [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+        [-2, 1, -3, 4, -1, 2, 1, -5, 4],
         [-2],
     ]
     exp_outputs = [6, -2]
@@ -667,6 +669,25 @@ def test_find_the_difference_389():
 
 
 
+# Question 496
+# Next Greater Element
+# https://leetcode.com/problems/next-greater-element-i/
+def test_next_greater_element_496():
+    inputs = [
+        # (nums1, nums2)
+        ([4, 1, 2], [1, 3, 4, 2]),
+        ([2, 4], [1, 2, 3, 4]),
+    ]
+    exp_outputs = [
+        [-1, 3, -1],
+        [3, -1]
+    ]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.next_greater_element_496(inp[0], inp[1])
+        assert out == exp_out
+
+
 
 # Question 542
 # 01 Matrix
@@ -788,6 +809,28 @@ def test_min_cost_climbing_stairs_746():
         out = questions.min_cost_climbing_stairs_746(inp)
         assert out == exp_out
 
+
+
+# Question 743
+# https://leetcode.com/problems/network-delay-time 
+# Network Delay Time
+def test_network_delay_time_743():
+    inputs = [
+        # (times, n, k), times is a list of (u, v, w) tuples (source, sink, weight)
+        ([[4,2,76],[1,3,79],[3,1,81],[4,3,30],[2,1,47],[1,5,61],[1,4,99],[3,4,68],[3,5,46],[4,1,6],[5,4,7],[5,3,44],[4,5,19],[2,3,13],[3,2,18],[1,2,0],[5,1,25],[2,5,58],[2,4,77],[5,2,74]], 5, 3),
+        ([[2, 1, 1], [2, 3, 1], [3, 4, 1]], 4, 2),
+        ([[1,2,1]], 2, 1),
+        ([[1,2,1]], 2, 2),
+
+        ([[2,4,10],[5,2,38],[3,4,33],[4,2,76],[3,2,64],[1,5,54],[1,4,98],[2,3,61],[2,1,0],[3,5,77],[5,1,34],[3,1,79],[5,3,2],[1,2,59],[4,3,46],[5,4,44],[2,5,89],[4,5,21],[1,3,86],[4,1,95]], 5, 1),
+    ]
+    exp_outputs = [59, 2, 1, -1, 69]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.network_delay_time_743(
+            inp[0], inp[1], inp[2]
+        )
+        assert out == exp_out
 
 
 # Question 746
@@ -960,6 +1003,23 @@ def test_shortest_path_in_grid_with_obstacle_1293():
         ([[0,0,0],[1,1,0],[0,0,0],[0,1,1],[0,0,0]], 1),
     ]
 
+
+# Question 1335
+# https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/
+# Minimum Difficulty of a Job Schedule
+def test_minimum_difficulty_of_a_job_schedule_1335():
+    inputs = [
+        # (difficulty, day)
+        ([6, 5, 4, 3, 2, 1], 2),
+    ]
+    exp_outputs = [7]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.minimum_difficulty_of_a_job_schedule_1335(inp[0], inp[1])
+        assert out == exp_out
+
+
+
 # Question 1584
 # https://leetcode.com/problems/min-cost-to-connect-all-points/
 def test_min_cost_to_connect_all_points_1584():
@@ -991,6 +1051,27 @@ def test_furthest_building_you_can_reach_1642():
         out = questions.furthest_building_you_can_reach_1642(
             inp[0], inp[1], inp[2]
         )
+        assert out == exp_out
+
+
+# Question 1673
+# Find the Most Competitive Subsequence
+# https://leetcode.com/problems/find-the-most-competitive-subsequence/
+def test_find_the_most_competitive_subsequence_1673():
+    inputs = [
+        # (nums, k)
+        ([3, 5, 2, 6], 2),
+        ([2, 4, 3, 3, 5, 4, 9, 6], 4),
+        ([71,18,52,29,55,73,24,42,66,8,80,2], 3),
+    ]
+    exp_outputs = [
+        [2, 6],
+        [2, 3, 3, 4],
+        [8,80,2],
+    ]
+
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.find_the_most_competitive_subsequence_1673(inp[0], inp[1])
         assert out == exp_out
 
 
@@ -1026,6 +1107,22 @@ def test_find_if_path_exists_in_graph_1971():
             out = func(inp[0], inp[1], inp[2], inp[3])
             assert out == exp_out
 
+
+# Question 2039
+# Time When Network Becomes Idle
+# https://leetcode.com/problems/time-when-the-network-becomes-idle
+def test_time_when_network_becomes_idle_2039():
+    inputs = [
+        # (edges, patience), edges = list of (u,v) pairs, patience is max time node i waits
+        ([[0,1], [1,2]], [0, 2, 1]),
+        ([[0,1], [0,2], [1,2]], [0, 10, 10]),
+    ]
+    exp_outputs = [8, 3]
+
+    #from pudb import set_trace; set_trace()
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.time_when_network_becomes_idle_2039(inp[0], inp[1])
+        assert out == exp_out
 
 
 # Question 2050
