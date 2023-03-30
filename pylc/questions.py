@@ -546,6 +546,90 @@ def climbing_stairs_70(n: int) -> int:
     return one_step
 
 
+# Question 84
+# Largest Rectangle in Histogram
+# https://leetcode.com/problems/largest-rectangle-in-histogram/
+def largest_rectangle_in_histogram_84(heights: List[int]) -> int:
+
+    #from pudb import set_trace; set_trace()
+    # Can we do a max-from-left and max-from-right and then an intersection?
+    #lmin = [-1 for _ in range(len(heights))]
+    #lmin[0] = heights[0]
+    #for n in range(1, len(heights)):
+    #    lmin[n] = max(lmin[n-1], heights[n-1])
+
+    #rmin = [-1 for _ in range(len(heights))]
+    #rmin[-1] = heights[-1]
+    #for n in range(len(heights)-2, -1, -1):
+    #    rmin[n] = max(rmin[n+1], heights[n+1])
+
+    ## The minimum of any pair of limits is the maximum area we can make at
+    ## position i. If this area is larger than the current min then we can extend a 
+    ## rectangle by that amount here.
+    #area = 0
+    #for n in range(len(heights)):
+    #    level = min(lmin[n], rmin[n])
+    #    if level >= area:
+    #        area += level
+
+    #return area
+
+    # What if we just sum this stack? We only add to the stack if the height of the next
+    # bar is at least the height of the current one
+    # inp = [2, 1, 3], area = 3
+    # 
+    # first iteration: stack = 2,  
+    # s = [2, 1, 3] (idx: [0, 1, 2])
+    # s = [2]
+    #
+    # top = 2
+
+
+    # [5, 5, 5, 5], ans = 20
+    # [-1, 0, 1, 2, 
+
+    # [0, 1, 2, 3, 4, 5],
+    # [2, 3, 5, 6, 3, 3],
+
+    # [0, 1, 2, 
+
+    heights.append(0)
+    stack = [-1]
+    max_area = 0
+
+    for i in range(len(heights)):
+        # Force the current height to be zero for the last element - we only 
+        # do this to ensure that we pop the whole stack.
+        #cur_height = heights[i] if (i < len(heights) - 1) else 0
+
+        while stack and heights[i] < heights[stack[-1]]:
+        #while stack and cur_height < heights[stack[-1]]:
+            top = stack.pop()
+            h = heights[top]
+            w = i if len(stack) == 0 else i - stack[-1] - 1
+            max_area = max(max_area, h * w)
+
+        stack.append(i)
+
+    return max_area
+
+    #max_area = 0
+    #for i, elem in enumerate(heights):
+    #    cur_height = elem if (i <= len(heights)) else 0
+    #    # make this a monotonically increasing stack 
+    #    while stack and cur_height < heights[stack[-1]]:
+    #        top = stack.pop()
+    #        width = i if (len(stack) == 0) else (i - stack[-1] - 1)
+    #        area = heights[top] * width
+    #        max_area = max(max_area, area)
+
+    #    # Adding an element here ensures an increasing stack 
+    #    stack.append(i)
+
+    #return max_area if max_area > 0 else heights[stack[-1]]
+
+
+
 # Question 102
 # Binary Tree Level Order Traversal
 # https://leetcode.com/problems/binary-tree-level-order-traversal/

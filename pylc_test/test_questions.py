@@ -193,6 +193,25 @@ def test_climbing_stairs_70():
         assert out == exp_out
 
 
+# Question 84
+# Largest Rectangle in Histogram
+# https://leetcode.com/problems/largest-rectangle-in-histogram/
+def test_largest_rectangle_in_histogram_84():
+    inputs = [
+        #[2, 1, 5, 6, 2, 3],
+        [2, 4],
+        [2, 3, 5, 6, 3, 3],
+        [5, 5, 5, 5],
+    ]
+    exp_outputs = [4, 15, 20]
+    #exp_outputs = [10, 4, 15, 20]
+
+    #from pudb import set_trace; set_trace()
+    for inp, exp_out in zip(inputs, exp_outputs):
+        out = questions.largest_rectangle_in_histogram_84(inp)
+        assert out == exp_out
+
+
 # Question 102
 # Binary Tree Level Order Traversal
 # https://leetcode.com/problems/binary-tree-level-order-traversal/
