@@ -15,7 +15,7 @@
 
 
 // ================ INTRUSIVE SHARED POINTER ================= //
-TEST_CASE("test_shared_ptr_intrusive_init", "[classic]")
+TEST_CASE("test_shared_ptr_intrusive_init", "shared_ptr")
 {
     int* some_val = new int(42);
     int* some_other_val = new int(42);
@@ -38,8 +38,9 @@ TEST_CASE("test_shared_ptr_intrusive_init", "[classic]")
     REQUIRE(*ref2 == 42);
 }
 
+
 // Move construction
-TEST_CASE("test_shared_ptr_intrusive move ctor", "[classic]")
+TEST_CASE("test_shared_ptr_intrusive_move_ctor", "shared_ptr")
 {
     int* some_val = new int(42);
 
@@ -47,13 +48,14 @@ TEST_CASE("test_shared_ptr_intrusive move ctor", "[classic]")
     REQUIRE(src_ref.empty() == false);     // non-class type error?
 
     // We will move construct into here...
-    //SharedPtrIntrusive<int> dest_ref(std::move(src_ref));       // <- TODO : segfault here
-    //REQUIRE(dest_ref.empty() == false);     // non-class type error?
-    //REQUIRE(src_ref.empty() == true);     // non-class type error?
+    SharedPtrIntrusive<int> dest_ref(std::move(src_ref));       // <- TODO : segfault here
+    REQUIRE(dest_ref.empty() == false);     // non-class type error?
+    REQUIRE(src_ref.empty() == true);     // non-class type error?
 }
 
+
 // Copy construction
-TEST_CASE("test_shared_ptr_intrusive_share", "[classic]")
+TEST_CASE("test_shared_ptr_intrusive_share", "shared_ptr")
 {
     int* some_val = new int(24);
 
@@ -102,8 +104,9 @@ TEST_CASE("test_shared_ptr_intrusive_share", "[classic]")
     REQUIRE(*new_ref2 == 48);
 }
 
+
 // ================ NON-INTRUSIVE SHARED POINTER ================= //
-TEST_CASE("test_shared_ptr_init", "[classic]")
+TEST_CASE("test_shared_ptr_init", "shared_ptr")
 {
     // Externally, this works the same way as the intrusive shared pointer
     int* some_val = new int(42);
@@ -123,7 +126,8 @@ TEST_CASE("test_shared_ptr_init", "[classic]")
     REQUIRE(*ref2 == 42);
 }
 
-TEST_CASE("test_shared_ptr_share", "[classic]")
+
+TEST_CASE("test_shared_ptr_share", "shared_ptr")
 {
     // This is also externally identical to SharedPtrIntrusive
     int* some_val = new int(24);

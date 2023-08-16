@@ -3,6 +3,7 @@
  * All the questions in the array's subsection of the data structures part
  * of the Educative coding interview course
  */
+
 #define CATCH_CONFIG_MAIN
 #include "catch/catch.hpp"
 
