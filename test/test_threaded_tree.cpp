@@ -23,7 +23,7 @@ constexpr const int tree2_size = 3;
 constexpr const int tree3_size = 4;
 
 
-TEST_CASE("TestThreadedTree, test_repr_to_threaded_tree", "[classic]")
+TEST_CASE("TestThreadedTree, test_repr_to_threaded_tree", "threaded_tree")
 {
     TreeNode* repr1_tree;
     TreeNode* repr2_tree;

@@ -40,7 +40,7 @@ void print_traversal(const std::vector<int>& traversal)
 /*
  * PRE-ORDER
  */
-TEST_CASE("TestTraverseTree, test_preorder_traversal", "tree_traversal")
+TEST_CASE("test_preorder_traversal", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -97,7 +97,7 @@ TEST_CASE("TestTraverseTree, test_preorder_traversal", "tree_traversal")
 /*
  * IN-ORDER
  */
-TEST_CASE("TestTraverseTree, test_inorder_traversal", "tree_traversal")
+TEST_CASE("test_inorder_traversal", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -150,7 +150,7 @@ TEST_CASE("TestTraverseTree, test_inorder_traversal", "tree_traversal")
 /*
  * OUT-ORDER
  */
-TEST_CASE("TestTraverseTree, test_outorder_traversal", "tree_traversal")
+TEST_CASE("test_outorder_traversal", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -207,7 +207,7 @@ TEST_CASE("TestTraverseTree, test_outorder_traversal", "tree_traversal")
 /*
  * POST-ORDER
  */
-TEST_CASE("TestTraverseTree, test_postorder_traversal", "tree_traversal")
+TEST_CASE("test_postorder_traversal", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -264,7 +264,7 @@ TEST_CASE("TestTraverseTree, test_postorder_traversal", "tree_traversal")
 /*
  * LEVEL ORDER
  */
-TEST_CASE("TestTraverseTree, test_level_order_traverse", "tree_traversal")
+TEST_CASE("test_level_order_traverse", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -318,7 +318,7 @@ TEST_CASE("TestTraverseTree, test_level_order_traverse", "tree_traversal")
 }
 
 // ======== RECURSIVE SOLUTIONS WITH STACKS ======== //
-TEST_CASE("TestTraverseTree, test_preorder_traversal_stack", "tree_traversal")
+TEST_CASE("test_preorder_traversal_stack", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -372,7 +372,7 @@ TEST_CASE("TestTraverseTree, test_preorder_traversal_stack", "tree_traversal")
 }
 
 // ======== ITERATIVE SOLUTIONS ======== //
-TEST_CASE("TestTraverseTree, test_preorder_traversal_iter", "tree_traversal")
+TEST_CASE("test_preorder_traversal_iter", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
@@ -410,7 +410,7 @@ TEST_CASE("TestTraverseTree, test_preorder_traversal_iter", "tree_traversal")
     //destroy_tree(tree3);
 }
 
-TEST_CASE("TestTraverseTree, test_inorder_traversal_iter", "tree_traversal")
+TEST_CASE("test_inorder_traversal_iter", "tree_traversal")
 {
     // Tree 1
     std::vector<int> traversal1;
