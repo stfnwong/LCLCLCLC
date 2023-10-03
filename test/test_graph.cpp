@@ -1,32 +1,34 @@
 /* TEST_GRAPH
  * Test various graph things
+ *
+ * Stefan Wong 2019
  */
-
 #define CATCH_CONFIG_MAIN
 #include "catch/catch.hpp"
 
+#include <iostream>
 #include <vector>
 #include <string>
-
 #include "graph.hpp"
 
+// number of verticies to place into test graph
+constexpr const unsigned int test_v = 8;
 
-std::string empty_repr = "{}";
-std::string repr1      = "{0,1,2#1,2#2,2}";
-std::string repr2      = "{0,1,2#1,2#2,2#3,1,0#4,2,3}";
+const std::string empty_repr = "{}";
+const std::string repr1      = "{0,1,2#1,2#2,2}";
+const std::string repr2      = "{0,1,2#1,2#2,2#3,1,0#4,2,3}";
 // this graph is from cracking the code pg 118
-std::string repr3      = "{0,1,4,5#1,4,3#2,1#3,2,4#4#5}";   
-
+const std::string repr3      = "{0,1,4,5#1,4,3#2,1#3,2,4#4#5}";   
 // expected outputs
 // graph 1
-std::vector<int> expected_dfs_1 = {0,2,1};
-std::vector<int> expected_bfs_1 = {0,1,2};
+const std::vector<int> expected_dfs_1 = {0,2,1};
+const std::vector<int> expected_bfs_1 = {0,1,2};
 // graph 2
-std::vector<int> expected_dfs_2 = {0,1,2,3,4};
-std::vector<int> expected_bfs_2 = {0,1,2,3,4};
+const std::vector<int> expected_dfs_2 = {0,1,2,3,4};
+const std::vector<int> expected_bfs_2 = {0,1,2,3,4};
 // graph 3
-std::vector<int> expected_dfs_3 = {0, 1, 3, 2, 4, 5};
-std::vector<int> expected_bfs_3 = {0, 1, 4, 5, 3, 2};
+const std::vector<int> expected_dfs_3 = {0, 1, 3, 2, 4, 5};
+const std::vector<int> expected_bfs_3 = {0, 1, 4, 5, 3, 2};
 
 
 /*
@@ -101,9 +103,7 @@ TEST_CASE("test_graph1_bfs", "graph")
     REQUIRE(expected_bfs_1.size() == traversal1.size());
 
     for(unsigned int n = 0; n < expected_bfs_1.size(); ++n)
-    {
         REQUIRE(expected_bfs_1[n] == traversal1[n].key);
-    }
 }
 
 
@@ -159,27 +159,27 @@ TEST_CASE("test_graph_dfs", "graph")
 
     std::cout << std::endl << "==== Traversng graph3 (DFS)" << std::endl;
     graph_dfs(graph3, traversal3);
-    //REQUIRE(traversal3.size() > 0);
+    REQUIRE(traversal3.size() > 0);
 
     std::cout << "Printing DFS traversal1 (length " << traversal3.size() << ") :" << std::endl;
     print_traversal(traversal3);
     std::cout << "Expected traversal : " << std::endl;
     print_array(expected_dfs_3);
 
-    REQUIRE(expected_dfs_3.size() == traversal3.size());
-
     // Test each value in turn
     for(unsigned int t = 0; t < traversal3.size(); ++t)
-    {
         REQUIRE(expected_dfs_3[t] == traversal3[t].key);
-    }
 }
 
 
-
-
-unsigned int test_v = 8;
-std::string adj_repr1 = "{0,1,2#1,2#2,2}";
+//TEST_CASE(TestGraph, test_clone)
+//{
+//    GraphNode* src_graph;
+//    GraphNode* dst_graph;
+//
+//
+//    // Need to make a src_graph to test with.
+//}
 
 
 TEST_CASE("test_adj_matrix_init", "graph")
@@ -202,11 +202,10 @@ TEST_CASE("test_adj_matrix_init", "graph")
 
 }
 
-
 // Test that we can make a new AdjList object
 TEST_CASE("test_adj_list_init", "graph")
 {
-    AdjList test_list(adj_repr1);
+    AdjList test_list(repr1);
 
     std::cout << "test_list string representation : " << std::endl;
     std::cout << "\t" << test_list.toString() << std::endl;

@@ -7,7 +7,6 @@
 
 #define CATCH_CONFIG_MAIN
 #include "catch/catch.hpp"
-
 #include <iostream> 
 #include <iomanip>
 #include <vector>
@@ -16,16 +15,13 @@
 // unit(s) under test 
 #include "heap.hpp"
 
-
-const constexpr bool verbose = false;
-
 const std::vector<int> input_array       = {5, 8, 1, 10, 15, 4, 3};
 const std::vector<int> expected_min_heap = {1, 8, 3, 10, 15 ,5, 4};   // final heap array format
 const std::vector<int> expected_max_heap = {1, 8, 3, 10, 15 ,5, 4};   // final heap array format
 
 
 // Ensure that the MinHeap actually satisfies the min heap property
-TEST_CASE("test_minheap_insert", "heap")
+TEST_CASE("Test MinHeap insert", "[classic]")
 {
     MinHeap test_heap;
     REQUIRE(test_heap.empty() == true);
@@ -34,19 +30,16 @@ TEST_CASE("test_minheap_insert", "heap")
     for(unsigned int i = 0; i < input_array.size(); ++i)
     {
         test_heap.insert(input_array[i]);
-        if(verbose)
-            std::cout << "[after input " << i << "] : " << test_heap.toString() << std::endl;
+        std::cout << "[after input " << i << "] : " << test_heap.toString() << std::endl;
     }
-    if(verbose)
-        std::cout << "MinHeap vec : " << test_heap.toString() << std::endl;
-
+    std::cout << "MinHeap vec : " << test_heap.toString() << std::endl;
     REQUIRE(test_heap.isMinHeap() == true);
     REQUIRE(test_heap.isMaxHeap() == false);
 }
 
 
 // Ensure that the MaxHeap actually satisfies the max heap property
-TEST_CASE("test_maxheap_insert", "heap")
+TEST_CASE("Test MaxHeap insert", "[classic]")
 {
     MaxHeap test_heap;
     REQUIRE(test_heap.empty() == true);
@@ -55,19 +48,15 @@ TEST_CASE("test_maxheap_insert", "heap")
     for(unsigned int i = 0; i < input_array.size(); ++i)
     {
         test_heap.insert(input_array[i]);
-        if(verbose)
-            std::cout << "[after input " << i << "] : " << test_heap.toString() << std::endl;
+        std::cout << "[after input " << i << "] : " << test_heap.toString() << std::endl;
     }
-
-    if(verbose)
-        std::cout << "MaxHeap vec : " << test_heap.toString() << std::endl;
-
+    std::cout << "MaxHeap vec : " << test_heap.toString() << std::endl;
     REQUIRE(test_heap.isMinHeap() == false);
     REQUIRE(test_heap.isMaxHeap() == true);
 }
 
 
-TEST_CASE("test_maxheap_get_limits", "heap")
+TEST_CASE("Test MaxHeap get limits", "[classic]")
 {
     MaxHeap test_heap;
     REQUIRE(test_heap.empty() == true);
@@ -82,8 +71,7 @@ TEST_CASE("test_maxheap_get_limits", "heap")
     REQUIRE(test_heap.getMax() == 15);
 }
 
-
-TEST_CASE("test_maxheap_pop_max", "heap")
+TEST_CASE("Test MaxHeap pop max", "[classic]")
 {
     MaxHeap test_heap;
     REQUIRE(test_heap.empty() == true);
@@ -98,22 +86,15 @@ TEST_CASE("test_maxheap_pop_max", "heap")
     // remove the max element
     int max;
     // See if we can pop the minimum element
-    if(verbose)
-    {
-        std::cout << test_heap.toString() << std::endl;
-        std::cout << " (before popMax())" << std::endl;
-    }
-
+    std::cout << test_heap.toString() << std::endl;
+    std::cout << " (before popMax())" << std::endl;
     max = test_heap.popMax();
     REQUIRE(max == 15);
     REQUIRE(test_heap.size() == input_array.size() - 1);
     REQUIRE(test_heap.isMaxHeap() == true);
 
-    if(verbose)
-    {
-        std::cout << test_heap.toString() << std::endl;
-        std::cout << " (after popMax())" << std::endl;
-    }
+    std::cout << test_heap.toString() << std::endl;
+    std::cout << " (after popMax())" << std::endl;
 
     // Remove some more
     max = test_heap.popMax();
@@ -122,8 +103,7 @@ TEST_CASE("test_maxheap_pop_max", "heap")
     REQUIRE(test_heap.isMaxHeap() == true);
 }
 
-
-TEST_CASE("test_maxheap_pop_min", "heap")
+TEST_CASE("Test MaxHeap pop min", "[classic]")
 {
     MaxHeap test_heap;
     REQUIRE(test_heap.empty() == true);
@@ -137,24 +117,16 @@ TEST_CASE("test_maxheap_pop_min", "heap")
 
     int min;
     // See if we can pop the minimum element
-    if(verbose)
-    {
-        std::cout << test_heap.toString() << std::endl;
-        std::cout << " (before popMin())" << std::endl;
-    }
-
+    std::cout << test_heap.toString() << std::endl;
+    std::cout << " (before popMin())" << std::endl;
     min = test_heap.popMin();
     REQUIRE(min == 1);
     REQUIRE(test_heap.size() == input_array.size() - 1);
     REQUIRE(test_heap.isMaxHeap() == true);
 
     // Try the next one
-    if(verbose)
-    {
-        std::cout << test_heap.toString() << std::endl;
-        std::cout << " (before popMin())" << std::endl;
-    }
-
+    std::cout << test_heap.toString() << std::endl;
+    std::cout << " (before popMin())" << std::endl;
     min = test_heap.popMin();
     REQUIRE(min == 3);
     REQUIRE(test_heap.size() == input_array.size() - 2);
@@ -162,7 +134,7 @@ TEST_CASE("test_maxheap_pop_min", "heap")
 }
 
 
-TEST_CASE("test_maxheap_pop_all_from_root", "heap")
+TEST_CASE("Test MaxHeap pop all from root", "[classic]")
 {
     MaxHeap test_heap;
     REQUIRE(test_heap.empty() == true);
@@ -179,15 +151,10 @@ TEST_CASE("test_maxheap_pop_all_from_root", "heap")
     while(!test_heap.empty())
     {
         max = test_heap.popMax();
-        if(verbose)
-            std::cout << "max " << num_iter << " :" << max << std::endl;
-
+        std::cout << "max " << num_iter << " :" << max << std::endl;
         REQUIRE(max == expected_max_vec[num_iter]);
         REQUIRE(test_heap.isMaxHeap() == true);
-
-        if(verbose)
-            std::cout << test_heap.toString() << std::endl;
-
+        std::cout << test_heap.toString() << std::endl;
         //REQUIRE(test_heap.isMinHeap() == false);      // 
         num_iter++;
 
@@ -200,7 +167,7 @@ TEST_CASE("test_maxheap_pop_all_from_root", "heap")
 }
 
 
-TEST_CASE("test_minheap_get_limits", "heap")
+TEST_CASE("Test MinHeap get limits", "[classic]")
 {
     MinHeap test_heap;
     REQUIRE(test_heap.empty() == true);
@@ -216,8 +183,7 @@ TEST_CASE("test_minheap_get_limits", "heap")
 }
 
 
-
-TEST_CASE("test_minheap_pop_min", "heap")
+TEST_CASE("Test MinHeap pop min", "[classic]")
 {
     MinHeap test_heap;
     REQUIRE(test_heap.empty() == true);
@@ -233,22 +199,15 @@ TEST_CASE("test_minheap_pop_min", "heap")
 
     int min;
     // See if we can pop the minimum element
-    if(verbose)
-    {
-        std::cout << test_heap.toString() << std::endl;
-        std::cout << " (before popMin())" << std::endl;
-    }
-
+    std::cout << test_heap.toString() << std::endl;
+    std::cout << " (before popMin())" << std::endl;
     min = test_heap.popMin();
     REQUIRE(min == 1);
     REQUIRE(test_heap.size() == input_array.size() - 1);
     REQUIRE(test_heap.isMinHeap() == true);
 
-    if(verbose)
-    {
-        std::cout << test_heap.toString() << std::endl;
-        std::cout << " (after popMin())" << std::endl;
-    }
+    std::cout << test_heap.toString() << std::endl;
+    std::cout << " (after popMin())" << std::endl;
 
     // Remove some more
     min = test_heap.popMin();
@@ -258,7 +217,7 @@ TEST_CASE("test_minheap_pop_min", "heap")
 }
 
 
-TEST_CASE("test_minheap_pop_max", "heap")
+TEST_CASE("Test MinHeap pop max", "[classic]")
 {
     MinHeap test_heap;
     REQUIRE(test_heap.empty() == true);
@@ -271,22 +230,15 @@ TEST_CASE("test_minheap_pop_max", "heap")
 
     int max;
     // See if we can pop the minimum element
-    if(verbose)
-    {
-        std::cout << test_heap.toString() << std::endl;
-        std::cout << " (before popMax())" << std::endl;
-    }
-
+    std::cout << test_heap.toString() << std::endl;
+    std::cout << " (before popMax())" << std::endl;
     max = test_heap.popMax();
     REQUIRE(max == 15);
     REQUIRE(test_heap.size() == input_array.size() - 1);
     REQUIRE(test_heap.isMinHeap() == true);
 
-    if(verbose)
-    {
-        std::cout << test_heap.toString() << std::endl;
-        std::cout << " (after popMax())" << std::endl;
-    }
+    std::cout << test_heap.toString() << std::endl;
+    std::cout << " (after popMax())" << std::endl;
 
     // Remove some more
     max = test_heap.popMax();
@@ -296,7 +248,7 @@ TEST_CASE("test_minheap_pop_max", "heap")
 
 
 // TODO : consider chaning the API to just be 'pop()'
-TEST_CASE("test_minheap_pop_all_from_root", "heap")
+TEST_CASE("Test MinHeap pop all from root", "[classic]")
 {
     MinHeap test_heap;
     REQUIRE(test_heap.empty() == true);
@@ -313,9 +265,7 @@ TEST_CASE("test_minheap_pop_all_from_root", "heap")
     while(!test_heap.empty())
     {
         min = test_heap.popMin();
-        if(verbose)
-            std::cout << "min " << num_iter << " :" << min << std::endl;
-
+        std::cout << "min " << num_iter << " :" << min << std::endl;
         REQUIRE(min == expected_min_vec[num_iter]);
         REQUIRE(test_heap.isMinHeap() == true);
         //REQUIRE(test_heap.isMaxHeap() == false);

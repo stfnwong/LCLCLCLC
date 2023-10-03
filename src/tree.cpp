@@ -381,7 +381,7 @@ void tree_preorder_iter(TreeNode* root, std::vector<int>& traversal)
                 tree_stack.pop();
                 root = root->right;
             }
-        }while(!tree_stack.empty() || (root != nullptr));
+        } while(!tree_stack.empty() || (root != nullptr));
     }
 }
 
@@ -416,7 +416,7 @@ void tree_inorder_iter(TreeNode* root, std::vector<int>& traversal)
                 root = root->right;
             }
 
-        }while(!tree_stack.empty() || (root != nullptr));
+        } while(!tree_stack.empty() || (root != nullptr));
     }
 }
 
@@ -489,76 +489,28 @@ void tree_postorder_iter(const TreeNode* root, std::vector<int>& traversal)
     }
 }
 
+/*
+ * Breadth-First Traversal
+ */
 
-
-// ---- LC-Style version---- //
-ObjTraverser::ObjTraverser() {} 
-
-
-void ObjTraverser::init(void)
+void tree_bfs(TreeNode* root, std::vector<int>& traversal)
 {
-    this->traversal.clear();
-}
+    std::queue<TreeNode*> q;
 
-std::vector<int> ObjTraverser::preorder(const TreeNode* root)
-{
-    if(root != nullptr)
+    q.push(root);
+    while(!q.empty())
     {
-        this->traversal.push_back(root->val);
-        if(root->left != nullptr)
-            this->preorder(root->left);
-        if(root->right != nullptr)
-            this->preorder(root->right);
+        for(unsigned i = 0; i < q.size(); ++i)
+        {
+            const TreeNode* cur_node = q.front();
+            traversal.push_back(cur_node->val);
+
+            if(cur_node->left != nullptr)
+                q.push(cur_node->left);
+            if(cur_node->right != nullptr)
+                q.push(cur_node->right);
+            q.pop();
+        }
     }
-
-    return this->traversal;
 }
-
-std::vector<int> ObjTraverser::inorder(const TreeNode* root)
-{
-    if(root != nullptr)
-    {
-        if(root->left != nullptr)
-            this->inorder(root->left);
-        this->traversal.push_back(root->val);
-        if(root->right != nullptr)
-            this->inorder(root->right);
-    }
-
-    return this->traversal;
-}
-
-std::vector<int> ObjTraverser::outorder(const TreeNode* root)
-{
-    if(root != nullptr)
-    {
-        if(root->right != nullptr)
-            this->outorder(root->right);
-        this->traversal.push_back(root->val);
-        if(root->left != nullptr)
-            this->outorder(root->left);
-    }
-
-    return this->traversal;
-}
-
-std::vector<int> ObjTraverser::postorder(const TreeNode* root)
-{
-    if(root != nullptr)
-    {
-        if(root->left != nullptr)
-            this->postorder(root->left);
-        if(root->right != nullptr)
-            this->postorder(root->right);
-        this->traversal.push_back(root->val);
-    }
-
-    return this->traversal;
-}
-
-
-
-
-
-
 

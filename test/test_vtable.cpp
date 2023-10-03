@@ -17,7 +17,7 @@
 
 
 // This implements the incorrect behaviour (base dtor is not virtual)
-TEST_CASE("test_vtable_order_non_virtual_dtor", "vtable")
+TEST_CASE("test_vtable_order_non_virtual_dtor", "[classic]")
 {
     int test_num = 42;
 
@@ -31,12 +31,11 @@ TEST_CASE("test_vtable_order_non_virtual_dtor", "vtable")
 
 
 // This implements the correct dtor order
-TEST_CASE("test_vtable_order_virtual_dtor", "vtable")
+TEST_CASE("test_vtable_order_virtual_dtor", "[classic]")
 {
     int test_num = 42;
     std::cout << "[" << __func__ << "] creating new Derived class where Base does have virtual dtor" << std::endl;
     DerivedVirtual* test_derived = new DerivedVirtual(test_num);
-
     REQUIRE(test_derived != nullptr);
 
     delete test_derived;

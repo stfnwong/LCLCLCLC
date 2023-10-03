@@ -61,6 +61,9 @@ void tree_inorder_iter(TreeNode* root, std::vector<int>& traversal);
 void tree_outorder_iter(TreeNode* root, std::vector<int>& traversal);
 void tree_postorder_iter(TreeNode* root, std::vector<int>& traversal);
 
+// BFS methods 
+void tree_bfs(TreeNode* root, std::vector<int>& traversal);
+
 
 /*
  * Traversal object

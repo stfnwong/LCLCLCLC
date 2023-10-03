@@ -87,6 +87,55 @@ std::vector<int> two_sum_pointer(std::vector<int>& nums, int target)
     return output;
 }
 
+// two sum sorted pointer
+std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target)
+{
+    unsigned int n = nums.size();
+    std::vector<std::pair<int, int>> val_and_idx(n);
+
+    // since we plan to sort the array we need to remember what the original index was 
+    // create a vector of pairs that store a value and its position in the original array 
+    for(unsigned i = 0; i < n; ++i)
+        val_and_idx[i] = std::make_pair(nums[i], i);
+
+    // now we can sort the input 
+    std::sort(val_and_idx.begin(), val_and_idx.end());
+    int left = 0;
+    int right = n-1;
+
+    while(left < right) 
+    {
+        int s = val_and_idx[left].first + val_and_idx[right].first;
+        if(s == target)
+            return std::vector<int>{left, right};
+        else if(s > target)
+            right--;    //  too large, deccrease 
+        else
+            left++;     // too small, increase
+    }
+
+    // cant find anything
+    return std::vector<int>{};
+
+}
+
+// two sum brute force 
+std::vector<int> two_sum_brute_force(std::vector<int>& nums, int target)
+{
+    for(unsigned i = 0; i < nums.size(); ++i)
+    {
+        for(unsigned j = i+1; j < nums.size(); ++j)
+        {
+            int s = nums[i] + nums[j];
+            if(s == target)
+                return std::vector<int>{int(i), int(j)};   // TODO: add convertion to shut linter up?
+        }
+    }
+
+    // in the real question I think we are guaranteed there is an answer 
+    return std::vector<int>{};  
+}
+
 /*
  * Question 2
  */
@@ -267,7 +316,7 @@ void find_letter_combo(
         std::vector<std::string>& output,
         std::unordered_map<char, std::string> mapping,
         std::string cur_string,
-        int idx)
+        unsigned int idx)
 {
     if(idx == digits.size())
     {
@@ -311,10 +360,10 @@ std::vector<std::string> letter_combinations_17(std::string digits)
 /*
  * Question 18
  */
-std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target)
-{
-    
-}
+//std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target)
+//{
+//    
+//}
 
 /*
  * Question 55
@@ -351,8 +400,56 @@ bool can_jump(std::vector<int>& nums)
     return can_jump_here_basic(0, nums);
 }
 
+/*
+Question 322
+https://leetcode.com/problems/coin-change/
+You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+
+Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+You may assume that you have an infinite number of each kind of coin
+ */
+int coin_change_vec_322(std::vector<int>& coins, int amount)
+{
+    // Time complexity: O(AC)
+    // Space complexity: O(A)
+
+    int MAX_COST = amount + 1;
+    std::vector<int> min_num_coins(amount+1);
+
+    min_num_coins[0] = 0;
+
+    for(unsigned n = 1; n < min_num_coins.size(); ++n)
+        min_num_coins[n] = amount + 1;
+
+    // the nth element of min_num_coins represents the minimum number of coins to sum to n
+    for(unsigned n = 1; n <= min_num_coins.size(); ++n)
+    {
+        for(unsigned c = 0; c < coins.size(); ++c)
+        {
+            // If the difference between n and coins[c] is positive, it means that 
+            // coins[c] could be used as part of the solution.
+            if((n - coins[c]) >= 0)
+                min_num_coins[n] = std::min(min_num_coins[n], 1 + min_num_coins[n - coins[c]]);
+        }
+    }
+
+    if(min_num_coins[amount] < (amount + 1))
+        return min_num_coins[amount];
+
+    return -1;
+}
+
+// TODO: BFS solution with memo
 
 
+/*
+ * Question 842
+ * Split array into Fibonacci like sequence
+ */
+std::vector<int> split_into_fib_seq_842(int i)
+{
+}
 
 
 

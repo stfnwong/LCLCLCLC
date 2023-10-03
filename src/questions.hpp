@@ -18,6 +18,7 @@
 // https://leetcode.com/problems/two-sum/
 std::vector<int> two_sum_map(std::vector<int>& nums, int target);
 std::vector<int> two_sum_pointer(std::vector<int>& nums, int target);
+std::vector<int> two_sum_sort_and_pointer(std::vector<int>& nums, int target);
 
 // ==== QUESTION 2
 // https://leetcode.com/problems/add-two-numbers/
@@ -46,6 +47,15 @@ std::vector<std::vector<int>> four_sum(std::vector<int>& nums, int target);
 // https://leetcode.com/problems/jump-game/
 bool can_jump(std::vector<int>& nums);
 
+
+// Question 322
+// https://leetcode.com/problems/coin-change/
+int coin_change_vec_322(std::vector<int>& coins, int amount);
+
+
+// ==== QUESTION 842
+// https://leetcode.com/problems/split-array-into-fibonacci-sequence/
+std::vector<int> split_into_fib_seq_842(int i);
 
 // ==== QUESTION 1222
 // https://leetcode.com/problems/queens-that-can-attack-the-king/

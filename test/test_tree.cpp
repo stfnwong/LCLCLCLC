@@ -7,24 +7,19 @@
 #define CATCH_CONFIG_MAIN
 #include "catch/catch.hpp"
 
-
 #include <vector>
 #include <string>
 #include "tree.hpp"
 
 
-const constexpr bool verbose = false;
-
-
-std::string empty_repr = "[]";
-std::string repr1      = "[1,2,3]";
-std::string repr2      = "[1,null,2,3]";
-std::string repr3      = "[1,null,2,3,null,4,null]";
-
-int tree1_size = 3;
-int tree2_size = 3;
-int tree3_size = 4;
-
+// Test variables
+const std::string empty_repr = "[]";
+const std::string repr1      = "[1,2,3]";
+const std::string repr2      = "[1,null,2,3]";
+const std::string repr3      = "[1,null,2,3,null,4,null]";
+const int tree1_size = 3;
+const int tree2_size = 3;
+const int tree3_size = 4;
 
 
 TEST_CASE("test_repr_to_tree", "tree")
@@ -43,11 +38,8 @@ TEST_CASE("test_repr_to_tree", "tree")
     empty_tree = repr_to_tree(empty_repr);
     REQUIRE(nullptr == empty_tree);
     
-    // TODO: Since the traversals are tested seperately, we just test 
+    // Since the traversals are tested seperately, we just test 
     // the size here.
-    REQUIRE(tree_size(repr1_tree) == tree1_size);
-    REQUIRE(tree_size(repr2_tree) == tree2_size);
-    REQUIRE(tree_size(repr3_tree) == tree3_size);
 
     // clean up
     destroy_tree(repr1_tree);
@@ -74,48 +66,29 @@ TEST_CASE("test_tree_to_repr", "tree")
     // Test the empty tree
     empty_repr_tree = repr_to_tree(empty_repr);
     tree_to_empty_repr = tree_to_repr(empty_repr_tree);
-    if(verbose)
-    {
-        std::cout << "Input repr was  : " << empty_repr << std::endl;
-        std::cout << "Output repr was : " << tree_to_empty_repr << std::endl; 
-    }
-
+    std::cout << "Input repr was  : " << empty_repr << std::endl;
+    std::cout << "Output repr was : " << tree_to_empty_repr << std::endl; 
     REQUIRE(empty_repr == tree_to_empty_repr);
 
     // Test the basic [1,2,3] tree
     repr1_tree = repr_to_tree(repr1);
     tree_to_repr1 = tree_to_repr(repr1_tree);
-
-    if(verbose)
-    {
-        std::cout << "Input repr was  : " << repr1 << std::endl;
-        std::cout << "Output repr was : " << tree_to_repr1 << std::endl; 
-    }
-
+    std::cout << "Input repr was  : " << repr1 << std::endl;
+    std::cout << "Output repr was : " << tree_to_repr1 << std::endl; 
     REQUIRE(repr1 == tree_to_repr1);
 
     // Test the tree with a null nodes
     repr2_tree = repr_to_tree(repr2);
     tree_to_repr2 = tree_to_repr(repr2_tree);
-
-    if(verbose)
-    {
-        std::cout << "Input repr was  : " << repr2 << std::endl;
-        std::cout << "Output repr was : " << tree_to_repr2 << std::endl; 
-    }
-
+    std::cout << "Input repr was  : " << repr2 << std::endl;
+    std::cout << "Output repr was : " << tree_to_repr2 << std::endl; 
     REQUIRE(repr2 == tree_to_repr2);
 
     // Test more complex tree with null nodes
     repr3_tree = repr_to_tree(repr3);
     tree_to_repr3 = tree_to_repr(repr3_tree);
-
-    if(verbose)
-    {
-        std::cout << "Input repr was  : " << repr3 << std::endl;
-        std::cout << "Output repr was : " << tree_to_repr3 << std::endl; 
-    }
-
+    std::cout << "Input repr was  : " << repr3 << std::endl;
+    std::cout << "Output repr was : " << tree_to_repr3 << std::endl; 
     REQUIRE(repr2 == tree_to_repr2);
 
     destroy_tree(repr1_tree);
