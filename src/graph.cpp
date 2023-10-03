@@ -52,6 +52,7 @@ void GraphNode::unmark(void)
     this->visited = false;
 }
 
+
 GraphKV GraphNode::getPair(void) const
 {
     return GraphKV(this->key, this->val);
