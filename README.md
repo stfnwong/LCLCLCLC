@@ -21,3 +21,11 @@ HA HA HA HA HA HA HA HA HA
 
 ## Tests
 Test used gtest. Almost everything here is in C++ but sometimes I use Python (3.6). For many of the problems the unit test is in effect the output of the exercise. For those I just replicate the visible unit tests in the question and then paste the core logic into leetcode to see how it does on the hidden tests. 
+
+
+## Poetry 
+While `poetry` is handy for dependency management, it does have some annoying features including the default handling of keyrings. If like me you mostly use `poetry` on a stand-alone Linux system (and don't generally use a keyring when interacting with `pypi.org`) then it may be worth exporting the null keyring variable by doing
+
+```bash
+export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
+```

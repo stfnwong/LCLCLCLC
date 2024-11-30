@@ -110,3 +110,7 @@ run-test:
 
 print-%:
 	@echo $* = $($*)
+
+# ==== PYTHON TARGETS ==== #
+env:
+	poetry install -vv --no-root
